@@ -19,3 +19,8 @@ Draw (weight category knockout with seeding) + live scoreboard + TV display, in 
 - Data saves automatically in the laptop's browser after every change; closing and reopening continues from the last point.
 - Backup / Restore → Download backup file (keep a copy on a pen drive).
 - Download Excel (results): medal winners, rank list, district tally, match log, all participants.
+
+## Printing
+- Draw tab → Print (or press Ctrl+P anywhere in the admin screen) → choose the stage → Print.
+- Prints always come out black text on white paper, in dark mode or light mode. Blue side = black bar, white side = grey bar, winners shaded grey.
+- Every sheet fits on one A4 landscape page: long first rounds shrink slightly, long rank lists go into 2–3 columns.

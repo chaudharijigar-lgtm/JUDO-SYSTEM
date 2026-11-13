@@ -121,7 +121,7 @@ body.tv #op,body.display #op{display:flex!important}
 @media print{
  @page{size:A4 landscape;margin:7mm}
  html,body{background:#fff!important;height:auto!important}
- body>*:not(#printArea){display:none!important}
+ body:not(.view)>*:not(#printArea){display:none!important}
  #printArea{display:block!important;color:#000;font-family:Arial,Helvetica,sans-serif}
  .ppage{break-after:page;page-break-after:always;height:194mm;display:flex;flex-direction:column;overflow:hidden}
  .ppage:last-child{break-after:auto;page-break-after:auto}
@@ -135,7 +135,10 @@ body.tv #op,body.display #op{display:flex!important}
 #printArea .pbr,#printArea .pfb{flex:1;display:flex;gap:5mm;min-height:0}
 #printArea .pcol{flex:1;display:flex;flex-direction:column;min-width:0}
 #printArea .prn{text-align:center;font-size:8pt;font-weight:800;text-transform:uppercase;color:#333;margin-bottom:1mm}
-#printArea .pcb{flex:1;display:flex;flex-direction:column;justify-content:space-around;gap:1.2mm}
+#printArea .pcb{flex:1;display:flex;flex-direction:column;justify-content:space-around;gap:1.2mm;min-height:0}
+#printArea .pcb>*{flex-shrink:0}#printArea .prb{flex:1;min-height:0;overflow:hidden}#printArea .prbi{padding-top:.1px}#printArea .prk2{display:flex;gap:4mm;align-items:flex-start}#printArea .prk2>table{flex:1;min-width:0}#printArea .prk2.c3{gap:3mm}#printArea .prk2 .pmd td,#printArea .prk2 .pmd th{padding:.9mm 1.4mm}#printArea .prk2 .pmd{font-size:8pt}#printArea .prk2.c3 .prk td:first-child{width:9mm}
+#printArea.pmeasure{display:block!important;position:absolute!important;left:-30000px;top:0;width:283mm;visibility:hidden;color:#000;font-family:Arial,Helvetica,sans-serif}
+#printArea.pmeasure .ppage{height:194mm;display:flex;flex-direction:column;overflow:hidden}
 #printArea .pbox{border:.3mm solid #666;border-radius:1.2mm;overflow:hidden;font-size:7.5pt;break-inside:avoid}
 #printArea .pl{display:flex;justify-content:space-between;gap:2mm;background:#eef0f4;font-size:6.3pt;padding:.4mm 1.4mm;color:#333}
 #printArea .ps{padding:.6mm 1.5mm;border-left:2.4mm solid #c9c9c9}
@@ -498,6 +501,36 @@ body:not(.tv) .panel::before,body:not(.tv) #drawSec header::before{z-index:-1!im
 
 body:not(.tv) #drawSec #demo{background:linear-gradient(180deg,rgba(255,255,255,.30),rgba(255,255,255,0) 60%),var(--lg-purple)!important;color:#fff!important;box-shadow:var(--lg-spec),0 6px 20px rgba(191,90,242,.35)!important}
 body.light:not(.tv) #drawSec #demo{background:linear-gradient(180deg,rgba(255,255,255,.35),rgba(255,255,255,0) 60%),#af52de!important;color:#fff!important}
+
+/* ===== PRINT: always black text on white paper, in dark or light mode (must stay the LAST rules) ===== */
+@media print{
+ html,html body,html body:not(.tv),html body:not(.tv):not(.view),html body.light,html body.light:not(.tv),html body.light:not(.tv):not(.view),html body.view,html body.tv{background:#fff!important;background-image:none!important;background-attachment:scroll!important;color:#000!important}
+ html::before,html::after,body::before,body::after{content:none!important;display:none!important}
+ #printArea,#printArea *,body.view #viewRoot,body.view #viewRoot *{background:transparent!important;background-image:none!important;color:#000!important;-webkit-text-fill-color:#000!important;box-shadow:none!important;text-shadow:none!important;-webkit-backdrop-filter:none!important;backdrop-filter:none!important;filter:none!important;opacity:1!important}
+ #printArea,body.view #viewRoot{background:#fff!important}
+ /* grey-scale accents (white side = light grey bar, blue side = black bar) */
+ #printArea .phd{border-bottom-color:#000!important}
+ #printArea .pbox{border-color:#555!important}
+ #printArea .pl,#printArea .pmd th{background:#ececec!important}
+ #printArea .ps{border-left-color:#c8c8c8!important}
+ #printArea .ps.sb{border-left-color:#000!important;border-top-color:#bbb!important}
+ #printArea .ps.won{background:#dcdcdc!important;font-weight:800}
+ #printArea .ps.lost,#printArea .ps.lost *,#printArea .bye{color:#777!important;-webkit-text-fill-color:#777!important}
+ #printArea .pc,#printArea .pmt,#printArea .pdt,#printArea .pnote,#printArea .qrl,#printArea .prn{color:#333!important;-webkit-text-fill-color:#333!important}
+ #printArea .pmd th,#printArea .pmd td{border-color:#777!important}
+ #printArea .pft{border-top-color:#777!important}
+ #printArea svg rect[fill="white"],#printArea svg rect[fill="#ffffff"]{fill:#fff!important}
+ #printArea svg path,#printArea svg rect:not([fill="white"]):not([fill="#ffffff"]){fill:#000!important}
+ /* read-only QR page printed from a phone */
+ body.view #viewRoot{max-width:none;padding:0}
+ body.view #viewRoot .vcat,body.view #viewRoot .vcard{border:1px solid #999!important;border-radius:6px}
+ body.view #viewRoot .vrow{border-left-color:#c8c8c8!important}
+ body.view #viewRoot .vrow.b{border-left-color:#000!important}
+ body.view #viewRoot .vbadge,body.view #viewRoot .vsd{border:1px solid #000!important}
+ body.view #viewRoot .vrr{border-bottom-color:#ccc!important}
+ body.view #viewRoot .vrr.m1,body.view #viewRoot .vrr.m2,body.view #viewRoot .vrr.m3{background:#ececec!important}
+ body.view #viewRoot .vrk{filter:grayscale(1)!important}
+}
 </style>
 </head>
 <body data-tab="draw">
@@ -1244,7 +1277,7 @@ async function qrFor(k,type){const obj=type==='r'?resPayload(k):seedPayload(k),b
 window.JUDO_QR=(k,t)=>qrFor(k,t);
 async function fillQRs(root){const cache={};
   for(const el of root.querySelectorAll('[data-qr]')){const key=el.dataset.qr+'|'+el.dataset.k;cache[key]=cache[key]||await qrFor(el.dataset.k,el.dataset.qr);
-    el.innerHTML=cache[key].svg?cache[key].svg+'<div class="qrl">'+(el.dataset.qr==='r'?'Scan: results':'Scan: draw & seeding')+'</div>':'<div class="qrl">QR too large</div>';}
+    el.innerHTML=cache[key].svg?cache[key].svg+'<div class="qrl">'+(el.dataset.qr==='r'?'Scan: results':'Scan: draw & seeding')+'</div>':'<div class="qrl">'+(window.qrcode?'QR too large':'QR not loaded')+'</div>';}
   if(!/^https?:/.test(location.protocol))msg('Note: QR codes open correctly only when the system runs from its website link (GitHub Pages).');}
 function pAth(id){const a=id&&byId(id);return a?`<div class="pn">${esc(a.name)}${a.seed>0?' <sup>S'+a.seed+'</sup>':''}</div><div class="pc">${esc(a.club)}</div>`:'';}
 function pBox(dr,r,i,sub){const m=getM(dr,r,i),[a,b]=players(dr,r,i);
@@ -1274,11 +1307,34 @@ function pageFinal(k){const dr=D.draws[k];const L=dr.rounds.length;let grid='',t
   else{t=L>=3?'Stage 2 · Semi-finals · Final':'Pool draw · all contests';for(let r=Math.max(0,L-2);r<L;r++)grid+=col(rname(r,L),dr.rounds[r].map((m,i)=>pBox(dr,r,i)).join(''));}
   return `<div class="ppage">${pHead(k,t)}<div class="pfb">${grid}</div>${pMedal(k)}${pFootF()}</div>`;}
 function pageRes(k){const rows=rankRows().out.filter(x=>x.cat===k).sort((a,b)=>(a.rank||99)-(b.rank||99)||a.name.localeCompare(b.name));
-  return `<div class="ppage">${pHead(k,'Results · Medals and rank list','r')}${pMedal(k)}<table class="pmd prk"><tr><th>Rank</th><th>Name</th><th>District / Club</th><th>Matches won</th></tr>${rows.map(x=>`<tr><td>${x.rank||'–'}</td><td>${esc(x.name)}</td><td>${esc(x.club)}</td><td>${x.won}</td></tr>`).join('')}</table><div style="flex:1"></div>${pFootF()}</div>`;}
+  const nc=rows.length<=18?1:rows.length<=40?2:3,per=Math.ceil(rows.length/nc)||1;
+  const th=`<tr><th>Rank</th><th>Name</th><th>District / Club</th><th>${nc>2?'Won':'Matches won'}</th></tr>`,tr=x=>`<tr><td>${x.rank||'–'}</td><td>${esc(x.name)}</td><td>${esc(x.club)}</td><td>${x.won}</td></tr>`;
+  const tb=Array.from({length:nc},(_,c)=>`<table class="pmd prk">${th}${rows.slice(c*per,(c+1)*per).map(tr).join('')}</table>`).join('');
+  const list=nc>1?`<div class="prk2${nc>2?' c3':''}">${tb}</div>`:tb;
+  return `<div class="ppage">${pHead(k,'Results · Medals and rank list','r')}${pMedal(k)}<div class="prb"><div class="prbi">${list}</div></div>${pFootF()}</div>`;}
+// shrink any bracket column / rank list that would run into the footer, so every page fits on its A4 sheet
+function fitPrint(pa){
+  pa.classList.add('pmeasure');
+  try{
+    // shrink step by step and re-measure, because borders and text do not scale exactly
+    const fit=(el,H,meas,min)=>{el.style.removeProperty('zoom');if(!H)return;let z=1;
+      for(let n=0;n<10;n++){const C=meas();if(C<=H-1)return;z=Math.max(min,z*Math.min(.985,(H-1)/C));el.style.zoom=z.toFixed(3);if(z<=min)return;}};
+    pa.querySelectorAll('.pcb').forEach(c=>{const kids=c.children;if(!kids.length)return;
+      fit(c,c.clientHeight,()=>kids[kids.length-1].getBoundingClientRect().bottom-kids[0].getBoundingClientRect().top,.45);});
+    pa.querySelectorAll('.prbi').forEach(c=>fit(c,c.parentElement.clientHeight,()=>c.getBoundingClientRect().height,.4));
+  }catch(e){}
+  pa.classList.remove('pmeasure');}
 function openPrint(scope){const p=$('prPanel');p.style.display='block';$('prScope').value=scope||'this';
   const dr=cur&&D.draws[cur];if(dr){const si=stageInfo(dr);$('prStage').value=si.hasElim&&!si.elimDone?'elim':'final';}
   p.scrollIntoView({behavior:'smooth',block:'start'});}
-$('prAll').onclick=()=>openPrint(cur?'this':'all');$('prX').onclick=()=>{$('prPanel').style.display='none';};
+$('prAll').onclick=()=>openPrint(cur?'this':'all');
+document.addEventListener('keydown',e=>{
+  if(window.READONLY||window.VIEW||location.hash==='#display')return;
+  if(!(e.ctrlKey||e.metaKey)||e.altKey||e.shiftKey||e.key.toLowerCase()!=='p')return;
+  e.preventDefault();e.stopPropagation();
+  if($('prPanel').style.display!=='block')openPrint(cur?'this':'all');
+  $('prGo').click();
+},true);$('prX').onclick=()=>{$('prPanel').style.display='none';};
 $('prGo').onclick=async()=>{
   const st=$('prStage').value,sc=$('prScope').value;
   let keys=sc==='this'?(cur?[cur]:[]):cats().filter(c=>sc==='all'||c.g===sc).map(c=>c.k);
@@ -1293,6 +1349,7 @@ $('prGo').onclick=async()=>{
   let pa=document.getElementById('printArea');if(!pa){pa=document.createElement('div');pa.id='printArea';document.body.appendChild(pa);}
   pa.innerHTML=html;
   msg('Preparing QR codes…');await fillQRs(pa);
+  fitPrint(pa);
   if(skipped)msg(skipped+' small categories have no elimination stage; print them with "Final block".');
   try{window.print();}catch(e){msg('Printing works when the system is opened from its website link in Chrome.');}
 };
@@ -1557,6 +1614,7 @@ if(TV){
 
   document.addEventListener('keydown',e=>{
     if(window.READONLY)return;
+    if(e.ctrlKey||e.metaKey||e.altKey)return;
     if(document.body.dataset.tab!=='sb'&&!document.body.classList.contains('display'))return;
     const tg=e.target.tagName,ty=(e.target.type||'').toLowerCase();if((tg==='INPUT'&&ty!=='checkbox')||tg==='SELECT'||tg==='TEXTAREA')return;
     if(tg==='INPUT')e.target.blur();
