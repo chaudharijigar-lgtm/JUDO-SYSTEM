@@ -4,6 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Judo Tournament System (draw + scoreboard)</title>
+<script src="qrcode.js" onerror="var s=document.createElement('script');s.src='https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js';document.head.appendChild(s);"></script>
 <script src="xlsx.full.min.js" onerror="var s=document.createElement('script');s.src='https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js';document.head.appendChild(s);"></script>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
@@ -169,6 +170,7 @@ body.tv #op,body.display #op{display:flex!important}
 #drawSec .eds .enm{font-weight:700}#drawSec .eds .ecl{font-size:12px;color:#9aa6bd}
 #drawSec .eds .sd{background:#7c3aed;color:#fff;border-radius:9px;padding:0 6px;font-size:11px}
 #drawSec .eds button{padding:4px 0}
+#drawSec .p.armed{outline:2px solid #fbbf24;outline-offset:-2px;background:rgba(251,191,36,.18)!important}
 #fsHint{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;flex-direction:column;text-align:center;background:rgba(0,0,0,.55);color:#fff;font-size:3vw;line-height:1.5;cursor:pointer;z-index:9}
 #fsHint b{font-size:5vw;color:#f5c518}#fsHint small{font-size:1.8vw;opacity:.8}
 body.tv{overflow:hidden}
@@ -334,6 +336,168 @@ body.light #drawSec td,body.light #drawSec th,body.light #drawSec .bk{border-bot
 body.light #msg,body.light #dmsg{color:#b45309}
 body.light .keys b{background:#fff!important;color:#0f172a}
 body.light #lockOv>div{background:rgba(255,255,255,.88)!important;color:#0f172a}
+
+/* ===== QR + print header + read-only view ===== */
+#printArea .pqr{width:32mm;flex:none;text-align:center;margin-right:3mm}#printArea .pqr svg{width:32mm;height:32mm;display:block}
+#printArea .qrl{font-size:5.5pt;color:#333;margin-top:.3mm}
+#printArea .pevb{flex:1;min-width:0}#printArea .pti{flex:1.4}
+#qrOv{position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:rgba(5,7,15,.6);z-index:60;-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
+#qrOv .qrm{background:rgba(255,255,255,.96);color:#0f172a;border-radius:20px;padding:18px;max-width:720px;width:92%;box-shadow:0 30px 80px rgba(0,0,0,.5)}
+#qrOv .qrh{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}#qrOv .qrh button{color:#0f172a}
+#qrBox{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:8px}#qrBox .qrc{text-align:center}#qrBox .qrs svg{width:100%;max-width:300px;height:auto}
+#qrOv .hint{color:#475569!important}
+#drawSec .evf{grid-template-columns:repeat(auto-fit,minmax(220px,1fr))}#drawSec .evf label{display:grid;gap:4px;font-size:12px}
+body.view>*:not(#viewRoot){display:none!important}
+body.view{background:radial-gradient(900px 600px at 0% -10%,rgba(99,76,255,.5),transparent 60%),radial-gradient(800px 600px at 100% 0%,rgba(0,170,210,.4),transparent 58%),linear-gradient(160deg,#080a16,#0b1022)!important;background-attachment:fixed;color:#eef2ff;font-family:"Segoe UI",Inter,Roboto,Arial,sans-serif}
+#viewRoot{max-width:760px;margin:0 auto;padding:16px 14px 40px;display:grid;gap:10px}
+#viewRoot .vhead{text-align:center;padding:16px 10px 6px}#viewRoot .vev{font-size:22px;font-weight:900;line-height:1.2;background:linear-gradient(90deg,#fff,#c7d2fe);-webkit-background-clip:text;background-clip:text;color:transparent}
+#viewRoot .vsub{font-size:13px;color:#b8c2dc;margin-top:3px}
+#viewRoot .vcat{text-align:center;padding:12px;border-radius:18px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.15);-webkit-backdrop-filter:blur(18px);backdrop-filter:blur(18px)}
+#viewRoot .vk{font-size:20px;font-weight:900}#viewRoot .vts{font-size:12px;color:#9aa6bd;margin-top:6px}
+#viewRoot .vbadge{display:inline-block;margin-top:8px;padding:5px 12px;border-radius:999px;font-size:12px;font-weight:900;letter-spacing:.12em}
+#viewRoot .vbadge.seed{background:linear-gradient(135deg,#6366f1,#3b82f6)}#viewRoot .vbadge.fin{background:linear-gradient(135deg,#f7d774,#c9971c);color:#000}#viewRoot .vbadge.prog{background:linear-gradient(135deg,#f59e0b,#b45309)}
+#viewRoot .vcard{border-radius:16px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.13);padding:8px 10px;-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px)}
+#viewRoot .vmeta{font-size:13px;color:#dbe4ff;text-align:center}
+#viewRoot .vpool{font-size:12px;font-weight:900;letter-spacing:.14em;color:#a5b4fc;margin:8px 4px 0}
+#viewRoot .vrow{display:grid;grid-template-columns:30px 1fr auto;gap:8px;align-items:center;padding:7px 6px;border-left:5px solid #cbd5e1;border-radius:8px}
+#viewRoot .vrow.b{border-left-color:#3b82f6;margin-top:4px}#viewRoot .vrow.vbye .vnm{font-style:italic;opacity:.55}
+#viewRoot .vpos{font-size:12px;color:#9aa6bd;text-align:center}#viewRoot .vnm{font-weight:800}#viewRoot .vcl{font-size:12px;color:#b8c2dc;font-weight:500;margin-left:6px}
+#viewRoot .vsd{background:#7c3aed;color:#fff;border-radius:9px;padding:0 6px;font-size:11px}
+#viewRoot .vrr{display:grid;grid-template-columns:44px 1fr auto;gap:8px;align-items:center;padding:9px 6px;border-bottom:1px solid rgba(255,255,255,.08)}
+#viewRoot .vrr:last-child{border-bottom:0}#viewRoot .vrk{font-size:20px;text-align:center;font-weight:900}
+#viewRoot .vrr.m1{background:linear-gradient(90deg,rgba(247,215,116,.25),transparent)}#viewRoot .vrr.m2{background:linear-gradient(90deg,rgba(203,213,225,.2),transparent)}#viewRoot .vrr.m3{background:linear-gradient(90deg,rgba(226,162,107,.22),transparent)}
+#viewRoot .vrr .vnm{display:flex;flex-direction:column}#viewRoot .vrr .vcl{margin-left:0}
+#viewRoot .vw{font-size:12px;color:#9aa6bd}
+#viewRoot .vfoot{text-align:center;font-size:12px;color:#8b95ad;margin-top:10px}
+
+#drawSec .edtools{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:10px}
+#drawSec .eds{grid-template-columns:18px 26px 1fr auto auto!important;cursor:grab}
+#drawSec .eds .grip{color:#6b7591;font-size:13px;letter-spacing:-2px;cursor:grab}
+#drawSec .eds .eact{display:flex;gap:4px}#drawSec .eds .eact button{padding:4px 8px;min-width:30px}
+#drawSec .eds .eact button:disabled{opacity:.3;cursor:default}
+#drawSec .eds .gb{background:linear-gradient(180deg,rgba(255,255,255,.25),rgba(255,255,255,0) 55%),linear-gradient(135deg,#0ea5e9,#0369a1)!important;color:#fff!important;font-size:11px}
+#drawSec .eds .byetag{font-size:10px;font-weight:800;color:#7dd3fc;border:1px solid rgba(125,211,252,.5);border-radius:8px;padding:0 5px;margin-left:4px}
+#drawSec .eds.over{outline:2px dashed #a5b4fc;outline-offset:-2px;background:rgba(99,102,241,.2)}
+#drawSec .eds.dragging{opacity:.45}
+@keyframes edflash{0%{box-shadow:0 0 0 3px rgba(250,204,21,.9);background:rgba(250,204,21,.25)}100%{box-shadow:0 0 0 0 rgba(250,204,21,0)}}
+#drawSec .eds.moved{animation:edflash 1.6s ease-out}
+@media(max-width:700px){#drawSec .eds{grid-template-columns:14px 22px 1fr auto!important}#drawSec .eds .ecl{display:none}}
+body.light #drawSec .eds .byetag{color:#0369a1;border-color:rgba(3,105,161,.4)}
+
+#drawSec .eds{grid-template-columns:16px 24px minmax(0,1fr) auto!important;grid-template-areas:"g p n a" "g p c a";row-gap:1px!important;column-gap:8px!important}
+#drawSec .eds .grip{grid-area:g}#drawSec .eds .pos{grid-area:p}
+#drawSec .eds .enm{grid-area:n;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
+#drawSec .eds .ecl{grid-area:c;font-size:11.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
+#drawSec .eds .eact{grid-area:a;align-self:center}
+#drawSec .eds .byetag,#drawSec .eds .gb{white-space:nowrap}
+#drawSec .edgrid{grid-template-columns:repeat(auto-fill,minmax(330px,1fr))}
+@media(max-width:700px){#drawSec .eds .ecl{display:block}}
+
+/* ===== Podium (TV) ===== */
+#podOv{position:absolute;inset:0;z-index:6;display:none;flex-direction:column;align-items:center;justify-content:flex-start;padding:3cqw 3cqw 0;
+ background:radial-gradient(60% 55% at 50% 38%,rgba(255,214,102,.22),transparent 70%),radial-gradient(120% 120% at 50% 120%,#0f1d55 0%,#05070f 65%);color:#fff;overflow:hidden}
+#podOv.on{display:flex}
+#podOv .pdcat{font-size:3cqw;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:#c7d2fe}
+#podOv .pdtitle{font-size:5cqw;font-weight:900;letter-spacing:.3em;margin:.6cqw 0 1.5cqw;background:linear-gradient(90deg,#f7d774,#fff3c4,#c9971c);-webkit-background-clip:text;background-clip:text;color:transparent}
+#podOv .pdstage{flex:1;width:100%;display:grid;grid-template-columns:1fr 1.15fr 1fr;gap:2cqw;align-items:end}
+#podOv .pdcol{display:flex;flex-direction:column;align-items:center;text-align:center;min-width:0}
+#podOv .pdmed{font-size:6cqw;line-height:1;filter:drop-shadow(0 .4cqw .8cqw rgba(0,0,0,.5))}
+#podOv .pdnm{font-size:3.6cqw;font-weight:900;text-transform:uppercase;line-height:1.1;margin-top:.6cqw;max-width:100%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#podOv .g .pdnm{font-size:4.4cqw}#podOv .pdnm.sm{font-size:3cqw;margin-top:1cqw}
+#podOv .pdcl{font-size:2cqw;color:#b8c2dc;font-weight:700;text-transform:uppercase}
+#podOv .pdblk{width:100%;margin-top:1.2cqw;border-radius:1cqw 1cqw 0 0;display:flex;align-items:flex-start;justify-content:center;padding-top:1cqw;font-size:7cqw;font-weight:900;color:rgba(0,0,0,.45);box-shadow:inset 0 .4cqw 0 rgba(255,255,255,.5)}
+#podOv .g .pdblk{height:18cqw;background:linear-gradient(180deg,#f7d774,#c9971c)}
+#podOv .s .pdblk{height:13cqw;background:linear-gradient(180deg,#e5e9f0,#9aa4b5)}
+#podOv .b .pdblk{height:9cqw;background:linear-gradient(180deg,#e2a26b,#9a5a2a)}
+
+/* ===== Podium v2: names on the steps ===== */
+#podOv{padding:2.4cqw 3cqw 0!important}
+#podOv .pdtitle{margin:.4cqw 0 1cqw!important}
+#podOv .pdstage{gap:1.6cqw!important;align-items:end!important}
+#podOv .pdmed{font-size:5.4cqw!important;margin-bottom:.8cqw}
+#podOv .pdblk{position:relative;display:flex!important;flex-direction:column;align-items:center;justify-content:flex-start!important;gap:.3cqw;padding:1.4cqw 1.2cqw 0!important;
+  border-radius:1.6cqw 1.6cqw 0 0!important;color:#111;font-size:inherit!important;overflow:hidden;
+  box-shadow:inset 0 .35cqw 0 rgba(255,255,255,.65),inset 0 -1cqw 2cqw rgba(0,0,0,.12),0 0 4cqw rgba(0,0,0,.35)!important}
+#podOv .pdblk::before{content:'';position:absolute;inset:0;background:linear-gradient(120deg,rgba(255,255,255,.55) 0%,rgba(255,255,255,0) 32%,rgba(255,255,255,0) 70%,rgba(255,255,255,.18) 100%);pointer-events:none}
+#podOv .g .pdblk{height:29cqw!important;background:linear-gradient(180deg,#ffe7a0 0%,#f2c94c 35%,#c9971c 100%)!important;color:#2b1d00}
+#podOv .s .pdblk{height:24cqw!important;background:linear-gradient(180deg,#ffffff 0%,#dfe4ec 40%,#9aa4b5 100%)!important;color:#1b2230}
+#podOv .b .pdblk{height:21cqw!important;background:linear-gradient(180deg,#f5c8a0 0%,#d9935a 40%,#8f4f22 100%)!important;color:#2a1405}
+#podOv .pdrk{font-size:4.6cqw;font-weight:900;line-height:1;opacity:.85;display:flex;flex-direction:column;align-items:center}
+#podOv .pdrk small{font-size:1.3cqw;letter-spacing:.35em;font-weight:900;margin-top:.3cqw;opacity:.8}
+#podOv .pdnm{position:relative;color:inherit!important;font-size:3.1cqw!important;font-weight:900;text-transform:uppercase;line-height:1.08;margin-top:.8cqw!important;max-width:100%;white-space:normal!important;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;text-shadow:0 .1cqw 0 rgba(255,255,255,.4)}
+#podOv .g .pdnm{font-size:3.8cqw!important}
+#podOv .b .pdnm{font-size:2.5cqw!important;margin-top:.5cqw!important}
+#podOv .pdcl{position:relative;color:inherit!important;opacity:.72;font-size:1.7cqw!important;font-weight:800;text-transform:uppercase}
+#podOv .pdsep{width:60%;height:.2cqw;background:rgba(0,0,0,.18);margin:.7cqw 0 .1cqw;border-radius:1cqw}
+
+/* ================= Apple-style Liquid Glass (admin screens) ================= */
+:root{--lg-blue:#0A84FF;--lg-green:#30D158;--lg-red:#FF453A;--lg-purple:#BF5AF2;--lg-teal:#40C8E0;--lg-orange:#FF9F0A;
+  --lg-fill:rgba(255,255,255,.10);--lg-fill2:rgba(255,255,255,.16);--lg-edge:rgba(255,255,255,.28);--lg-edge2:rgba(255,255,255,.12);
+  --lg-spec:inset 0 1px 0 rgba(255,255,255,.55),inset 0 -1px 0 rgba(255,255,255,.08),inset 0 0 0 .5px rgba(255,255,255,.22);
+  --lg-drop:0 8px 32px rgba(0,0,0,.30),0 2px 8px rgba(0,0,0,.18);--lg-blur:blur(28px) saturate(185%) brightness(1.06)}
+body:not(.tv):not(.view){font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","SF Pro Text","Segoe UI Variable","Segoe UI",Inter,Roboto,Arial,sans-serif!important;-webkit-font-smoothing:antialiased;letter-spacing:-.005em;
+  background:radial-gradient(900px 640px at 8% 6%,rgba(10,132,255,.55),transparent 62%),radial-gradient(820px 600px at 92% 4%,rgba(191,90,242,.50),transparent 60%),radial-gradient(900px 700px at 70% 105%,rgba(255,69,58,.32),transparent 62%),radial-gradient(800px 640px at 0% 100%,rgba(48,209,88,.28),transparent 60%),linear-gradient(180deg,#05060c,#0a0d1c)!important;background-attachment:fixed!important}
+/* floating capsule toolbar */
+body:not(.tv) nav{margin:12px 14px 0!important;top:12px!important;border-radius:24px!important;padding:8px 10px 8px 18px!important;background:rgba(28,30,44,.42)!important;-webkit-backdrop-filter:var(--lg-blur);backdrop-filter:var(--lg-blur);border:1px solid var(--lg-edge2)!important;box-shadow:var(--lg-spec),var(--lg-drop)!important}
+body:not(.tv) nav b{font-weight:700!important;letter-spacing:-.01em}
+body:not(.tv) nav button{border-radius:999px!important;padding:8px 18px!important;font-weight:600!important}
+body:not(.tv) nav button.on{background:linear-gradient(180deg,rgba(255,255,255,.30),rgba(255,255,255,.06)),var(--lg-blue)!important;border-color:rgba(255,255,255,.45)!important;box-shadow:var(--lg-spec),0 6px 18px rgba(10,132,255,.45)!important}
+/* glass panels with specular edge */
+body:not(.tv) .panel,body:not(.tv) #drawSec .panel,body:not(.tv) #drawSec header,body:not(.tv) #op .panel,body:not(.tv) details.panel{position:relative;background:var(--lg-fill)!important;-webkit-backdrop-filter:var(--lg-blur);backdrop-filter:var(--lg-blur);border:1px solid var(--lg-edge2)!important;border-radius:26px!important;box-shadow:var(--lg-spec),var(--lg-drop)!important}
+body:not(.tv) .panel::before,body:not(.tv) #drawSec header::before{content:'';position:absolute;inset:0;border-radius:inherit;pointer-events:none;
+  background:linear-gradient(135deg,rgba(255,255,255,.20) 0%,rgba(255,255,255,.04) 22%,rgba(255,255,255,0) 50%,rgba(255,255,255,.05) 100%)}
+body:not(.tv) #drawSec header{margin:12px 14px 0!important}
+/* capsule glass buttons */
+body:not(.tv) button,body:not(.tv) #drawSec button,body:not(.tv) .filebtn,body:not(.tv) #drawSec .filebtn{border-radius:999px!important;background:linear-gradient(180deg,rgba(255,255,255,.20),rgba(255,255,255,.06))!important;-webkit-backdrop-filter:blur(16px) saturate(170%);backdrop-filter:blur(16px) saturate(170%);border:1px solid var(--lg-edge)!important;color:#fff!important;font-weight:600!important;box-shadow:var(--lg-spec),0 4px 14px rgba(0,0,0,.22)!important;transition:transform .12s ease,box-shadow .2s ease,filter .2s ease!important}
+body:not(.tv) button:hover:not(:disabled),body:not(.tv) .filebtn:hover{transform:translateY(-1px) scale(1.015);filter:brightness(1.1)}
+body:not(.tv) button:active:not(:disabled){transform:scale(.97)!important}
+body:not(.tv) button.go,body:not(.tv) button.pri,body:not(.tv) #drawSec button.pri,body:not(.tv) #drawSec .filebtn,body:not(.tv) #bFromDraw,body:not(.tv) #bCloseWin{background:linear-gradient(180deg,rgba(255,255,255,.32),rgba(255,255,255,0) 60%),var(--lg-green)!important;color:#fff!important;border-color:rgba(255,255,255,.45)!important;box-shadow:var(--lg-spec),0 6px 20px rgba(48,209,88,.35)!important}
+body:not(.tv) button.warn,body:not(.tv) #drawSec button.warn{background:linear-gradient(180deg,rgba(255,255,255,.30),rgba(255,255,255,0) 60%),var(--lg-red)!important;box-shadow:var(--lg-spec),0 6px 20px rgba(255,69,58,.35)!important}
+body:not(.tv) button.tvb,body:not(.tv) #demo,body:not(.tv) #drawSec button.scb{background:linear-gradient(180deg,rgba(255,255,255,.30),rgba(255,255,255,0) 60%),var(--lg-purple)!important;box-shadow:var(--lg-spec),0 6px 20px rgba(191,90,242,.35)!important}
+body:not(.tv) button.pb{background:linear-gradient(180deg,rgba(255,255,255,.32),rgba(255,255,255,0) 60%),var(--lg-blue)!important;box-shadow:var(--lg-spec),0 6px 18px rgba(10,132,255,.35)!important}
+body:not(.tv) button.pw{background:linear-gradient(180deg,#ffffff,#e9edf5)!important;color:#0b1020!important;border-color:rgba(255,255,255,.9)!important}
+body:not(.tv) #drawSec .eds .gb{background:linear-gradient(180deg,rgba(255,255,255,.3),rgba(255,255,255,0) 60%),var(--lg-teal)!important}
+body:not(.tv) button.minus{background:rgba(255,255,255,.07)!important}
+body:not(.tv) button.go{font-size:20px!important}
+body:not(.tv) #op .clk button,body:not(.tv) #op .g6 button,body:not(.tv) #op .g4 button{border-radius:18px!important}
+/* inputs */
+body:not(.tv) input,body:not(.tv) select,body:not(.tv) #drawSec .form input,body:not(.tv) #drawSec .matcfg input,body:not(.tv) #drawSec .matcfg select,body:not(.tv) #prPanel select{border-radius:14px!important;background:rgba(0,0,0,.22)!important;border:1px solid var(--lg-edge2)!important;box-shadow:inset 0 1px 2px rgba(0,0,0,.25)!important}
+body:not(.tv) #drawSec .matcfg{border-radius:18px!important;border:1px solid var(--lg-edge2)!important;background:rgba(255,255,255,.05)!important}
+/* lists & cards */
+body:not(.tv) #drawSec .cat{border-radius:14px!important}
+body:not(.tv) #drawSec .cat.on{background:linear-gradient(180deg,rgba(255,255,255,.18),rgba(255,255,255,.04)),rgba(10,132,255,.35)!important;border-color:rgba(255,255,255,.35)!important;box-shadow:var(--lg-spec),0 4px 16px rgba(10,132,255,.3)!important}
+body:not(.tv) #drawSec .gh{border-radius:12px!important}
+body:not(.tv) #drawSec .m,body:not(.tv) #drawSec .edm,body:not(.tv) #drawSec .md{border-radius:18px!important;background:rgba(255,255,255,.07)!important;border:1px solid var(--lg-edge2)!important;box-shadow:var(--lg-spec),0 6px 18px rgba(0,0,0,.25)!important}
+body:not(.tv) #drawSec .eds{border-radius:12px!important}
+body:not(.tv) .stagebar,body:not(.tv) #drawSec .chk,body:not(.tv) #drawSec .edhead{border-radius:16px!important}
+body:not(.tv) #drawSec .lockchip{border-radius:999px!important}
+body:not(.tv) #op #board{border-radius:24px!important;box-shadow:0 0 0 1px rgba(255,255,255,.18),0 24px 60px rgba(0,0,0,.55)!important}
+body:not(.tv) #qrOv .qrm{border-radius:28px!important}
+/* ---------- Light mode glass ---------- */
+body.light:not(.tv):not(.view){background:radial-gradient(900px 640px at 8% 6%,rgba(10,132,255,.30),transparent 62%),radial-gradient(820px 600px at 92% 4%,rgba(191,90,242,.26),transparent 60%),radial-gradient(900px 700px at 70% 105%,rgba(255,159,10,.22),transparent 62%),radial-gradient(800px 640px at 0% 100%,rgba(48,209,88,.20),transparent 60%),linear-gradient(180deg,#f4f6fb,#eef1f8)!important}
+body.light:not(.tv) nav{background:rgba(255,255,255,.55)!important;border-color:rgba(255,255,255,.8)!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.95),0 8px 30px rgba(15,23,42,.10)!important}
+body.light:not(.tv) .panel,body.light:not(.tv) #drawSec .panel,body.light:not(.tv) #drawSec header,body.light:not(.tv) #op .panel,body.light:not(.tv) details.panel{background:rgba(255,255,255,.52)!important;border-color:rgba(255,255,255,.85)!important;box-shadow:inset 0 1px 0 rgba(255,255,255,1),inset 0 0 0 .5px rgba(255,255,255,.6),0 10px 34px rgba(15,23,42,.10)!important}
+body.light:not(.tv) .panel::before,body.light:not(.tv) #drawSec header::before{background:linear-gradient(135deg,rgba(255,255,255,.75) 0%,rgba(255,255,255,.15) 25%,rgba(255,255,255,0) 55%)}
+body.light:not(.tv) button,body.light:not(.tv) #drawSec button,body.light:not(.tv) .filebtn,body.light:not(.tv) #drawSec .filebtn{background:linear-gradient(180deg,rgba(255,255,255,.95),rgba(255,255,255,.6))!important;color:#0f172a!important;border-color:rgba(255,255,255,.95)!important;box-shadow:inset 0 1px 0 #fff,0 0 0 .5px rgba(15,23,42,.10),0 4px 14px rgba(15,23,42,.10)!important}
+body.light:not(.tv) button.go,body.light:not(.tv) button.pri,body.light:not(.tv) #drawSec button.pri,body.light:not(.tv) #drawSec .filebtn,body.light:not(.tv) #bFromDraw,body.light:not(.tv) #bCloseWin{background:linear-gradient(180deg,rgba(255,255,255,.35),rgba(255,255,255,0) 60%),#28c24f!important;color:#fff!important}
+body.light:not(.tv) button.warn,body.light:not(.tv) #drawSec button.warn{background:linear-gradient(180deg,rgba(255,255,255,.35),rgba(255,255,255,0) 60%),var(--lg-red)!important;color:#fff!important}
+body.light:not(.tv) button.tvb,body.light:not(.tv) #demo,body.light:not(.tv) #drawSec button.scb{background:linear-gradient(180deg,rgba(255,255,255,.35),rgba(255,255,255,0) 60%),#af52de!important;color:#fff!important}
+body.light:not(.tv) button.pb,body.light:not(.tv) nav button.on{background:linear-gradient(180deg,rgba(255,255,255,.35),rgba(255,255,255,0) 60%),#007AFF!important;color:#fff!important}
+body.light:not(.tv) #drawSec .eds .gb{background:linear-gradient(180deg,rgba(255,255,255,.35),rgba(255,255,255,0) 60%),#30b0c7!important;color:#fff!important}
+body.light:not(.tv) button.pw{background:#fff!important;color:#0f172a!important;box-shadow:inset 0 1px 0 #fff,0 0 0 1px rgba(15,23,42,.12),0 4px 14px rgba(15,23,42,.10)!important}
+body.light:not(.tv) input,body.light:not(.tv) select,body.light:not(.tv) #drawSec .form input,body.light:not(.tv) #drawSec .matcfg input,body.light:not(.tv) #drawSec .matcfg select,body.light:not(.tv) #prPanel select{background:rgba(255,255,255,.75)!important;border-color:rgba(15,23,42,.10)!important;box-shadow:inset 0 1px 2px rgba(15,23,42,.06)!important}
+body.light:not(.tv) #drawSec .m,body.light:not(.tv) #drawSec .edm,body.light:not(.tv) #drawSec .md{background:rgba(255,255,255,.62)!important;border-color:rgba(255,255,255,.9)!important;box-shadow:inset 0 1px 0 #fff,0 6px 18px rgba(15,23,42,.08)!important}
+body.light:not(.tv) #drawSec .cat.on{background:linear-gradient(180deg,rgba(255,255,255,.7),rgba(255,255,255,.3)),rgba(0,122,255,.18)!important;border-color:rgba(255,255,255,.9)!important}
+
+/* fixes: sheen behind content, podium names single-line auto-fit */
+body:not(.tv) .panel::before,body:not(.tv) #drawSec header::before{z-index:-1!important}
+#podOv .pdblk::before{z-index:0}
+#podOv .pdblk>*{position:relative;z-index:1}
+#podOv .pdnm{white-space:nowrap!important;display:block!important;-webkit-line-clamp:unset!important;text-overflow:clip;overflow:visible!important;line-height:1.15!important}
+#podOv .pdblk{overflow:hidden}
+
+body:not(.tv) #drawSec #demo{background:linear-gradient(180deg,rgba(255,255,255,.30),rgba(255,255,255,0) 60%),var(--lg-purple)!important;color:#fff!important;box-shadow:var(--lg-spec),0 6px 20px rgba(191,90,242,.35)!important}
+body.light:not(.tv) #drawSec #demo{background:linear-gradient(180deg,rgba(255,255,255,.35),rgba(255,255,255,0) 60%),#af52de!important;color:#fff!important}
 </style>
 </head>
 <body data-tab="draw">
@@ -369,6 +533,20 @@ body.light #lockOv>div{background:rgba(255,255,255,.88)!important;color:#0f172a}
       <label class="filebtn" style="background:#1b2338;border-color:#2c3653">Restore from backup file<input type="file" id="bkRestore" accept=".json"></label></div>
       <div class="hint">Everything also saves automatically in this browser after every change. Closing and reopening continues from the last point.</div>
       <h2 style="margin-top:10px">Automatic backups (latest first)</h2><div id="bkList"></div></details>
+    <details class="panel" id="evPanel" style="margin-bottom:12px"><summary>🏆 Tournament details <span class="hint" id="evSum"></span></summary>
+      <div class="form evf">
+        <label>Tournament name<input id="ev_name" placeholder="e.g. Gujarat State Judo Championship 2026"></label>
+        <label>Organised by / Federation<input id="ev_org" placeholder="e.g. Gujarat State Judo Association"></label>
+        <label>Venue<input id="ev_venue" placeholder="e.g. Sports Complex, Sanand"></label>
+        <label>City / State<input id="ev_city" placeholder="e.g. Ahmedabad, Gujarat"></label>
+        <label>Start date<input id="ev_d1" type="date"></label>
+        <label>End date<input id="ev_d2" type="date"></label>
+        <label>Level / Age groups<input id="ev_level" placeholder="e.g. Senior & Cadet · State level"></label>
+        <label>Tournament director<input id="ev_dir"></label>
+        <label>Chief referee<input id="ev_chief"></label>
+        <label>Technical delegate<input id="ev_td"></label>
+      </div><div class="hint">Shown on every printed sheet, on the QR pages and on the TV scoreboard header. Saved with backups.</div></details>
+    <div id="qrOv" onclick="if(event.target===this)this.style.display='none'"><div class="qrm"><div class="qrh"><b id="qrCat"></b><button onclick="document.getElementById('qrOv').style.display='none'">Close</button></div><div id="qrBox"></div><div class="hint">Scan with any phone camera. Opens a read-only page (no editing). The QR holds the data at this moment; after new results, open ▣ QR again.</div></div></div>
     <div class="panel" id="prPanel" style="display:none;margin-bottom:12px"><div class="tools"><h3 style="font-size:16px">Print draw sheets</h3>
       <select id="prStage"><option value="elim">1 · Elimination (rounds up to Quarter-final)</option><option value="final">2 · Final block (Repechage, Semi-final, Bronze, Final)</option><option value="full">Full draw (stage 1 + stage 2)</option><option value="res">Results (medals + rank list)</option></select>
       <select id="prScope"><option value="this">This category</option><option value="all">All categories</option><option value="Male">All Male categories</option><option value="Female">All Female categories</option></select>
@@ -412,6 +590,7 @@ body.light #lockOv>div{background:rgba(255,255,255,.88)!important;color:#0f172a}
         <div class="sc ycell"><span id="yb">0</span><small>YUKO</small></div>
         
       </div>
+      <div id="podOv"><div class="pdcat" id="pdCat"></div><div class="pdtitle">MEDAL WINNERS</div><div class="pdstage"><div class="pdcol s"><div class="pdmed">🥈</div><div class="pdblk"><div class="pdrk">2<small>SILVER</small></div><div class="pdnm" id="pdS"></div><div class="pdcl" id="pdSc"></div></div></div><div class="pdcol g"><div class="pdmed">🥇</div><div class="pdblk"><div class="pdrk">1<small>GOLD</small></div><div class="pdnm" id="pdG"></div><div class="pdcl" id="pdGc"></div></div></div><div class="pdcol b"><div class="pdmed">🥉</div><div class="pdblk"><div class="pdrk">3<small>BRONZE</small></div><div class="pdnm" id="pdB1"></div><div class="pdcl" id="pdB1c"></div><div class="pdsep" id="pdBsep"></div><div class="pdnm" id="pdB2"></div><div class="pdcl" id="pdB2c"></div></div></div></div></div>
       <div id="winOv"><div class="wcat" id="winCat"></div><div class="wlab" id="winLab">WINNER</div><div id="winNm"></div><div id="winClub"></div><div id="winWhy"></div><div id="winSc"></div></div>
       <div class="bot">
         <div class="res" id="res"></div>
@@ -429,9 +608,11 @@ body.light #lockOv>div{background:rgba(255,255,255,.88)!important;color:#0f172a}
       <button class="tvb" id="bTV">Open TV window</button>
       <button id="bDisp">This screen = board<kbd>D</kbd></button>
       <button class="pri" id="bFromDraw" style="background:#15803d;border-color:#15803d">Load next match from draw</button>
+      <select id="runCat" style="grid-column:1/-1"></select>
+      <label class="chk" style="grid-column:1/-1;gap:6px">Match order <select id="ordSel" style="flex:1"><option value="cat">Category by category (finish one, then next)</option><option value="session">All eliminations first, then final blocks (IJF sessions)</option></select></label>
       <button id="bNext">Blank match (manual)<kbd>N</kbd></button>
       <button id="bReset">Reset clock</button>
-      <button id="bCloseWin" style="background:#16a34a;border-color:#16a34a">Close winner view<kbd>Esc</kbd></button>
+      <button id="bCloseWin" style="background:#16a34a;border-color:#16a34a">Close winner / podium<kbd>Esc</kbd></button>
       <label class="chk" style="grid-column:1/-1"><input type="checkbox" id="fAuto"> Auto-load next match 5 sec after closing winner view (Esc)</label>
       <div id="tvStat" style="grid-column:1/-1;font-size:13px;font-weight:700"></div>
       <div id="msg"></div>
@@ -468,8 +649,38 @@ body.light #lockOv>div{background:rgba(255,255,255,.88)!important;color:#0f172a}
 
 <script>
 window.READONLY=false;
+window.VIEW=location.hash.indexOf('#v=')===0;
+if(window.VIEW){window.READONLY=true;
+  const E=x=>String(x==null?'':x).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+  const unb32=x=>{const A='ABCDEFGHIJKLMNOPQRSTUVWXYZ234567';const out=[];let bits=0,val=0;for(const ch of x.toUpperCase()){const v=A.indexOf(ch);if(v<0)continue;val=(val<<5)|v;bits+=5;if(bits>=8){out.push((val>>>(bits-8))&255);bits-=8;}}return new Uint8Array(out);};
+  const unpack=async h=>{if(h[0]==='Z'){const st=new Blob([unb32(h.slice(1))]).stream().pipeThrough(new DecompressionStream('deflate-raw'));return JSON.parse(await new Response(st).text());}
+    const t=h[0],b=atob(h.slice(1).replace(/-/g,'+').replace(/_/g,'/')),u=Uint8Array.from(b,c=>c.charCodeAt(0));
+    if(t==='z'){const st=new Blob([u]).stream().pipeThrough(new DecompressionStream('deflate-raw'));return JSON.parse(await new Response(st).text());}
+    return JSON.parse(new TextDecoder().decode(u));};
+  document.addEventListener('DOMContentLoaded',async()=>{
+    document.body.classList.add('view');const root=document.createElement('div');root.id='viewRoot';document.body.appendChild(root);
+    let d;try{d=await unpack(decodeURIComponent(location.hash.slice(3)));}catch(e){root.innerHTML='<div class="vcard"><b>This QR link is damaged or incomplete.</b><br>Please scan the code again.</div>';return;}
+    const m=d.m||{};
+    let h=`<div class="vhead"><div class="vev">${E(m.n)}</div>${m.o?`<div class="vsub">${E(m.o)}</div>`:''}<div class="vsub">${E([m.v,m.c].filter(Boolean).join(', '))}${m.d?' · '+E(m.d):''}</div>${m.l?`<div class="vsub">${E(m.l)}</div>`:''}</div>
+      <div class="vcat"><div class="vk">${E(d.k)}</div><span class="vbadge ${d.t==='r'?(d.fin?'fin':'prog'):'seed'}">${d.t==='r'?(d.fin?'FINAL RESULTS':'RESULTS SO FAR'):'DRAW &amp; SEEDING'}</span><div class="vts">As of ${new Date(d.ts).toLocaleString()}</div></div>`;
+    if(d.t==='s'){
+      h+=`<div class="vcard vmeta">Draw ID <b>${E(d.id)}</b> · ${d.lk?'🔒 Locked '+new Date(d.lk).toLocaleString():'Draft (not locked)'} · ${d.f==='ijf'?'IJF format: repechage + 2 bronze contests':'Knockout'}</div>`;
+      const q=d.sz>=8?d.sz/4:0;
+      for(let i=0;i<d.p.length;i+=2){
+        if(q&&i%q===0)h+=`<div class="vpool">Pool ${'ABCD'[i/q]}</div>`;
+        const row=(x,pos,c)=>x?`<div class="vrow ${c}"><span class="vpos">${pos}</span><span class="vnm">${E(x[0])}${x[2]?` <b class="vsd">S${x[2]}</b>`:''}</span><span class="vcl">${E(x[1])}</span></div>`:`<div class="vrow ${c} vbye"><span class="vpos">${pos}</span><span class="vnm">BYE</span><span class="vcl"></span></div>`;
+        h+=`<div class="vcard vpair">${row(d.p[i],i+1,'w')}${row(d.p[i+1],i+2,'b')}</div>`;}
+    }else{
+      const md=r=>r===1?'🥇':r===2?'🥈':r===3?'🥉':r?r:'–';
+      if(!d.fin)h+='<div class="vcard vmeta">Category still in progress. Medal places appear as contests finish. Scan the latest QR for updates.</div>';
+      h+='<div class="vcard vres">'+d.r.map(x=>`<div class="vrr ${x[0]>0&&x[0]<=3?'m'+x[0]:''}"><span class="vrk">${md(x[0])}</span><span class="vnm">${E(x[1])}<span class="vcl">${E(x[2])}</span></span><span class="vw">${x[3]} won</span></div>`).join('')+'</div>';
+    }
+    h+='<div class="vfoot">Read-only page · scanned from the official tournament sheet · no editing possible</div>';
+    root.innerHTML=h;document.title=(d.k||'')+' · '+(m.n||'Judo');
+  });
+}
 (function(){
-  if(location.hash==='#display')return;
+  if(location.hash==='#display'||window.VIEW)return;
   try{if(navigator.storage&&navigator.storage.persist)navigator.storage.persist();}catch(e){}
   try{if('serviceWorker' in navigator&&(location.protocol==='https:'||location.hostname==='localhost'))navigator.serviceWorker.register('sw.js').catch(()=>{});}catch(e){}
   let me;try{me=sessionStorage.getItem('judoAdminId');if(!me){me=Math.random().toString(36).slice(2);sessionStorage.setItem('judoAdminId',me);}}catch(e){me='x';}
@@ -488,16 +699,16 @@ window.READONLY=false;
   window.takeControl=()=>{set();location.reload();};
   window.addEventListener('beforeunload',()=>{const l=get();if(l&&l.id===me&&!window.READONLY){try{localStorage.removeItem('judoAdminLock');}catch(e){}}});
 })();
-function applyTheme(t){if(location.hash==='#display')return;document.body.classList.toggle('light',t==='light');const b=document.getElementById('thBtn');if(b)b.textContent=t==='light'?'☾ Dark':'☀ Light';}
+function applyTheme(t){if(location.hash==='#display'||window.VIEW)return;document.body.classList.toggle('light',t==='light');const b=document.getElementById('thBtn');if(b)b.textContent=t==='light'?'☾ Dark':'☀ Light';}
 document.addEventListener('DOMContentLoaded',()=>{let t='dark';try{t=localStorage.getItem('judoTheme')||'dark';}catch(e){}applyTheme(t);
   const b=document.getElementById('thBtn');if(b)b.onclick=()=>{const n=document.body.classList.contains('light')?'dark':'light';try{localStorage.setItem('judoTheme',n);}catch(e){}applyTheme(n);b.blur();};});
-function tab(t){document.body.dataset.tab=t;document.getElementById('tabDraw').classList.toggle('on',t==='draw');document.getElementById('tabSb').classList.toggle('on',t==='sb');try{localStorage.setItem('judoTab',t);}catch(e){}if(t==='sb'&&window.SB&&SB.autoLoad)SB.autoLoad(false,true);}
+function tab(t){document.body.dataset.tab=t;document.getElementById('tabDraw').classList.toggle('on',t==='draw');document.getElementById('tabSb').classList.toggle('on',t==='sb');try{localStorage.setItem('judoTab',t);}catch(e){}if(t==='sb'&&window.SB&&SB.autoLoad){SB.autoLoad(false,true);SB.refreshRun&&SB.refreshRun();}}
 document.getElementById('tabDraw').onclick=()=>tab('draw');document.getElementById('tabSb').onclick=()=>tab('sb');
 let t0='draw';try{t0=localStorage.getItem('judoTab')||'draw';}catch(e){} tab(t0);
 
 (function(){
 const $=id=>document.getElementById(id);
-let D={ath:[],draws:{}},cur=null;
+let D={ath:[],draws:{},meta:{}},cur=null;
 try{const s=JSON.parse(localStorage.getItem('judoDraw'));if(s&&s.ath)D=s;}catch(e){}
 const save=()=>{if(window.READONLY)return;const j=JSON.stringify(D);try{localStorage.setItem('judoDraw',j);}catch(e){try{const L=JSON.parse(localStorage.getItem('judoBackups')||'[]');localStorage.setItem('judoBackups',JSON.stringify(L.slice(0,2)));localStorage.setItem('judoDraw',j);}catch(x){try{localStorage.removeItem('judoBackups');localStorage.setItem('judoDraw',j);}catch(y){msg('Browser storage full: click Backup / Restore → Download backup file now');}}}};
 let mt;const msg=t=>{$('dmsg').textContent=t;clearTimeout(mt);mt=setTimeout(()=>$('dmsg').textContent='',6000);};
@@ -540,6 +751,13 @@ function normCat(v,bw,g,age){
   return t;}
 function normAth(a){a.gender=normGender(a.gender);a.age=normAge(a.age);a.cat=normCat(a.cat,a.bw,a.gender,a.age);return a;}
 function wNum(c){const m=String(c||'').match(/([+-]?)(\d+(\.\d+)?)/);if(!m)return 9999;return (+m[2])+(m[1]==='+'?1000:0);}
+function aoaToRows(aoa){
+  const norm=x=>String(x??'').toLowerCase().replace(/[^a-z]/g,'');
+  let hi=-1;for(let i=0;i<Math.min(aoa.length,20);i++){if((aoa[i]||[]).some(c=>COLS.name.includes(norm(c)))){hi=i;break;}}
+  if(hi<0)throw new Error('No "Name" column found in the first 20 rows. Use the template headings.');
+  const h=aoa[hi].map(x=>String(x??'').trim());
+  return aoa.slice(hi+1).filter(r=>(r||[]).some(x=>String(x??'').trim())).map(r=>Object.fromEntries(h.map((k,i)=>[k||('col'+i),r[i]??''])));
+}
 function rowsToAth(rows){
   if(!rows.length)return [];
   const keys=Object.keys(rows[0]),map={};
@@ -550,14 +768,18 @@ function rowsToAth(rows){
     bw:String(r[map.bw]??'').trim(),seed:parseInt(r[map.seed])||0})).filter(a=>a.name).map(normAth);
 }
 function parseCSV(t){
+  t=t.replace(/^\ufeff/,'');
+  const first=(t.split(/\r?\n/).find(l=>l.trim())||'');
+  const cnt=ch=>first.split(ch).length-1;
+  const dl=[',',';','\t'].sort((a,b)=>cnt(b)-cnt(a))[0];
   const out=[];let row=[],f='',q=false;
   for(let i=0;i<t.length;i++){const c=t[i];
     if(q){if(c==='"'){if(t[i+1]==='"'){f+='"';i++;}else q=false;}else f+=c;}
-    else if(c==='"')q=true;else if(c===','){row.push(f);f='';}
+    else if(c==='"')q=true;else if(c===dl){row.push(f);f='';}
     else if(c==='\n'||c==='\r'){if(c==='\r'&&t[i+1]==='\n')i++;row.push(f);out.push(row);row=[];f='';}
     else f+=c;}
   if(f||row.length){row.push(f);out.push(row);}
-  const h=out.shift()||[];return out.filter(r=>r.some(x=>x.trim())).map(r=>Object.fromEntries(h.map((k,i)=>[k.trim(),r[i]??''])));
+  return aoaToRows(out);
 }
 $('file').onchange=async e=>{
   const f=e.target.files[0];if(!f)return;
@@ -565,7 +787,7 @@ $('file').onchange=async e=>{
     let rows;
     if(/\.csv$/i.test(f.name))rows=parseCSV(await f.text());
     else{if(!window.XLSX)throw new Error('Excel reader needs internet. Save the sheet as CSV and upload that instead.');
-      const wb=XLSX.read(await f.arrayBuffer(),{type:'array'});rows=XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]],{defval:''});}
+      const wb=XLSX.read(await f.arrayBuffer(),{type:'array'});rows=aoaToRows(XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]],{header:1,defval:''}));}
     importList(rowsToAth(rows));
   }catch(err){msg('Upload failed: '+err.message);}
   e.target.value='';
@@ -604,6 +826,7 @@ $('fmtSel').onchange=()=>{try{localStorage.setItem('judoFmt',$('fmtSel').value);
   if(!any&&D.ath.length){for(const c of cats())makeDraw(c.k);save();renderAll();window.SB&&SB.autoLoad(true,true);msg('Format changed · all draws made again');}
   else msg(any?'Format saved. Results already exist, so it applies only to draws made from now (Re-draw).':'Format saved');};
 applyFmt();
+setTimeout(fillEv,0);
 function confirmReplace(){return replaceMode;} let replaceMode=true;
 
 const gOrd=g=>g==='Male'?0:g==='Female'?1:2;
@@ -673,11 +896,22 @@ function resolve(k){
   if(dr.x){for(let r=0;r<L-2;r++)dr.rounds[r].forEach(num);dr.x.rep.forEach(num);dr.rounds[L-2].forEach(num);dr.x.br.forEach(num);dr.rounds[L-1].forEach(num);}
   else dr.rounds.forEach(rd=>rd.forEach(num));
 }
+let swKey='',swT=0;
 function setWin(k,r,i,id){
   const dr=D.draws[k],m=getM(dr,r,i),[a,b]=players(dr,r,i);
   if(!m||!a||!b||!id||m.bye)return;
-  m.w=m.w===id?null:id;m.res=m.w?{why:'Entered in draw',t:Date.now()}:null;
-  resolve(k);save();renderAll();
+  let later=false;
+  if(m.w){const lo=m.w===a?b:a;eachM(dr,(mm,rr,ii)=>{if(mm===m||!mm.w||mm.bye)return;const [x,y]=players(dr,rr,ii);if([x,y].includes(m.w)||[x,y].includes(lo))later=true;});}
+  const key=k+'|'+r+'|'+i+'|'+id,nm=(byId(id)||{}).name||'';
+  if(swKey!==key||Date.now()-swT>4000){swKey=key;swT=Date.now();
+    msg((m.w===id?'Click '+nm+' again within 4 sec to REMOVE this result':'Click '+nm+' again within 4 sec to confirm the win')+(later?' · ⚠ later results that depend on this match will be cleared':''));
+    renderView();const el=[...document.querySelectorAll('#view .m')].find(x=>+x.dataset.r===r&&+x.dataset.i===i);const pe=el&&el.querySelector('.p[data-id="'+id+'"]');if(pe)pe.classList.add('armed');return;}
+  swKey='';
+  if(later)backup('Before changing a decided match in '+k);
+  m.w=m.w===id?null:id;m.res=m.w?{why:'Entered in draw',t:Date.now()}:null;m.auto=false;
+  resolve(k);dlog(dr,(m.w?'Result entered in draw: ':'Result removed in draw: ')+nm+' · '+rname(r,dr.rounds.length));save();renderAll();
+  if(window.SB&&typeof S!=='undefined'&&S&&S.link&&S.link.cat===k&&!S.win&&!DR.pending(S.link)){SB.autoLoad(true,true);msg('Result saved in draw · scoreboard moved to the next match');}
+  else msg(m.w?'Result saved: '+nm:'Result removed');
 }
 function medals(k){
   const dr=D.draws[k];if(!dr)return null;
@@ -705,13 +939,17 @@ function renderCats(){
     const dr=D.draws[c.k],md=dr&&medals(c.k);
     h+=`<div class="cat ${c.k===cur?'on':''}" data-k="${esc(c.k)}"><span class="dot ${md&&md.gold?'f':dr?'d':''}"></span><span style="flex:1">${esc(c.c||c.k)}</span><span class="n">${c.list.length}${c.list.length===1?' · walkover':''}</span></div>`;}
   $('cats').innerHTML=all.length?h:'<div class="hint">Upload the athlete list to see categories.</div>';
-  $('cats').querySelectorAll('.cat').forEach(el=>el.onclick=()=>{cur=el.dataset.k;renderAll();});
+  $('cats').querySelectorAll('.cat').forEach(el=>el.onclick=()=>{if(cur!==el.dataset.k){selSlot=null;edStack=[];}cur=el.dataset.k;renderAll();});
   $('cats').querySelectorAll('[data-g]').forEach(b=>b.onclick=()=>{gFilter=b.dataset.g;renderCats();});
 }
 function report(list){
   const noG=list.filter(a=>a.gender!=='Male'&&a.gender!=='Female'),noW=list.filter(a=>!a.cat);
   const single=cats().filter(c=>c.list.length===1);
+  const seen={},dups=[];list.forEach(a=>{const key=catKey(a)+'|'+a.name.trim().toLowerCase()+'|'+(a.club||'').trim().toLowerCase();if(seen[key])dups.push(a.name+' ('+catKey(a)+')');seen[key]=1;});
+  const dseed=[];cats().forEach(c=>{const ss=c.list.filter(a=>a.seed>0).map(a=>a.seed);const d=ss.filter((x,i)=>ss.indexOf(x)!==i);if(d.length)dseed.push(c.k+': seed '+[...new Set(d)].join(', '));});
   let h='';
+  if(dups.length)h+=`<p><b>${dups.length} possible duplicate entries:</b> ${dups.slice(0,10).map(esc).join(', ')}${dups.length>10?'…':''}</p>`;
+  if(dseed.length)h+=`<p><b>Same seed number used twice:</b> ${dseed.map(esc).join(' · ')}</p>`;
   if(noG.length)h+=`<p><b>${noG.length} without Male/Female:</b> ${noG.slice(0,15).map(a=>esc(a.name)).join(', ')}${noG.length>15?'…':''}</p>`;
   if(noW.length)h+=`<p><b>${noW.length} without weight:</b> ${noW.slice(0,15).map(a=>esc(a.name)).join(', ')}${noW.length>15?'…':''}</p>`;
   if(single.length)h+=`<p><b>${single.length} categories with only 1 athlete</b> (gold by walkover): ${single.map(c=>esc(c.k)).join(', ')}</p>`;
@@ -723,7 +961,7 @@ function pHTML(id,cls,seedOK){
   if(!a)return `<div class="p ${cls}"><span class="c"></span>${cls.includes('bye')?'BYE':'—'}</div>`;
   return `<div class="p ${cls}" data-id="${a.id}"><span class="c"></span><div><div class="nm">${esc(a.name)}</div><div class="cl">${esc(a.club)}</div></div>${a.seed>0?`<span class="sd">S${a.seed}</span>`:''}</div>`;
 }
-let editing=null,selSlot=null,edArm=0,lkArm=0;
+let editing=null,selSlot=null,edArm=0,lkArm=0,addArm=0;
 function hasResults(dr){let x=false;eachM(dr,m=>{if(m.w&&!m.bye)x=true;});return x;}
 function drawId(dr){const s=dr.slots.map(x=>x||'-').join('|');let h=2166136261;for(let i=0;i<s.length;i++){h^=s.charCodeAt(i);h=Math.imul(h,16777619)>>>0;}return h.toString(36).toUpperCase().padStart(7,'0').slice(-7);}
 function dlog(dr,t){(dr.log=dr.log||[]).push({t:Date.now(),a:t});if(dr.log.length>80)dr.log.shift();}
@@ -742,32 +980,84 @@ function drawChecks(dr){
   const seeds=Object.keys(pos).map(Number).sort((a,b)=>a-b);
   const dup=D.ath.filter(a=>catKey(a)===cur&&a.seed>0).map(a=>a.seed);if(new Set(dup).size<dup.length)out.push({lv:'err',t:'Two athletes have the same seed number'});
   return out;}
+let edStack=[],edMoved=[];
 function editorHTML(k){const dr=D.draws[k],S=dr.slots,ch=drawChecks(dr),bad=new Set();ch.forEach(c=>(c.p||[]).forEach(x=>bad.add(x)));
-  const row=p=>{const a=S[p]&&byId(S[p]);
-    return `<div class="eds ${selSlot===p?'sel':''} ${a?'':'bye'} ${bad.has(p)?'clash':''}" data-p="${p}"><span class="pos">${p+1}</span><span class="enm">${a?esc(a.name):'BYE'}${a&&a.seed>0?` <b class="sd">S${a.seed}</b>`:''}</span><span class="ecl">${a?esc(a.club):''}</span><button class="sm" data-mv="-1" title="Move up">▲</button><button class="sm" data-mv="1" title="Move down">▼</button></div>`;};
+  const byes=S.filter(x=>!x).length;
+  const row=p=>{const a=S[p]&&byId(S[p]),opp=S[p^1],full=a&&opp;
+    return `<div class="eds ${selSlot===p?'sel':''} ${a?'':'bye'} ${bad.has(p)?'clash':''} ${edMoved.includes(p)?'moved':''}" data-p="${p}" draggable="true">
+      <span class="grip" title="Drag to another position">⋮⋮</span><span class="pos">${p+1}</span>
+      <span class="enm">${a?esc(a.name):'BYE'}${a&&a.seed>0?` <b class="sd">S${a.seed}</b>`:''}${!opp&&a?' <b class="byetag">has BYE</b>':''}</span><span class="ecl">${a?esc(a.club):''}</span>
+      <span class="eact">${full&&byes?'<button class="sm gb" data-gb="1" title="Give this athlete a BYE">Give BYE</button>':''}<button class="sm" data-mv="-1" title="Move up" ${p===0?'disabled':''}>▲</button><button class="sm" data-mv="1" title="Move down" ${p===S.length-1?'disabled':''}>▼</button></span></div>`;};
   let g='';for(let i=0;i<S.length;i+=2){const pl=poolOf(dr,i);g+=`<div class="edm">${pl&&i%(dr.size/4)===0?`<div class="pool">Pool ${pl}</div>`:''}<div class="edl">First-round pair ${i/2+1}</div>${row(i)}${row(i+1)}</div>`;}
   const chk=ch.length?ch.map(c=>`<div class="chk ${c.lv}">${c.lv==='err'?'✖':'⚠'} ${esc(c.t)}</div>`).join(''):'<div class="chk ok">✔ Draw follows the seeding rules · no same-club first-round clash</div>';
-  const log=(dr.log||[]).slice(-6).reverse().map(l=>`<div>${new Date(l.t).toLocaleTimeString()} · ${esc(l.a)}</div>`).join('');
-  return `<div class="edhead"><b>Draw editor</b> · Click a name (or BYE), then click another position to swap them. ▲ ▼ moves one place. Moving a BYE gives that athlete the bye. Change seeds in the Athletes list, then Re-draw.</div>
+  const log=(dr.log||[]).slice(-8).reverse().map(l=>`<div>${new Date(l.t).toLocaleTimeString()} · ${esc(l.a)}</div>`).join('');
+  return `<div class="edhead"><b>Draw editor</b><br>
+     <b>Move:</b> drag a name onto another position, <i>or</i> click a name then click the other position (they swap) · ▲ ▼ one place.<br>
+     <b>BYE:</b> press <b>Give BYE</b> on an athlete. Their opponent moves into a free BYE place, so this athlete gets the bye (the athlete who had it gets a match).<br>
+     <b>Seeds:</b> change seed numbers in the Athletes list, then press <b>Auto-fix</b>.</div>
+   <div class="edtools"><button class="pri" id="edFix">⚙ Auto-fix seeds, byes &amp; club clashes (IJF)</button><button id="edUndo" ${edStack.length?'':'disabled'}>↶ Undo last edit${edStack.length?' ('+edStack.length+')':''}</button>${selSlot!==null?'<button id="edCancel">✖ Cancel selection</button><span class="hint">Selected position '+(selSlot+1)+': click where it should go</span>':''}</div>
    <div class="checks">${chk}</div><div class="edgrid">${g}</div>${log?`<div class="hint" style="margin-top:10px"><b>Edit log</b>${log}</div>`:''}`;}
-function swapSlots(k,a,b){const dr=D.draws[k];if(a===b||a<0||b<0||a>=dr.size||b>=dr.size)return;
+function nmOf(x){const z=x&&byId(x);return z?z.name:'BYE';}
+function dblBye(t){for(let i=0;i<t.length;i+=2)if(!t[i]&&!t[i+1])return true;return false;}
+function applySlots(k,t,txt,moved){const dr=D.draws[k];
+  if(dblBye(t))return msg('Not allowed: that would put two BYEs in one first-round pair. Use "Give BYE" instead.'),false;
+  edStack.push(dr.slots.slice());if(edStack.length>50)edStack.shift();
+  dr.slots=t;resolve(k);dlog(dr,txt);save();edMoved=moved||[];
+  if(window.SB&&typeof S!=='undefined'&&S&&S.link&&S.link.cat===k&&!S.win)SB.autoLoad(true,true);
+  const y=window.scrollY;renderAll();window.scrollTo(0,y);setTimeout(()=>{edMoved=[];document.querySelectorAll('#drawSec .eds.moved').forEach(e=>e.classList.remove('moved'));},1600);
+  msg(txt);return true;}
+function swapSlots(k,a,b){const dr=D.draws[k];if(a===b||a<0||b<0||a>=dr.size||b>=dr.size)return false;
   const t=dr.slots.slice();[t[a],t[b]]=[t[b],t[a]];
-  for(let i=0;i<t.length;i+=2)if(!t[i]&&!t[i+1])return msg('Not allowed: one first-round pair cannot have two BYEs');
-  const nm=x=>{const z=x&&byId(x);return z?z.name:'BYE';};
-  dr.slots=t;resolve(k);dlog(dr,`Swapped ${nm(t[b])} (pos ${a+1}) ↔ ${nm(t[a])} (pos ${b+1})`);save();
-  if(window.SB&&S.link&&S.link.cat===k&&!S.win)SB.autoLoad(true,true);
-  renderAll();}
+  return applySlots(k,t,`Swapped ${nmOf(dr.slots[a])} (pos ${a+1}) ↔ ${nmOf(dr.slots[b])} (pos ${b+1})`,[a,b]);}
+function byeHolders(dr,exclude){const S=dr.slots,out=[];for(let i=0;i<S.length;i+=2){const a=S[i],b=S[i+1];if(!!a!==!!b){const h=a?i:i+1;if(!exclude||!exclude.has(S[h]))out.push({pair:i,holder:h,bye:a?i+1:i});}}return out;}
+function giveBye(k,p,quiet){const dr=D.draws[k],S=dr.slots,me=S[p],opp=p^1;if(!me||!S[opp])return false;
+  const half=x=>Math.floor(x/(dr.size/2));
+  let c=byeHolders(dr).filter(h=>h.pair!==(p&~1));if(!c.length)return quiet?false:msg('No free BYE in this category'),false;
+  const sd=h=>{const a=byId(S[h.holder]);return a&&a.seed>0?a.seed:999;};
+  c.sort((x,y)=>(sd(y)-sd(x))||((half(x.holder)===half(p)?0:1)-(half(y.holder)===half(p)?0:1)));
+  const pick=c[0],t=S.slice();[t[opp],t[pick.bye]]=[t[pick.bye],t[opp]];
+  return applySlots(k,t,`BYE given to ${nmOf(me)} · ${nmOf(S[pick.holder])} now meets ${nmOf(S[opp])}`,[p,opp,pick.holder,pick.bye]);}
+function autoFix(k){const dr=D.draws[k],size=dr.size,before=dr.slots.slice();let t=dr.slots.slice(),steps=[];
+  const ord=order(size),slotOf={};ord.forEach((r,i)=>slotOf[r]=i);
+  const list=t.filter(Boolean).map(byId).filter(Boolean),seeded=list.filter(a=>a.seed>0).sort((a,b)=>a.seed-b.seed);
+  seeded.forEach((a,i)=>{const tg=slotOf[i+1],cu=t.indexOf(a.id);if(cu!==tg){const x=t.slice();[x[tg],x[cu]]=[x[cu],x[tg]];if(!dblBye(x)){t=x;steps.push('S'+a.seed+' → IJF pool place');}}});
+  const B=t.filter(x=>!x).length,top=new Set(seeded.slice(0,B).map(a=>a.id));
+  for(const a of seeded.slice(0,B)){const p=t.indexOf(a.id),o=p^1;if(!t[o])continue;
+    const hs=[];for(let i=0;i<t.length;i+=2){const x=t[i],y=t[i+1];if(!!x!==!!y){const h=x?i:i+1;if(!top.has(t[h]))hs.push({h,bye:x?i+1:i});}}
+    if(!hs.length)break;const pk=hs[hs.length-1],z=t.slice();[z[o],z[pk.bye]]=[z[pk.bye],z[o]];if(!dblBye(z)){t=z;steps.push('BYE to S'+a.seed);}}
+  const club=id=>{const a=id&&byId(id);return a&&a.club?a.club.trim().toLowerCase():'';},isSeed=id=>{const a=id&&byId(id);return a&&a.seed>0;};
+  const q=size>=8?size/4:size;
+  for(let i=0;i<t.length;i+=2){const a=t[i],b=t[i+1];if(!a||!b||!club(a)||club(a)!==club(b))continue;
+    const mv=isSeed(b)?i:i+1,cl=club(t[mv]);let done=false;
+    const cand=[];for(let j=0;j<t.length;j++){if((j&~1)===i||!t[j]||isSeed(t[j])||!t[j^1])continue;cand.push(j);}
+    cand.sort((x,y)=>((Math.floor(x/q)===Math.floor(i/q)?0:1)-(Math.floor(y/q)===Math.floor(i/q)?0:1)));
+    for(const j of cand){const z=t.slice();[z[mv],z[j]]=[z[j],z[mv]];const ok=club(z[i])!==club(z[i+1])&&club(z[j])!==club(z[j^1]);if(ok){t=z;steps.push('club clash fixed ('+cl+')');done=true;break;}}}
+  if(t.join('|')===before.join('|'))return msg('✔ Nothing to fix: seeds, byes and first-round clubs already follow the rules');
+  const moved=[];t.forEach((x,i)=>{if(x!==before[i])moved.push(i);});
+  applySlots(k,t,'Auto-fix: '+steps.join(', '),moved);}
+let dragFrom=null,downP=null,downT=0;
 function bindEditor(k){
-  $('view').querySelectorAll('.eds').forEach(el=>{const p=+el.dataset.p;
-    el.onclick=e=>{if(e.target.closest('[data-mv]'))return;if(selSlot===null){selSlot=p;renderView();}else if(selSlot===p){selSlot=null;renderView();}else{const a=selSlot;selSlot=null;swapSlots(k,a,p);}};
-    el.querySelectorAll('[data-mv]').forEach(bt=>bt.onclick=()=>{selSlot=null;swapSlots(k,p,p+(+bt.dataset.mv));});});}
+  const v=$('view');
+  v.querySelectorAll('.eds').forEach(el=>{const p=+el.dataset.p;
+    el.onclick=e=>{if(e.target.closest('button'))return;if(selSlot===null){selSlot=p;renderView();}else if(selSlot===p){selSlot=null;renderView();}else{const a=selSlot;selSlot=null;if(!swapSlots(k,a,p))renderView();}};
+    el.onpointerdown=()=>{downP=p;downT=Date.now();};
+    el.ondragstart=e=>{dragFrom=(downP!=null&&Date.now()-downT<2000)?downP:p;el.classList.add('dragging');try{e.dataTransfer.setData('text/plain',String(p));e.dataTransfer.effectAllowed='move';}catch(x){}};
+    el.ondragend=()=>{el.classList.remove('dragging');v.querySelectorAll('.eds.over').forEach(x=>x.classList.remove('over'));};
+    el.ondragover=e=>{e.preventDefault();el.classList.add('over');};
+    el.ondragleave=()=>el.classList.remove('over');
+    el.ondrop=e=>{e.preventDefault();el.classList.remove('over');const a=dragFrom!=null?dragFrom:+e.dataTransfer.getData('text/plain');dragFrom=null;selSlot=null;if(a!==p&&!isNaN(a))swapSlots(k,a,p);};
+    el.querySelectorAll('[data-mv]').forEach(bt=>bt.onclick=()=>{selSlot=null;const to=p+(+bt.dataset.mv);if(!swapSlots(k,p,to))renderView();});
+    el.querySelectorAll('[data-gb]').forEach(bt=>bt.onclick=()=>{selSlot=null;giveBye(k,p);});});
+  if($('edFix'))$('edFix').onclick=()=>{selSlot=null;autoFix(k);};
+  if($('edUndo'))$('edUndo').onclick=()=>{const dr=D.draws[k],t=edStack.pop();if(!t)return;dr.slots=t;resolve(k);dlog(dr,'Undo last edit');save();selSlot=null;const y=window.scrollY;renderAll();window.scrollTo(0,y);msg('Last edit undone');};
+  if($('edCancel'))$('edCancel').onclick=()=>{selSlot=null;renderView();};}
 function renderView(){
   if(cur&&!D.ath.some(a=>catKey(a)===cur))cur=null;
   if(!cur){if(D.ath.length)$('view').innerHTML='<div class="empty">Pick a weight category on the left.</div>';return;}
   const list=D.ath.filter(a=>catKey(a)===cur),dr=D.draws[cur];
   let h=`<div class="tools"><h3>${esc(cur)} <span class="hint">(${list.length} athletes)</span></h3>
    ${dr&&dr.locked?`<span class="lockchip">🔒 Locked ${new Date(dr.locked).toLocaleString()} · Draw ID ${drawId(dr)}</span>`:dr?`<span class="lockchip draft">Draft · Draw ID ${drawId(dr)}</span>`:''}
-   <button class="pri" id="mk">${dr?'Re-draw':'Make draw'}</button>${dr?`<button id="ed">${editing===cur?'✔ Done editing':'✎ Edit draw / seeding'}</button><button id="lk">${dr.locked?'🔓 Unlock':'🔒 Lock draw'}</button><button id="pr">Print</button><button id="cp">Copy results</button>`:''}</div>`;
+   <button class="pri" id="mk">${dr?'Re-draw':'Make draw'}</button>${dr?`<button id="ed">${editing===cur?'✔ Done editing':'✎ Edit draw / seeding'}</button><button id="lk">${dr.locked?'🔓 Unlock':'🔒 Lock draw'}</button><button id="pr">Print</button><button id="qrB">▣ QR</button>${window.DR&&DR.podium(cur)?'<button id="podB">🏆 Podium on TV</button>':''}<button id="cp">Copy results</button>`:''}</div>`;
   if(!dr){h+='<div class="empty">Seeds: set a seed number (1, 2, 3, 4…) in the Athletes list below before making the draw. Seed 1 and 2 go to opposite halves, seeds 3–4 to the other quarters, and seeds get the byes. Athletes from the same club are kept apart as far as possible.</div>';}
   else if(editing===cur){h+=editorHTML(cur);}
   else{
@@ -793,7 +1083,7 @@ function renderView(){
   $('mk').onclick=()=>{if(dr&&dr.locked)return msg('Draw is locked. Unlock it first (double-click Unlock).');if(dr&&D.draws[cur].rounds.some(rd=>rd.some(m=>m.w&&!m.bye))&&!reDrawOK())return;editing=null;makeDraw(cur);renderAll();if(window.SB&&S.link&&S.link.cat===cur)SB.autoLoad(true,true);msg('Draw made for '+cur);};
   if(dr){
     $('ed').onclick=()=>{
-      if(editing===cur){editing=null;selSlot=null;renderView();msg('Draw saved');return;}
+      if(editing===cur){editing=null;selSlot=null;edStack=[];renderView();msg('Draw saved');return;}
       if(dr.locked)return msg('Draw is locked. Unlock it first.');
       if(hasResults(dr)){if(Date.now()-edArm>4000){edArm=Date.now();return msg('⚠ Results already entered in this category. Click Edit again within 4 seconds: editing clears all its results.');}
         backup('Before editing draw '+cur);eachM(dr,m=>{if(!m.bye){m.w=null;m.res=null;}});resolve(cur);dlog(dr,'Results cleared to edit the draw');save();}
@@ -803,6 +1093,11 @@ function renderView(){
       editing=null;dr.locked=Date.now();dlog(dr,'Draw locked · ID '+drawId(dr));save();renderAll();msg('Draw locked. It cannot be changed until unlocked.');};
     if(editing===cur)bindEditor(cur);
     $('pr').onclick=()=>openPrint('this');
+    if($('podB'))$('podB').onclick=()=>{window.SB&&SB.showPodium(cur);};
+    $('qrB').onclick=async()=>{const ov=$('qrOv');ov.style.display='flex';$('qrCat').textContent=cur+' · '+evName();$('qrBox').innerHTML='<div class="hint">Making QR…</div>';
+      const a=await qrFor(cur,'s'),b=await qrFor(cur,'r');
+      $('qrBox').innerHTML=`<div class="qrc"><div class="qrs">${a.svg}</div><b>Draw &amp; seeding</b></div><div class="qrc"><div class="qrs">${b.svg}</div><b>Results ${medals(cur)&&medals(cur).gold?'(final)':'(so far)'}</b></div>`;
+      if(!/^https?:/.test(location.protocol))$('qrBox').insertAdjacentHTML('beforeend','<div class="hint" style="grid-column:1/-1">QR opens correctly only from the website link (GitHub Pages).</div>');};
     $('cp').onclick=()=>copyText(resultsText([cur]));
     $('view').querySelectorAll('[data-sc]').forEach(bt=>bt.onclick=()=>{const el=bt.closest('.m');window.SB&&window.SB.load(info(cur,+el.dataset.r,+el.dataset.i));});
     $('view').querySelectorAll('.m').forEach(el=>el.querySelectorAll('.p[data-id]').forEach(p=>p.onclick=()=>setWin(cur,+el.dataset.r,+el.dataset.i,p.dataset.id)));
@@ -814,17 +1109,17 @@ function renderAth(){
   const rows=D.ath.slice().sort((a,b)=>catKey(a).localeCompare(catKey(b),undefined,{numeric:true})||a.name.localeCompare(b.name));
   $('athT').innerHTML=rows.map(a=>`<tr><td>${esc(a.name)}</td><td>${esc(a.club)}</td><td>${esc(catKey(a))}</td><td><input type="number" min="0" value="${a.seed||''}" data-s="${a.id}"></td><td><button class="sm warn" data-d="${a.id}">Remove</button></td></tr>`).join('');
   $('athT').querySelectorAll('[data-s]').forEach(i=>i.onchange=()=>{byId(i.dataset.s).seed=parseInt(i.value)||0;save();msg('Seed saved. Click Make draw / Re-draw to use it.');});
-  $('athT').querySelectorAll('[data-d]').forEach(b=>b.onclick=()=>{const a=byId(b.dataset.d);D.ath=D.ath.filter(x=>x.id!==a.id);const ck=catKey(a);if(D.ath.some(x=>catKey(x)===ck))makeDraw(ck);else delete D.draws[ck];save();renderAll();window.SB&&SB.autoLoad(false,true);msg(a.name+' removed. New draw made for '+catKey(a)+'.');});
+  $('athT').querySelectorAll('[data-d]').forEach(b=>b.onclick=()=>{const a=byId(b.dataset.d);{const dd=D.draws[catKey(a)];if(dd&&dd.locked)return msg('The draw for '+catKey(a)+' is locked. Unlock it first.');if(b.dataset.arm!=='1'){b.dataset.arm='1';b.textContent='Confirm?';setTimeout(()=>{b.dataset.arm='';b.textContent='Remove';},4000);return msg('Click Confirm? to remove '+a.name+(dd&&hasResults(dd)?' · ⚠ its category draw will be made again and results cleared':''));}}if(D.draws[catKey(a)]&&hasResults(D.draws[catKey(a)]))backup('Before removing '+a.name);D.ath=D.ath.filter(x=>x.id!==a.id);const ck=catKey(a);if(D.ath.some(x=>catKey(x)===ck))makeDraw(ck);else delete D.draws[ck];save();renderAll();window.SB&&SB.autoLoad(false,true);msg(a.name+' removed. New draw made for '+catKey(a)+'.');});
 }
 function renderAll(){renderCats();renderView();renderAth();}
 
 $('addA').onclick=()=>{
   const a=normAth({id:uid(),name:$('aN').value.trim(),club:$('aC').value.trim(),gender:$('aG').value.trim(),age:$('aA').value.trim(),cat:$('aW').value.trim(),bw:'',seed:parseInt($('aS').value)||0});
-  if(!a.name)return msg('Enter a name');D.ath.push(a);makeDraw(catKey(a));save();['aN','aS'].forEach(i=>$(i).value='');renderAll();msg(a.name+' added to '+catKey(a));
+  if(!a.name)return msg('Enter a name');{const dd=D.draws[catKey(a)];if(dd&&dd.locked)return msg('The draw for '+catKey(a)+' is locked. Unlock it first (Unlock button in that category).');if(dd&&hasResults(dd)&&Date.now()-addArm>4000){addArm=Date.now();return msg('⚠ '+catKey(a)+' already has results. Adding an athlete makes a new draw and clears them. Click Add again within 4 sec to continue.');}}D.ath.push(a);makeDraw(catKey(a));save();['aN','aS'].forEach(i=>$(i).value='');renderAll();msg(a.name+' added to '+catKey(a));
 };
 $('demo').onclick=()=>{if(D.ath.length&&Date.now()-demoArm>4000){demoArm=Date.now();return msg('This replaces the current athletes and draws. Click Load demo data again within 4 seconds to continue.');}importList(demoList());};
 $('bkOpen').onclick=()=>{const p=$('bkPanel');p.open=true;p.scrollIntoView({behavior:'smooth'});};
-let clearArm=0;$('clear').onclick=()=>{if(Date.now()-clearArm>4000){clearArm=Date.now();return msg('Click Clear all again within 4 seconds to delete all athletes and draws.');}backup('Before Clear all');D={ath:[],draws:{}};cur=null;save();renderAll();window.SB&&SB.reset&&SB.reset();msg('Cleared');};
+let clearArm=0;$('clear').onclick=()=>{if(Date.now()-clearArm>4000){clearArm=Date.now();return msg('Click Clear all again within 4 seconds to delete all athletes and draws.');}backup('Before Clear all');D={ath:[],draws:{},meta:D.meta||{}};cur=null;save();renderAll();window.SB&&SB.reset&&SB.reset();msg('Cleared');};
 $('genAll').onclick=()=>{let n=0;for(const c of cats())if(!D.draws[c.k]){makeDraw(c.k);n++;}renderAll();window.SB&&SB.autoLoad(false,true);msg(n?n+' new draws made (existing draws kept)':'All categories already have draws');};
 
 function download(name,text){
@@ -913,7 +1208,7 @@ function exportExcel(){
     try{const wb=XLSX.utils.book_new();
       const add=(rows,name,w)=>{const ws=XLSX.utils.aoa_to_sheet(rows);ws['!cols']=w.map(x=>({wch:x}));XLSX.utils.book_append_sheet(wb,ws,name);};
       add(medal,'Medal Winners',[26,22,14,22,14,22,14,22,14]);add(rk,'Rank List',[26,8,10,9,11,8,24,16,8,6]);
-      add(ty,'District Tally',[22,7,7,7,7]);add(lg,'Match Log',[7,26,13,22,13,22,13,22,26,20,9]);add(pt,'All Participants',[24,16,8,10,10,6]);
+      add(ty,'District Tally',[22,7,7,7,7]);add(lg,'Match Log',[7,26,13,22,13,22,13,22,26,20,9]);add([['Tournament',evName()],['Organised by',M().org||''],['Venue',M().venue||''],['City / State',M().city||''],['Dates',dateRange()],['Level',M().level||''],['Tournament director',M().dir||''],['Chief referee',M().chief||''],['Technical delegate',M().td||''],['Exported',new Date().toLocaleString()]],'Tournament',[22,50]);add(pt,'All Participants',[24,16,8,10,10,6]);
       XLSX.writeFile(wb,file+'.xlsx');msg('Excel downloaded: '+file+'.xlsx (medals, ranks, district tally, match log, participants)');return;}
     catch(e){}
   }
@@ -922,6 +1217,35 @@ function exportExcel(){
 }
 $('resCsv').onclick=exportExcel;
 
+const EVK=['name','org','venue','city','d1','d2','level','dir','chief','td'];
+function M(){D.meta=D.meta||{};return D.meta;}
+function fmtD(d){if(!d)return '';const x=new Date(d+'T00:00:00');return isNaN(x)?d:x.toLocaleDateString(undefined,{day:'2-digit',month:'short',year:'numeric'});}
+function dateRange(){const m=M();if(!m.d1&&!m.d2)return '';if(!m.d2||m.d2===m.d1)return fmtD(m.d1||m.d2);return fmtD(m.d1)+' – '+fmtD(m.d2);}
+function evName(){return M().name||((typeof S!=='undefined'&&S&&S.ev)||'Judo Championship');}
+function evLine(){const m=M();return [m.venue,m.city].filter(Boolean).join(', ')+(dateRange()?' · '+dateRange():'');}
+function fillEv(){const m=M();EVK.forEach(k=>{const el=$('ev_'+k);if(el)el.value=m[k]||'';});$('evSum').textContent=m.name?'· '+m.name+(dateRange()?' · '+dateRange():''):'· not filled yet';if(!m.name&&!D.ath.length)$('evPanel').open=true;}
+EVK.forEach(k=>{const el=$('ev_'+k);if(el)el.addEventListener('input',()=>{M()[k]=el.value;save();$('evSum').textContent=M().name?'· '+M().name+(dateRange()?' · '+dateRange():''):'· not filled yet';
+  if(k==='name'&&typeof S!=='undefined'&&S&&!window.READONLY){S.ev=el.value||'State Judo Championship';try{fill();render();}catch(e){}}});});
+function b64u(bytes){let s='';for(let i=0;i<bytes.length;i++)s+=String.fromCharCode(bytes[i]);return btoa(s).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,'');}
+function b32(bytes){const A='ABCDEFGHIJKLMNOPQRSTUVWXYZ234567';let out='',bits=0,val=0;for(let i=0;i<bytes.length;i++){val=(val<<8)|bytes[i];bits+=8;while(bits>=5){out+=A[(val>>>(bits-5))&31];bits-=5;}}if(bits>0)out+=A[(val<<(5-bits))&31];return out;}
+async function packQR(obj){const js=JSON.stringify(obj);
+  try{if(window.CompressionStream){const st=new Blob([js]).stream().pipeThrough(new CompressionStream('deflate-raw'));return 'Z'+b32(new Uint8Array(await new Response(st).arrayBuffer()));}}catch(e){}
+  return null;}
+async function packHash(obj){const js=JSON.stringify(obj);
+  try{if(window.CompressionStream){const st=new Blob([js]).stream().pipeThrough(new CompressionStream('deflate-raw'));return 'z'+b64u(new Uint8Array(await new Response(st).arrayBuffer()));}}catch(e){}
+  return 'j'+b64u(new TextEncoder().encode(js));}
+function metaMin(){const m=M();return {n:evName(),o:m.org||'',v:m.venue||'',c:m.city||'',d:dateRange(),l:m.level||''};}
+function seedPayload(k){const dr=D.draws[k];return {t:'s',m:metaMin(),k,f:dr.x?'ijf':'ko',id:drawId(dr),lk:dr.locked||0,sz:dr.size,p:dr.slots.map(id=>{const a=id&&byId(id);return a?[a.name,a.club,a.seed||0]:0;}),ts:Date.now()};}
+function resPayload(k){const rows=rankRows().out.filter(x=>x.cat===k).sort((a,b)=>(a.rank||99)-(b.rank||99)||a.name.localeCompare(b.name));const md=medals(k);
+  return {t:'r',m:metaMin(),k,fin:!!(md&&md.gold),r:rows.map(x=>[x.rank||0,x.name,x.club,x.won]),ts:Date.now()};}
+function qrSvg(text,alnum){try{if(!window.qrcode)return '';const q=qrcode(0,'L');q.addData(text,'Byte');if(alnum)q.addData(alnum,'Alphanumeric');q.make();return q.createSvgTag({cellSize:3,margin:4,scalable:true});}catch(e){return '';}}
+async function qrFor(k,type){const obj=type==='r'?resPayload(k):seedPayload(k),base=location.href.split('#')[0]+'#v=';const z=await packQR(obj);
+  if(z)return {url:base+z,svg:qrSvg(base,z)};const h=await packHash(obj);return {url:base+h,svg:qrSvg(base+h)};}
+window.JUDO_QR=(k,t)=>qrFor(k,t);
+async function fillQRs(root){const cache={};
+  for(const el of root.querySelectorAll('[data-qr]')){const key=el.dataset.qr+'|'+el.dataset.k;cache[key]=cache[key]||await qrFor(el.dataset.k,el.dataset.qr);
+    el.innerHTML=cache[key].svg?cache[key].svg+'<div class="qrl">'+(el.dataset.qr==='r'?'Scan: results':'Scan: draw & seeding')+'</div>':'<div class="qrl">QR too large</div>';}
+  if(!/^https?:/.test(location.protocol))msg('Note: QR codes open correctly only when the system runs from its website link (GitHub Pages).');}
 function pAth(id){const a=id&&byId(id);return a?`<div class="pn">${esc(a.name)}${a.seed>0?' <sup>S'+a.seed+'</sup>':''}</div><div class="pc">${esc(a.club)}</div>`:'';}
 function pBox(dr,r,i,sub){const m=getM(dr,r,i),[a,b]=players(dr,r,i);
   const side=(id,c)=>{const st=m.w&&id&&!m.bye?(m.w===id?' won':' lost'):'';
@@ -929,10 +1253,10 @@ function pBox(dr,r,i,sub){const m=getM(dr,r,i),[a,b]=players(dr,r,i);
     return `<div class="ps ${c}${st}">${e}</div>`;};
   const lab=m.void?'No contest':m.bye?'Bye':'Match '+m.no;
   return `<div class="pbox"><div class="pl"><span>${lab}</span>${sub?`<span>${esc(sub)}</span>`:''}</div>${side(a,'sw')}${side(b,'sb')}</div>`;}
-function pHead(k,title){const ev=(typeof S!=='undefined'&&S&&S.ev)||'Judo Championship',n=D.ath.filter(a=>catKey(a)===k).length;
-  return `<div class="phd"><div><div class="pev">${esc(ev)}</div><div class="pmt">${esc(MATCFG().mat||'')} · ${n} athletes</div></div><div class="pti"><div class="pcat">${esc(k)}</div><div class="pst">${esc(title)}</div></div><div class="pdt">${(()=>{const dr=D.draws[k];if(!dr)return '';return dr.locked?'<b>DRAW LOCKED</b><br>'+new Date(dr.locked).toLocaleString()+'<br>Draw ID '+drawId(dr):'<b style="color:#b45309">DRAFT · not locked</b><br>Draw ID '+drawId(dr);})()}<br>Printed ${new Date().toLocaleString()}</div></div>`;}
+function pHead(k,title,qt){const n=D.ath.filter(a=>catKey(a)===k).length,m=M();
+  return `<div class="phd"><div class="pqr" data-qr="${qt||'s'}" data-k="${esc(k)}"></div><div class="pevb"><div class="pev">${esc(evName())}</div>${m.org?`<div class="pmt">${esc(m.org)}</div>`:''}<div class="pmt">${esc(evLine())}</div><div class="pmt">${esc(MATCFG().mat||'')} · ${n} athletes${m.level?' · '+esc(m.level):''}</div></div><div class="pti"><div class="pcat">${esc(k)}</div><div class="pst">${esc(title)}</div></div><div class="pdt">${(()=>{const dr=D.draws[k];if(!dr)return '';return dr.locked?'<b>DRAW LOCKED</b><br>'+new Date(dr.locked).toLocaleString()+'<br>Draw ID '+drawId(dr):'<b style="color:#b45309">DRAFT · not locked</b><br>Draw ID '+drawId(dr);})()}<br>Printed ${new Date().toLocaleString()}</div></div>`;}
 const pNote='<div class="pnote">Seeding per IJF placement: Seed 1 → Pool A, Seed 2 → Pool C, Seed 3 → Pool D, Seed 4 → Pool B, Seeds 5–8 one per pool · byes to top seeds first · athletes of the same club/district separated as far as possible. Format: IJF repechage (QF losers) with two bronze medal contests, or simple knockout where selected.</div>';
-const pFoot=pNote+'<div class="pft"><span>Table official: ______________________</span><span>Referee: ______________________</span><span>Tournament director: ______________________</span></div>';
+function pFootF(){const m=M();return pNote+`<div class="pft"><span>Chief referee: ${m.chief?esc(m.chief)+' ':''}________________</span><span>Technical delegate: ${m.td?esc(m.td)+' ':''}________________</span><span>Tournament director: ${m.dir?esc(m.dir)+' ':''}________________</span></div>`;}
 function pMedal(k){const md=medals(k),A=id=>{const a=id&&byId(id);return a?esc(a.name)+' <span class="pc">'+esc(a.club)+'</span>':'';};
   return `<table class="pmd"><tr><th>Gold</th><th>Silver</th><th>Bronze</th><th>Bronze</th></tr><tr><td>${A(md&&md.gold)}</td><td>${A(md&&md.silver)}</td><td>${A(md&&md.bronze[0])}</td><td>${A(md&&md.bronze[1])}</td></tr></table>`;}
 function pageElim(k){const dr=D.draws[k];const L=dr.rounds.length;if(L<3)return '';const E=L-3,first=dr.rounds[0].length,parts=Math.max(1,first/8);
@@ -941,21 +1265,21 @@ function pageElim(k){const dr=D.draws[k];const L=dr.rounds.length;if(L<3)return 
   for(let h=0;h<parts;h++){let cols='';
     for(let r=0;r<=E;r++){const len=dr.rounds[r].length;if(len<parts)continue;const per=len/parts,idx=[];for(let i=h*per;i<(h+1)*per;i++)idx.push(i);
       cols+=`<div class="pcol"><div class="prn">${rname(r,L)}</div><div class="pcb">${idx.map(i=>pBox(dr,r,i)).join('')}</div></div>`;}
-    out+=`<div class="ppage">${pHead(k,'Stage 1 · Elimination up to Quarter-final'+(parts>1?' · '+names[h]:''))}<div class="pbr">${cols}</div>${pFoot}</div>`;}
+    out+=`<div class="ppage">${pHead(k,'Stage 1 · Elimination up to Quarter-final'+(parts>1?' · '+names[h]:''))}<div class="pbr">${cols}</div>${pFootF()}</div>`;}
   return out;}
 function pageFinal(k){const dr=D.draws[k];const L=dr.rounds.length;let grid='',t;
   const col=(title,boxes)=>`<div class="pcol"><div class="prn">${title}</div><div class="pcb">${boxes}</div></div>`;
   if(dr.x){t='Stage 2 · Final block: Repechage · Semi-finals · Bronze medal contests · Final';
     grid=col('Repechage',pBox(dr,-1,0,'QF1 loser v QF2 loser')+pBox(dr,-1,1,'QF3 loser v QF4 loser'))+col('Semi-final',pBox(dr,L-2,0)+pBox(dr,L-2,1))+col('Bronze medal contests',pBox(dr,-2,0,'Rep. A/B winner v SF2 loser')+pBox(dr,-2,1,'Rep. C/D winner v SF1 loser'))+col('Final',pBox(dr,L-1,0));}
   else{t=L>=3?'Stage 2 · Semi-finals · Final':'Pool draw · all contests';for(let r=Math.max(0,L-2);r<L;r++)grid+=col(rname(r,L),dr.rounds[r].map((m,i)=>pBox(dr,r,i)).join(''));}
-  return `<div class="ppage">${pHead(k,t)}<div class="pfb">${grid}</div>${pMedal(k)}${pFoot}</div>`;}
+  return `<div class="ppage">${pHead(k,t)}<div class="pfb">${grid}</div>${pMedal(k)}${pFootF()}</div>`;}
 function pageRes(k){const rows=rankRows().out.filter(x=>x.cat===k).sort((a,b)=>(a.rank||99)-(b.rank||99)||a.name.localeCompare(b.name));
-  return `<div class="ppage">${pHead(k,'Results · Medals and rank list')}${pMedal(k)}<table class="pmd prk"><tr><th>Rank</th><th>Name</th><th>District / Club</th><th>Matches won</th></tr>${rows.map(x=>`<tr><td>${x.rank||'–'}</td><td>${esc(x.name)}</td><td>${esc(x.club)}</td><td>${x.won}</td></tr>`).join('')}</table><div style="flex:1"></div>${pFoot}</div>`;}
+  return `<div class="ppage">${pHead(k,'Results · Medals and rank list','r')}${pMedal(k)}<table class="pmd prk"><tr><th>Rank</th><th>Name</th><th>District / Club</th><th>Matches won</th></tr>${rows.map(x=>`<tr><td>${x.rank||'–'}</td><td>${esc(x.name)}</td><td>${esc(x.club)}</td><td>${x.won}</td></tr>`).join('')}</table><div style="flex:1"></div>${pFootF()}</div>`;}
 function openPrint(scope){const p=$('prPanel');p.style.display='block';$('prScope').value=scope||'this';
   const dr=cur&&D.draws[cur];if(dr){const si=stageInfo(dr);$('prStage').value=si.hasElim&&!si.elimDone?'elim':'final';}
   p.scrollIntoView({behavior:'smooth',block:'start'});}
 $('prAll').onclick=()=>openPrint(cur?'this':'all');$('prX').onclick=()=>{$('prPanel').style.display='none';};
-$('prGo').onclick=()=>{
+$('prGo').onclick=async()=>{
   const st=$('prStage').value,sc=$('prScope').value;
   let keys=sc==='this'?(cur?[cur]:[]):cats().filter(c=>sc==='all'||c.g===sc).map(c=>c.k);
   keys=keys.filter(k=>D.draws[k]);if(!keys.length)return msg('No draw to print. Pick a category or make the draws first.');
@@ -968,20 +1292,36 @@ $('prGo').onclick=()=>{
   if(!html)return msg('These categories are small (4 or fewer athletes) and have no elimination stage. Print "Final block" instead.');
   let pa=document.getElementById('printArea');if(!pa){pa=document.createElement('div');pa.id='printArea';document.body.appendChild(pa);}
   pa.innerHTML=html;
+  msg('Preparing QR codes…');await fillQRs(pa);
   if(skipped)msg(skipped+' small categories have no elimination stage; print them with "Final block".');
   try{window.print();}catch(e){msg('Printing works when the system is opened from its website link in Chrome.');}
 };
 
+function orderMode(){try{return localStorage.getItem('judoOrder')||'cat';}catch(e){return 'cat';}}
 function info(k,r,i){const dr=D.draws[k],m=getM(dr,r,i),[a,b]=players(dr,r,i);return {cat:k,r,i,no:m.no,a:byId(a),b:byId(b),round:rname(r,dr.rounds.length)};}
 window.DR={
   setResult(l,id,info){const dr=D.draws[l.cat];const m=getM(dr,l.r,l.i);if(!m)return false;const [a,b]=players(dr,l.r,l.i);if(id!==a&&id!==b)return false;m.w=id;m.res=Object.assign({t:Date.now()},info||{});resolve(l.cat);save();renderAll();backup('After match '+m.no+' · '+l.cat);return true;},
   clearResult(l){const dr=D.draws[l.cat];const m=getM(dr,l.r,l.i);if(!m)return;m.w=null;m.res=null;resolve(l.cat);save();renderAll();},
   pending(l){const dr=l&&D.draws[l.cat];const m=getM(dr,l.r,l.i);if(!m||m.w)return false;const [a,b]=players(dr,l.r,l.i);return (a===l.w&&b===l.b)||(a===l.b&&b===l.w);},
-  next(k,skip){const ks=k?[k].concat(Object.keys(D.draws).filter(x=>x!==k)):Object.keys(D.draws);
-    for(const c of ks){const dr=D.draws[c];if(!dr)continue;let best=null;
-      eachM(dr,(m,r,i)=>{const [a,b]=players(dr,r,i);if(skip&&skip.cat===c&&skip.r===r&&skip.i===i)return;if(a&&b&&!m.w&&!m.bye&&!m.void&&(!best||m.no<best.no))best={r,i,no:m.no};});
-      if(best)return info(c,best.r,best.i);}
-    return null;}
+  next(k,skip,onlyCat){
+    const mode=orderMode(),keys=cats().map(c=>c.k).filter(c=>D.draws[c]);
+    const ready=[];
+    for(const c of keys){if(onlyCat&&c!==onlyCat)continue;const dr=D.draws[c],L=dr.rounds.length;
+      eachM(dr,(m,r,i)=>{const [a,b]=players(dr,r,i);if(skip&&skip.cat===c&&skip.r===r&&skip.i===i)return;
+        if(a&&b&&!m.w&&!m.bye&&!m.void)ready.push({c,r,i,no:m.no,elim:L>=3&&r>=0&&r<=L-3});});}
+    if(!ready.length)return null;
+    let pool=ready;
+    if(mode==='session'&&!onlyCat){const pend=keys.some(c=>{const dr=D.draws[c],L=dr.rounds.length;if(L<3)return false;for(let r=0;r<=L-3;r++)if(dr.rounds[r].some(m=>!m.w&&!m.bye))return true;return false;});
+      if(pend){const el=ready.filter(x=>x.elim);if(el.length)pool=el;}}
+    const ord=c=>keys.indexOf(c);
+    pool.sort((x,y)=>((x.c===k?0:1)-(y.c===k?0:1))||(ord(x.c)-ord(y.c))||(x.no-y.no));
+    const b=pool[0];return info(b.c,b.r,b.i);},
+  podium(k){const dr=D.draws[k];if(!dr)return null;const md=medals(k);if(!md||!md.gold)return null;
+    if(dr.x&&dr.x.br.some(m=>!m.w&&!m.void))return null;
+    const A=id=>{const a=id&&byId(id);return a?[a.name,a.club||'']:null;};
+    return {cat:k,g:A(md.gold),s:A(md.silver),b:md.bronze.map(A).filter(Boolean)};},
+  status(){return cats().filter(c=>D.draws[c.k]).map(c=>{const dr=D.draws[c.k];let left=0,tot=0;eachM(dr,m=>{if(m.bye||m.void)return;tot++;if(!m.w)left++;});const si=stageInfo(dr);
+    return {k:c.k,left,tot,elimDone:si.elimDone,hasElim:si.hasElim,done:left===0};});}
 };
 
 })();
@@ -1021,6 +1361,12 @@ function render(){
     $('r'+p).classList.toggle('winner',S.win===p);$('r'+p).classList.toggle('hasipp',!!P.i);}
   $('board').classList.toggle('noyuko',!S.yuko);
   $('tEvent').textContent=S.ev;$('tCat').textContent=S.cat;$('tMat').textContent=S.mat+(S.match?' · Match '+S.match:'');
+  const po=$('podOv');
+  if(S.pod){po.className='on';const P=S.pod,t=(id,v)=>{$(id).textContent=v||'';};
+    t('pdCat',P.cat+(P.mat?' · '+P.mat:''));t('pdG',P.g&&P.g[0]);t('pdGc',P.g&&P.g[1]);t('pdS',P.s&&P.s[0]);t('pdSc',P.s&&P.s[1]);
+    t('pdB1',P.b&&P.b[0]&&P.b[0][0]);t('pdB1c',P.b&&P.b[0]&&P.b[0][1]);t('pdB2',P.b&&P.b[1]&&P.b[1][0]);t('pdB2c',P.b&&P.b[1]&&P.b[1][1]);$('pdBsep').style.display=(P.b&&P.b[1])?'':'none';po.querySelector('.pdcol.s').style.visibility=P.s?'visible':'hidden';po.querySelector('.pdcol.b').style.visibility=(P.b&&P.b.length)?'visible':'hidden';
+    requestAnimationFrame(()=>po.querySelectorAll('.pdnm').forEach(el=>{el.style.removeProperty('font-size');const box=el.parentElement.clientWidth*0.9;let f=parseFloat(getComputedStyle(el).fontSize),n=0;while(el.scrollWidth>box&&f>8&&n<50){f*=0.94;el.style.setProperty('font-size',f+'px','important');n++;}}));}
+  else po.className='';
   const wo=$('winOv');
   if(S.win&&S.showWin){const P=S.p[S.win],O=S.p[S.win==='w'?'b':'w'],fin=/·\s*Final$/i.test(S.cat||''),brz=/Bronze medal contest$/i.test(S.cat||'');
     wo.className='on '+S.win+(fin?' gold':brz?' bronze':'');
@@ -1035,6 +1381,7 @@ function render(){
   $('res').textContent=S.win?(nameOf(S.win)+' wins · '+S.why):(S.why||'');
   renderClock();
   if(!TV)publish();
+  if(!TV&&window.SB&&SB.refreshRun&&document.activeElement!==document.getElementById('runCat'))try{SB.refreshRun();}catch(e){}
 }
 
 if(TV){
@@ -1062,13 +1409,20 @@ if(TV){
   const finish=(p,why)=>{S.win=p;S.why=why;S.showWin=true;S.run=false;S.osa=null;S.oRun=false;buzz();render();
     if(S.link&&window.DR){const sc=q=>q.i+'-'+q.wa+'-'+q.y+(q.s?' ('+q.s+'S)':'');const ok=DR.setResult(S.link,p==='w'?S.link.w:S.link.b,{why:S.why,score:'W '+sc(S.p.w)+' / B '+sc(S.p.b),gs:S.gs,time:S.gs?'GS '+fmt(S.ms,true):fmt(S.dur*1000-S.ms,true)});msg(ok?'Result saved to the draw':'Could not save to draw (draw was changed)');
       if(ok)msg('Result saved · Winner is on the TV · press Esc to return to the scoreboard');}};
-  function closeWin(){
-    if(!(S.win&&S.showWin))return false;
-    S.showWin=false;render();
+  function scheduleNext(){
     if(S.link&&$('fAuto').checked){const lk=JSON.stringify(S.link);
-      setTimeout(()=>{if(!S.win||S.showWin||JSON.stringify(S.link)!==lk)return;const x=DR.next(S.link.cat);if(x){x.auto=true;SB.load(x);}else msg('All matches in the draw are finished');},5000);
+      setTimeout(()=>{if(!S.win||S.showWin||S.pod||JSON.stringify(S.link)!==lk)return;const x=DR.next(S.link.cat);if(x){x.auto=true;SB.load(x);}else msg('All matches in the draw are finished');},5000);
       msg('TV back to scoreboard · next match loads in 5 sec');}
-    else msg('TV back to scoreboard');
+    else msg('TV back to scoreboard');}
+  function closePod(){if(!S.pod)return false;S.pod=null;render();if(S.win&&S.link)scheduleNext();else msg('Podium closed');return true;}
+  function closeWin(){
+    if(closePod())return true;
+    if(!(S.win&&S.showWin))return false;
+    S.showWin=false;
+    const pd=S.link&&window.DR&&DR.podium(S.link.cat);
+    if(pd){S.pod=Object.assign({mat:S.mat||''},pd);render();msg('🏆 Category finished · podium is on the TV · press Esc to continue');return true;}
+    render();
+    scheduleNext();
     return true;}
 
   function add(p,t,noSnap){
@@ -1227,25 +1581,35 @@ if(TV){
   window.SB={load(x){if(!x.auto&&!okSwitch('load'))return;snap();const k=S;S=fresh(k);
     const A=split(x.a.name),B=split(x.b.name);
     Object.assign(S.p.w,{n:A.n,f:A.f,c:code(x.a.club),club:x.a.club||''});Object.assign(S.p.b,{n:B.n,f:B.f,c:code(x.b.club),club:x.b.club||''});
-    S.manual=false;S.cat=x.cat+' · '+x.round;if(window.MATCFG)S.mat=MATCFG().mat||S.mat;S.match=String(x.no);S.link={cat:x.cat,r:x.r,i:x.i,w:x.a.id,b:x.b.id};
+    S.manual=false;try{const mm=JSON.parse(localStorage.getItem('judoDraw')||'{}').meta;if(mm&&mm.name)S.ev=mm.name;}catch(e){}S.cat=x.cat+' · '+x.round;if(window.MATCFG)S.mat=MATCFG().mat||S.mat;S.match=String(x.no);S.link={cat:x.cat,r:x.r,i:x.i,w:x.a.id,b:x.b.id};
     fill();render();if(!x.noTab)tab('sb');msg('Loaded match '+x.no+': '+x.a.name+' (white) vs '+x.b.name+' (blue)');}};
   SB.clearHist=function(){H=[];};
+  SB.showPodium=function(k){const pd=window.DR&&DR.podium(k);if(!pd)return msg('Podium is available when the category is finished'),false;S.pod=Object.assign({mat:S.mat||''},pd);render();tab('sb');msg('🏆 Podium for '+k+' is on the TV · Esc to close');return true;};
+  SB.refreshRun=function(){const sel=$('runCat');if(!sel)return;const st=window.DR?DR.status():[];const cur=sel.value;
+    sel.innerHTML='<option value="">▶ Run category… (pick to switch)</option>'+st.map(x=>`<option value="${x.k.replace(/"/g,'&quot;')}">${x.done?'✔ ':''}${x.k} · ${x.done?'finished':x.left+' left'}${!x.done&&x.hasElim?(x.elimDone?' · final block':' · elimination'):''}</option>`).join('');
+    sel.value='';};
   SB.reset=function(){S=fresh(S);S.match='1';S.link=null;S.manual=false;H=[];fill();render();};
   SB.autoLoad=function(force,noTab){
     if(!window.DR)return false;
     if(!force&&S.link&&!S.win&&DR.pending(S.link))return false;
     if(!force&&S.manual&&!S.win)return false;
     if(!force&&S.win&&S.showWin)return false;
+    if(!force&&S.pod)return false;
     const x=DR.next(S.link?S.link.cat:null);
     if(!x){return false;}
     x.noTab=!!noTab;x.auto=true;SB.load(x);return true;};
   $('winOv').onclick=()=>{closeWin();};
+  $('podOv').onclick=()=>{closeWin();};
   $('bCloseWin').onclick=blurThen(()=>{if(!closeWin())msg('No winner view on the TV right now');});
+  $('runCat').onchange=e=>{const k=e.target.value;e.target.value='';if(!k)return;const x=DR.next(k,(!S.win&&S.link)?S.link:null,k);if(!x){SB.refreshRun();return msg(k+': no match ready (finished, or waiting for earlier results)');}SB.load(x);SB.refreshRun();e.target.blur();};
+  $('ordSel').value=(()=>{try{return localStorage.getItem('judoOrder')||'cat';}catch(e){return 'cat';}})();
+  $('ordSel').onchange=e=>{try{localStorage.setItem('judoOrder',e.target.value);}catch(x){}e.target.blur();msg(e.target.value==='session'?'Order: all eliminations first (current category first), then final blocks':'Order: finish each category before the next');};
+  setInterval(()=>{if(document.body.dataset.tab==='sb'&&document.activeElement!==$('runCat'))SB.refreshRun();},3000);
   $('bFromDraw').onclick=blurThen(()=>{const x=window.DR&&DR.next(S.link?S.link.cat:null,(!S.win&&S.link)?S.link:null);if(!x)return msg('No other pending match in the draw.');SB.load(x);});
   try{$('fAuto').checked=localStorage.getItem('judoAuto')!=='0';}catch(e){$('fAuto').checked=true;}
   $('fAuto').onchange=()=>{try{localStorage.setItem('judoAuto',$('fAuto').checked?'1':'0');}catch(e){}};
   window.addEventListener('beforeunload',()=>{publish();});
-  fill();render();SB.autoLoad(false,true);requestAnimationFrame(loop);
+  fill();render();SB.autoLoad(false,true);SB.refreshRun();requestAnimationFrame(loop);
 }
 
 </script>
