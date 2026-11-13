@@ -1,0 +1,1253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Judo Tournament System (draw + scoreboard)</title>
+<script src="xlsx.full.min.js" onerror="var s=document.createElement('script');s.src='https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js';document.head.appendChild(s);"></script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:#0b0f1a;color:#e8ecf4;font-family:"Segoe UI",Roboto,Arial,sans-serif;height:100%}
+#op{display:grid;grid-template-rows:auto auto auto;gap:8px;padding:8px;max-width:1500px;margin:0 auto}
+.opTop{display:flex;gap:8px;align-items:stretch}
+#board{container-type:inline-size;width:min(100%,calc(44vh*16/9));aspect-ratio:16/9;background:#000;display:grid;grid-template-rows:10% 1fr 1fr 26%;position:relative;overflow:hidden;border-radius:6px;user-select:none;flex:none}
+body.tv #op,body.display #op{padding:0;gap:0;max-width:none;height:100vh;display:flex;align-items:center;justify-content:center}
+body.tv .opTop,body.display .opTop{display:block}
+body.tv #board,body.display #board{width:min(100vw,177.78vh);border-radius:0}
+body.tv .ctl,body.display .ctl{display:none!important}
+body.tv{cursor:none}
+.top{display:flex;align-items:center;justify-content:space-between;gap:2cqw;padding:0 2cqw;font-size:2.4cqw;color:#c9d1e0;letter-spacing:.05em;text-transform:uppercase;white-space:nowrap;overflow:hidden;background:#111}
+.top b{color:#fff;font-weight:700}
+.row{display:grid;grid-template-columns:1.4cqw 10cqw minmax(0,1fr) 12cqw 10.5cqw 10.5cqw 10.5cqw;align-items:center;position:relative;overflow:hidden;border-top:.2cqw solid #000}
+#board.noyuko .row{grid-template-columns:1.4cqw 10cqw minmax(0,1fr) 12cqw 13cqw 13cqw 0}
+#board.noyuko .ycell{display:none}
+.row.w{background:#fff;color:#000}
+.row.b{background:#0a3fd6;color:#fff}
+.side{height:100%}
+.row.w .side{background:#bbb}.row.b .side{background:#062a96}
+.row.winner .side{background:#16c75a}
+.code{height:62%;margin-left:1.4cqw;display:flex;align-items:center;justify-content:center;font-size:2.6cqw;font-weight:800;letter-spacing:.04em;border-radius:.4cqw;text-transform:uppercase;overflow:hidden;white-space:nowrap}
+.row.w .code{background:#e6e6e6;color:#222}.row.b .code{background:#062a96;color:#fff}
+.code:empty{visibility:hidden}
+.who{padding:0 2cqw;min-width:0}
+.nm{font-size:5.6cqw;font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;line-height:1.05;text-transform:uppercase}
+.fn{font-size:2.6cqw;font-weight:600;opacity:.75;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-transform:uppercase}
+.sh{display:flex;gap:.9cqw;justify-content:center;align-items:center;height:100%}
+.card{width:3.4cqw;height:4.8cqw;border-radius:.4cqw;background:#ffd400;box-shadow:0 0 0 .25cqw rgba(0,0,0,.35)}
+.card.red{background:#e3141b;width:4.4cqw;height:6.2cqw}
+.sc{text-align:center;font-size:11cqw;font-weight:900;line-height:1;font-variant-numeric:tabular-nums;height:100%;display:flex;flex-direction:column;justify-content:center}
+.sc small{display:block;font-size:1.5cqw;font-weight:800;opacity:.55;letter-spacing:.12em;margin-top:.2cqw}
+.ipp{display:none;align-items:center;justify-content:center;font-size:7cqw;font-weight:900;letter-spacing:.05em;background:inherit}
+#board.noyuko .ipp{width:16cqw;font-size:5cqw}
+.row.hasipp .ipp{display:flex}
+.bot{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;padding:0 2cqw;gap:2cqw;background:#000}
+.res{font-size:2.6cqw;font-weight:800;color:#ffd400;text-transform:uppercase;line-height:1.2}
+.clock{display:flex;align-items:baseline;gap:1.2cqw;color:#ff3b30;line-height:1;justify-content:center}
+.clock.run{color:#2bff6a}
+.gs{font-size:5cqw;font-weight:900;color:#ffd400;display:none}
+.clock.gsm .gs{display:inline}
+#time{font-size:15cqw;font-weight:900;font-variant-numeric:tabular-nums}
+.osae{display:flex;flex-direction:column;gap:.6cqw;visibility:hidden;justify-self:end;width:100%}
+.osae.on{visibility:visible}
+.olab{font-size:1.9cqw;letter-spacing:.15em;color:#c9d1e0;font-weight:800;text-align:right}
+.orow{display:flex;align-items:center;gap:1.2cqw}
+.obar{flex:1;height:2.4cqw;background:#222;border-radius:1.2cqw;position:relative;overflow:hidden}
+.ofill{height:100%;width:0}
+.tick{position:absolute;top:0;bottom:0;width:.3cqw;background:#000}
+.otime{font-size:8cqw;font-weight:900;font-variant-numeric:tabular-nums;min-width:9cqw;text-align:right;line-height:1}
+.ctl{display:grid;gap:8px}
+.clk{flex:1;display:grid;grid-template-columns:1fr 1fr;gap:6px;align-content:start;min-width:220px}
+.clk .go{grid-column:1/-1;font-size:20px;padding:16px}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.panel{background:#121829;border:1px solid #232c44;border-radius:8px;padding:8px;display:grid;gap:6px}
+.g6{display:grid;grid-template-columns:repeat(6,1fr);gap:5px}
+.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:5px}
+h3{font-size:12px;color:#9aa6bd;font-weight:800;letter-spacing:.08em;text-transform:uppercase}
+button{font:inherit;font-size:14px;font-weight:700;padding:10px 4px;border-radius:7px;border:1px solid #2c3653;background:#1b2338;color:#e8ecf4;cursor:pointer;touch-action:manipulation;line-height:1.15}
+button:active{transform:scale(.97)}
+button:focus{outline:2px solid #ffd400}
+button.pw{background:#fff;color:#000;border-color:#fff}
+button.pb{background:#0a3fd6;color:#fff;border-color:#0a3fd6}
+button.go{background:#15803d;border-color:#15803d}
+button.warn{background:#b91c1c;border-color:#b91c1c;color:#fff}
+button.tvb{background:#7c3aed;border-color:#7c3aed}
+button.minus{font-size:12px;padding:6px 2px;opacity:.85}
+kbd{display:block;font-size:11px;opacity:.6;font-family:inherit;font-weight:600}
+details.panel summary{cursor:pointer;font-size:13px;font-weight:700;color:#c9d1e0}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:6px;margin-top:6px}
+input,select{font:inherit;font-size:14px;padding:8px;border-radius:7px;border:1px solid #2c3653;background:#0b0f1a;color:#e8ecf4;width:100%}
+label{font-size:12px;color:#9aa6bd;display:grid;gap:3px}
+label.chk{display:flex;align-items:center;gap:8px;font-size:14px;color:#e8ecf4}
+label.chk input{width:auto}
+.keys{font-size:12px;color:#9aa6bd;line-height:1.7;margin-top:6px}
+.keys b{color:#e8ecf4;background:#1b2338;border:1px solid #2c3653;border-radius:4px;padding:0 5px}
+#msg{font-size:13px;color:#ffd400;min-height:18px;grid-column:1/-1}
+#exitDisp{position:fixed;top:0;right:0;width:70px;height:70px;opacity:0;display:none;border:0;background:transparent}
+body.display #exitDisp{display:block}
+@media (max-width:900px){.opTop{flex-direction:column}#board{width:100%}.g6{grid-template-columns:repeat(3,1fr)}.two{grid-template-columns:1fr}}
+
+nav{display:flex;gap:6px;padding:8px 12px;background:#05070d;border-bottom:1px solid #232c44;align-items:center}
+nav b{margin-right:auto;font-size:15px}
+nav button{padding:8px 16px}
+nav button.on{background:#3b82f6;border-color:#3b82f6}
+body[data-tab=sb] #drawSec{display:none}
+body[data-tab=draw] #op{display:none}
+body.tv nav,body.tv #drawSec,body.display nav,body.display #drawSec{display:none!important}
+body.tv #op,body.display #op{display:flex!important}
+#drawSec .p .nm{font-size:14px;text-transform:none;white-space:normal;overflow:visible;line-height:1.15}
+.top>span{flex:none}.top>span:nth-child(2){flex:1;min-width:0;text-align:center;overflow:hidden;text-overflow:ellipsis}
+#drawSec .gf{display:flex;gap:4px;margin-bottom:8px}#drawSec .gf button.on{background:#3b82f6;border-color:#3b82f6}
+#drawSec .gh{font-size:11px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;margin:10px 0 4px;padding:4px 8px;border-radius:5px}
+#drawSec .gh.ma{background:#1e3a8a;color:#dbeafe}#drawSec .gh.fe{background:#831843;color:#fce7f3}
+#drawSec .matcfg{display:flex;gap:6px;align-items:center;font-size:12px;color:#9aa6bd;padding:4px 8px;border:1px dashed #3b4766;border-radius:7px}
+#drawSec .matcfg input,#drawSec .matcfg select{padding:6px;background:#0b0f1a;color:#e8ecf4;border:1px solid #2c3653;border-radius:6px;font:inherit;font-size:13px}
+#winOv{position:absolute;inset:0;display:none;z-index:4;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:3cqw;gap:1cqw}
+#winOv.on{display:flex}#winOv.w{background:#fff;color:#000}#winOv.b{background:#0a3fd6;color:#fff}
+#winOv .wcat{font-size:2.6cqw;font-weight:800;letter-spacing:.08em;text-transform:uppercase;opacity:.75}
+#winOv .wlab{font-size:4.2cqw;font-weight:900;letter-spacing:.35em;color:#fff;background:#16a34a;padding:.6cqw 3cqw;border-radius:1cqw}
+#winOv.gold .wlab{background:linear-gradient(135deg,#f7d774,#c9971c);color:#000}#winOv.bronze .wlab{background:linear-gradient(135deg,#e2a26b,#9a5a2a);color:#fff}
+#winNm{font-size:10cqw;font-weight:900;text-transform:uppercase;line-height:1.05;max-width:100%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#winClub{font-size:3.6cqw;font-weight:800;text-transform:uppercase;opacity:.85}
+#winWhy{font-size:4.6cqw;font-weight:900;text-transform:uppercase;color:#16a34a}
+#winOv.b #winWhy{color:#ffd400}
+#winSc{font-size:2.6cqw;font-weight:700;opacity:.8}
+#lockOv{position:fixed;inset:0;background:rgba(5,7,13,.94);z-index:50;display:none;align-items:center;justify-content:center;text-align:center;padding:20px}
+#lockOv>div{max-width:520px;background:#121829;border:1px solid #a16207;border-radius:12px;padding:24px;line-height:1.6}
+#lockOv b{font-size:22px;color:#f5c518}#lockOv button{margin:14px 0;background:#b45309;border-color:#b45309;padding:12px 18px;font-size:16px}
+#drawSec .bk{display:flex;gap:10px;align-items:center;padding:6px 0;border-bottom:1px solid #232c44;font-size:13px}
+.obw{flex:1;min-width:0}.olbl{position:relative;height:2.2cqw}.olbl span{position:absolute;top:.3cqw;transform:translateX(-50%);font-size:1.5cqw;font-weight:800;color:#9aa6bd;white-space:nowrap}.olbl .li{transform:translateX(-100%)}#board.noyuko .olbl .ly{display:none}
+#printArea{display:none}
+@media print{
+ @page{size:A4 landscape;margin:7mm}
+ html,body{background:#fff!important;height:auto!important}
+ body>*:not(#printArea){display:none!important}
+ #printArea{display:block!important;color:#000;font-family:Arial,Helvetica,sans-serif}
+ .ppage{break-after:page;page-break-after:always;height:194mm;display:flex;flex-direction:column;overflow:hidden}
+ .ppage:last-child{break-after:auto;page-break-after:auto}
+ *{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+}
+#printArea .phd{display:flex;justify-content:space-between;align-items:center;border-bottom:.7mm solid #0a3fd6;padding-bottom:2mm;margin-bottom:2.5mm}
+#printArea .pev{font-size:12pt;font-weight:800}#printArea .pmt{font-size:8pt;color:#444}
+#printArea .pti{text-align:center}#printArea .pcat{font-size:15pt;font-weight:900}
+#printArea .pst{font-size:9pt;font-weight:800;color:#0a3fd6;text-transform:uppercase;letter-spacing:.04em}
+#printArea .pdt{font-size:7pt;color:#555;text-align:right}
+#printArea .pbr,#printArea .pfb{flex:1;display:flex;gap:5mm;min-height:0}
+#printArea .pcol{flex:1;display:flex;flex-direction:column;min-width:0}
+#printArea .prn{text-align:center;font-size:8pt;font-weight:800;text-transform:uppercase;color:#333;margin-bottom:1mm}
+#printArea .pcb{flex:1;display:flex;flex-direction:column;justify-content:space-around;gap:1.2mm}
+#printArea .pbox{border:.3mm solid #666;border-radius:1.2mm;overflow:hidden;font-size:7.5pt;break-inside:avoid}
+#printArea .pl{display:flex;justify-content:space-between;gap:2mm;background:#eef0f4;font-size:6.3pt;padding:.4mm 1.4mm;color:#333}
+#printArea .ps{padding:.6mm 1.5mm;border-left:2.4mm solid #c9c9c9}
+#printArea .ps.sb{border-left-color:#0a3fd6;border-top:.2mm solid #ccc}
+#printArea .ps.won{background:#e3f5e9;font-weight:800}#printArea .ps.lost{color:#888}
+#printArea .pn{font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}#printArea .pn sup{font-size:5.5pt;color:#7c3aed}
+#printArea .pc{font-size:6.3pt;color:#555;font-weight:400}#printArea .bye{color:#999;font-style:italic;font-weight:400}
+#printArea .pnote{font-size:6.3pt;color:#555;margin-top:1.5mm}
+#printArea .pft{display:flex;justify-content:space-between;font-size:7.5pt;margin-top:2mm;padding-top:2mm;border-top:.2mm solid #999}
+#printArea .pmd{width:100%;border-collapse:collapse;font-size:8.5pt;margin-top:2.5mm}
+#printArea .pmd th,#printArea .pmd td{border:.2mm solid #888;padding:1.2mm 2mm;text-align:left}#printArea .pmd th{background:#f1f2f5}
+#printArea .prk td:first-child{font-weight:800;width:14mm;text-align:center}
+#drawSec .lockchip{font-size:12px;font-weight:800;padding:6px 10px;border-radius:999px;background:rgba(34,197,94,.16);border:1px solid rgba(34,197,94,.5);color:#bbf7d0}
+#drawSec .lockchip.draft{background:rgba(245,197,24,.12);border-color:rgba(245,197,24,.45);color:#fde68a}
+#drawSec .edhead{padding:10px 12px;border-radius:12px;background:rgba(99,102,241,.14);border:1px solid rgba(129,140,248,.4);font-size:13px;line-height:1.5;margin-bottom:10px}
+#drawSec .checks{display:grid;gap:6px;margin-bottom:12px}
+#drawSec .chk{padding:7px 10px;border-radius:10px;font-size:13px;font-weight:700}
+#drawSec .chk.ok{background:rgba(34,197,94,.14);color:#bbf7d0;border:1px solid rgba(34,197,94,.4)}
+#drawSec .chk.warn{background:rgba(245,158,11,.14);color:#fde68a;border:1px solid rgba(245,158,11,.45)}
+#drawSec .chk.err{background:rgba(239,68,68,.16);color:#fecaca;border:1px solid rgba(239,68,68,.5)}
+#drawSec .edgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:10px}
+#drawSec .edm{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.14);border-radius:12px;padding:6px}
+#drawSec .edm .pool{font-size:11px;font-weight:900;letter-spacing:.12em;color:#a5b4fc;margin:2px 4px 4px}
+#drawSec .edl{font-size:11px;color:#9aa6bd;margin:0 4px 4px}
+#drawSec .eds{display:grid;grid-template-columns:28px 1fr auto 34px 34px;gap:6px;align-items:center;padding:6px;border-radius:9px;cursor:pointer;border:1px solid transparent}
+#drawSec .eds+.eds{margin-top:4px}
+#drawSec .eds:hover{background:rgba(255,255,255,.07)}
+#drawSec .eds.sel{background:rgba(99,102,241,.35);border-color:#a5b4fc;box-shadow:0 0 0 2px rgba(165,180,252,.35)}
+#drawSec .eds.bye .enm{font-style:italic;opacity:.6}
+#drawSec .eds.clash{border-color:rgba(245,158,11,.7);background:rgba(245,158,11,.1)}
+#drawSec .eds .pos{font-size:11px;font-weight:800;color:#9aa6bd;text-align:center}
+#drawSec .eds .enm{font-weight:700}#drawSec .eds .ecl{font-size:12px;color:#9aa6bd}
+#drawSec .eds .sd{background:#7c3aed;color:#fff;border-radius:9px;padding:0 6px;font-size:11px}
+#drawSec .eds button{padding:4px 0}
+#fsHint{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;flex-direction:column;text-align:center;background:rgba(0,0,0,.55);color:#fff;font-size:3vw;line-height:1.5;cursor:pointer;z-index:9}
+#fsHint b{font-size:5vw;color:#f5c518}#fsHint small{font-size:1.8vw;opacity:.8}
+body.tv{overflow:hidden}
+#linkInfo{font-size:12px;color:#9aa6bd;grid-column:1/-1}
+#drawSec header{display:flex;flex-wrap:wrap;gap:8px;align-items:center;padding:10px 12px;background:#121829;border-bottom:1px solid #232c44;position:sticky;top:0;z-index:5}
+#drawSec header h1{font-size:17px;margin-right:auto}
+#drawSec button,#drawSec .filebtn{font:inherit;font-weight:700;padding:9px 12px;border-radius:7px;border:1px solid #2c3653;background:#1b2338;color:#e8ecf4;cursor:pointer;display:inline-block}
+#drawSec button.pri,#drawSec .filebtn{background:#15803d;border-color:#15803d}
+#drawSec button.warn{background:#7f1d1d;border-color:#7f1d1d}
+#drawSec button.sm{padding:5px 8px;font-size:12px}
+#drawSec .filebtn input{display:none}
+#drawSec main{display:grid;grid-template-columns:280px 1fr;gap:12px;padding:12px;align-items:start}
+@media(max-width:850px){#drawSec main{grid-template-columns:1fr}}
+#drawSec .panel{background:#121829;border:1px solid #232c44;border-radius:9px;padding:10px}
+#drawSec h2{font-size:13px;color:#9aa6bd;text-transform:uppercase;letter-spacing:.07em;margin-bottom:8px}
+#drawSec .cat{display:flex;justify-content:space-between;align-items:center;padding:9px 10px;border-radius:7px;cursor:pointer;border:1px solid transparent;gap:6px}
+#drawSec .cat:hover{background:#1b2338}
+#drawSec .cat.on{background:#1b2338;border-color:#3b82f6}
+#drawSec .cat .n{font-size:12px;color:#9aa6bd;white-space:nowrap}
+#drawSec .cat .dot{width:8px;height:8px;border-radius:50%;background:#555;flex:none}
+#drawSec .cat .dot.d{background:#f5c518}
+#drawSec .cat .dot.f{background:#22c55e}
+#drawSec #dmsg{color:#f5c518;font-size:13px;width:100%}
+#drawSec .tools{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px;align-items:center}
+#drawSec .tools h3{font-size:18px;margin-right:auto}
+#drawSec .bracket{display:flex;gap:26px;overflow-x:auto;padding:6px 2px 14px}
+#drawSec .round{display:flex;flex-direction:column;min-width:210px}
+#drawSec .rname{font-size:12px;font-weight:800;color:#9aa6bd;text-transform:uppercase;letter-spacing:.08em;text-align:center;margin-bottom:6px}
+#drawSec .rbody{display:flex;flex-direction:column;justify-content:space-around;flex:1;gap:10px}
+#drawSec .m{background:#0f1424;border:1px solid #2c3653;border-radius:7px;overflow:hidden}
+#drawSec .m .mn{font-size:11px;color:#9aa6bd;padding:3px 8px;background:#161d30;display:flex;justify-content:space-between}
+#drawSec .p{display:flex;align-items:center;gap:6px;padding:7px 8px;cursor:pointer;border-top:1px solid #1d2540;min-height:40px}
+#drawSec .p .c{width:6px;align-self:stretch;border-radius:2px;flex:none}
+#drawSec .p.w .c{background:#f2f2ef}
+#drawSec .p.b .c{background:#1f47c8}
+#drawSec .p .nm{font-weight:700;line-height:1.15}
+#drawSec .p .cl{font-size:11px;color:#9aa6bd}
+#drawSec .p .sd{margin-left:auto;font-size:11px;background:#7c3aed;padding:1px 6px;border-radius:9px;font-weight:700}
+#drawSec .p.win{background:#14532d}
+#drawSec .p.lose{opacity:.45}
+#drawSec .p.bye{color:#5b6680;cursor:default;font-style:italic}
+#drawSec .p.tbd{color:#5b6680;cursor:default}
+#drawSec .medals{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:8px;margin-top:10px}
+#drawSec .md{padding:10px;border-radius:8px;background:#0f1424;border:1px solid #2c3653}
+#drawSec .md b{display:block;font-size:12px;letter-spacing:.06em;margin-bottom:3px}
+#drawSec .g b{color:#facc15}
+#drawSec .s b{color:#cbd5e1}
+#drawSec .br b{color:#d97706}
+#drawSec table{width:100%;border-collapse:collapse;font-size:13px}
+#drawSec th,#drawSec td{padding:6px;border-bottom:1px solid #232c44;text-align:left}
+#drawSec th{color:#9aa6bd;font-size:12px}
+#drawSec td input{width:60px;padding:4px;background:#0b0f1a;color:#e8ecf4;border:1px solid #2c3653;border-radius:5px;font:inherit}
+#drawSec .form{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:6px;margin:8px 0}
+#drawSec .form input{padding:8px;background:#0b0f1a;color:#e8ecf4;border:1px solid #2c3653;border-radius:6px;font:inherit}
+#drawSec .hint{font-size:12px;color:#9aa6bd;line-height:1.6}
+#drawSec .empty{color:#9aa6bd;padding:30px;text-align:center;line-height:1.7}
+#drawSec details summary{cursor:pointer;font-weight:700}
+#drawSec .tools h3{text-transform:none;letter-spacing:0;color:#e8ecf4}
+#drawSec header{top:0}
+#drawSec button.scb{background:#7c3aed;border-color:#7c3aed;padding:1px 7px;font-size:11px}
+
+@media print{nav,#op,#drawSec header,#drawSec aside,.tools button,#athPanel{display:none!important}body{background:#fff;color:#000}main{display:block}.panel{border:0;background:#fff}.m{background:#fff;border-color:#999}.m .mn{background:#eee;color:#333}.p{border-color:#ccc}.p.win{background:#dcfce7}.p .cl,.rname{color:#333}.md{background:#fff;border-color:#999}}
+
+/* ===== Liquid glass theme (admin screens only; TV board stays high-contrast) ===== */
+:root{--gl:rgba(255,255,255,.065);--gl2:rgba(255,255,255,.11);--gb:rgba(255,255,255,.14);--gb2:rgba(255,255,255,.26);--hi:inset 0 1px 0 rgba(255,255,255,.16);--sh:0 12px 40px rgba(0,0,0,.38)}
+body:not(.tv){background:radial-gradient(1100px 700px at 6% -12%,rgba(99,76,255,.55),transparent 60%),radial-gradient(900px 620px at 104% -6%,rgba(0,170,210,.42),transparent 58%),radial-gradient(1000px 760px at 50% 120%,rgba(200,40,140,.35),transparent 62%),linear-gradient(160deg,#080a16,#0b1022 55%,#070812);background-attachment:fixed;font-family:"Segoe UI Variable","Segoe UI",Inter,Roboto,Arial,sans-serif}
+nav{background:rgba(12,16,34,.5)!important;-webkit-backdrop-filter:blur(22px) saturate(170%);backdrop-filter:blur(22px) saturate(170%);border-bottom:1px solid var(--gb)!important;position:sticky;top:0;z-index:30;box-shadow:0 6px 30px rgba(0,0,0,.25)}
+nav b{font-size:16px;letter-spacing:.02em;background:linear-gradient(90deg,#fff,#c7d2fe);-webkit-background-clip:text;background-clip:text;color:transparent}
+nav b #matTag{-webkit-text-fill-color:#fcd34d}
+nav button{border-radius:999px!important}
+nav button.on{background:linear-gradient(180deg,rgba(255,255,255,.35),rgba(255,255,255,.05) 60%),linear-gradient(135deg,#6366f1,#3b82f6)!important;border-color:rgba(255,255,255,.35)!important;box-shadow:0 6px 20px rgba(79,70,229,.45),var(--hi)}
+.panel,#drawSec .panel,#drawSec header,#op .panel,details.panel{background:var(--gl)!important;-webkit-backdrop-filter:blur(20px) saturate(160%);backdrop-filter:blur(20px) saturate(160%);border:1px solid var(--gb)!important;border-radius:18px!important;box-shadow:var(--hi),var(--sh)}
+#drawSec header{margin:10px 12px 0;position:relative;top:auto;z-index:2}
+button,#drawSec button,#drawSec .filebtn,.filebtn{background:linear-gradient(180deg,rgba(255,255,255,.16),rgba(255,255,255,.04));border:1px solid var(--gb2)!important;border-radius:12px!important;color:#f1f5ff;box-shadow:var(--hi),0 4px 14px rgba(0,0,0,.22);transition:transform .08s,box-shadow .15s,filter .15s}
+button:hover,#drawSec button:hover,.filebtn:hover{filter:brightness(1.12);box-shadow:var(--hi),0 6px 22px rgba(0,0,0,.3)}
+button.go,#drawSec button.pri,#drawSec .filebtn,button.pri{background:linear-gradient(180deg,rgba(255,255,255,.3),rgba(255,255,255,0) 55%),linear-gradient(135deg,#22c55e,#0e8a45)!important;border-color:rgba(255,255,255,.3)!important}
+button.warn,#drawSec button.warn{background:linear-gradient(180deg,rgba(255,255,255,.25),rgba(255,255,255,0) 55%),linear-gradient(135deg,#ef4444,#991b1b)!important}
+button.tvb,#demo,#drawSec button.scb{background:linear-gradient(180deg,rgba(255,255,255,.28),rgba(255,255,255,0) 55%),linear-gradient(135deg,#a855f7,#6d28d9)!important}
+button.pw{background:linear-gradient(180deg,#ffffff,#e8ebf2)!important;color:#0b1020!important;border-color:#fff!important}
+button.pb{background:linear-gradient(180deg,rgba(255,255,255,.28),rgba(255,255,255,0) 55%),linear-gradient(135deg,#2563eb,#0a3fd6)!important;color:#fff!important}
+button.minus{background:rgba(255,255,255,.05)!important}
+#bFromDraw,#bCloseWin{background:linear-gradient(180deg,rgba(255,255,255,.28),rgba(255,255,255,0) 55%),linear-gradient(135deg,#10b981,#047857)!important}
+input,select,#drawSec .form input,#drawSec .matcfg input,#drawSec .matcfg select,#prPanel select{background:rgba(0,0,0,.28)!important;border:1px solid var(--gb)!important;border-radius:10px!important;color:#eef2ff!important;padding:8px 10px}
+input:focus,select:focus{outline:none;border-color:#818cf8!important;box-shadow:0 0 0 3px rgba(129,140,248,.25)}
+select option{background:#111827;color:#fff}
+#drawSec .matcfg{border:1px solid var(--gb)!important;border-radius:12px;background:rgba(255,255,255,.04)}
+#drawSec .cat{border-radius:12px}#drawSec .cat:hover{background:rgba(255,255,255,.07)}
+#drawSec .cat.on{background:linear-gradient(135deg,rgba(99,102,241,.35),rgba(59,130,246,.18));border-color:rgba(165,180,252,.6);box-shadow:0 4px 18px rgba(79,70,229,.3)}
+#drawSec .gh{border-radius:8px}#drawSec .gh.ma{background:linear-gradient(90deg,rgba(37,99,235,.55),rgba(37,99,235,.12))}#drawSec .gh.fe{background:linear-gradient(90deg,rgba(219,39,119,.55),rgba(219,39,119,.12))}
+#drawSec .m{background:rgba(255,255,255,.05)!important;border:1px solid var(--gb)!important;border-radius:12px!important;box-shadow:var(--hi),0 6px 18px rgba(0,0,0,.28);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px)}
+#drawSec .m .mn{background:rgba(255,255,255,.06)!important}
+#drawSec .p.win{background:linear-gradient(90deg,rgba(34,197,94,.38),rgba(34,197,94,.1))!important}
+#drawSec .md{background:rgba(255,255,255,.06)!important;border:1px solid var(--gb)!important;border-radius:14px!important}
+#drawSec .md.g{box-shadow:inset 0 0 0 1px rgba(250,204,21,.45)}#drawSec .md.s{box-shadow:inset 0 0 0 1px rgba(203,213,225,.4)}#drawSec .md.br{box-shadow:inset 0 0 0 1px rgba(217,119,6,.45)}
+.stagebar{margin:4px 0 10px;padding:9px 14px;border-radius:12px;font-size:13px;font-weight:700;background:rgba(245,197,24,.12);border:1px solid rgba(245,197,24,.35);color:#fde68a}
+.stagebar.ok{background:rgba(34,197,94,.14);border-color:rgba(34,197,94,.45);color:#bbf7d0}
+#drawSec .fblock{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px;margin-top:14px;padding:12px;border-radius:16px;background:rgba(255,255,255,.035);border:1px dashed rgba(255,255,255,.18)}
+#drawSec .fbcol{display:flex;flex-direction:column;gap:10px}
+#drawSec .m.xm{border-color:rgba(217,119,6,.5)!important}
+#op #board{border-radius:16px!important;box-shadow:0 18px 50px rgba(0,0,0,.5),0 0 0 1px rgba(255,255,255,.12)}
+body.tv #board,body.display #board{box-shadow:none!important;border-radius:0!important}
+#lockOv>div{background:rgba(20,24,44,.75)!important;-webkit-backdrop-filter:blur(24px);backdrop-filter:blur(24px);border-radius:20px!important}
+.keys b{background:rgba(255,255,255,.08)!important;border-color:var(--gb)!important}
+
+/* ===== Classy TV board ===== */
+#board{background:radial-gradient(120% 140% at 50% 120%,#0b1a4a 0%,#05070d 62%)!important}
+#board .top{background:linear-gradient(90deg,#0a1130,#18266a 50%,#0a1130)!important;color:#dbe4ff;border-bottom:.3cqw solid rgba(255,206,84,.6)}
+#board .top b{color:#ffd76a}
+#board .row.w{background:linear-gradient(180deg,#ffffff 0%,#f3f5f9 65%,#e2e6ee 100%)!important}
+#board .row.b{background:linear-gradient(180deg,#2a63ff 0%,#0d40d9 55%,#082ba0 100%)!important}
+#board .row.w .side{background:linear-gradient(180deg,#d5dae4,#aab2c2)!important}
+#board .row.b .side{background:linear-gradient(180deg,#0a2a8a,#051858)!important}
+#board .row.winner .side{background:linear-gradient(180deg,#3cf08a,#0e9a47)!important;box-shadow:0 0 2cqw rgba(60,240,138,.6)}
+#board .row.w .code{background:linear-gradient(180deg,#eef1f6,#dfe4ec)!important;box-shadow:inset 0 0 0 .15cqw rgba(0,0,0,.06)}
+#board .row.b .code{background:linear-gradient(180deg,#0b2f9a,#061f6e)!important;box-shadow:inset 0 0 0 .15cqw rgba(255,255,255,.12)}
+#board .row.w .sc{text-shadow:0 .25cqw .5cqw rgba(0,0,0,.14)}
+#board .row.b .sc,#board .row.b .nm{text-shadow:0 .3cqw .8cqw rgba(0,0,0,.35)}
+#board .card{box-shadow:0 .3cqw .8cqw rgba(0,0,0,.35),inset 0 .2cqw 0 rgba(255,255,255,.5)!important}
+#board .bot{background:radial-gradient(80% 170% at 50% 0%,#17245a 0%,#070a18 72%)!important;border-top:.3cqw solid rgba(255,255,255,.08)}
+#board .clock{text-shadow:0 0 2.2cqw rgba(255,59,48,.5)}
+#board .clock.run{text-shadow:0 0 2.4cqw rgba(43,255,106,.5)}
+#board .obar{box-shadow:inset 0 .2cqw .5cqw rgba(0,0,0,.6)}
+body.tv{background:radial-gradient(1400px 900px at 50% 50%,#0d1738,#020308)!important}
+#winOv.w{background:radial-gradient(circle at 50% 28%,#ffffff 0%,#eef1f7 55%,#d7dce6 100%)!important}
+#winOv.b{background:radial-gradient(circle at 50% 28%,#3a72ff 0%,#0d40d9 50%,#061f7a 100%)!important}
+#winOv.gold{box-shadow:inset 0 0 0 1.2cqw rgba(247,215,116,.85),inset 0 0 6cqw rgba(247,215,116,.45)}
+#winOv.bronze{box-shadow:inset 0 0 0 1.2cqw rgba(226,162,107,.85),inset 0 0 6cqw rgba(226,162,107,.4)}
+#winOv:not(.gold):not(.bronze){box-shadow:inset 0 0 0 .8cqw rgba(34,197,94,.75)}
+#winNm{text-shadow:0 .4cqw 1.2cqw rgba(0,0,0,.25)}
+/* ===== Light mode (admin screens) ===== */
+body.light:not(.tv){background:radial-gradient(1100px 700px at 6% -12%,rgba(129,140,248,.38),transparent 60%),radial-gradient(900px 620px at 104% -6%,rgba(56,189,248,.32),transparent 58%),radial-gradient(1000px 760px at 50% 120%,rgba(244,114,182,.26),transparent 62%),linear-gradient(160deg,#eef2ff,#f8fafc 55%,#fdf2f8)!important;color:#0f172a;background-attachment:fixed}
+body.light .panel,body.light #drawSec .panel,body.light #drawSec header,body.light #op .panel,body.light details.panel{background:rgba(255,255,255,.58)!important;border-color:rgba(15,23,42,.1)!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.95),0 10px 30px rgba(15,23,42,.08)}
+body.light nav{background:rgba(255,255,255,.62)!important;border-bottom-color:rgba(15,23,42,.1)!important}
+body.light nav b{background:linear-gradient(90deg,#1e1b4b,#4338ca);-webkit-background-clip:text;background-clip:text;color:transparent}
+body.light nav b #matTag{-webkit-text-fill-color:#b45309}
+body.light button,body.light #drawSec button,body.light .filebtn,body.light #drawSec .filebtn{background:linear-gradient(180deg,#ffffff,#eef1f7);color:#0f172a;border-color:rgba(15,23,42,.14)!important;box-shadow:inset 0 1px 0 #fff,0 3px 10px rgba(15,23,42,.08)}
+body.light button.go,body.light button.pri,body.light #drawSec button.pri,body.light #drawSec .filebtn,body.light button.warn,body.light #drawSec button.warn,body.light button.tvb,body.light #demo,body.light #drawSec button.scb,body.light button.pb,body.light #bFromDraw,body.light #bCloseWin,body.light nav button.on{color:#fff!important}
+body.light button.pw{box-shadow:0 0 0 1px rgba(15,23,42,.15),0 3px 10px rgba(15,23,42,.1)}
+body.light button.minus{background:rgba(15,23,42,.04)!important}
+body.light input,body.light select,body.light #drawSec .form input,body.light #drawSec .matcfg input,body.light #drawSec .matcfg select,body.light #prPanel select{background:rgba(255,255,255,.85)!important;color:#0f172a!important;border-color:rgba(15,23,42,.18)!important}
+body.light select option{background:#fff;color:#0f172a}
+body.light .hint,body.light label,body.light h2,body.light h3,body.light .keys,body.light #drawSec .rname,body.light #drawSec .empty,body.light #drawSec .matcfg,body.light #drawSec table th{color:#475569}
+body.light #drawSec .tools h3,body.light details.panel summary,body.light label.chk,body.light #drawSec .eds .enm{color:#0f172a!important}
+body.light #drawSec .m{background:rgba(255,255,255,.8)!important;border-color:rgba(15,23,42,.12)!important}
+body.light #drawSec .m .mn{background:rgba(15,23,42,.05)!important;color:#475569}
+body.light #drawSec .p{border-top-color:rgba(15,23,42,.08)}
+body.light #drawSec .p .cl,body.light #drawSec .cat .n,body.light #drawSec .edl,body.light #drawSec .eds .pos,body.light #drawSec .eds .ecl{color:#64748b}
+body.light #drawSec .p.win{background:linear-gradient(90deg,rgba(34,197,94,.3),rgba(34,197,94,.06))!important}
+body.light #drawSec .p.bye,body.light #drawSec .p.tbd{color:#94a3b8}
+body.light #drawSec .cat:hover{background:rgba(15,23,42,.05)}
+body.light #drawSec .cat.on{background:linear-gradient(135deg,rgba(99,102,241,.22),rgba(59,130,246,.08))}
+body.light #drawSec .gh{color:#fff}
+body.light #drawSec .md{background:rgba(255,255,255,.75)!important}
+body.light .stagebar,body.light #drawSec .lockchip.draft,body.light #drawSec .chk.warn{color:#92400e}
+body.light .stagebar.ok,body.light #drawSec .lockchip,body.light #drawSec .chk.ok{color:#166534}
+body.light #drawSec .chk.err{color:#991b1b}
+body.light #drawSec .edhead{color:#1e1b4b}
+body.light #drawSec .edm{background:rgba(255,255,255,.75);border-color:rgba(15,23,42,.1)}
+body.light #drawSec .eds:hover{background:rgba(15,23,42,.05)}
+body.light #drawSec .eds.sel{background:rgba(99,102,241,.2)}
+body.light #drawSec .fblock{background:rgba(255,255,255,.45);border-color:rgba(15,23,42,.18)}
+body.light #drawSec td,body.light #drawSec th,body.light #drawSec .bk{border-bottom-color:rgba(15,23,42,.08)}
+body.light #msg,body.light #dmsg{color:#b45309}
+body.light .keys b{background:#fff!important;color:#0f172a}
+body.light #lockOv>div{background:rgba(255,255,255,.88)!important;color:#0f172a}
+</style>
+</head>
+<body data-tab="draw">
+<div id="lockOv"><div><b>⚠ Admin already open</b><p id="lockTxt"></p><button onclick="takeControl()">Take control in this tab</button><p style="font-size:13px;opacity:.7">Only one admin screen can control the tournament at a time. The TV window is separate and is fine.</p></div></div>
+<nav><b>Judo Tournament System <span id="matTag" style="color:#f5c518"></span></b><button id="thBtn" title="Dark / Light mode">☀ Light</button><button id="tabDraw">Draw</button><button id="tabSb">Scoreboard</button></nav>
+
+<section id="drawSec"><header>
+  <h1>Judo Draw System</h1>
+  <span class="matcfg">This laptop:
+    <input id="matName" placeholder="Mat 1" style="width:80px">
+    <select id="matG"><option value="All">All athletes</option><option value="Male">Boys / Male only</option><option value="Female">Girls / Female only</option></select></span>
+  <span class="matcfg">Format:
+    <select id="fmtSel"><option value="ijf">IJF (repechage + 2 bronze contests)</option><option value="ko">Simple knockout (SF losers bronze)</option></select></span>
+  <label class="filebtn">Upload Excel / CSV<input type="file" id="file" accept=".xlsx,.xls,.csv"></label>
+  <button id="tpl">Download template</button>
+  <button id="demo" style="background:#7c3aed;border-color:#7c3aed">Load demo data</button>
+  <button class="pri" id="genAll">Make all draws</button>
+  <button id="prAll">🖨 Print</button>
+  <button id="resCsv">Download Excel (results)</button>
+  <button id="bkOpen">Backup / Restore</button>
+  <button class="warn" id="clear">Clear all</button>
+  <div id="dmsg"></div>
+</header>
+<main>
+  <aside class="panel">
+    <h2>Weight categories</h2>
+    <div id="cats"><div class="hint">Upload the athlete list to see categories.</div></div>
+    <p class="hint" style="margin-top:8px">● grey = no draw · ● yellow = draw made · ● green = final done</p>
+  </aside>
+  <section>
+    <details class="panel" id="bkPanel" style="margin-bottom:12px"><summary>Backup &amp; restore</summary>
+      <div class="tools" style="margin-top:8px"><button class="pri" id="bkNow">Save backup now</button><button id="bkFile">Download backup file</button>
+      <label class="filebtn" style="background:#1b2338;border-color:#2c3653">Restore from backup file<input type="file" id="bkRestore" accept=".json"></label></div>
+      <div class="hint">Everything also saves automatically in this browser after every change. Closing and reopening continues from the last point.</div>
+      <h2 style="margin-top:10px">Automatic backups (latest first)</h2><div id="bkList"></div></details>
+    <div class="panel" id="prPanel" style="display:none;margin-bottom:12px"><div class="tools"><h3 style="font-size:16px">Print draw sheets</h3>
+      <select id="prStage"><option value="elim">1 · Elimination (rounds up to Quarter-final)</option><option value="final">2 · Final block (Repechage, Semi-final, Bronze, Final)</option><option value="full">Full draw (stage 1 + stage 2)</option><option value="res">Results (medals + rank list)</option></select>
+      <select id="prScope"><option value="this">This category</option><option value="all">All categories</option><option value="Male">All Male categories</option><option value="Female">All Female categories</option></select>
+      <button class="pri" id="prGo">Print now</button><button id="prX">Close</button></div>
+      <div class="hint" id="prHint">A4 landscape · one page per category (big draws split into pools) · print stage 1 before the event, stage 2 once elimination is complete.</div></div>
+    <div class="panel" id="rep" style="display:none;margin-bottom:12px;border-color:#a16207;line-height:1.6"></div>
+    <div class="panel" id="view"><div class="empty">1. Click <b>Download template</b> and fill it in Excel (or use your own sheet with the same column names).<br>2. Click <b>Upload Excel / CSV</b>.<br>3. Pick a weight category on the left and click <b>Make draw</b>.<br>4. Click the winner's name in each match. Winners move forward to the final automatically.</div></div>
+    <details class="panel" id="athPanel" style="margin-top:12px">
+      <summary>Athletes (<span id="athCount">0</span>): edit seeds, add or remove</summary>
+      <div class="form">
+        <input id="aN" placeholder="Name"><input id="aC" placeholder="Club / district">
+        <input id="aG" placeholder="Gender (Male/Female)"><input id="aA" placeholder="Age group (Senior...)">
+        <input id="aW" placeholder="Weight category (-73 kg)"><input id="aS" placeholder="Seed (optional)">
+        <button id="addA">Add athlete</button>
+      </div>
+      <div style="overflow-x:auto"><table><thead><tr><th>Name</th><th>Club</th><th>Category</th><th>Seed</th><th></th></tr></thead><tbody id="athT"></tbody></table></div>
+    </details>
+  </section>
+</main></section>
+
+
+<div id="op">
+  <div class="opTop">
+    <div id="board">
+      <div class="top"><span><b id="tCat"></b></span><span id="tEvent"></span><span id="tMat"></span></div>
+      <div class="row w" id="rw">
+        <div class="side"></div><div class="code" id="cw"></div>
+        <div class="who"><div class="nm" id="nw"></div><div class="fn" id="fw"></div></div>
+        <div class="sh" id="sw"></div>
+        <div class="sc"><span id="iw">0</span><small>IPPON</small></div>
+        <div class="sc"><span id="ww">0</span><small>WAZA-ARI</small></div>
+        <div class="sc ycell"><span id="yw">0</span><small>YUKO</small></div>
+        
+      </div>
+      <div class="row b" id="rb">
+        <div class="side"></div><div class="code" id="cb"></div>
+        <div class="who"><div class="nm" id="nb"></div><div class="fn" id="fb"></div></div>
+        <div class="sh" id="sb"></div>
+        <div class="sc"><span id="ib">0</span><small>IPPON</small></div>
+        <div class="sc"><span id="wb">0</span><small>WAZA-ARI</small></div>
+        <div class="sc ycell"><span id="yb">0</span><small>YUKO</small></div>
+        
+      </div>
+      <div id="winOv"><div class="wcat" id="winCat"></div><div class="wlab" id="winLab">WINNER</div><div id="winNm"></div><div id="winClub"></div><div id="winWhy"></div><div id="winSc"></div></div>
+      <div class="bot">
+        <div class="res" id="res"></div>
+        <div class="clock" id="clock"><span class="gs">GS</span><span id="time">4:00</span></div>
+        <div class="osae" id="osae">
+          <div class="olab" id="olab">OSAEKOMI</div>
+          <div class="orow"><div class="obw"><div class="obar"><div class="ofill" id="ofill"></div><div class="tick" style="left:25%"></div><div class="tick" style="left:50%"></div></div><div class="olbl"><span class="ly" style="left:25%">Y 5s</span><span style="left:50%">W 10s</span><span class="li" style="left:100%">I 20s</span></div></div><div class="otime" id="otime">0</div></div>
+        </div>
+      </div>
+    </div>
+    <div class="clk ctl">
+      <button class="go" id="bHM">Hajime / Matte<kbd>Space</kbd></button>
+      <button id="bTok">Toketa<kbd>S</kbd></button>
+      <button id="bUndo">Undo<kbd>Z</kbd></button>
+      <button class="tvb" id="bTV">Open TV window</button>
+      <button id="bDisp">This screen = board<kbd>D</kbd></button>
+      <button class="pri" id="bFromDraw" style="background:#15803d;border-color:#15803d">Load next match from draw</button>
+      <button id="bNext">Blank match (manual)<kbd>N</kbd></button>
+      <button id="bReset">Reset clock</button>
+      <button id="bCloseWin" style="background:#16a34a;border-color:#16a34a">Close winner view<kbd>Esc</kbd></button>
+      <label class="chk" style="grid-column:1/-1"><input type="checkbox" id="fAuto"> Auto-load next match 5 sec after closing winner view (Esc)</label>
+      <div id="tvStat" style="grid-column:1/-1;font-size:13px;font-weight:700"></div>
+      <div id="msg"></div>
+    </div>
+  </div>
+  <div class="two ctl">
+    <div class="panel" id="pw"></div>
+    <div class="panel" id="pb"></div>
+  </div>
+  <details class="panel ctl" id="det" open>
+    <summary>Match details (names, category, time, yuko)</summary>
+    <div class="grid">
+      <label>White surname<input id="fNw"></label>
+      <label>White first name<input id="fFw"></label>
+      <label>White club / district code<input id="fCw" placeholder="e.g. AHD"></label>
+      <label>Blue surname<input id="fNb"></label>
+      <label>Blue first name<input id="fFb"></label>
+      <label>Blue club / district code<input id="fCb" placeholder="e.g. SRT"></label>
+      <label>Category<input id="fCat" placeholder="e.g. Senior Men -73 kg"></label>
+      <label>Event<input id="fEvent"></label>
+      <label>Mat<input id="fMat"></label>
+      <label>Match no.<input id="fMatch"></label>
+      <label>Match time<select id="fDur"><option value="120">2 min</option><option value="180">3 min</option><option value="240">4 min</option></select></label>
+      <label class="chk"><input type="checkbox" id="fYuko"> Use yuko (IJF 2025)</label>
+      <button id="bSwap">Swap white / blue</button>
+    </div>
+    <div class="keys">
+      <b>Space</b> hajime / matte (during osaekomi: sono-mama / yoshi) · <b>S</b> toketa · <b>Z</b> undo · <b>N</b> next match · <b>D</b> board only<br>
+      White: <b>Q</b> ippon <b>W</b> waza-ari <b>E</b> yuko <b>R</b> shido <b>A</b> osaekomi · Blue: <b>U</b> ippon <b>I</b> waza-ari <b>O</b> yuko <b>P</b> shido <b>L</b> osaekomi · <b>Shift</b> + score key removes it
+    </div>
+  </details>
+</div>
+<button id="exitDisp" aria-label="Exit board-only mode"></button>
+
+<script>
+window.READONLY=false;
+(function(){
+  if(location.hash==='#display')return;
+  try{if(navigator.storage&&navigator.storage.persist)navigator.storage.persist();}catch(e){}
+  try{if('serviceWorker' in navigator&&(location.protocol==='https:'||location.hostname==='localhost'))navigator.serviceWorker.register('sw.js').catch(()=>{});}catch(e){}
+  let me;try{me=sessionStorage.getItem('judoAdminId');if(!me){me=Math.random().toString(36).slice(2);sessionStorage.setItem('judoAdminId',me);}}catch(e){me='x';}
+  const get=()=>{try{return JSON.parse(localStorage.getItem('judoAdminLock'))||null;}catch(e){return null;}};
+  const set=()=>{try{localStorage.setItem('judoAdminLock',JSON.stringify({id:me,t:Date.now()}));}catch(e){}};
+  const ov=()=>document.getElementById('lockOv');
+  function lockOut(text){window.READONLY=true;const o=ov();if(o){document.getElementById('lockTxt').textContent=text;o.style.display='flex';}}
+  function check(){const l=get();
+    if(window.READONLY&&(!l||Date.now()-l.t>5000)){set();location.reload();return;}
+    if(!l||l.id===me||Date.now()-l.t>5000){if(!window.READONLY)set();return;}
+    if(!window.READONLY)lockOut('Admin control is already open in another tab or window. Use that one, so the data does not clash.');}
+  const l0=get();
+  if(l0&&l0.id!==me&&Date.now()-l0.t<5000){window.READONLY=true;document.addEventListener('DOMContentLoaded',()=>lockOut('Admin control is already open in another tab or window. Use that one, so the data does not clash.'));}
+  else set();
+  setInterval(check,1500);
+  window.takeControl=()=>{set();location.reload();};
+  window.addEventListener('beforeunload',()=>{const l=get();if(l&&l.id===me&&!window.READONLY){try{localStorage.removeItem('judoAdminLock');}catch(e){}}});
+})();
+function applyTheme(t){if(location.hash==='#display')return;document.body.classList.toggle('light',t==='light');const b=document.getElementById('thBtn');if(b)b.textContent=t==='light'?'☾ Dark':'☀ Light';}
+document.addEventListener('DOMContentLoaded',()=>{let t='dark';try{t=localStorage.getItem('judoTheme')||'dark';}catch(e){}applyTheme(t);
+  const b=document.getElementById('thBtn');if(b)b.onclick=()=>{const n=document.body.classList.contains('light')?'dark':'light';try{localStorage.setItem('judoTheme',n);}catch(e){}applyTheme(n);b.blur();};});
+function tab(t){document.body.dataset.tab=t;document.getElementById('tabDraw').classList.toggle('on',t==='draw');document.getElementById('tabSb').classList.toggle('on',t==='sb');try{localStorage.setItem('judoTab',t);}catch(e){}if(t==='sb'&&window.SB&&SB.autoLoad)SB.autoLoad(false,true);}
+document.getElementById('tabDraw').onclick=()=>tab('draw');document.getElementById('tabSb').onclick=()=>tab('sb');
+let t0='draw';try{t0=localStorage.getItem('judoTab')||'draw';}catch(e){} tab(t0);
+
+(function(){
+const $=id=>document.getElementById(id);
+let D={ath:[],draws:{}},cur=null;
+try{const s=JSON.parse(localStorage.getItem('judoDraw'));if(s&&s.ath)D=s;}catch(e){}
+const save=()=>{if(window.READONLY)return;const j=JSON.stringify(D);try{localStorage.setItem('judoDraw',j);}catch(e){try{const L=JSON.parse(localStorage.getItem('judoBackups')||'[]');localStorage.setItem('judoBackups',JSON.stringify(L.slice(0,2)));localStorage.setItem('judoDraw',j);}catch(x){try{localStorage.removeItem('judoBackups');localStorage.setItem('judoDraw',j);}catch(y){msg('Browser storage full: click Backup / Restore → Download backup file now');}}}};
+let mt;const msg=t=>{$('dmsg').textContent=t;clearTimeout(mt);mt=setTimeout(()=>$('dmsg').textContent='',6000);};
+const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const catKey=a=>[a.gender,a.age,a.cat].map(x=>String(x||'').trim()).filter(Boolean).join(' · ')||'No category';
+const byId=id=>D.ath.find(a=>a.id===id);
+const uid=()=>Math.random().toString(36).slice(2,10);
+
+const COLS={name:['name','athletename','athlete','playername','fullname','nameofathlete','participantname','studentname'],
+ club:['club','district','team','unit','city','academy','clubdistrict','state','school','institute'],
+ gender:['gender','sex','mf','boysgirls'],age:['agegroup','agecategory','group','age','division','level'],
+ cat:['weightcategory','category','weightclass','wtcategory','weightcat','wtcat','event'],
+ bw:['bodyweight','weight','weightkg','kg','wt','actualweight','weighin','weighinweight','bodywt'],
+ seed:['seed','seeding','seedno','rank']};
+const LIM={senM:[60,66,73,81,90,100],senF:[48,52,57,63,70,78],cadM:[50,55,60,66,73,81,90],cadF:[40,44,48,52,57,63,70]};
+function normGender(v){const t=String(v||'').trim().toLowerCase();
+  if(/^(m|male|man|men|boy|boys|purush|ladka|ladke|bhai|पुरुष|लड़का|लडका|पुरूष|પુરુષ|ભાઈ|છોકરો|છોકરા)$/.test(t)||/^(male|boy|men)/.test(t))return 'Male';
+  if(/^(f|female|woman|women|girl|girls|mahila|ladki|ladkiyan|ben|bahen|महिला|लड़की|लडकी|स्त्री|મહિલા|સ્ત્રી|છોકરી|બહેન)$/.test(t)||/^(female|girl|women)/.test(t))return 'Female';
+  return t?t.charAt(0).toUpperCase()+t.slice(1):'';}
+function normAge(v){const t=String(v||'').trim();if(!t)return '';
+  const l=t.toLowerCase();
+  if(/^sen/.test(l))return 'Senior';if(/^(jun|u[- ]?2[01]\b|under[- ]?2[01])/.test(l))return 'Junior';
+  if(/^(cad|u[- ]?1[78]\b|under[- ]?1[78]|youth)/.test(l))return 'Cadet';
+  if(/sub.?jun|^u[- ]?1[3-6]\b|^under[- ]?1[3-6]/.test(l))return 'Sub-Junior';
+  return t.replace(/\b\w/g,c=>c.toUpperCase());}
+function table(g,age){const cad=/cadet/i.test(age);if(g==='Female')return cad?LIM.cadF:LIM.senF;if(g==='Male')return cad?LIM.cadM:LIM.senM;return null;}
+function catFromBW(w,g,age){const T=table(g,age);if(!T)return '';for(const x of T)if(w<=x)return '-'+x+' kg';return '+'+T[T.length-1]+' kg';}
+function normCat(v,bw,g,age){
+  let t=String(v??'').trim();
+  if(!t&&/[+\-a-z]/i.test(String(bw??''))){t=String(bw).trim();bw='';}
+  if(t){const m=t.replace(/,/g,'.').match(/([+-]|u|under|upto|up to|above|over)?\s*(\d+(\.\d+)?)/i);
+    if(m){const sign=(m[1]||'').toLowerCase(),n=m[2];
+      if(sign==='+'||sign==='above'||sign==='over')return '+'+n+' kg';
+      if(sign)return '-'+n+' kg';
+      const T=table(g,age);if(T&&T.includes(+n))return '-'+n+' kg';
+      if(!bw)bw=n;}
+    else if(!bw)return t;}
+  const w=parseFloat(String(bw??'').replace(',','.'));
+  if(w>0){const c=catFromBW(w,g,age);return c||('-'+Math.ceil(w)+' kg');}
+  return t;}
+function normAth(a){a.gender=normGender(a.gender);a.age=normAge(a.age);a.cat=normCat(a.cat,a.bw,a.gender,a.age);return a;}
+function wNum(c){const m=String(c||'').match(/([+-]?)(\d+(\.\d+)?)/);if(!m)return 9999;return (+m[2])+(m[1]==='+'?1000:0);}
+function rowsToAth(rows){
+  if(!rows.length)return [];
+  const keys=Object.keys(rows[0]),map={};
+  for(const f in COLS){const k=keys.find(k=>COLS[f].includes(k.toLowerCase().replace(/[^a-z]/g,'')));if(k)map[f]=k;}
+  if(!map.name)throw new Error('No "Name" column found. Use the template headings.');
+  return rows.map(r=>({id:uid(),name:String(r[map.name]??'').trim(),club:String(r[map.club]??'').trim(),
+    gender:String(r[map.gender]??'').trim(),age:String(r[map.age]??'').trim(),cat:String(r[map.cat]??'').trim(),
+    bw:String(r[map.bw]??'').trim(),seed:parseInt(r[map.seed])||0})).filter(a=>a.name).map(normAth);
+}
+function parseCSV(t){
+  const out=[];let row=[],f='',q=false;
+  for(let i=0;i<t.length;i++){const c=t[i];
+    if(q){if(c==='"'){if(t[i+1]==='"'){f+='"';i++;}else q=false;}else f+=c;}
+    else if(c==='"')q=true;else if(c===','){row.push(f);f='';}
+    else if(c==='\n'||c==='\r'){if(c==='\r'&&t[i+1]==='\n')i++;row.push(f);out.push(row);row=[];f='';}
+    else f+=c;}
+  if(f||row.length){row.push(f);out.push(row);}
+  const h=out.shift()||[];return out.filter(r=>r.some(x=>x.trim())).map(r=>Object.fromEntries(h.map((k,i)=>[k.trim(),r[i]??''])));
+}
+$('file').onchange=async e=>{
+  const f=e.target.files[0];if(!f)return;
+  try{
+    let rows;
+    if(/\.csv$/i.test(f.name))rows=parseCSV(await f.text());
+    else{if(!window.XLSX)throw new Error('Excel reader needs internet. Save the sheet as CSV and upload that instead.');
+      const wb=XLSX.read(await f.arrayBuffer(),{type:'array'});rows=XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]],{defval:''});}
+    importList(rowsToAth(rows));
+  }catch(err){msg('Upload failed: '+err.message);}
+  e.target.value='';
+};
+function MATCFG(){let c={g:'All',mat:'Mat 1'};try{c=Object.assign(c,JSON.parse(localStorage.getItem('judoMat'))||{});}catch(e){}return c;}
+window.MATCFG=MATCFG;
+function applyMat(){const c=MATCFG();$('matName').value=c.mat;$('matG').value=c.g;
+  document.getElementById('matTag').textContent='· '+(c.mat||'Mat')+(c.g==='All'?'':' · '+(c.g==='Male'?'Boys':'Girls'));}
+function saveMat(){if(window.READONLY)return;const c={mat:$('matName').value.trim()||'Mat 1',g:$('matG').value};try{localStorage.setItem('judoMat',JSON.stringify(c));}catch(e){}applyMat();
+  const wrong=c.g!=='All'&&D.ath.some(a=>a.gender!==c.g);
+  msg(wrong?'Saved. Upload the athlete list again so this laptop keeps only '+(c.g==='Male'?'boys':'girls')+'.':'Saved: this laptop = '+c.mat+(c.g==='All'?'':' · '+(c.g==='Male'?'Boys':'Girls')));}
+$('matName').onchange=saveMat;$('matG').onchange=saveMat;applyMat();
+const DEMO={M:['Aarav','Vivaan','Aditya','Arjun','Dhruv','Harsh','Jay','Karan','Krish','Meet','Nirav','Om','Parth','Rahul','Rohan','Sahil','Tirth','Utsav','Vatsal','Yash','Devansh','Hetvi','Kunal','Manan','Neel','Pranav','Raj','Smit','Tanmay','Viraj','Aryan','Bhavya','Chirag','Darshan','Jainil'],
+ F:['Aanya','Bhumi','Charmi','Diya','Esha','Foram','Geet','Hetal','Isha','Jiya','Kavya','Khushi','Mahi','Nidhi','Pooja','Riya','Sneha','Tanvi','Urvi','Vidhi','Yesha','Zeel','Aditi','Dhruvi','Heer','Janvi','Krupa','Mansi','Nisha','Prachi','Riddhi','Saloni','Shreya','Tisha','Vrunda'],
+ S:['Patel','Shah','Desai','Joshi','Parmar','Chauhan','Solanki','Rathod','Thakor','Vaghela','Makwana','Prajapati','Chaudhary','Mehta','Trivedi','Pandya','Bhatt','Raval','Gohil','Jadeja','Zala','Vasava','Gamit','Rana','Modi','Vyas','Dave','Mistry','Panchal','Barot'],
+ D:['Ahmedabad','Surat','Vadodara','Rajkot','Bhavnagar','Jamnagar','Junagadh','Gandhinagar','Anand','Kheda','Mehsana','Patan','Banaskantha','Sabarkantha','Kutch','Bharuch','Navsari','Valsad','Amreli','Morbi','Surendranagar','Panchmahal','Dahod','Porbandar']};
+function demoList(){
+  const out=[],r=n=>Math.floor(Math.random()*n);
+  for(const g of ['Male','Female']){
+    const T=g==='Male'?LIM.senM:LIM.senF,cs=T.map(x=>'-'+x+' kg').concat('+'+T[T.length-1]+' kg');
+    for(const c of cs){const n=20+r(11),used=new Set();
+      for(let i=0;i<n;i++){let nm;do{nm=DEMO[g==='Male'?'M':'F'][r(35)]+' '+DEMO.S[r(30)];}while(used.has(nm));used.add(nm);
+        out.push({id:uid(),name:nm,club:DEMO.D[r(DEMO.D.length)],gender:g,age:'Senior',cat:c,bw:'',seed:i<4?i+1:0});}}}
+  return out;}
+let demoArm=0;
+function importList(all){
+  if(D.ath.length)backup('Before new upload / demo');
+  if(window.SB&&SB.clearHist)SB.clearHist();
+  const cfg=MATCFG();const a=cfg.g==='All'?all:all.filter(x=>x.gender===cfg.g);const skipped=all.length-a.length;
+    if(D.ath.length&&!confirmReplace())D.ath=D.ath.concat(a);else{D.ath=a;D.draws={};}
+    for(const c of cats())makeDraw(c.k);cur=cats().length?cats()[0].k:null;save();renderAll();report(D.ath);if(window.SB&&SB.autoLoad(true,true))msg(a.length+' athletes · '+cats().length+' draws made · Match 1 is ready in the Scoreboard tab');msg(a.length+' athletes loaded · '+cats().length+' category draws made (seeded, clubs kept apart) · first match is ready in the Scoreboard tab'+(skipped?' · '+skipped+' athletes of other mat skipped':''));
+}
+function applyFmt(){$('fmtSel').value=fmtNow();}
+$('fmtSel').onchange=()=>{try{localStorage.setItem('judoFmt',$('fmtSel').value);}catch(e){}
+  const any=Object.values(D.draws).some(dr=>{let x=false;eachM(dr,m=>{if(m.w&&!m.bye)x=true;});return x;});
+  if(!any&&D.ath.length){for(const c of cats())makeDraw(c.k);save();renderAll();window.SB&&SB.autoLoad(true,true);msg('Format changed · all draws made again');}
+  else msg(any?'Format saved. Results already exist, so it applies only to draws made from now (Re-draw).':'Format saved');};
+applyFmt();
+function confirmReplace(){return replaceMode;} let replaceMode=true;
+
+const gOrd=g=>g==='Male'?0:g==='Female'?1:2;
+const aOrd=a=>['Senior','Junior','Cadet','Sub-Junior'].indexOf(a)+1||9;
+function cats(){const m={};for(const a of D.ath){const k=catKey(a);(m[k]=m[k]||{list:[],g:a.gender,a:a.age,c:a.cat}).list.push(a);}
+  return Object.keys(m).map(k=>({k,...m[k]})).sort((x,y)=>gOrd(x.g)-gOrd(y.g)||aOrd(x.a)-aOrd(y.a)||String(x.a).localeCompare(y.a)||wNum(x.c)-wNum(y.c));}
+let gFilter='All';
+
+function order(size){let o=[1,2];while(o.length<size){const n=o.length*2,r=[];for(const x of o)r.push(x,n+1-x);o=r;}return o;}
+function meetRound(i,j){return Math.floor(Math.log2(i^j));}
+function makeDraw(k){
+  const list=D.ath.filter(a=>catKey(a)===k);const n=list.length;if(!n)return;
+  const size=Math.max(2,1<<Math.ceil(Math.log2(Math.max(n,1))));
+  const ord=order(size),slotOf={};ord.forEach((r,i)=>slotOf[r]=i);
+  const seeded=list.filter(a=>a.seed>0).sort((a,b)=>a.seed-b.seed);
+  const un=list.filter(a=>!(a.seed>0));
+  let best=null,bestCost=Infinity;
+  const clubOf={};for(const a of list)clubOf[a.id]=(a.club||'').trim().toLowerCase();
+  const R=Math.log2(size),tries=size>=32?150:400;
+  for(let t=0;t<tries;t++){
+    const sh=un.slice();for(let i=sh.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[sh[i],sh[j]]=[sh[j],sh[i]];}
+    const slots=Array(size).fill(null);
+    seeded.forEach((a,i)=>slots[slotOf[i+1]]=a.id);
+    sh.forEach((a,i)=>slots[slotOf[seeded.length+i+1]]=a.id);
+    let cost=0;const g={};
+    for(let i=0;i<size;i++){const c=slots[i]&&clubOf[slots[i]];if(c)(g[c]=g[c]||[]).push(i);}
+    for(const c in g){const ix=g[c];for(let x=0;x<ix.length;x++)for(let y=x+1;y<ix.length;y++)cost+=Math.pow(4,R-meetRound(ix[x],ix[y]));}
+    if(cost<bestCost){bestCost=cost;best=slots;if(cost===0)break;}
+  }
+  const rounds=[];for(let s=size/2;s>=1;s/=2)rounds.push(Array.from({length:s},()=>({w:null})));
+  D.draws[k]={slots:best,rounds,size,fmt:fmtNow()};resolve(k);save();
+}
+function fmtNow(){try{return localStorage.getItem('judoFmt')||'ijf';}catch(e){return 'ijf';}}
+function getM(dr,r,i){if(!dr)return null;if(r>=0)return dr.rounds[r]&&dr.rounds[r][i];if(!dr.x)return null;return r===-1?dr.x.rep[i]:r===-2?dr.x.br[i]:null;}
+function eachM(dr,cb){dr.rounds.forEach((rd,r)=>rd.forEach((m,i)=>cb(m,r,i)));if(dr.x){dr.x.rep.forEach((m,i)=>cb(m,-1,i));dr.x.br.forEach((m,i)=>cb(m,-2,i));}}
+function loserSt(dr,r,i){const m=dr.rounds[r][i],[a,b]=players(dr,r,i);
+  if(r===0&&(!a||!b))return{k:'none'};if(!a||!b||!m.w)return{k:'pend'};return{k:'id',id:m.w===a?b:a};}
+function extraSt(dr,r,i){const L=dr.rounds.length;
+  if(r===-1)return [loserSt(dr,L-3,2*i),loserSt(dr,L-3,2*i+1)];
+  const rm=dr.x.rep[i],rs=rm.void?{k:'none'}:rm.w?{k:'id',id:rm.w}:{k:'pend'};
+  return [rs,loserSt(dr,L-2,1-i)];}
+function players(dr,r,i){
+  if(r===0)return [dr.slots[2*i],dr.slots[2*i+1]];
+  if(r>0)return [dr.rounds[r-1][2*i].w,dr.rounds[r-1][2*i+1].w];
+  if(!dr.x)return [null,null];
+  return extraSt(dr,r,i).map(t=>t.k==='id'?t.id:null);
+}
+function resolve(k){
+  const dr=D.draws[k];if(!dr)return;const L=dr.rounds.length;
+  if(dr.fmt==='ijf'&&L>=3&&!dr.x)dr.x={rep:[{w:null},{w:null}],br:[{w:null},{w:null}]};
+  if(dr.x&&L<3)dr.x=null;
+  dr.rounds.forEach((rd,r)=>rd.forEach((m,i)=>{
+    const [a,b]=players(dr,r,i);
+    if(r===0&&a&&!b){m.w=a;m.auto=true;}else if(r===0&&b&&!a){m.w=b;m.auto=true;}
+    else{if(m.auto){m.w=null;m.res=null;m.auto=false;}if(m.w&&m.w!==a&&m.w!==b){m.w=null;m.res=null;}}
+    m.bye=r===0&&(!a||!b);
+  }));
+  if(dr.x)[-1,-2].forEach(r=>[0,1].forEach(i=>{
+    const m=getM(dr,r,i),[A,B]=extraSt(dr,r,i);m.void=false;m.bye=false;
+    if(A.k==='id'&&B.k==='id'){if(m.auto){m.w=null;m.res=null;m.auto=false;}if(m.w&&m.w!==A.id&&m.w!==B.id){m.w=null;m.res=null;}}
+    else if(A.k==='id'&&B.k==='none'){m.w=A.id;m.bye=true;m.auto=true;}
+    else if(B.k==='id'&&A.k==='none'){m.w=B.id;m.bye=true;m.auto=true;}
+    else if(A.k==='none'&&B.k==='none'){m.w=null;m.void=true;m.auto=false;}
+    else if(m.w){m.w=null;m.res=null;m.auto=false;}
+  }));
+  let no=0;const num=m=>{m.no=(m.bye||m.void)?null:++no;};
+  if(dr.x){for(let r=0;r<L-2;r++)dr.rounds[r].forEach(num);dr.x.rep.forEach(num);dr.rounds[L-2].forEach(num);dr.x.br.forEach(num);dr.rounds[L-1].forEach(num);}
+  else dr.rounds.forEach(rd=>rd.forEach(num));
+}
+function setWin(k,r,i,id){
+  const dr=D.draws[k],m=getM(dr,r,i),[a,b]=players(dr,r,i);
+  if(!m||!a||!b||!id||m.bye)return;
+  m.w=m.w===id?null:id;m.res=m.w?{why:'Entered in draw',t:Date.now()}:null;
+  resolve(k);save();renderAll();
+}
+function medals(k){
+  const dr=D.draws[k];if(!dr)return null;
+  const L=dr.rounds.length,f=dr.rounds[L-1][0],[fa,fb]=players(dr,L-1,0);
+  const res={gold:f.w,silver:f.w?(f.w===fa?fb:fa):null,bronze:[]};
+  if(dr.x)dr.x.br.forEach(m=>{if(m.w)res.bronze.push(m.w);});
+  else if(L>=2)for(let i=0;i<2;i++){const m=dr.rounds[L-2][i],[a,b]=players(dr,L-2,i);if(m.w&&a&&b)res.bronze.push(m.w===a?b:a);}
+  if(L===1&&!fb&&fa){res.gold=fa;}
+  return res;
+}
+function rname(r,L){if(r===-1)return 'Repechage';if(r===-2)return 'Bronze medal contest';const left=L-r;return left===1?'Final':left===2?'Semi-final':left===3?'Quarter-final':'Round of '+Math.pow(2,left);}
+function stageInfo(dr){
+  const L=dr.rounds.length;if(L<3)return {hasElim:false,elimDone:true,done:0,total:0};
+  let done=0,total=0;for(let r=0;r<=L-3;r++)dr.rounds[r].forEach(m=>{if(!m.bye){total++;if(m.w)done++;}});
+  return {hasElim:true,elimDone:done===total,done,total};
+}
+
+function renderCats(){
+  const all=cats(),cs=all.filter(c=>gFilter==='All'||c.g===gFilter);
+  const cnt=g=>all.filter(c=>c.g===g).reduce((n,c)=>n+c.list.length,0);
+  let h=`<div class="gf">${['All','Male','Female'].map(g=>`<button class="sm ${gFilter===g?'on':''}" data-g="${g}">${g}${g==='All'?'':' ('+cnt(g)+')'}</button>`).join('')}</div>`;
+  let grp=null;
+  for(const c of cs){const gk=(c.g||'No gender')+' · '+(c.a||'Open');
+    if(gk!==grp){grp=gk;h+=`<div class="gh ${c.g==='Female'?'fe':'ma'}">${esc(gk)}</div>`;}
+    const dr=D.draws[c.k],md=dr&&medals(c.k);
+    h+=`<div class="cat ${c.k===cur?'on':''}" data-k="${esc(c.k)}"><span class="dot ${md&&md.gold?'f':dr?'d':''}"></span><span style="flex:1">${esc(c.c||c.k)}</span><span class="n">${c.list.length}${c.list.length===1?' · walkover':''}</span></div>`;}
+  $('cats').innerHTML=all.length?h:'<div class="hint">Upload the athlete list to see categories.</div>';
+  $('cats').querySelectorAll('.cat').forEach(el=>el.onclick=()=>{cur=el.dataset.k;renderAll();});
+  $('cats').querySelectorAll('[data-g]').forEach(b=>b.onclick=()=>{gFilter=b.dataset.g;renderCats();});
+}
+function report(list){
+  const noG=list.filter(a=>a.gender!=='Male'&&a.gender!=='Female'),noW=list.filter(a=>!a.cat);
+  const single=cats().filter(c=>c.list.length===1);
+  let h='';
+  if(noG.length)h+=`<p><b>${noG.length} without Male/Female:</b> ${noG.slice(0,15).map(a=>esc(a.name)).join(', ')}${noG.length>15?'…':''}</p>`;
+  if(noW.length)h+=`<p><b>${noW.length} without weight:</b> ${noW.slice(0,15).map(a=>esc(a.name)).join(', ')}${noW.length>15?'…':''}</p>`;
+  if(single.length)h+=`<p><b>${single.length} categories with only 1 athlete</b> (gold by walkover): ${single.map(c=>esc(c.k)).join(', ')}</p>`;
+  $('rep').innerHTML=h?'<b>Check before starting:</b>'+h+'<p>Fix these in Excel and upload again, or use the Athletes list below.</p>':'';
+  $('rep').style.display=h?'block':'none';
+}
+function pHTML(id,cls,seedOK){
+  const a=id&&byId(id);
+  if(!a)return `<div class="p ${cls}"><span class="c"></span>${cls.includes('bye')?'BYE':'—'}</div>`;
+  return `<div class="p ${cls}" data-id="${a.id}"><span class="c"></span><div><div class="nm">${esc(a.name)}</div><div class="cl">${esc(a.club)}</div></div>${a.seed>0?`<span class="sd">S${a.seed}</span>`:''}</div>`;
+}
+let editing=null,selSlot=null,edArm=0,lkArm=0;
+function hasResults(dr){let x=false;eachM(dr,m=>{if(m.w&&!m.bye)x=true;});return x;}
+function drawId(dr){const s=dr.slots.map(x=>x||'-').join('|');let h=2166136261;for(let i=0;i<s.length;i++){h^=s.charCodeAt(i);h=Math.imul(h,16777619)>>>0;}return h.toString(36).toUpperCase().padStart(7,'0').slice(-7);}
+function dlog(dr,t){(dr.log=dr.log||[]).push({t:Date.now(),a:t});if(dr.log.length>80)dr.log.shift();}
+function poolOf(dr,p){const q=dr.size>=8?dr.size/4:0;return q?'ABCD'[Math.floor(p/q)]:'';}
+function drawChecks(dr){
+  const out=[],S=dr.slots,size=dr.size,A=i=>S[i]&&byId(S[i]);
+  for(let i=0;i<size;i+=2){const a=A(i),b=A(i+1);if(a&&b&&a.club&&a.club.toLowerCase()===b.club.toLowerCase())out.push({lv:'warn',t:`Same club in first round: ${a.name} v ${b.name} (${a.club})`,p:[i,i+1]});}
+  const pos={};S.forEach((id,i)=>{const a=id&&byId(id);if(a&&a.seed>0)pos[a.seed]=i;});
+  const half=i=>Math.floor(i/(size/2)),qt=i=>Math.floor(i/(size/4));
+  if(pos[1]!=null&&pos[2]!=null&&half(pos[1])===half(pos[2]))out.push({lv:'err',t:'Seed 1 and Seed 2 are in the same half (IJF: opposite halves)'});
+  if(size>=8){const qs=[1,2,3,4].filter(x=>pos[x]!=null).map(x=>qt(pos[x]));if(new Set(qs).size<qs.length)out.push({lv:'err',t:'Two of seeds 1–4 are in the same pool (IJF: one per pool A–D)'});}
+  for(let i=0;i<size;i+=2){const a=A(i),b=A(i+1);if(a&&b&&a.seed>0&&b.seed>0)out.push({lv:'err',t:`Seeds meet in the first round: S${a.seed} v S${b.seed}`,p:[i,i+1]});}
+  const seededNoBye=[];for(let i=0;i<size;i+=2){const a=A(i),b=A(i+1);[[a,b],[b,a]].forEach(([x,y])=>{if(x&&x.seed>0&&y)seededNoBye.push(x);});}
+  const byes=S.filter(x=>!x).length;
+  if(byes&&seededNoBye.length){const nob=seededNoBye.filter(x=>x.seed<=byes);if(nob.length)out.push({lv:'warn',t:'Byes should go to the top seeds first: '+nob.map(x=>'S'+x.seed).join(', ')+' has no bye'});}
+  const seeds=Object.keys(pos).map(Number).sort((a,b)=>a-b);
+  const dup=D.ath.filter(a=>catKey(a)===cur&&a.seed>0).map(a=>a.seed);if(new Set(dup).size<dup.length)out.push({lv:'err',t:'Two athletes have the same seed number'});
+  return out;}
+function editorHTML(k){const dr=D.draws[k],S=dr.slots,ch=drawChecks(dr),bad=new Set();ch.forEach(c=>(c.p||[]).forEach(x=>bad.add(x)));
+  const row=p=>{const a=S[p]&&byId(S[p]);
+    return `<div class="eds ${selSlot===p?'sel':''} ${a?'':'bye'} ${bad.has(p)?'clash':''}" data-p="${p}"><span class="pos">${p+1}</span><span class="enm">${a?esc(a.name):'BYE'}${a&&a.seed>0?` <b class="sd">S${a.seed}</b>`:''}</span><span class="ecl">${a?esc(a.club):''}</span><button class="sm" data-mv="-1" title="Move up">▲</button><button class="sm" data-mv="1" title="Move down">▼</button></div>`;};
+  let g='';for(let i=0;i<S.length;i+=2){const pl=poolOf(dr,i);g+=`<div class="edm">${pl&&i%(dr.size/4)===0?`<div class="pool">Pool ${pl}</div>`:''}<div class="edl">First-round pair ${i/2+1}</div>${row(i)}${row(i+1)}</div>`;}
+  const chk=ch.length?ch.map(c=>`<div class="chk ${c.lv}">${c.lv==='err'?'✖':'⚠'} ${esc(c.t)}</div>`).join(''):'<div class="chk ok">✔ Draw follows the seeding rules · no same-club first-round clash</div>';
+  const log=(dr.log||[]).slice(-6).reverse().map(l=>`<div>${new Date(l.t).toLocaleTimeString()} · ${esc(l.a)}</div>`).join('');
+  return `<div class="edhead"><b>Draw editor</b> · Click a name (or BYE), then click another position to swap them. ▲ ▼ moves one place. Moving a BYE gives that athlete the bye. Change seeds in the Athletes list, then Re-draw.</div>
+   <div class="checks">${chk}</div><div class="edgrid">${g}</div>${log?`<div class="hint" style="margin-top:10px"><b>Edit log</b>${log}</div>`:''}`;}
+function swapSlots(k,a,b){const dr=D.draws[k];if(a===b||a<0||b<0||a>=dr.size||b>=dr.size)return;
+  const t=dr.slots.slice();[t[a],t[b]]=[t[b],t[a]];
+  for(let i=0;i<t.length;i+=2)if(!t[i]&&!t[i+1])return msg('Not allowed: one first-round pair cannot have two BYEs');
+  const nm=x=>{const z=x&&byId(x);return z?z.name:'BYE';};
+  dr.slots=t;resolve(k);dlog(dr,`Swapped ${nm(t[b])} (pos ${a+1}) ↔ ${nm(t[a])} (pos ${b+1})`);save();
+  if(window.SB&&S.link&&S.link.cat===k&&!S.win)SB.autoLoad(true,true);
+  renderAll();}
+function bindEditor(k){
+  $('view').querySelectorAll('.eds').forEach(el=>{const p=+el.dataset.p;
+    el.onclick=e=>{if(e.target.closest('[data-mv]'))return;if(selSlot===null){selSlot=p;renderView();}else if(selSlot===p){selSlot=null;renderView();}else{const a=selSlot;selSlot=null;swapSlots(k,a,p);}};
+    el.querySelectorAll('[data-mv]').forEach(bt=>bt.onclick=()=>{selSlot=null;swapSlots(k,p,p+(+bt.dataset.mv));});});}
+function renderView(){
+  if(cur&&!D.ath.some(a=>catKey(a)===cur))cur=null;
+  if(!cur){if(D.ath.length)$('view').innerHTML='<div class="empty">Pick a weight category on the left.</div>';return;}
+  const list=D.ath.filter(a=>catKey(a)===cur),dr=D.draws[cur];
+  let h=`<div class="tools"><h3>${esc(cur)} <span class="hint">(${list.length} athletes)</span></h3>
+   ${dr&&dr.locked?`<span class="lockchip">🔒 Locked ${new Date(dr.locked).toLocaleString()} · Draw ID ${drawId(dr)}</span>`:dr?`<span class="lockchip draft">Draft · Draw ID ${drawId(dr)}</span>`:''}
+   <button class="pri" id="mk">${dr?'Re-draw':'Make draw'}</button>${dr?`<button id="ed">${editing===cur?'✔ Done editing':'✎ Edit draw / seeding'}</button><button id="lk">${dr.locked?'🔓 Unlock':'🔒 Lock draw'}</button><button id="pr">Print</button><button id="cp">Copy results</button>`:''}</div>`;
+  if(!dr){h+='<div class="empty">Seeds: set a seed number (1, 2, 3, 4…) in the Athletes list below before making the draw. Seed 1 and 2 go to opposite halves, seeds 3–4 to the other quarters, and seeds get the byes. Athletes from the same club are kept apart as far as possible.</div>';}
+  else if(editing===cur){h+=editorHTML(cur);}
+  else{
+    const L=dr.rounds.length,si=stageInfo(dr);
+    const mHTML=(r,i,sub)=>{const m=getM(dr,r,i),[a,b]=players(dr,r,i);
+      const cl=id=>{if(!id)return (r===0||m.bye||m.void)?'bye':'tbd';return m.w?(m.w===id?'win':'lose'):'';};
+      const lab=m.void?'No contest':m.bye?'Bye':'Match '+m.no;
+      return `<div class="m${r<0?' xm':''}" data-r="${r}" data-i="${i}"><div class="mn"><span>${lab}${sub?' · '+esc(sub):''}</span><span>${m.void?'':m.bye?'auto':m.w?'done':(a&&b?'<button class="sm scb" data-sc="1">▶ Score</button>':'')}</span></div>${pHTML(a,'w '+cl(a))}${pHTML(b,'b '+cl(b))}</div>`;};
+    if(si.hasElim)h+=`<div class="stagebar ${si.elimDone?'ok':''}">${si.elimDone?'✔ Elimination complete · Final block is ready to print':'Elimination: '+si.done+' / '+si.total+' matches done'}</div>`;
+    h+='<div class="bracket">';
+    dr.rounds.forEach((rd,r)=>{
+      h+=`<div class="round"><div class="rname">${rname(r,L)}</div><div class="rbody">`+rd.map((m,i)=>mHTML(r,i)).join('')+'</div></div>';
+    });
+    h+='</div>';
+    if(dr.x)h+=`<div class="fblock"><div class="fbcol"><div class="rname">Repechage</div>${mHTML(-1,0,'Pool A/B: QF 1 loser vs QF 2 loser')}${mHTML(-1,1,'Pool C/D: QF 3 loser vs QF 4 loser')}</div>
+      <div class="fbcol"><div class="rname">Bronze medal contests</div>${mHTML(-2,0,'Repechage A/B winner vs SF 2 loser')}${mHTML(-2,1,'Repechage C/D winner vs SF 1 loser')}</div></div>`;
+    const md=medals(cur),nm=id=>{const a=id&&byId(id);return a?esc(a.name)+'<div class="hint">'+esc(a.club)+'</div>':'—';};
+    h+=`<div class="medals"><div class="md g"><b>GOLD</b>${nm(md.gold)}</div><div class="md s"><b>SILVER</b>${nm(md.silver)}</div>
+      <div class="md br"><b>BRONZE</b>${nm(md.bronze[0])}</div><div class="md br"><b>BRONZE</b>${nm(md.bronze[1])}</div></div>
+      <p class="hint" style="margin-top:8px">Click a name to give the win; click again to undo. White (top) is called first. ${dr.x?'IJF format: quarter-final losers go to repechage; repechage winners meet the semi-final losers of the other half for the two bronze medals.':'Simple knockout: both semi-final losers get bronze.'}</p>`;
+  }
+  $('view').innerHTML=h;
+  $('mk').onclick=()=>{if(dr&&dr.locked)return msg('Draw is locked. Unlock it first (double-click Unlock).');if(dr&&D.draws[cur].rounds.some(rd=>rd.some(m=>m.w&&!m.bye))&&!reDrawOK())return;editing=null;makeDraw(cur);renderAll();if(window.SB&&S.link&&S.link.cat===cur)SB.autoLoad(true,true);msg('Draw made for '+cur);};
+  if(dr){
+    $('ed').onclick=()=>{
+      if(editing===cur){editing=null;selSlot=null;renderView();msg('Draw saved');return;}
+      if(dr.locked)return msg('Draw is locked. Unlock it first.');
+      if(hasResults(dr)){if(Date.now()-edArm>4000){edArm=Date.now();return msg('⚠ Results already entered in this category. Click Edit again within 4 seconds: editing clears all its results.');}
+        backup('Before editing draw '+cur);eachM(dr,m=>{if(!m.bye){m.w=null;m.res=null;}});resolve(cur);dlog(dr,'Results cleared to edit the draw');save();}
+      editing=cur;selSlot=null;renderView();};
+    $('lk').onclick=()=>{
+      if(dr.locked){if(Date.now()-lkArm>4000){lkArm=Date.now();return msg('Click Unlock again within 4 seconds to unlock this draw.');}dr.locked=null;dlog(dr,'Draw unlocked');save();renderView();return msg('Draw unlocked');}
+      editing=null;dr.locked=Date.now();dlog(dr,'Draw locked · ID '+drawId(dr));save();renderAll();msg('Draw locked. It cannot be changed until unlocked.');};
+    if(editing===cur)bindEditor(cur);
+    $('pr').onclick=()=>openPrint('this');
+    $('cp').onclick=()=>copyText(resultsText([cur]));
+    $('view').querySelectorAll('[data-sc]').forEach(bt=>bt.onclick=()=>{const el=bt.closest('.m');window.SB&&window.SB.load(info(cur,+el.dataset.r,+el.dataset.i));});
+    $('view').querySelectorAll('.m').forEach(el=>el.querySelectorAll('.p[data-id]').forEach(p=>p.onclick=()=>setWin(cur,+el.dataset.r,+el.dataset.i,p.dataset.id)));
+  }
+}
+let reDrawArm=0;function reDrawOK(){if(Date.now()-reDrawArm<4000)return true;reDrawArm=Date.now();msg('Results already entered. Click Re-draw again within 4 seconds to throw them away.');return false;}
+function renderAth(){
+  $('athCount').textContent=D.ath.length;
+  const rows=D.ath.slice().sort((a,b)=>catKey(a).localeCompare(catKey(b),undefined,{numeric:true})||a.name.localeCompare(b.name));
+  $('athT').innerHTML=rows.map(a=>`<tr><td>${esc(a.name)}</td><td>${esc(a.club)}</td><td>${esc(catKey(a))}</td><td><input type="number" min="0" value="${a.seed||''}" data-s="${a.id}"></td><td><button class="sm warn" data-d="${a.id}">Remove</button></td></tr>`).join('');
+  $('athT').querySelectorAll('[data-s]').forEach(i=>i.onchange=()=>{byId(i.dataset.s).seed=parseInt(i.value)||0;save();msg('Seed saved. Click Make draw / Re-draw to use it.');});
+  $('athT').querySelectorAll('[data-d]').forEach(b=>b.onclick=()=>{const a=byId(b.dataset.d);D.ath=D.ath.filter(x=>x.id!==a.id);const ck=catKey(a);if(D.ath.some(x=>catKey(x)===ck))makeDraw(ck);else delete D.draws[ck];save();renderAll();window.SB&&SB.autoLoad(false,true);msg(a.name+' removed. New draw made for '+catKey(a)+'.');});
+}
+function renderAll(){renderCats();renderView();renderAth();}
+
+$('addA').onclick=()=>{
+  const a=normAth({id:uid(),name:$('aN').value.trim(),club:$('aC').value.trim(),gender:$('aG').value.trim(),age:$('aA').value.trim(),cat:$('aW').value.trim(),bw:'',seed:parseInt($('aS').value)||0});
+  if(!a.name)return msg('Enter a name');D.ath.push(a);makeDraw(catKey(a));save();['aN','aS'].forEach(i=>$(i).value='');renderAll();msg(a.name+' added to '+catKey(a));
+};
+$('demo').onclick=()=>{if(D.ath.length&&Date.now()-demoArm>4000){demoArm=Date.now();return msg('This replaces the current athletes and draws. Click Load demo data again within 4 seconds to continue.');}importList(demoList());};
+$('bkOpen').onclick=()=>{const p=$('bkPanel');p.open=true;p.scrollIntoView({behavior:'smooth'});};
+let clearArm=0;$('clear').onclick=()=>{if(Date.now()-clearArm>4000){clearArm=Date.now();return msg('Click Clear all again within 4 seconds to delete all athletes and draws.');}backup('Before Clear all');D={ath:[],draws:{}};cur=null;save();renderAll();window.SB&&SB.reset&&SB.reset();msg('Cleared');};
+$('genAll').onclick=()=>{let n=0;for(const c of cats())if(!D.draws[c.k]){makeDraw(c.k);n++;}renderAll();window.SB&&SB.autoLoad(false,true);msg(n?n+' new draws made (existing draws kept)':'All categories already have draws');};
+
+function download(name,text){
+  try{const b=new Blob(['﻿'+text],{type:'text/csv'});const u=URL.createObjectURL(b);const a=document.createElement('a');a.href=u;a.download=name;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(u),2000);msg('Downloaded '+name+' (if nothing happened, open this file in Chrome on your laptop)');}
+  catch(e){copyText(text);}
+}
+function copyText(t){try{navigator.clipboard.writeText(t).then(()=>msg('Copied. Paste into Excel or WhatsApp.'),()=>msg('Copy blocked by the browser'));}catch(e){msg('Copy blocked by the browser');}}
+$('tpl').onclick=()=>download('judo_athletes_template.csv','Name,Club/District,Gender,Age Group,Weight Category,Body Weight,Seed\nRohan Patel,Ahmedabad,Male,Senior,-73 kg,,1\nAmit Desai,Surat,Male,Senior,-73 kg,,2\nKaran Shah,Vadodara,Male,Senior,,71.4,\nPriya Joshi,Rajkot,Female,Senior,-57 kg,,\nNeha Patel,Surat,Female,Cadet,,46.2,\n');
+const nmc=id=>{const a=id&&byId(id);return a?a.name+(a.club?' ('+a.club+')':''):'';};
+function resultsText(keys){return keys.map(k=>{const m=medals(k);if(!m)return k+': no draw';return `${k}\nGold: ${nmc(m.gold)||'-'}\nSilver: ${nmc(m.silver)||'-'}\nBronze: ${nmc(m.bronze[0])||'-'}\nBronze: ${nmc(m.bronze[1])||'-'}`;}).join('\n\n');}
+$('resCsv').onclick=()=>{
+  const q=s=>'"'+String(s||'').replace(/"/g,'""')+'"';
+  const lines=['Category,Gold,Silver,Bronze,Bronze'];
+  for(const c of cats()){const m=medals(c.k);lines.push([c.k,m&&nmc(m.gold),m&&nmc(m.silver),m&&nmc(m.bronze[0]),m&&nmc(m.bronze[1])].map(q).join(','));}
+  download('judo_results_'+(MATCFG().mat||'mat').replace(/\W+/g,'')+'.csv',lines.join('\n'));
+};
+renderAll();
+
+function backup(label){
+  if(window.READONLY)return;
+  try{const L=JSON.parse(localStorage.getItem('judoBackups')||'[]');
+    L.unshift({t:Date.now(),label:label||'Auto backup',draw:localStorage.getItem('judoDraw'),sb:localStorage.getItem('judoSB2'),mat:localStorage.getItem('judoMat')});
+    while(L.length>12)L.pop();
+    for(;;){try{localStorage.setItem('judoBackups',JSON.stringify(L));break;}catch(e){if(L.length<=2)break;L.pop();}}
+  }catch(e){}
+  if($('bkList'))renderBk();
+}
+let lastBk='';setInterval(()=>{let d='';try{d=localStorage.getItem('judoDraw')||'';}catch(e){}if(d&&d!==lastBk&&D.ath.length){lastBk=d;backup('Auto backup (every 3 min)');}},180000);
+function restoreData(o){
+  if(!o||!o.draw)return msg('This is not a judo system backup file');
+  try{localStorage.setItem('judoDraw',typeof o.draw==='string'?o.draw:JSON.stringify(o.draw));
+    if(o.sb)localStorage.setItem('judoSB2',typeof o.sb==='string'?o.sb:JSON.stringify(o.sb));
+    if(o.mat)localStorage.setItem('judoMat',typeof o.mat==='string'?o.mat:JSON.stringify(o.mat));}catch(e){return msg('Restore failed: '+e.message);}
+  location.reload();
+}
+function renderBk(){
+  let L=[];try{L=JSON.parse(localStorage.getItem('judoBackups')||'[]');}catch(e){}
+  $('bkList').innerHTML=L.length?L.map((b,i)=>`<div class="bk"><span>${new Date(b.t).toLocaleString()}</span><span class="hint" style="flex:1">${esc(b.label)}</span><button class="sm" data-bk="${i}">Restore</button></div>`).join(''):'<div class="hint">No backups yet. One is saved after every match result and every 3 minutes.</div>';
+  $('bkList').querySelectorAll('[data-bk]').forEach(bt=>bt.onclick=()=>{
+    if(bt.dataset.arm!=='1'){bt.dataset.arm='1';bt.textContent='Click again to restore';setTimeout(()=>{bt.dataset.arm='';bt.textContent='Restore';},4000);return;}
+    restoreData(L[+bt.dataset.bk]);});
+}
+$('bkNow').onclick=()=>{backup('Manual backup');msg('Backup saved in this browser');};
+$('bkFile').onclick=()=>{
+  let o={};try{o={app:'judo-system',saved:new Date().toISOString(),draw:localStorage.getItem('judoDraw'),sb:localStorage.getItem('judoSB2'),mat:localStorage.getItem('judoMat')};}catch(e){}
+  const name='judo_backup_'+(MATCFG().mat||'mat').replace(/\W+/g,'')+'_'+new Date().toISOString().slice(0,16).replace(/[:T]/g,'-')+'.json';
+  try{const b=new Blob([JSON.stringify(o)],{type:'application/json'}),u=URL.createObjectURL(b),a=document.createElement('a');a.href=u;a.download=name;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(u),2000);msg('Backup file downloaded: '+name);}catch(e){msg('Download blocked here. Open the system from its website link.');}
+};
+$('bkRestore').onchange=async e=>{const f=e.target.files[0];if(!f)return;try{restoreData(JSON.parse(await f.text()));}catch(x){msg('Could not read that backup file');}e.target.value='';};
+renderBk();
+
+function rankRows(){
+  const out=[],tally={},log=[];
+  const T=(club)=>tally[club||'(none)']=tally[club||'(none)']||{g:0,s:0,b:0};
+  for(const c of cats()){const dr=D.draws[c.k];if(!dr)continue;const L=dr.rounds.length,rank={},won={},isI=!!dr.x;
+    const played=[];eachM(dr,(m,r,i)=>{const [a,b]=players(dr,r,i);if(m.bye||m.void||!a||!b||!m.w)return;played.push({m,r,i,a,b});});
+    played.sort((x,y)=>x.m.no-y.m.no);
+    for(const {m,r,a,b} of played){const lo=m.w===a?b:a;won[m.w]=(won[m.w]||0)+1;
+      let rk;if(r===-1)rk=7;else if(r===-2)rk=5;else if(r===L-1)rk=2;else if(r===L-2)rk=isI?null:3;else if(isI&&r===L-3)rk=7;else rk=Math.pow(2,L-1-r)+1;
+      if(rk!==null)rank[lo]=rk;
+      if(r===-2)rank[m.w]=3;if(r===L-1)rank[m.w]=1;
+      const A=byId(a),B=byId(b),W=byId(m.w);
+      log.push([m.no,c.k,rname(r,L),A?A.name:'',A?A.club:'',B?B.name:'',B?B.club:'',W?W.name:'',(m.res&&m.res.why)||'',(m.res&&m.res.score)||'',(m.res&&m.res.time)||'']);}
+    const f=dr.rounds[L-1][0];if(f.w&&!rank[f.w])rank[f.w]=1;
+    if(isI)dr.x.br.forEach(m=>{if(m.w&&m.bye)rank[m.w]=3;});
+    for(const a of c.list){const rk=rank[a.id]||'';
+      if(rk===1)T(a.club).g++;else if(rk===2)T(a.club).s++;else if(rk===3)T(a.club).b++;
+      out.push({cat:c.k,g:a.gender,age:a.age,w:a.cat,rank:rk,name:a.name,club:a.club,won:won[a.id]||0,seed:a.seed||''});}
+  }
+  return {out,tally,log};
+}
+function exportExcel(){
+  const {out,tally,log}=rankRows();
+  const medal=[['Category','Gold','District','Silver','District','Bronze','District','Bronze','District']];
+  for(const c of cats()){const m=medals(c.k);const A=id=>{const a=id&&byId(id);return a?[a.name,a.club]:['',''];};
+    medal.push([c.k,...A(m&&m.gold),...A(m&&m.silver),...A(m&&m.bronze[0]),...A(m&&m.bronze[1])]);}
+  const rk=[['Category','Gender','Age group','Weight','Rank','Medal','Name','District / Club','Matches won','Seed']];
+  const md=r=>r===1?'Gold':r===2?'Silver':r===3?'Bronze':'';
+  out.forEach(x=>rk.push([x.cat,x.g,x.age,x.w,x.rank===''?'In progress':x.rank,md(x.rank),x.name,x.club,x.won,x.seed]));
+  const ty=[['District / Club','Gold','Silver','Bronze','Total']];
+  Object.entries(tally).filter(([k,v])=>v.g+v.s+v.b).sort((a,b)=>b[1].g-a[1].g||b[1].s-a[1].s||b[1].b-a[1].b).forEach(([k,v])=>ty.push([k,v.g,v.s,v.b,v.g+v.s+v.b]));
+  const lg=[['Match','Category','Round','White','District','Blue','District','Winner','Result','Score (I-W-Y)','Time']].concat(log.sort((a,b)=>a[1].localeCompare(b[1])||a[0]-b[0]));
+  const pt=[['Name','District / Club','Gender','Age group','Weight category','Seed']].concat(D.ath.map(a=>[a.name,a.club,a.gender,a.age,a.cat,a.seed||'']));
+  const file='judo_results_'+(MATCFG().mat||'mat').replace(/\W+/g,'');
+  if(window.XLSX){
+    try{const wb=XLSX.utils.book_new();
+      const add=(rows,name,w)=>{const ws=XLSX.utils.aoa_to_sheet(rows);ws['!cols']=w.map(x=>({wch:x}));XLSX.utils.book_append_sheet(wb,ws,name);};
+      add(medal,'Medal Winners',[26,22,14,22,14,22,14,22,14]);add(rk,'Rank List',[26,8,10,9,11,8,24,16,8,6]);
+      add(ty,'District Tally',[22,7,7,7,7]);add(lg,'Match Log',[7,26,13,22,13,22,13,22,26,20,9]);add(pt,'All Participants',[24,16,8,10,10,6]);
+      XLSX.writeFile(wb,file+'.xlsx');msg('Excel downloaded: '+file+'.xlsx (medals, ranks, district tally, match log, participants)');return;}
+    catch(e){}
+  }
+  const q=v=>'"'+String(v??'').replace(/"/g,'""')+'"';
+  download(file+'_ranklist.csv',rk.map(r=>r.map(q).join(',')).join('\n'));
+}
+$('resCsv').onclick=exportExcel;
+
+function pAth(id){const a=id&&byId(id);return a?`<div class="pn">${esc(a.name)}${a.seed>0?' <sup>S'+a.seed+'</sup>':''}</div><div class="pc">${esc(a.club)}</div>`:'';}
+function pBox(dr,r,i,sub){const m=getM(dr,r,i),[a,b]=players(dr,r,i);
+  const side=(id,c)=>{const st=m.w&&id&&!m.bye?(m.w===id?' won':' lost'):'';
+    const e=!id?((r===0||m.bye||m.void)?'<div class="pn bye">BYE</div>':'<div class="pn">&nbsp;</div><div class="pc">&nbsp;</div>'):pAth(id);
+    return `<div class="ps ${c}${st}">${e}</div>`;};
+  const lab=m.void?'No contest':m.bye?'Bye':'Match '+m.no;
+  return `<div class="pbox"><div class="pl"><span>${lab}</span>${sub?`<span>${esc(sub)}</span>`:''}</div>${side(a,'sw')}${side(b,'sb')}</div>`;}
+function pHead(k,title){const ev=(typeof S!=='undefined'&&S&&S.ev)||'Judo Championship',n=D.ath.filter(a=>catKey(a)===k).length;
+  return `<div class="phd"><div><div class="pev">${esc(ev)}</div><div class="pmt">${esc(MATCFG().mat||'')} · ${n} athletes</div></div><div class="pti"><div class="pcat">${esc(k)}</div><div class="pst">${esc(title)}</div></div><div class="pdt">${(()=>{const dr=D.draws[k];if(!dr)return '';return dr.locked?'<b>DRAW LOCKED</b><br>'+new Date(dr.locked).toLocaleString()+'<br>Draw ID '+drawId(dr):'<b style="color:#b45309">DRAFT · not locked</b><br>Draw ID '+drawId(dr);})()}<br>Printed ${new Date().toLocaleString()}</div></div>`;}
+const pNote='<div class="pnote">Seeding per IJF placement: Seed 1 → Pool A, Seed 2 → Pool C, Seed 3 → Pool D, Seed 4 → Pool B, Seeds 5–8 one per pool · byes to top seeds first · athletes of the same club/district separated as far as possible. Format: IJF repechage (QF losers) with two bronze medal contests, or simple knockout where selected.</div>';
+const pFoot=pNote+'<div class="pft"><span>Table official: ______________________</span><span>Referee: ______________________</span><span>Tournament director: ______________________</span></div>';
+function pMedal(k){const md=medals(k),A=id=>{const a=id&&byId(id);return a?esc(a.name)+' <span class="pc">'+esc(a.club)+'</span>':'';};
+  return `<table class="pmd"><tr><th>Gold</th><th>Silver</th><th>Bronze</th><th>Bronze</th></tr><tr><td>${A(md&&md.gold)}</td><td>${A(md&&md.silver)}</td><td>${A(md&&md.bronze[0])}</td><td>${A(md&&md.bronze[1])}</td></tr></table>`;}
+function pageElim(k){const dr=D.draws[k];const L=dr.rounds.length;if(L<3)return '';const E=L-3,first=dr.rounds[0].length,parts=Math.max(1,first/8);
+  const names=parts===2?['Pools A–B (top half)','Pools C–D (bottom half)']:parts===4?['Pool A','Pool B','Pool C','Pool D']:Array.from({length:parts},(_,x)=>'Part '+(x+1));
+  let out='';
+  for(let h=0;h<parts;h++){let cols='';
+    for(let r=0;r<=E;r++){const len=dr.rounds[r].length;if(len<parts)continue;const per=len/parts,idx=[];for(let i=h*per;i<(h+1)*per;i++)idx.push(i);
+      cols+=`<div class="pcol"><div class="prn">${rname(r,L)}</div><div class="pcb">${idx.map(i=>pBox(dr,r,i)).join('')}</div></div>`;}
+    out+=`<div class="ppage">${pHead(k,'Stage 1 · Elimination up to Quarter-final'+(parts>1?' · '+names[h]:''))}<div class="pbr">${cols}</div>${pFoot}</div>`;}
+  return out;}
+function pageFinal(k){const dr=D.draws[k];const L=dr.rounds.length;let grid='',t;
+  const col=(title,boxes)=>`<div class="pcol"><div class="prn">${title}</div><div class="pcb">${boxes}</div></div>`;
+  if(dr.x){t='Stage 2 · Final block: Repechage · Semi-finals · Bronze medal contests · Final';
+    grid=col('Repechage',pBox(dr,-1,0,'QF1 loser v QF2 loser')+pBox(dr,-1,1,'QF3 loser v QF4 loser'))+col('Semi-final',pBox(dr,L-2,0)+pBox(dr,L-2,1))+col('Bronze medal contests',pBox(dr,-2,0,'Rep. A/B winner v SF2 loser')+pBox(dr,-2,1,'Rep. C/D winner v SF1 loser'))+col('Final',pBox(dr,L-1,0));}
+  else{t=L>=3?'Stage 2 · Semi-finals · Final':'Pool draw · all contests';for(let r=Math.max(0,L-2);r<L;r++)grid+=col(rname(r,L),dr.rounds[r].map((m,i)=>pBox(dr,r,i)).join(''));}
+  return `<div class="ppage">${pHead(k,t)}<div class="pfb">${grid}</div>${pMedal(k)}${pFoot}</div>`;}
+function pageRes(k){const rows=rankRows().out.filter(x=>x.cat===k).sort((a,b)=>(a.rank||99)-(b.rank||99)||a.name.localeCompare(b.name));
+  return `<div class="ppage">${pHead(k,'Results · Medals and rank list')}${pMedal(k)}<table class="pmd prk"><tr><th>Rank</th><th>Name</th><th>District / Club</th><th>Matches won</th></tr>${rows.map(x=>`<tr><td>${x.rank||'–'}</td><td>${esc(x.name)}</td><td>${esc(x.club)}</td><td>${x.won}</td></tr>`).join('')}</table><div style="flex:1"></div>${pFoot}</div>`;}
+function openPrint(scope){const p=$('prPanel');p.style.display='block';$('prScope').value=scope||'this';
+  const dr=cur&&D.draws[cur];if(dr){const si=stageInfo(dr);$('prStage').value=si.hasElim&&!si.elimDone?'elim':'final';}
+  p.scrollIntoView({behavior:'smooth',block:'start'});}
+$('prAll').onclick=()=>openPrint(cur?'this':'all');$('prX').onclick=()=>{$('prPanel').style.display='none';};
+$('prGo').onclick=()=>{
+  const st=$('prStage').value,sc=$('prScope').value;
+  let keys=sc==='this'?(cur?[cur]:[]):cats().filter(c=>sc==='all'||c.g===sc).map(c=>c.k);
+  keys=keys.filter(k=>D.draws[k]);if(!keys.length)return msg('No draw to print. Pick a category or make the draws first.');
+  let html='',skipped=0;
+  for(const k of keys){const dr=D.draws[k],L=dr.rounds.length;
+    if(st==='elim'){const e=pageElim(k);if(!e){skipped++;continue;}html+=e;}
+    else if(st==='final')html+=pageFinal(k);
+    else if(st==='full')html+=pageElim(k)+pageFinal(k);
+    else html+=pageRes(k);}
+  if(!html)return msg('These categories are small (4 or fewer athletes) and have no elimination stage. Print "Final block" instead.');
+  let pa=document.getElementById('printArea');if(!pa){pa=document.createElement('div');pa.id='printArea';document.body.appendChild(pa);}
+  pa.innerHTML=html;
+  if(skipped)msg(skipped+' small categories have no elimination stage; print them with "Final block".');
+  try{window.print();}catch(e){msg('Printing works when the system is opened from its website link in Chrome.');}
+};
+
+function info(k,r,i){const dr=D.draws[k],m=getM(dr,r,i),[a,b]=players(dr,r,i);return {cat:k,r,i,no:m.no,a:byId(a),b:byId(b),round:rname(r,dr.rounds.length)};}
+window.DR={
+  setResult(l,id,info){const dr=D.draws[l.cat];const m=getM(dr,l.r,l.i);if(!m)return false;const [a,b]=players(dr,l.r,l.i);if(id!==a&&id!==b)return false;m.w=id;m.res=Object.assign({t:Date.now()},info||{});resolve(l.cat);save();renderAll();backup('After match '+m.no+' · '+l.cat);return true;},
+  clearResult(l){const dr=D.draws[l.cat];const m=getM(dr,l.r,l.i);if(!m)return;m.w=null;m.res=null;resolve(l.cat);save();renderAll();},
+  pending(l){const dr=l&&D.draws[l.cat];const m=getM(dr,l.r,l.i);if(!m||m.w)return false;const [a,b]=players(dr,l.r,l.i);return (a===l.w&&b===l.b)||(a===l.b&&b===l.w);},
+  next(k,skip){const ks=k?[k].concat(Object.keys(D.draws).filter(x=>x!==k)):Object.keys(D.draws);
+    for(const c of ks){const dr=D.draws[c];if(!dr)continue;let best=null;
+      eachM(dr,(m,r,i)=>{const [a,b]=players(dr,r,i);if(skip&&skip.cat===c&&skip.r===r&&skip.i===i)return;if(a&&b&&!m.w&&!m.bye&&!m.void&&(!best||m.no<best.no))best={r,i,no:m.no};});
+      if(best)return info(c,best.r,best.i);}
+    return null;}
+};
+
+})();
+
+const $=id=>document.getElementById(id);
+const TV=location.hash==='#display';
+const opp=p=>p==='w'?'b':'w';
+function player(){return {n:'',f:'',c:'',i:0,wa:0,y:0,s:0,h:false};}
+function fresh(k){
+  return {dur:k?k.dur:240,yuko:k?k.yuko:true,cat:k?k.cat:'',mat:k?k.mat:'Mat 1',
+    match:k?String((parseInt(k.match)||0)+1):'1',ev:k?k.ev:'State Judo Championship',
+    p:{w:player(),b:player()},ms:(k?k.dur:240)*1000,gs:false,run:false,osa:null,oms:0,oRun:false,win:null,why:''};
+}
+let S=fresh(),H=[];
+function load(){try{const s=JSON.parse(localStorage.getItem('judoSB2'));if(s&&s.p){S=s;}}catch(e){}}
+load(); if(!TV){S.run=false;S.oRun=false;}
+let bc=null; try{bc=new BroadcastChannel('judoSB2');}catch(e){}
+function publish(){if(window.READONLY&&!TV)return;const j=JSON.stringify(S);try{localStorage.setItem('judoSB2',j);}catch(e){} try{bc&&bc.postMessage(j);}catch(e){}}
+
+function cards(P){if(P.h)return '<div class="card red"></div>';let h='';for(let i=0;i<P.s;i++)h+='<div class="card"></div>';return h;}
+function nameOf(p){return S.p[p].n||(p==='w'?'White':'Blue');}
+function fmt(ms,up){const s=up?Math.floor(ms/1000):Math.ceil(ms/1000);return Math.floor(s/60)+':'+String(s%60).padStart(2,'0');}
+function renderClock(){
+  $('time').textContent=fmt(S.ms,S.gs);
+  const c=$('clock');c.classList.toggle('run',S.run);c.classList.toggle('gsm',S.gs);
+  const o=$('osae');
+  if(S.osa){o.classList.add('on');const t=S.oms/1000,col=S.osa==='w'?'#ffffff':'#3d7bff';
+    $('otime').textContent=Math.floor(t);$('otime').style.color=col;
+    $('ofill').style.width=Math.min(t/20,1)*100+'%';$('ofill').style.background=col;
+    $('olab').textContent=(S.oRun?'OSAEKOMI':'SONO-MAMA')+' · '+nameOf(S.osa).toUpperCase();
+  }else o.classList.remove('on');
+}
+function render(){
+  for(const p of ['w','b']){const P=S.p[p];
+    $('n'+p).textContent=nameOf(p);$('f'+p).textContent=P.f||'';$('c'+p).textContent=P.c||'';
+    $('i'+p).textContent=P.i;$('w'+p).textContent=P.wa;$('y'+p).textContent=P.y;$('s'+p).innerHTML=cards(P);
+    $('r'+p).classList.toggle('winner',S.win===p);$('r'+p).classList.toggle('hasipp',!!P.i);}
+  $('board').classList.toggle('noyuko',!S.yuko);
+  $('tEvent').textContent=S.ev;$('tCat').textContent=S.cat;$('tMat').textContent=S.mat+(S.match?' · Match '+S.match:'');
+  const wo=$('winOv');
+  if(S.win&&S.showWin){const P=S.p[S.win],O=S.p[S.win==='w'?'b':'w'],fin=/·\s*Final$/i.test(S.cat||''),brz=/Bronze medal contest$/i.test(S.cat||'');
+    wo.className='on '+S.win+(fin?' gold':brz?' bronze':'');
+    $('winCat').textContent=(S.cat||'')+(S.mat?' · '+S.mat:'');
+    $('winLab').textContent=fin?'GOLD MEDAL':brz?'BRONZE MEDAL':'WINNER';
+    $('winNm').textContent=(P.f?P.f+' ':'')+(P.n||(S.win==='w'?'White':'Blue'));
+    $('winClub').textContent=P.club||P.c||'';
+    $('winWhy').textContent=S.why||'';
+    const sc=q=>'I '+q.i+'  W '+q.wa+(S.yuko?'  Y '+q.y:'')+(q.h?'  HSK':q.s?'  S '+q.s:'');
+    $('winSc').textContent=(P.n||'')+'  '+sc(P)+'   vs   '+(O.n||'')+'  '+sc(O);
+  }else wo.className='';
+  $('res').textContent=S.win?(nameOf(S.win)+' wins · '+S.why):(S.why||'');
+  renderClock();
+  if(!TV)publish();
+}
+
+if(TV){
+  document.body.classList.add('tv');
+  if(bc)bc.onmessage=e=>{try{S=JSON.parse(e.data);render();}catch(x){}};
+  window.addEventListener('storage',e=>{if(e.key==='judoSB2'&&e.newValue){try{S=JSON.parse(e.newValue);render();}catch(x){}}});
+  const hint=document.createElement('div');hint.id='fsHint';
+  hint.innerHTML='<b>TV MODE</b><br>Click once anywhere on this screen for full screen<br><small>(or press F11)</small>';
+  document.body.appendChild(hint);
+  const isFull=()=>!!document.fullscreenElement||(Math.abs(window.innerHeight-screen.height)<3&&Math.abs(window.innerWidth-screen.width)<3);
+  const upd=()=>{hint.style.display=isFull()?'none':'flex';};
+  document.addEventListener('click',()=>{try{const r=document.documentElement.requestFullscreen();if(r&&r.catch)r.catch(()=>{});}catch(e){}});
+  document.addEventListener('fullscreenchange',upd);window.addEventListener('resize',upd);
+  const beat=()=>{try{localStorage.setItem('judoTVping',String(Date.now()));}catch(e){}upd();};
+  beat();setInterval(beat,1500);
+  window.addEventListener('beforeunload',()=>{try{localStorage.setItem('judoTVping','0');}catch(e){}});
+  render();
+} else {
+  let ac=null;
+  const audio=()=>{try{ac=ac||new (window.AudioContext||window.webkitAudioContext)();if(ac.state==='suspended')ac.resume();}catch(e){}};
+  const buzz=()=>{try{if(!ac)return;const o=ac.createOscillator(),g=ac.createGain();o.type='square';o.frequency.value=420;g.gain.value=.15;o.connect(g);g.connect(ac.destination);o.start();o.stop(ac.currentTime+1.2);}catch(e){}};
+  let msgT; const msg=t=>{$('msg').textContent=t;clearTimeout(msgT);msgT=setTimeout(()=>$('msg').textContent='',4000);};
+  const snap=()=>{H.push(JSON.stringify(S));if(H.length>80)H.shift();};
+  const undo=()=>{if(!H.length)return msg('Nothing to undo');S=JSON.parse(H.pop());S.run=false;S.oRun=false;if(S.link&&!S.win&&window.DR)DR.clearResult(S.link);fill();render();};
+  const finish=(p,why)=>{S.win=p;S.why=why;S.showWin=true;S.run=false;S.osa=null;S.oRun=false;buzz();render();
+    if(S.link&&window.DR){const sc=q=>q.i+'-'+q.wa+'-'+q.y+(q.s?' ('+q.s+'S)':'');const ok=DR.setResult(S.link,p==='w'?S.link.w:S.link.b,{why:S.why,score:'W '+sc(S.p.w)+' / B '+sc(S.p.b),gs:S.gs,time:S.gs?'GS '+fmt(S.ms,true):fmt(S.dur*1000-S.ms,true)});msg(ok?'Result saved to the draw':'Could not save to draw (draw was changed)');
+      if(ok)msg('Result saved · Winner is on the TV · press Esc to return to the scoreboard');}};
+  function closeWin(){
+    if(!(S.win&&S.showWin))return false;
+    S.showWin=false;render();
+    if(S.link&&$('fAuto').checked){const lk=JSON.stringify(S.link);
+      setTimeout(()=>{if(!S.win||S.showWin||JSON.stringify(S.link)!==lk)return;const x=DR.next(S.link.cat);if(x){x.auto=true;SB.load(x);}else msg('All matches in the draw are finished');},5000);
+      msg('TV back to scoreboard · next match loads in 5 sec');}
+    else msg('TV back to scoreboard');
+    return true;}
+
+  function add(p,t,noSnap){
+    if(S.win)return msg('Match is over. Undo (Z) or Next match (N).');
+    if(!noSnap)snap();const P=S.p[p];
+    if(t==='i'){P.i=1;return finish(p,'Ippon');}
+    if(t==='w'){P.wa++;if(P.wa>=2)return finish(p,'Waza-ari awasete ippon');if(S.gs)return finish(p,'Waza-ari (golden score)');}
+    if(t==='y'){if(!S.yuko)return msg('Yuko is switched off');P.y++;if(S.gs)return finish(p,'Yuko (golden score)');}
+    if(t==='s'){P.s++;if(P.s>=3){P.h=true;return finish(opp(p),'Hansoku-make to '+nameOf(p)+' (3 shido)');}}
+    if(t==='h'){P.h=true;return finish(opp(p),'Hansoku-make to '+nameOf(p));}
+    render();
+  }
+  function sub(p,t){snap();const P=S.p[p];
+    if(t==='i')P.i=0;if(t==='w')P.wa=Math.max(0,P.wa-1);if(t==='y')P.y=Math.max(0,P.y-1);
+    if(t==='s'){P.s=Math.max(0,P.s-1);P.h=false;}
+    const hadWin=S.win;S.win=null;S.why='';if(hadWin&&S.link&&window.DR)DR.clearResult(S.link);render();}
+  function timeUp(){const w=S.p.w,b=S.p.b;
+    if(w.wa!==b.wa)return finish(w.wa>b.wa?'w':'b','Waza-ari (time up)');
+    if(S.yuko&&w.y!==b.y)return finish(w.y>b.y?'w':'b','Yuko (time up)');
+    S.gs=true;S.ms=0;S.run=false;S.why='Golden score: press Hajime';buzz();render();}
+  function hm(){
+    audio();if(S.win)return msg('Match is over. Undo (Z) or Next match (N).');
+    if(S.osa){
+      if(S.oRun){S.oRun=false;S.run=false;}
+      else{S.oRun=true;if(S.gs||S.ms>0)S.run=true;}
+      return render();
+    }
+    if(S.run){S.run=false;return render();}
+    if(!S.gs&&S.ms<=0)return timeUp();
+    if(S.gs&&S.why.startsWith('Golden'))S.why='';
+    S.run=true;render();
+  }
+  function osae(p){
+    audio();if(S.win)return;
+    if(S.osa){if(S.osa!==p){snap();S.osa=p;render();}return;}
+    if(!S.run)return msg('Start the clock (Hajime) before Osaekomi');
+    snap();S.osa=p;S.oms=0;S.oRun=true;render();
+  }
+  function endOsa(){
+    if(!S.osa)return;const h=S.osa,t=Math.floor(S.oms/1000);S.osa=null;S.oRun=false;
+    let a=null;if(t>=20)a='i';else if(t>=10)a='w';else if(t>=5&&S.yuko)a='y';
+    if(a)add(h,a,true);
+    if(!S.win&&!S.gs&&S.ms<=0)timeUp();
+    render();
+  }
+  let last=performance.now(),pubT=0;
+  function tick(){
+    const now=performance.now(),dt=Math.max(0,now-last);last=now;
+    if(!S.win){
+      if(S.run){
+        if(S.gs)S.ms+=dt;
+        else{S.ms=Math.max(0,S.ms-dt);if(S.ms===0){S.run=false;buzz();if(!S.osa)timeUp();}}
+      }
+      if(S.osa&&S.oRun){
+        S.oms+=dt;const t=S.oms/1000,P=S.p[S.osa];
+        if(t>=20){S.oms=20000;endOsa();}
+        else if(S.gs&&S.yuko&&t>=5){S.oms=Math.min(S.oms,9999);endOsa();}
+        else if(S.gs&&t>=10){S.oms=Math.min(S.oms,19999);endOsa();}
+        else if(P.wa>=1&&t>=10){S.oms=Math.min(S.oms,19999);endOsa();}
+      }
+    }
+    pubT+=dt;if(pubT>=100){pubT=0;publish();}
+  }
+  function loop(){tick();renderClock();requestAnimationFrame(loop);}
+  setInterval(tick,50);
+
+  function panel(p){
+    const cls=p==='w'?'pw':'pb',K=p==='w'?['Q','W','E','R','A']:['U','I','O','P','L'];
+    $('p'+p).innerHTML=`<h3>${p==='w'?'White':'Blue'}</h3>
+    <div class="g6">
+     <button class="${cls}" data-a="add" data-t="i">Ippon<kbd>${K[0]}</kbd></button>
+     <button class="${cls}" data-a="add" data-t="w">Waza-ari<kbd>${K[1]}</kbd></button>
+     <button class="${cls}" data-a="add" data-t="y">Yuko<kbd>${K[2]}</kbd></button>
+     <button class="${cls}" data-a="add" data-t="s">Shido<kbd>${K[3]}</kbd></button>
+     <button class="${cls}" data-a="osae">Osaekomi<kbd>${K[4]}</kbd></button>
+     <button class="warn" data-a="add" data-t="h">Hansoku<br>make</button>
+    </div>
+    <div class="g4">
+     <button class="minus" data-a="sub" data-t="i">− Ippon</button>
+     <button class="minus" data-a="sub" data-t="w">− Waza-ari</button>
+     <button class="minus" data-a="sub" data-t="y">− Yuko</button>
+     <button class="minus" data-a="sub" data-t="s">− Shido / HSK</button>
+    </div>`;
+    $('p'+p).addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;audio();b.blur();
+      if(b.dataset.a==='add')add(p,b.dataset.t);if(b.dataset.a==='sub')sub(p,b.dataset.t);if(b.dataset.a==='osae')osae(p);});
+  }
+  panel('w');panel('b');
+
+  const F={fNw:['w','n'],fFw:['w','f'],fCw:['w','c'],fNb:['b','n'],fFb:['b','f'],fCb:['b','c']};
+  window.fill=function(){
+    for(const id in F)$(id).value=S.p[F[id][0]][F[id][1]]||'';
+    $('fCat').value=S.cat;$('fMat').value=S.mat;$('fMatch').value=S.match;$('fEvent').value=S.ev;
+    $('fDur').value=String(S.dur);$('fYuko').checked=S.yuko;
+  };
+  for(const id in F)$(id).addEventListener('input',e=>{S.p[F[id][0]][F[id][1]]=e.target.value;render();});
+  [['fCat','cat'],['fMat','mat'],['fMatch','match'],['fEvent','ev']].forEach(([id,k])=>$(id).addEventListener('input',e=>{S[k]=e.target.value;render();}));
+  $('fDur').addEventListener('change',e=>{const untouched=!S.gs&&!S.run&&S.ms===S.dur*1000;S.dur=+e.target.value;if(untouched)S.ms=S.dur*1000;else msg('New time applies from Reset clock / Next match');render();});
+  $('fYuko').addEventListener('change',e=>{S.yuko=e.target.checked;render();});
+  $('bSwap').onclick=()=>{snap();const a=S.p.w,b=S.p.b;for(const k of ['n','f','c'])[a[k],b[k]]=[b[k],a[k]];if(S.link)[S.link.w,S.link.b]=[S.link.b,S.link.w];fill();render();};
+  const blurThen=f=>e=>{e.currentTarget.blur();f();};
+  $('bHM').onclick=blurThen(hm);
+  $('bTok').onclick=blurThen(()=>{audio();endOsa();});
+  $('bUndo').onclick=blurThen(undo);
+  const next=()=>{if(!okSwitch('blank'))return;snap();S=fresh(S);S.link=null;S.manual=true;fill();render();msg('Ready for match '+S.match);};
+  $('bNext').onclick=blurThen(next);
+  $('bReset').onclick=blurThen(()=>{snap();S.ms=S.dur*1000;S.gs=false;S.run=false;S.osa=null;S.oRun=false;if(!S.win)S.why='';render();});
+  const disp=on=>document.body.classList.toggle('display',on);
+  $('bDisp').onclick=blurThen(()=>{disp(true);try{const r=document.documentElement.requestFullscreen();if(r&&r.catch)r.catch(()=>{});}catch(e){}});
+  $('exitDisp').onclick=()=>{disp(false);try{document.exitFullscreen&&document.fullscreenElement&&document.exitFullscreen();}catch(e){}};
+  let tvScreen=null;
+  async function findTV(){
+    try{if('getScreenDetails' in window){const sd=await window.getScreenDetails();
+      tvScreen=sd.screens.find(x=>x!==sd.currentScreen)||null;return sd.screens.length;}}catch(e){}
+    return window.screen.isExtended?2:1;
+  }
+  $('bTV').onclick=async e=>{
+    e.currentTarget.blur();
+    const url=location.href.split('#')[0]+'#display';
+    let feat='width=1280,height=720,left=100,top=100';
+    if(tvScreen)feat=`left=${tvScreen.availLeft},top=${tvScreen.availTop},width=${tvScreen.availWidth},height=${tvScreen.availHeight}`;
+    let w=null;try{w=window.open(url,'judoTV',feat);}catch(x){}
+    if(!w){msg('Pop-up blocked: click the pop-up icon at the right of the address bar → Always allow, then click Open TV window again');return;}
+    try{if(tvScreen){w.moveTo(tvScreen.availLeft,tvScreen.availTop);w.resizeTo(tvScreen.availWidth,tvScreen.availHeight);}}catch(x){}
+    msg(tvScreen?'TV window opened on the TV screen: click it once to go full screen':'TV window opened: drag it onto the TV, then click it once to go full screen');
+    if(!tvScreen){const n=await findTV();if(n>1&&tvScreen)msg('TV screen detected. Click Open TV window again to place it on the TV automatically.');}
+  };
+  findTV();
+  const tvStat=()=>{let t=0;try{t=+localStorage.getItem('judoTVping')||0;}catch(e){}
+    const on=Date.now()-t<4000,el=$('tvStat');if(!el)return;
+    el.textContent=on?'● TV connected (live)':'○ TV window not open';el.style.color=on?'#22c55e':'#9aa6bd';};
+  setInterval(tvStat,1000);tvStat();
+
+  document.addEventListener('keydown',e=>{
+    if(window.READONLY)return;
+    if(document.body.dataset.tab!=='sb'&&!document.body.classList.contains('display'))return;
+    const tg=e.target.tagName,ty=(e.target.type||'').toLowerCase();if((tg==='INPUT'&&ty!=='checkbox')||tg==='SELECT'||tg==='TEXTAREA')return;
+    if(tg==='INPUT')e.target.blur();
+    if(e.repeat)return;
+    const k=e.key.toLowerCase(),sh=e.shiftKey;
+    const map={q:['w','i'],w:['w','w'],e:['w','y'],r:['w','s'],u:['b','i'],i:['b','w'],o:['b','y'],p:['b','s']};
+    if(k===' '){e.preventDefault();hm();return;}
+    audio();
+    if(map[k]){e.preventDefault();sh?sub(map[k][0],map[k][1]):add(map[k][0],map[k][1]);return;}
+    if(k==='a')osae('w');else if(k==='l')osae('b');
+    else if(k==='s')endOsa();else if(k==='z')undo();else if(k==='n')next();
+    else if(k==='d')disp(!document.body.classList.contains('display'));
+    else if(k==='escape'){if(!closeWin())disp(false);}
+  });
+
+  const split=n=>{const p=String(n||'').trim().split(/\s+/);return p.length>1?{n:p[p.length-1],f:p.slice(0,-1).join(' ')}:{n:p[0]||'',f:''};};
+  const CODES={ahmedabad:'AMD',surat:'SRT',vadodara:'VAD',baroda:'VAD',rajkot:'RJT',bhavnagar:'BVN',jamnagar:'JAM',junagadh:'JND',gandhinagar:'GNR',anand:'AND',kheda:'KHD',mehsana:'MSN',patan:'PTN',banaskantha:'BKT',sabarkantha:'SBK',kutch:'KUT',kachchh:'KUT',bharuch:'BRC',navsari:'NVS',valsad:'VLS',amreli:'AMR',morbi:'MRB',surendranagar:'SNR',panchmahal:'PMH',dahod:'DHD',porbandar:'PBD',tapi:'TAP',narmada:'NRM',aravalli:'ARV',mahisagar:'MSG',botad:'BTD',devbhumidwarka:'DBD',girsomnath:'GSM',chhotaudepur:'CUD',dang:'DNG'};
+  const code=c=>{const k=String(c||'').toLowerCase().replace(/[^a-z]/g,'');return CODES[k]||k.slice(0,3).toUpperCase();};
+  const busy=()=>!S.win&&(S.run||S.gs||S.osa||S.ms!==S.dur*1000||['w','b'].some(p=>{const q=S.p[p];return q.i||q.wa||q.y||q.s||q.h;}));
+  let swArm=0,swKind='';
+  const okSwitch=(kind)=>{if(!busy())return true;if(swKind===kind&&Date.now()-swArm<4000){swArm=0;swKind='';return true;}swArm=Date.now();swKind=kind;msg('⚠ Current match is in progress! Click again within 4 seconds to leave it.');return false;};
+  window.SB={load(x){if(!x.auto&&!okSwitch('load'))return;snap();const k=S;S=fresh(k);
+    const A=split(x.a.name),B=split(x.b.name);
+    Object.assign(S.p.w,{n:A.n,f:A.f,c:code(x.a.club),club:x.a.club||''});Object.assign(S.p.b,{n:B.n,f:B.f,c:code(x.b.club),club:x.b.club||''});
+    S.manual=false;S.cat=x.cat+' · '+x.round;if(window.MATCFG)S.mat=MATCFG().mat||S.mat;S.match=String(x.no);S.link={cat:x.cat,r:x.r,i:x.i,w:x.a.id,b:x.b.id};
+    fill();render();if(!x.noTab)tab('sb');msg('Loaded match '+x.no+': '+x.a.name+' (white) vs '+x.b.name+' (blue)');}};
+  SB.clearHist=function(){H=[];};
+  SB.reset=function(){S=fresh(S);S.match='1';S.link=null;S.manual=false;H=[];fill();render();};
+  SB.autoLoad=function(force,noTab){
+    if(!window.DR)return false;
+    if(!force&&S.link&&!S.win&&DR.pending(S.link))return false;
+    if(!force&&S.manual&&!S.win)return false;
+    if(!force&&S.win&&S.showWin)return false;
+    const x=DR.next(S.link?S.link.cat:null);
+    if(!x){return false;}
+    x.noTab=!!noTab;x.auto=true;SB.load(x);return true;};
+  $('winOv').onclick=()=>{closeWin();};
+  $('bCloseWin').onclick=blurThen(()=>{if(!closeWin())msg('No winner view on the TV right now');});
+  $('bFromDraw').onclick=blurThen(()=>{const x=window.DR&&DR.next(S.link?S.link.cat:null,(!S.win&&S.link)?S.link:null);if(!x)return msg('No other pending match in the draw.');SB.load(x);});
+  try{$('fAuto').checked=localStorage.getItem('judoAuto')!=='0';}catch(e){$('fAuto').checked=true;}
+  $('fAuto').onchange=()=>{try{localStorage.setItem('judoAuto',$('fAuto').checked?'1':'0');}catch(e){}};
+  window.addEventListener('beforeunload',()=>{publish();});
+  fill();render();SB.autoLoad(false,true);requestAnimationFrame(loop);
+}
+
+</script>
+</body>
+</html>
