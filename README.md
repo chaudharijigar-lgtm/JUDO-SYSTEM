@@ -24,3 +24,8 @@ Draw (weight category knockout with seeding) + live scoreboard + TV display, in 
 - Draw tab → Print (or press Ctrl+P anywhere in the admin screen) → choose the stage → Print.
 - Prints always come out black text on white paper, in dark mode or light mode. Blue side = black bar, white side = grey bar, winners shaded grey.
 - Every sheet fits on one A4 landscape page: long first rounds shrink slightly, long rank lists go into 2–3 columns.
+
+## Referee & file sheets (Draw tab → Print → choose)
+- **Blank fixture for referees**: entry & seeding list plus every stage with empty name lines and I / W / Y / S boxes. "As per category" prints that category's bracket; an empty-sheet size (2 – 64) prints it without any athletes.
+- **Score sheet · blank**: same heading as the results (tournament, category, mat, draw ID, QR), one row per contest in match order with empty score boxes for White and Blue, golden score, time, winner and remarks.
+- **Score sheet · filled from the scoreboard**: made automatically from what the admin scores — final I / W / Y / S for both sides, golden score, contest time, winner, how it was won, when it was recorded, and a score log of every score/penalty with its match time. Print it after each category for the file.

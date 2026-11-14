@@ -136,7 +136,23 @@ body.tv #op,body.display #op{display:flex!important}
 #printArea .pcol{flex:1;display:flex;flex-direction:column;min-width:0}
 #printArea .prn{text-align:center;font-size:8pt;font-weight:800;text-transform:uppercase;color:#333;margin-bottom:1mm}
 #printArea .pcb{flex:1;display:flex;flex-direction:column;justify-content:space-around;gap:1.2mm;min-height:0}
-#printArea .pcb>*{flex-shrink:0}#printArea .prb{flex:1;min-height:0;overflow:hidden}#printArea .prbi{padding-top:.1px}#printArea .prk2{display:flex;gap:4mm;align-items:flex-start}#printArea .prk2>table{flex:1;min-width:0}#printArea .prk2.c3{gap:3mm}#printArea .prk2 .pmd td,#printArea .prk2 .pmd th{padding:.9mm 1.4mm}#printArea .prk2 .pmd{font-size:8pt}#printArea .prk2.c3 .prk td:first-child{width:9mm}
+#printArea .pcb>*{flex-shrink:0}#printArea .prb{flex:1;min-height:0;overflow:hidden}#printArea .prbi{padding-top:.1px}#printArea .prk2{display:flex;gap:4mm;align-items:flex-start}#printArea .prk2>table{flex:1;min-width:0}#printArea .bx .pl{align-items:center;padding-right:0}#printArea .bx .bxs{flex:1;text-align:center;color:#555;font-size:5.8pt;white-space:nowrap}
+#printArea .bsc{display:flex;flex:none}#printArea .bsc i{display:block;width:4.6mm;border-left:.2mm solid #999;font-style:normal;text-align:center;font-size:5.6pt;font-weight:700;line-height:1.6}
+#printArea .bxr{display:flex;align-items:stretch;padding:0;height:6.6mm}#printArea .bpos{width:5.5mm;flex:none;display:flex;align-items:center;justify-content:center;font-size:6.5pt;font-weight:700;color:#333;border-right:.2mm dotted #aaa}
+#printArea .bln{flex:1;position:relative}#printArea .bln em{position:absolute;left:1mm;top:.3mm;font-size:5.5pt;font-style:normal;font-weight:800;color:#555}
+#printArea .bhd{min-height:19mm}#printArea .bcat{font-size:13pt}#printArea .blist td{height:7mm;padding-top:0;padding-bottom:0}#printArea .blist td:nth-child(-n+3){width:11mm;text-align:center;font-weight:700}#printArea .blist td:last-child{width:20mm}#printArea .bmed td{height:9mm}
+#printArea .pss{width:100%;border-collapse:collapse;table-layout:fixed;font-size:7.4pt;margin-top:1mm}
+#printArea .pss th,#printArea .pss td{display:table-cell;height:auto;font-size:inherit;line-height:1.25;border:.2mm solid #777;padding:.5mm 1mm;vertical-align:middle;overflow:hidden}
+#printArea .pss th{background:#ececec;font-size:6.8pt;text-align:center;font-weight:800}
+#printArea .pss th.xw{border-bottom:1.2mm solid #c8c8c8}#printArea .pss th.xb{border-bottom:1.2mm solid #000}
+#printArea .pss .qv{text-align:center;font-weight:700}#printArea .pss .srd{font-size:6.6pt}
+#printArea .pss .sn{font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}#printArea .pss .sn sup{font-size:5.4pt}
+#printArea .pss .scl{font-size:6.1pt;color:#555;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#printArea .pss .shn{font-size:6.4pt;color:#777;font-style:italic;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#printArea .pss .swon{background:#dcdcdc}#printArea .pss .srs{font-size:6.8pt}
+#printArea .pss.sblk td{height:9.6mm}#printArea .pss tr{break-inside:avoid}
+#printArea .pss tr.shaslog td{border-bottom-style:dotted}#printArea .pss tr.slog td{font-size:6.1pt;color:#333;padding:.3mm 1mm .7mm;border-top:0;white-space:normal}
+#printArea .prk2.c3{gap:3mm}#printArea .prk2 .pmd td,#printArea .prk2 .pmd th{padding:.9mm 1.4mm}#printArea .prk2 .pmd{font-size:8pt}#printArea .prk2.c3 .prk td:first-child{width:9mm}
 #printArea.pmeasure{display:block!important;position:absolute!important;left:-30000px;top:0;width:283mm;visibility:hidden;color:#000;font-family:Arial,Helvetica,sans-serif}
 #printArea.pmeasure .ppage{height:194mm;display:flex;flex-direction:column;overflow:hidden}
 #printArea .pbox{border:.3mm solid #666;border-radius:1.2mm;overflow:hidden;font-size:7.5pt;break-inside:avoid}
@@ -518,6 +534,8 @@ body.light:not(.tv) #drawSec #demo{background:linear-gradient(180deg,rgba(255,25
  #printArea .ps.lost,#printArea .ps.lost *,#printArea .bye{color:#777!important;-webkit-text-fill-color:#777!important}
  #printArea .pc,#printArea .pmt,#printArea .pdt,#printArea .pnote,#printArea .qrl,#printArea .prn{color:#333!important;-webkit-text-fill-color:#333!important}
  #printArea .pmd th,#printArea .pmd td{border-color:#777!important}
+ #printArea .pss th{background:#ececec!important}#printArea .pss td.swon{background:#dcdcdc!important}
+ #printArea .pss .scl,#printArea .pss .shn,#printArea .pss tr.slog td{color:#444!important;-webkit-text-fill-color:#444!important}#printArea .pss tr.slog td b{color:#000!important;-webkit-text-fill-color:#000!important}
  #printArea .pft{border-top-color:#777!important}
  #printArea svg rect[fill="white"],#printArea svg rect[fill="#ffffff"]{fill:#fff!important}
  #printArea svg path,#printArea svg rect:not([fill="white"]):not([fill="#ffffff"]){fill:#000!important}
@@ -581,8 +599,9 @@ body.light:not(.tv) #drawSec #demo{background:linear-gradient(180deg,rgba(255,25
       </div><div class="hint">Shown on every printed sheet, on the QR pages and on the TV scoreboard header. Saved with backups.</div></details>
     <div id="qrOv" onclick="if(event.target===this)this.style.display='none'"><div class="qrm"><div class="qrh"><b id="qrCat"></b><button onclick="document.getElementById('qrOv').style.display='none'">Close</button></div><div id="qrBox"></div><div class="hint">Scan with any phone camera. Opens a read-only page (no editing). The QR holds the data at this moment; after new results, open ▣ QR again.</div></div></div>
     <div class="panel" id="prPanel" style="display:none;margin-bottom:12px"><div class="tools"><h3 style="font-size:16px">Print draw sheets</h3>
-      <select id="prStage"><option value="elim">1 · Elimination (rounds up to Quarter-final)</option><option value="final">2 · Final block (Repechage, Semi-final, Bronze, Final)</option><option value="full">Full draw (stage 1 + stage 2)</option><option value="res">Results (medals + rank list)</option></select>
+      <select id="prStage"><option value="elim">1 · Elimination (rounds up to Quarter-final)</option><option value="final">2 · Final block (Repechage, Semi-final, Bronze, Final)</option><option value="full">Full draw (stage 1 + stage 2)</option><option value="res">Results (medals + rank list)</option><option value="blank">Blank fixture for referees (fill by hand)</option><option value="sblank">Score sheet · blank (table officials write the scores)</option><option value="sfill">Score sheet · filled from the scoreboard (proof / file copy)</option></select>
       <select id="prScope"><option value="this">This category</option><option value="all">All categories</option><option value="Male">All Male categories</option><option value="Female">All Female categories</option></select>
+      <select id="prSize" style="display:none"><option value="auto">Size: as per category (name printed)</option><option value="2">Empty sheet · 2 athletes</option><option value="4">Empty sheet · 3–4 athletes</option><option value="8">Empty sheet · 5–8 athletes</option><option value="16">Empty sheet · 9–16 athletes</option><option value="32">Empty sheet · 17–32 athletes</option><option value="64">Empty sheet · 33–64 athletes</option></select>
       <button class="pri" id="prGo">Print now</button><button id="prX">Close</button></div>
       <div class="hint" id="prHint">A4 landscape · one page per category (big draws split into pools) · print stage 1 before the event, stage 2 once elimination is complete.</div></div>
     <div class="panel" id="rep" style="display:none;margin-bottom:12px;border-color:#a16207;line-height:1.6"></div>
@@ -1324,9 +1343,108 @@ function fitPrint(pa){
     pa.querySelectorAll('.prbi').forEach(c=>fit(c,c.parentElement.clientHeight,()=>c.getBoundingClientRect().height,.4));
   }catch(e){}
   pa.classList.remove('pmeasure');}
+// ---------- Blank fixture sheets for referees (names and scores written by hand) ----------
+function blankPlan(size,fmt){const L=Math.max(1,Math.round(Math.log2(size))),x=fmt!=='ko'&&L>=3,no=[],nx={rep:[],br:[]};let n=0;
+  for(let r=0;r<L;r++)no.push(Array(size>>(r+1)).fill(0));
+  const num=r=>{no[r]=no[r].map(()=>++n);};
+  if(x){for(let r=0;r<L-2;r++)num(r);nx.rep=[++n,++n];num(L-2);nx.br=[++n,++n];num(L-1);}else for(let r=0;r<L;r++)num(r);
+  const ns=size>=16?8:size>=8?4:size>=4?2:0,seedAt={};order(size).forEach((rk,i)=>{if(rk<=ns)seedAt[i]=rk;});   // same seed positions as the computer draw
+  return {L,x,no,nx,seedAt};}
+function bBox(no,sub,A,B){const sc='<span class="bsc"><i></i><i></i><i></i><i></i></span>';
+  const row=(p,c)=>`<div class="ps ${c} bxr"><span class="bpos">${p?p.pos:''}</span><span class="bln">${p&&p.seed?'<em>S'+p.seed+'</em>':''}</span>${sc}</div>`;
+  return `<div class="pbox bx"><div class="pl"><span>Match ${no}</span><span class="bxs">${sub?esc(sub):''}</span><span class="bsc"><i>I</i><i>W</i><i>Y</i><i>S</i></span></div>${row(A,'sw')}${row(B,'sb')}</div>`;}
+function bHead(k,title,size){const m=M(),n=k?D.ath.filter(a=>catKey(a)===k).length:0;
+  return `<div class="phd bhd"><div class="pevb"><div class="pev">${esc(evName())}</div>${m.org?`<div class="pmt">${esc(m.org)}</div>`:''}<div class="pmt">${esc(evLine())}</div><div class="pmt">Mat: ________ · Bracket of ${size}${k?' · '+n+' athletes':' · Athletes: ______'}</div></div><div class="pti">${k?`<div class="pcat">${esc(k)}</div>`:'<div class="pcat bcat">Category: ________________________</div>'}<div class="pst">${esc(title)}</div></div><div class="pdt"><b>REFEREE SHEET · fill by hand</b><br>Date: ______________<br>Sheet ____ of ____</div></div>`;}
+const bNote='<div class="pnote">I = Ippon · W = Waza-ari · Y = Yuko · S = Shido (3 shido = Hansoku-make) · grey bar = White (Shiro), black bar = Blue (Ao) · write the winner in the box shown ("W 3" = winner of match 3, "L 3" = loser) · S1–S8 = seed positions: Seed 1 → Pool A, Seed 2 → Pool C, Seed 3 → Pool D, Seed 4 → Pool B, Seeds 5–8 one per pool · byes go to the top seeds first.</div>';
+function pFootB(){return bNote+pFootF().slice(pNote.length);}
+function bSlot(P,i){return {pos:i+1,seed:P.seedAt[i]};}
+function bList(k,size,P){let out='';const per=32,pool=p=>size>=8?'ABCD'[Math.floor(p/(size/4))]:'';
+  for(let s0=0;s0<size;s0+=per){const n=Math.min(per,size-s0),nc=n>16?2:1,pc=Math.ceil(n/nc);
+    const th=`<tr><th>Draw No.</th><th>${size>=8?'Pool':''}</th><th>Seed</th><th>Name</th><th>District / Club</th><th>Weigh-in kg</th></tr>`;
+    const tr=p=>`<tr><td>${p+1}</td><td>${pool(p)}</td><td>${P.seedAt[p]?'S'+P.seedAt[p]:''}</td><td></td><td></td><td></td></tr>`;
+    const tb=Array.from({length:nc},(_,c)=>`<table class="pmd prk blist">${th}${Array.from({length:Math.max(0,Math.min(pc,n-c*pc))},(_,j)=>tr(s0+c*pc+j)).join('')}</table>`).join('');
+    out+=`<div class="ppage">${bHead(k,'Blank · Entry & seeding list'+(size>per?' · draw no. '+(s0+1)+'–'+(s0+n):''),size)}<div class="prb"><div class="prbi">${nc>1?`<div class="prk2">${tb}</div>`:tb}</div></div>${pFootB()}</div>`;}
+  return out;}
+function bRound(P,r,from,to){let h='';for(let i=from;i<to;i++)h+=bBox(P.no[r][i],r>0?`W ${P.no[r-1][2*i]} v W ${P.no[r-1][2*i+1]}`:'',r===0?bSlot(P,2*i):null,r===0?bSlot(P,2*i+1):null);return h;}
+function bElim(k,size,P){const L=P.L;if(L<3)return '';const E=L-3,parts=Math.max(1,size/2/8);
+  const names=parts===2?['Pools A–B (top half)','Pools C–D (bottom half)']:parts===4?['Pool A','Pool B','Pool C','Pool D']:Array.from({length:parts},(_,x)=>'Part '+(x+1));let out='';
+  for(let h=0;h<parts;h++){let cols='';
+    for(let r=0;r<=E;r++){const len=size>>(r+1);if(len<parts)continue;const per=len/parts;cols+=`<div class="pcol"><div class="prn">${rname(r,L)}</div><div class="pcb">${bRound(P,r,h*per,(h+1)*per)}</div></div>`;}
+    out+=`<div class="ppage">${bHead(k,'Blank fixture · Stage 1 · Elimination up to Quarter-final'+(parts>1?' · '+names[h]:''),size)}<div class="pbr">${cols}</div>${pFootB()}</div>`;}
+  return out;}
+function bFinal(k,size,P){const L=P.L,col=(t,b)=>`<div class="pcol"><div class="prn">${t}</div><div class="pcb">${b}</div></div>`;let grid='',t;
+  if(P.x){const q=L-3,Q=P.no[q],SF=P.no[L-2];t='Blank fixture · Stage 2 · Repechage · Semi-finals · Bronze medal contests · Final';
+    grid=col('Repechage',bBox(P.nx.rep[0],`L ${Q[0]} v L ${Q[1]}`)+bBox(P.nx.rep[1],`L ${Q[2]} v L ${Q[3]}`))+col('Semi-final',bRound(P,L-2,0,2))
+      +col('Bronze medal contests',bBox(P.nx.br[0],`W ${P.nx.rep[0]} v L ${SF[1]}`)+bBox(P.nx.br[1],`W ${P.nx.rep[1]} v L ${SF[0]}`))+col('Final',bRound(P,L-1,0,1));}
+  else{t=L>=3?'Blank fixture · Stage 2 · Semi-finals · Final':'Blank fixture · all contests';for(let r=Math.max(0,L-2);r<L;r++)grid+=col(rname(r,L),bRound(P,r,0,size>>(r+1)));}
+  const md=size>2?['Gold','Silver','Bronze','Bronze']:['Gold','Silver'];
+  return `<div class="ppage">${bHead(k,t,size)}<div class="pfb">${grid}</div><table class="pmd bmed"><tr>${md.map(x=>'<th>'+x+'</th>').join('')}</tr><tr>${md.map(()=>'<td></td>').join('')}</tr></table>${pFootB()}</div>`;}
+// ---------- Contest score sheets: blank for the table officials, filled from the scoreboard for the file ----------
+const SCK={i:'ippon',w:'waza-ari',y:'yuko',s:'shido',h:'hansoku-make'};
+function scRows(k){const dr=D.draws[k];if(!dr)return [];const L=dr.rounds.length,out=[];
+  const no=f=>f&&f.no?f.no:'';
+  const src=(r,i,s)=>{let f;if(r>0)return (f=no(dr.rounds[r-1][2*i+s]))?'Winner of match '+f:'';
+    if(r===-1)return (f=no(dr.rounds[L-3][2*i+s]))?'Loser of match '+f:'';
+    if(r===-2)return s===0?((f=no(dr.x.rep[i]))?'Winner of match '+f:''):((f=no(dr.rounds[L-2][1-i]))?'Loser of match '+f:'');return '';};
+  eachM(dr,(m,r,i)=>{if(m.bye||m.void)return;const [a,b]=players(dr,r,i);out.push({m,no:m.no||0,round:rname(r,L),a,b,ha:a?'':src(r,i,0),hb:b?'':src(r,i,1)});});
+  return out.sort((x,y)=>x.no-y.no);}
+function scPlanRows(size,fmt){const P=blankPlan(size,fmt),L=P.L,out=[],R=(no,round,ha,hb)=>out.push({no,round,a:null,b:null,ha,hb,m:{}});
+  for(let r=0;r<L;r++)P.no[r].forEach((n,i)=>R(n,rname(r,L),r===0?'Draw no. '+(2*i+1):'Winner of match '+P.no[r-1][2*i],r===0?'Draw no. '+(2*i+2):'Winner of match '+P.no[r-1][2*i+1]));
+  if(P.x){const Q=P.no[L-3],SF=P.no[L-2];P.nx.rep.forEach((n,i)=>R(n,'Repechage','Loser of match '+Q[2*i],'Loser of match '+Q[2*i+1]));
+    P.nx.br.forEach((n,i)=>R(n,'Bronze medal contest','Winner of match '+P.nx.rep[i],'Loser of match '+SF[1-i]));}
+  return out.sort((x,y)=>x.no-y.no);}
+function scParse(m,a,b){const r=m&&m.res;if(!r)return null;
+  const pq=v=>Array.isArray(v)?{i:v[0],wa:v[1],y:v[2],s:v[3],h:!!v[4]}:v,lq=e=>{if(typeof e!=='string')return e;const x=e.split('|');return {c:x[0],p:x[1]||'',k:x[2]||'',x:x.slice(3).join('|')};};
+  if(r.sw)return {pw:pq(r.sw),pb:pq(r.sb),white:r.wid||a,blue:r.bid||b,log:(r.log||[]).map(lq),r};
+  const g=/W (\d)-(\d+)-(\d+)(?: \((\d)S\))? \/ B (\d)-(\d+)-(\d+)(?: \((\d)S\))?/.exec(r.score||'');
+  const q=(o)=>({i:+g[o],wa:+g[o+1],y:+g[o+2],s:+(g[o+3]||0),h:false});
+  return {pw:g?q(1):null,pb:g?q(5):null,white:a,blue:b,log:[],r};}
+function scLog(log){return (log||[]).filter(e=>e.k!=='win').map(e=>{const who=e.p==='w'?'White':e.p==='b'?'Blue':'';
+  if(e.k==='gs')return e.c+' golden score';const rm=e.k[0]==='-',k=rm?e.k.slice(1):e.k;
+  return e.c+' '+who+' '+(SCK[k]||k)+(rm?' removed':'')+(e.x?' ('+e.x+')':'');}).join(' · ');}
+function scTable(rows,fill){const pen=q=>q?(q.h?'H':q.s):'';
+  const nm=(id,h,won)=>{const a=id&&byId(id);return `<td class="snm${won?' swon':''}">${a?`<div class="sn">${esc(a.name)}${a.seed>0?' <sup>S'+a.seed+'</sup>':''}</div><div class="scl">${esc(a.club||'')}</div>`:`<div class="shn">${esc(h||'')}</div>`}</td>`;};
+  const body=rows.map(x=>{const m=x.m||{};let p=fill?scParse(m,x.a,x.b):null;const W=p?p.white:x.a,B=p?p.blue:x.b;
+    let sc='<td></td><td></td><td></td><td></td>',sc2=sc,gs='',tm='',wn='',rs='',log='';
+    if(fill){
+      if(m.w&&p){const ww=m.w===W;
+        if(p.pw){const c=q=>`<td class="qv">${q.i}</td><td class="qv">${q.wa}</td><td class="qv">${q.y}</td><td class="qv">${pen(q)}</td>`;sc=c(p.pw);sc2=c(p.pb);}
+        gs=p.r.gs?'Yes':'No';tm=esc(p.r.time||'');wn=ww?'WHITE':'BLUE';
+        const when=p.r.t?new Date(p.r.t).toLocaleString([], {day:'2-digit',month:'short',hour:'2-digit',minute:'2-digit'}):'';
+        rs=(p.r.sw||p.r.score?esc(p.r.why||''):'Entered in draw editor (not scored on the scoreboard)')+(when?`<div class="scl">Recorded ${esc(when)}</div>`:'');
+        log=scLog(p.log);return `<tr class="${log?'shaslog':''}"><td class="qv">${x.no||''}</td><td class="srd">${esc(x.round)}</td>${nm(W,x.ha,ww)}${sc}${nm(B,x.hb,!ww)}${sc2}<td class="qv">${gs}</td><td class="qv">${tm}</td><td class="qv">${wn}</td><td class="srs">${rs}</td></tr>`+(log?`<tr class="slog"><td></td><td colspan="15"><b>Score log:</b> ${esc(log)}</td></tr>`:'');}
+      rs='<span class="shn">Not contested yet</span>';}
+    return `<tr><td class="qv">${x.no||''}</td><td class="srd">${esc(x.round)}</td>${nm(W,x.ha)}${sc}${nm(B,x.hb)}${sc2}<td class="qv">${gs}</td><td class="qv">${tm}</td><td class="qv">${wn}</td><td class="srs">${rs}</td></tr>`;}).join('');
+  return `<table class="pss${fill?'':' sblk'}"><colgroup><col style="width:9mm"><col style="width:21mm"><col style="width:50mm"><col style="width:6mm"><col style="width:6mm"><col style="width:6mm"><col style="width:6mm"><col style="width:50mm"><col style="width:6mm"><col style="width:6mm"><col style="width:6mm"><col style="width:6mm"><col style="width:9mm"><col style="width:13mm"><col style="width:14mm"><col></colgroup>
+<tr><th rowspan="2">Match</th><th rowspan="2">Round</th><th colspan="5" class="xw">WHITE (Shiro)</th><th colspan="5" class="xb">BLUE (Ao)</th><th rowspan="2">GS</th><th rowspan="2">Time</th><th rowspan="2">Winner</th><th rowspan="2">${fill?'How won · recorded':'Result / remarks'}</th></tr>
+<tr><th>Name · District</th><th>I</th><th>W</th><th>Y</th><th>S</th><th>Name · District</th><th>I</th><th>W</th><th>Y</th><th>S</th></tr>${body}</table>`;}
+const sNote=fill=>'<div class="pnote">'+(fill?'Generated automatically from the admin scoreboard. Scores are the final counts at the end of each contest; the score log lists every score and penalty with the match time when it was given (GS = golden score time, "removed" = corrected by the operator). "Entered in draw editor" = winner typed in the draw, not scored live.':'I = Ippon · W = Waza-ari · Y = Yuko · S = Shido (3 shido = Hansoku-make, write H) · GS = golden score (tick) · Time = contest time · Winner: write WHITE or BLUE · Result: how it was won (Ippon, Waza-ari, Hansoku-make, …).')+'</div>';
+function sFoot(fill){const m=M();return sNote(fill)+`<div class="pft"><span>Scorer: ________________</span><span>Timekeeper: ________________</span><span>Mat referee: ________________</span><span>${fill?'Verified by':'Chief referee'}: ${!fill&&m.chief?esc(m.chief)+' ':''}________________</span></div>`;}
+function scPages(rows,fill,head){const cap=fill?13:12,pages=[];let cur=[],w=0;
+  for(const x of rows){const p=fill&&scParse(x.m,x.a,x.b),wt=1+(p&&p.log&&p.log.some(e=>e.k!=='win')?.6:0);if(cur.length&&w+wt>cap){pages.push(cur);cur=[];w=0;}cur.push(x);w+=wt;}
+  if(cur.length||!pages.length)pages.push(cur);
+  return pages.map((pg,n)=>`<div class="ppage">${head(pages.length>1?' · sheet '+(n+1)+' of '+pages.length:'')}<div class="prb"><div class="prbi">${scTable(pg,fill)}</div></div>${sFoot(fill)}</div>`).join('');}
+function scoreHTML(st,sc){const fill=st==='sfill';
+  if(!fill&&$('prSize').value!=='auto'){const sz=+$('prSize').value;return scPages(scPlanRows(sz,fmtNow()),false,t=>bHead(null,'Contest score sheet · blank'+t,sz));}
+  let ks=(sc==='this'?(cur?[cur]:[]):cats().filter(c=>sc==='all'||c.g===sc).map(c=>c.k)).filter(k=>D.draws[k]);
+  if(!ks.length){msg('No draw to print. Pick a category or make the draws first'+(fill?'.':', or choose an empty-sheet size.'));return '';}
+  if(fill){const played=ks.filter(k=>scRows(k).some(x=>x.m.w));if(!played.length){msg('No contest has been scored yet in '+(ks.length>1?'these categories':'this category')+'. The filled score sheet appears as soon as results are saved from the scoreboard.');return '';}ks=played;}
+  return ks.map(k=>scPages(scRows(k),fill,t=>pHead(k,(fill?'Contest score sheet · recorded by the scoreboard (file copy)':'Contest score sheet · blank · for table officials')+t,fill?'r':'s'))).join('');}
+function pageBlank(k,size,fmt){const P=blankPlan(size,fmt);return bList(k,size,P)+bElim(k,size,P)+bFinal(k,size,P);}
+function blankHTML(sc){const sz=$('prSize').value;if(sz!=='auto')return pageBlank(null,+sz,fmtNow());
+  const cm={};cats().forEach(c=>cm[c.k]=c.list.length);
+  const ks=(sc==='this'?(cur?[cur]:[]):cats().filter(c=>sc==='all'||c.g===sc).map(c=>c.k)).filter(k=>cm[k]||D.draws[k]);
+  if(!ks.length){msg('Pick a category first, or choose an empty-sheet size to print blank fixtures without athletes.');return '';}
+  return ks.map(k=>{const dr=D.draws[k],n=cm[k]||0;return pageBlank(k,dr?dr.size:Math.max(2,1<<Math.ceil(Math.log2(Math.max(n,1)))),dr&&dr.fmt||fmtNow());}).join('');}
 function openPrint(scope){const p=$('prPanel');p.style.display='block';$('prScope').value=scope||'this';
   const dr=cur&&D.draws[cur];if(dr){const si=stageInfo(dr);$('prStage').value=si.hasElim&&!si.elimDone?'elim':'final';}
-  p.scrollIntoView({behavior:'smooth',block:'start'});}
+  syncPr();p.scrollIntoView({behavior:'smooth',block:'start'});}
+const PR_HINT='A4 landscape · one page per category (big draws split into pools) · print stage 1 before the event, stage 2 once elimination is complete.';
+function syncPr(){const st=$('prStage').value,b=st==='blank'||st==='sblank';$('prSize').style.display=b?'':'none';$('prScope').disabled=b&&$('prSize').value!=='auto';
+  if(st==='sblank'){$('prHint').textContent='Blank contest score sheet: same heading as the results (tournament, category, mat, draw ID, QR) and one row per contest in match order with empty I / W / Y / S boxes for White and Blue, golden score, time, winner and remarks. Athletes already known are printed; the rest show where they come from ("Winner of match 13"). An empty-sheet size prints it without athletes.';return;}
+  if(st==='sfill'){$('prHint').textContent='Filled contest score sheet for the file: every contest scored on the admin scoreboard with final I / W / Y / S for both sides, golden score, contest time, winner, how it was won, time recorded and the full score log (each score and penalty with its match time). Print it after each category as proof.';return;}
+  $('prHint').textContent=b?'Blank referee sheets: entry & seeding list, every stage with empty name lines and I / W / Y / S score boxes, medal table and signatures. "As per category" prints each category\'s own bracket with its name; an empty-sheet size prints a sheet for any category (no athletes needed).':PR_HINT;}
+$('prStage').onchange=syncPr;$('prSize').onchange=syncPr;
 $('prAll').onclick=()=>openPrint(cur?'this':'all');
 document.addEventListener('keydown',e=>{
   if(window.READONLY||window.VIEW||location.hash==='#display')return;
@@ -1337,9 +1455,11 @@ document.addEventListener('keydown',e=>{
 },true);$('prX').onclick=()=>{$('prPanel').style.display='none';};
 $('prGo').onclick=async()=>{
   const st=$('prStage').value,sc=$('prScope').value;
-  let keys=sc==='this'?(cur?[cur]:[]):cats().filter(c=>sc==='all'||c.g===sc).map(c=>c.k);
-  keys=keys.filter(k=>D.draws[k]);if(!keys.length)return msg('No draw to print. Pick a category or make the draws first.');
-  let html='',skipped=0;
+  let html='',skipped=0,keys=[];
+  if(st==='blank'){html=blankHTML(sc);if(!html)return;}
+  else if(st==='sblank'||st==='sfill'){html=scoreHTML(st,sc);if(!html)return;}
+  else{keys=sc==='this'?(cur?[cur]:[]):cats().filter(c=>sc==='all'||c.g===sc).map(c=>c.k);
+  keys=keys.filter(k=>D.draws[k]);if(!keys.length)return msg('No draw to print. Pick a category or make the draws first.');}
   for(const k of keys){const dr=D.draws[k],L=dr.rounds.length;
     if(st==='elim'){const e=pageElim(k);if(!e){skipped++;continue;}html+=e;}
     else if(st==='final')html+=pageFinal(k);
@@ -1462,9 +1582,15 @@ if(TV){
   const buzz=()=>{try{if(!ac)return;const o=ac.createOscillator(),g=ac.createGain();o.type='square';o.frequency.value=420;g.gain.value=.15;o.connect(g);g.connect(ac.destination);o.start();o.stop(ac.currentTime+1.2);}catch(e){}};
   let msgT; const msg=t=>{$('msg').textContent=t;clearTimeout(msgT);msgT=setTimeout(()=>$('msg').textContent='',4000);};
   const snap=()=>{H.push(JSON.stringify(S));if(H.length>80)H.shift();};
+  // contest timeline for the filled score sheet (undo restores it together with the score)
+  let osaNote='';
+  const clk=()=>S.gs?'GS '+fmt(S.ms,true):fmt(Math.max(0,S.dur*1000-S.ms),true);
+  const lg=(p,k,x)=>{(S.log=S.log||[]).push({c:clk(),p,k,x:x||''});if(S.log.length>80)S.log.shift();};
   const undo=()=>{if(!H.length)return msg('Nothing to undo');S=JSON.parse(H.pop());S.run=false;S.oRun=false;if(S.link&&!S.win&&window.DR)DR.clearResult(S.link);fill();render();};
   const finish=(p,why)=>{S.win=p;S.why=why;S.showWin=true;S.run=false;S.osa=null;S.oRun=false;buzz();render();
-    if(S.link&&window.DR){const sc=q=>q.i+'-'+q.wa+'-'+q.y+(q.s?' ('+q.s+'S)':'');const ok=DR.setResult(S.link,p==='w'?S.link.w:S.link.b,{why:S.why,score:'W '+sc(S.p.w)+' / B '+sc(S.p.b),gs:S.gs,time:S.gs?'GS '+fmt(S.ms,true):fmt(S.dur*1000-S.ms,true)});msg(ok?'Result saved to the draw':'Could not save to draw (draw was changed)');
+    if(S.link&&window.DR){const sc=q=>q.i+'-'+q.wa+'-'+q.y+(q.s?' ('+q.s+'S)':'');const pt=q=>[q.i,q.wa,q.y,q.s,q.h?1:0];lg(p,'win',why);
+      const ok=DR.setResult(S.link,p==='w'?S.link.w:S.link.b,{why:S.why,score:'W '+sc(S.p.w)+' / B '+sc(S.p.b),gs:S.gs,time:S.gs?'GS '+fmt(S.ms,true):fmt(S.dur*1000-S.ms,true),
+        wid:S.link.w,bid:S.link.b,sw:pt(S.p.w),sb:pt(S.p.b),log:(S.log||[]).map(e=>[e.c,e.p,e.k,e.x].join('|').replace(/\|+$/,'')),mat:S.mat||''});msg(ok?'Result saved to the draw':'Could not save to draw (draw was changed)');
       if(ok)msg('Result saved · Winner is on the TV · press Esc to return to the scoreboard');}};
   function scheduleNext(){
     if(S.link&&$('fAuto').checked){const lk=JSON.stringify(S.link);
@@ -1485,6 +1611,7 @@ if(TV){
   function add(p,t,noSnap){
     if(S.win)return msg('Match is over. Undo (Z) or Next match (N).');
     if(!noSnap)snap();const P=S.p[p];
+    if(!(t==='y'&&!S.yuko))lg(p,t,osaNote);osaNote='';
     if(t==='i'){P.i=1;return finish(p,'Ippon');}
     if(t==='w'){P.wa++;if(P.wa>=2)return finish(p,'Waza-ari awasete ippon');if(S.gs)return finish(p,'Waza-ari (golden score)');}
     if(t==='y'){if(!S.yuko)return msg('Yuko is switched off');P.y++;if(S.gs)return finish(p,'Yuko (golden score)');}
@@ -1492,14 +1619,14 @@ if(TV){
     if(t==='h'){P.h=true;return finish(opp(p),'Hansoku-make to '+nameOf(p));}
     render();
   }
-  function sub(p,t){snap();const P=S.p[p];
+  function sub(p,t){snap();const P=S.p[p];lg(p,'-'+t);
     if(t==='i')P.i=0;if(t==='w')P.wa=Math.max(0,P.wa-1);if(t==='y')P.y=Math.max(0,P.y-1);
     if(t==='s'){P.s=Math.max(0,P.s-1);P.h=false;}
     const hadWin=S.win;S.win=null;S.why='';if(hadWin&&S.link&&window.DR)DR.clearResult(S.link);render();}
   function timeUp(){const w=S.p.w,b=S.p.b;
     if(w.wa!==b.wa)return finish(w.wa>b.wa?'w':'b','Waza-ari (time up)');
     if(S.yuko&&w.y!==b.y)return finish(w.y>b.y?'w':'b','Yuko (time up)');
-    S.gs=true;S.ms=0;S.run=false;S.why='Golden score: press Hajime';buzz();render();}
+    lg('','gs');S.gs=true;S.ms=0;S.run=false;S.why='Golden score: press Hajime';buzz();render();}
   function hm(){
     audio();if(S.win)return msg('Match is over. Undo (Z) or Next match (N).');
     if(S.osa){
@@ -1521,7 +1648,7 @@ if(TV){
   function endOsa(){
     if(!S.osa)return;const h=S.osa,t=Math.floor(S.oms/1000);S.osa=null;S.oRun=false;
     let a=null;if(t>=20)a='i';else if(t>=10)a='w';else if(t>=5&&S.yuko)a='y';
-    if(a)add(h,a,true);
+    if(a){osaNote='osaekomi '+t+'s';add(h,a,true);}osaNote='';
     if(!S.win&&!S.gs&&S.ms<=0)timeUp();
     render();
   }
