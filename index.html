@@ -261,7 +261,8 @@ body.tv{overflow:hidden}
 
 @media print{nav,#op,#drawSec header,#drawSec aside,.tools button,#athPanel{display:none!important}body{background:#fff;color:#000}main{display:block}.panel{border:0;background:#fff}.m{background:#fff;border-color:#999}.m .mn{background:#eee;color:#333}.p{border-color:#ccc}.p.win{background:#dcfce7}.p .cl,.rname{color:#333}.md{background:#fff;border-color:#999}}
 
-/* ===== Liquid glass theme (admin screens only; TV board stays high-contrast) ===== */
+/* ===== Liquid glass theme v1 · switched off by the Pro theme (kept for reference) ===== */
+@media not all{
 :root{--gl:rgba(255,255,255,.065);--gl2:rgba(255,255,255,.11);--gb:rgba(255,255,255,.14);--gb2:rgba(255,255,255,.26);--hi:inset 0 1px 0 rgba(255,255,255,.16);--sh:0 12px 40px rgba(0,0,0,.38)}
 body:not(.tv){background:radial-gradient(1100px 700px at 6% -12%,rgba(99,76,255,.55),transparent 60%),radial-gradient(900px 620px at 104% -6%,rgba(0,170,210,.42),transparent 58%),radial-gradient(1000px 760px at 50% 120%,rgba(200,40,140,.35),transparent 62%),linear-gradient(160deg,#080a16,#0b1022 55%,#070812);background-attachment:fixed;font-family:"Segoe UI Variable","Segoe UI",Inter,Roboto,Arial,sans-serif}
 nav{background:rgba(12,16,34,.5)!important;-webkit-backdrop-filter:blur(22px) saturate(170%);backdrop-filter:blur(22px) saturate(170%);border-bottom:1px solid var(--gb)!important;position:sticky;top:0;z-index:30;box-shadow:0 6px 30px rgba(0,0,0,.25)}
@@ -302,6 +303,7 @@ body.tv #board,body.display #board{box-shadow:none!important;border-radius:0!imp
 #lockOv>div{background:rgba(20,24,44,.75)!important;-webkit-backdrop-filter:blur(24px);backdrop-filter:blur(24px);border-radius:20px!important}
 .keys b{background:rgba(255,255,255,.08)!important;border-color:var(--gb)!important}
 
+}
 /* ===== Classy TV board ===== */
 #board{background:radial-gradient(120% 140% at 50% 120%,#0b1a4a 0%,#05070d 62%)!important}
 #board .top{background:linear-gradient(90deg,#0a1130,#18266a 50%,#0a1130)!important;color:#dbe4ff;border-bottom:.3cqw solid rgba(255,206,84,.6)}
@@ -457,7 +459,8 @@ body.light #drawSec .eds .byetag{color:#0369a1;border-color:rgba(3,105,161,.4)}
 #podOv .pdcl{position:relative;color:inherit!important;opacity:.72;font-size:1.7cqw!important;font-weight:800;text-transform:uppercase}
 #podOv .pdsep{width:60%;height:.2cqw;background:rgba(0,0,0,.18);margin:.7cqw 0 .1cqw;border-radius:1cqw}
 
-/* ================= Apple-style Liquid Glass (admin screens) ================= */
+/* ================= Apple-style Liquid Glass · switched off by the Pro theme (kept for reference) ================= */
+@media not all{
 :root{--lg-blue:#0A84FF;--lg-green:#30D158;--lg-red:#FF453A;--lg-purple:#BF5AF2;--lg-teal:#40C8E0;--lg-orange:#FF9F0A;
   --lg-fill:rgba(255,255,255,.10);--lg-fill2:rgba(255,255,255,.16);--lg-edge:rgba(255,255,255,.28);--lg-edge2:rgba(255,255,255,.12);
   --lg-spec:inset 0 1px 0 rgba(255,255,255,.55),inset 0 -1px 0 rgba(255,255,255,.08),inset 0 0 0 .5px rgba(255,255,255,.22);
@@ -516,20 +519,147 @@ body.light:not(.tv) input,body.light:not(.tv) select,body.light:not(.tv) #drawSe
 body.light:not(.tv) #drawSec .m,body.light:not(.tv) #drawSec .edm,body.light:not(.tv) #drawSec .md{background:rgba(255,255,255,.62)!important;border-color:rgba(255,255,255,.9)!important;box-shadow:inset 0 1px 0 #fff,0 6px 18px rgba(15,23,42,.08)!important}
 body.light:not(.tv) #drawSec .cat.on{background:linear-gradient(180deg,rgba(255,255,255,.7),rgba(255,255,255,.3)),rgba(0,122,255,.18)!important;border-color:rgba(255,255,255,.9)!important}
 
-/* fixes: sheen behind content, podium names single-line auto-fit */
-body:not(.tv) .panel::before,body:not(.tv) #drawSec header::before{z-index:-1!important}
+}
+/* fixes: podium names single-line auto-fit */
 #podOv .pdblk::before{z-index:0}
 #podOv .pdblk>*{position:relative;z-index:1}
 #podOv .pdnm{white-space:nowrap!important;display:block!important;-webkit-line-clamp:unset!important;text-overflow:clip;overflow:visible!important;line-height:1.15!important}
 #podOv .pdblk{overflow:hidden}
 
-body:not(.tv) #drawSec #demo{background:linear-gradient(180deg,rgba(255,255,255,.30),rgba(255,255,255,0) 60%),var(--lg-purple)!important;color:#fff!important;box-shadow:var(--lg-spec),0 6px 20px rgba(191,90,242,.35)!important}
-body.light:not(.tv) #drawSec #demo{background:linear-gradient(180deg,rgba(255,255,255,.35),rgba(255,255,255,0) 60%),#af52de!important;color:#fff!important}
+
+
+/* ===================== PRO THEME · admin screens: app shell (sidebar, top bar, status bar), neutral surfaces, compact controls ===================== */
+body:not(.tv):not(.view){--bg:#0f1217;--side:#13171d;--sf:#181c23;--sf2:#1e232b;--sf3:#262c36;--bd:#2a313c;--bd2:#3a4352;--tx:#e7eaf0;--mu:#8f99a9;--pri:#2f81f7;--prih:#4b93ff;--ok:#2ea043;--okh:#3fb950;--dn:#e5534b;--wn:#d29922;--acc:#a371f7;--hov:rgba(255,255,255,.05);--sel:rgba(47,129,247,.16);--sh:0 1px 2px rgba(0,0,0,.35);
+  background:var(--bg)!important;color:var(--tx)!important;font-family:"Segoe UI Variable Text","Segoe UI",-apple-system,BlinkMacSystemFont,Inter,Roboto,Arial,sans-serif!important;font-size:14px;letter-spacing:0!important;-webkit-font-smoothing:antialiased;padding-left:224px;padding-bottom:30px;min-height:100vh;height:auto!important}
+html:has(body:not(.tv):not(.view):not(.display)){height:auto!important}
+body.light:not(.tv):not(.view){--bg:#f3f5f8;--side:#ffffff;--sf:#ffffff;--sf2:#f6f7f9;--sf3:#eceff4;--bd:#dfe3ea;--bd2:#c8d0db;--tx:#1b2330;--mu:#5c6778;--pri:#0b63ce;--prih:#0a56b3;--ok:#1a7f37;--okh:#166d2f;--dn:#cf222e;--wn:#9a6700;--acc:#7c3aed;--hov:rgba(15,23,42,.045);--sel:rgba(11,99,206,.09);--sh:0 1px 2px rgba(16,24,40,.07)}
+html:has(body:not(.tv):not(.view)){background:#0f1217}html:has(body.light:not(.tv):not(.view)){background:#f3f5f8}
+body.display:not(.tv){padding:0!important}
+/* sidebar */
+#appSide,#appStat{display:none}
+body:not(.tv):not(.view):not(.display) #appSide{display:flex;flex-direction:column;position:fixed;left:0;top:0;bottom:0;width:224px;background:var(--side);border-right:1px solid var(--bd);z-index:20;padding:12px 10px 36px;overflow-y:auto}
+#appSide .brand{display:flex;gap:10px;align-items:center;padding:4px 6px 12px;margin-bottom:10px;border-bottom:1px solid var(--bd)}
+#appSide .logo{width:34px;height:34px;border-radius:8px;background:var(--pri);color:#fff;display:grid;place-items:center;font-weight:800;font-size:14px;flex:none}
+#appSide .bt{font-weight:700;font-size:14px;line-height:1.2;color:var(--tx)}#appSide .bs{font-size:11px;color:var(--mu)}
+#appSide .tn{padding:8px 10px;margin:0 2px 4px;border-radius:8px;background:var(--sf2);border:1px solid var(--bd);font-size:11.5px;color:var(--mu);line-height:1.35}
+#appSide .tn b{display:block;font-size:12.5px;color:var(--tx);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#appSide .sec{font-size:10.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--mu);padding:14px 10px 5px}
+#appSide a.it{display:flex;align-items:center;gap:10px;padding:7px 10px;margin:1px 0;border-radius:6px;color:var(--tx);text-decoration:none;font-size:13.5px;cursor:pointer;user-select:none;white-space:nowrap}
+#appSide a.it:hover{background:var(--hov)}
+#appSide a.it.on{background:var(--sel);color:var(--pri);font-weight:600;box-shadow:inset 3px 0 0 var(--pri)}
+#appSide a.it svg{width:17px;height:17px;flex:none;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+#appSide .foot{margin-top:auto;padding-top:10px;border-top:1px solid var(--bd)}#appSide #sdMat{font-size:12px;color:var(--mu);padding:2px 10px 6px}
+/* status bar */
+body:not(.tv):not(.view):not(.display) #appStat{display:flex;position:fixed;left:224px;right:0;bottom:0;height:28px;align-items:center;gap:18px;padding:0 14px;background:var(--side);border-top:1px solid var(--bd);font-size:12px;color:var(--mu);z-index:20;white-space:nowrap;overflow:hidden}
+#appStat .sp{flex:1}#appStat #stSave{color:var(--ok);font-weight:600}#appStat span+span:not(.sp){padding-left:18px;border-left:1px solid var(--bd)}#appStat .sp+span{border-left:0!important;padding-left:0!important}
+/* top bar */
+body:not(.tv):not(.view) nav{position:sticky!important;top:0!important;z-index:15!important;margin:0!important;border-radius:0!important;min-height:52px;padding:0 18px!important;display:flex!important;align-items:center;gap:10px;background:var(--sf)!important;border:0!important;border-bottom:1px solid var(--bd)!important;box-shadow:none!important;-webkit-backdrop-filter:none!important;backdrop-filter:none!important}
+body:not(.tv):not(.view) nav #pgTitle{font-size:17px;font-weight:700;color:var(--tx)}
+body:not(.tv):not(.view) nav b{flex:1;font-size:12.5px!important;font-weight:500!important;color:var(--mu)!important;background:none!important;-webkit-text-fill-color:currentColor!important;letter-spacing:0!important}
+body:not(.tv):not(.view) nav b #matTag{color:var(--tx)!important;-webkit-text-fill-color:currentColor!important;font-weight:600}
+body:not(.tv):not(.view) nav button{border-radius:0!important;padding:6px 14px!important;margin:0!important;font-size:13px!important}
+body:not(.tv):not(.view) nav #thBtn{border-radius:6px!important;margin-right:8px!important}
+body:not(.tv):not(.view) nav #tabDraw{border-radius:6px 0 0 6px!important}body:not(.tv):not(.view) nav #tabSb{border-radius:0 6px 6px 0!important;margin-left:-1px!important}
+body:not(.tv):not(.view) nav button.on{background:var(--pri)!important;border-color:var(--pri)!important;color:#fff!important}
+/* buttons */
+body:not(.tv):not(.view) button,body:not(.tv):not(.view) .filebtn,body:not(.tv):not(.view) #drawSec button,body:not(.tv):not(.view) #drawSec .filebtn{background:var(--sf2)!important;color:var(--tx)!important;border:1px solid var(--bd2)!important;border-radius:6px!important;box-shadow:var(--sh)!important;font-weight:600!important;filter:none!important;transform:none!important;-webkit-backdrop-filter:none!important;backdrop-filter:none!important;text-shadow:none!important;transition:background .12s,border-color .12s}
+body:not(.tv):not(.view) button:hover:not(:disabled),body:not(.tv):not(.view) .filebtn:hover{background:var(--sf3)!important;border-color:var(--mu)!important}
+body:not(.tv):not(.view) button:focus{outline:none!important}
+body:not(.tv):not(.view) button:focus-visible{outline:2px solid var(--pri)!important;outline-offset:1px}
+body:not(.tv):not(.view) nav button.on:hover:not(:disabled){background:var(--prih)!important;border-color:var(--prih)!important;color:#fff!important}
+body:not(.tv):not(.view) #op button kbd,body:not(.tv):not(.view) #op button small{background:transparent!important;border:0!important;box-shadow:none!important;color:inherit!important;opacity:.7;font-weight:600}
+body:not(.tv):not(.view) button.pri,body:not(.tv):not(.view) #drawSec button.pri,body:not(.tv):not(.view) #drawSec .filebtn,body:not(.tv):not(.view) .filebtn{background:var(--pri)!important;border-color:var(--pri)!important;color:#fff!important}
+body:not(.tv):not(.view) button.pri:hover:not(:disabled),body:not(.tv):not(.view) #drawSec .filebtn:hover,body:not(.tv):not(.view) .filebtn:hover{background:var(--prih)!important;border-color:var(--prih)!important}
+body:not(.tv):not(.view) #drawSec button.warn{background:transparent!important;color:var(--dn)!important;border-color:color-mix(in srgb,var(--dn) 55%,transparent)!important;box-shadow:none!important}
+body:not(.tv):not(.view) #drawSec button.warn:hover{background:color-mix(in srgb,var(--dn) 12%,transparent)!important;border-color:var(--dn)!important}
+body:not(.tv):not(.view) #drawSec #demo,body:not(.tv):not(.view) #drawSec button.scb{background:transparent!important;color:var(--acc)!important;border-color:color-mix(in srgb,var(--acc) 55%,transparent)!important;box-shadow:none!important}
+body:not(.tv):not(.view) #drawSec button.scb:hover,body:not(.tv):not(.view) #drawSec #demo:hover{background:color-mix(in srgb,var(--acc) 12%,transparent)!important}
+body:not(.tv):not(.view) #drawSec button.sm{padding:4px 10px!important;font-size:12px!important}
+/* scoreboard controls keep their judo colours */
+body:not(.tv):not(.view) #op button.go,body:not(.tv):not(.view) #bFromDraw,body:not(.tv):not(.view) #bCloseWin{background:var(--ok)!important;border-color:var(--ok)!important;color:#fff!important}
+body:not(.tv):not(.view) #op button.go:hover,body:not(.tv):not(.view) #bFromDraw:hover,body:not(.tv):not(.view) #bCloseWin:hover{background:var(--okh)!important}
+body:not(.tv):not(.view) #op button.go{font-size:20px!important}
+body:not(.tv):not(.view) #op button.pw{background:#ffffff!important;color:#111827!important;border-color:#cfd5de!important}
+body:not(.tv):not(.view) #op button.pw:hover{background:#eef1f5!important}
+body:not(.tv):not(.view) #op button.pb{background:#1f5fd6!important;color:#fff!important;border-color:#1f5fd6!important}
+body:not(.tv):not(.view) #op button.pb:hover{background:#2b6de6!important}
+body:not(.tv):not(.view) #op button.warn{background:var(--dn)!important;color:#fff!important;border-color:var(--dn)!important}
+body:not(.tv):not(.view) #op button.tvb{background:transparent!important;color:var(--acc)!important;border-color:color-mix(in srgb,var(--acc) 60%,transparent)!important}
+body:not(.tv):not(.view) #op button.minus{background:transparent!important;color:var(--mu)!important;border-color:var(--bd)!important;box-shadow:none!important}
+body:not(.tv):not(.view) #op button small,body:not(.tv):not(.view) #op button kbd{opacity:.7}
+/* inputs */
+body:not(.tv):not(.view) input:not([type=checkbox]):not([type=radio]):not([type=file]),body:not(.tv):not(.view) select,body:not(.tv):not(.view) textarea,body:not(.tv):not(.view) #drawSec .form input,body:not(.tv):not(.view) #drawSec .matcfg input,body:not(.tv):not(.view) #drawSec .matcfg select,body:not(.tv):not(.view) #prPanel select{background:var(--sf)!important;color:var(--tx)!important;border:1px solid var(--bd2)!important;border-radius:6px!important;padding:6px 9px!important;box-shadow:none!important;min-height:32px;font-size:13px}
+body:not(.tv):not(.view) input:focus,body:not(.tv):not(.view) select:focus{outline:none!important;border-color:var(--pri)!important;box-shadow:0 0 0 3px var(--sel)!important}
+body:not(.tv):not(.view) input::placeholder{color:var(--mu);opacity:.75}
+body:not(.tv):not(.view) input[type=checkbox]{accent-color:var(--pri)}
+body:not(.tv):not(.view) select option{background:var(--sf);color:var(--tx)}
+/* panels & text */
+body:not(.tv):not(.view) .panel,body:not(.tv):not(.view) #drawSec .panel,body:not(.tv):not(.view) #op .panel,body:not(.tv):not(.view) details.panel,body:not(.tv):not(.view) #drawSec header{background:var(--sf)!important;border:1px solid var(--bd)!important;border-radius:10px!important;box-shadow:var(--sh)!important;-webkit-backdrop-filter:none!important;backdrop-filter:none!important}
+body:not(.tv):not(.view) .panel::before,body:not(.tv):not(.view) #drawSec header::before{display:none!important}
+body:not(.tv):not(.view) .panel,body:not(.tv):not(.view) details.panel{scroll-margin-top:66px}
+body:not(.tv):not(.view) details.panel>summary,body:not(.tv):not(.view) #drawSec details summary{font-weight:650;font-size:14px;color:var(--tx)!important;cursor:pointer}
+body:not(.tv):not(.view) details.panel[open]>summary{border-bottom:1px solid var(--bd);padding-bottom:10px;margin-bottom:10px}
+body:not(.tv):not(.view) .hint,body:not(.tv):not(.view) #drawSec .hint,body:not(.tv):not(.view) .wthelp{color:var(--mu)!important}
+body:not(.tv):not(.view) h2,body:not(.tv):not(.view) #drawSec h2{color:var(--mu)!important;font-size:11px!important;font-weight:700;letter-spacing:.08em;text-transform:uppercase}
+body:not(.tv):not(.view) #op h3,body:not(.tv):not(.view) #drawSec .tools h3{color:var(--tx)!important}
+body:not(.tv):not(.view) label,body:not(.tv):not(.view) .keys{color:var(--mu)!important}
+body:not(.tv):not(.view) .keys b,body:not(.tv):not(.view) kbd{background:var(--sf2)!important;color:var(--tx)!important;border:1px solid var(--bd2)!important;border-radius:4px!important;box-shadow:none!important}
+body:not(.tv):not(.view) #msg,body:not(.tv):not(.view) #drawSec #dmsg{color:var(--wn)!important;font-weight:600}
+/* draw page */
+body:not(.tv):not(.view) #drawSec header{margin:14px 18px 0!important;padding:10px 12px!important;display:flex!important;flex-wrap:wrap;gap:8px;align-items:center;position:relative!important;top:auto!important;z-index:2}
+body:not(.tv):not(.view) #drawSec header h1{display:none}
+body:not(.tv):not(.view) #drawSec .matcfg{background:var(--sf2)!important;border:1px solid var(--bd)!important;border-radius:8px!important;color:var(--mu)!important;padding:3px 8px!important}
+body:not(.tv):not(.view) #drawSec #dmsg{flex-basis:100%}
+body:not(.tv):not(.view) #drawSec main{padding:14px 18px!important;gap:14px!important}
+body:not(.tv):not(.view) #drawSec .cat{border-radius:6px!important;border:1px solid transparent!important;color:var(--tx)!important;box-shadow:none!important}
+body:not(.tv):not(.view) #drawSec .cat:hover{background:var(--hov)!important}
+body:not(.tv):not(.view) #drawSec .cat.on{background:var(--sel)!important;border-color:color-mix(in srgb,var(--pri) 45%,transparent)!important}
+body:not(.tv):not(.view) #drawSec .cat .n{color:var(--mu)!important}
+body:not(.tv):not(.view) #drawSec .gh{border-radius:4px!important;color:var(--tx)!important;font-size:11px!important;letter-spacing:.06em}
+body:not(.tv):not(.view) #drawSec .gh.ma{background:color-mix(in srgb,#2f81f7 22%,transparent)!important}
+body:not(.tv):not(.view) #drawSec .gh.fe{background:color-mix(in srgb,#db2777 22%,transparent)!important}
+body:not(.tv):not(.view) #drawSec .m,body:not(.tv):not(.view) #drawSec .edm,body:not(.tv):not(.view) #drawSec .md{background:var(--sf)!important;border:1px solid var(--bd2)!important;border-radius:8px!important;box-shadow:var(--sh)!important;-webkit-backdrop-filter:none!important;backdrop-filter:none!important}
+body:not(.tv):not(.view) #drawSec .m .mn{background:var(--sf2)!important;color:var(--mu)!important;border-bottom:1px solid var(--bd)!important}
+body:not(.tv):not(.view) #drawSec .m.xm{border-color:color-mix(in srgb,var(--wn) 55%,transparent)!important}
+body:not(.tv):not(.view) #drawSec .p{border-top-color:var(--bd)!important;color:var(--tx)}
+body:not(.tv):not(.view) #drawSec .p .cl,body:not(.tv):not(.view) #drawSec .rname,body:not(.tv):not(.view) #drawSec .edl,body:not(.tv):not(.view) #drawSec .eds .pos,body:not(.tv):not(.view) #drawSec .eds .ecl{color:var(--mu)!important}
+body:not(.tv):not(.view) #drawSec .p.win{background:color-mix(in srgb,var(--ok) 16%,transparent)!important}
+body:not(.tv):not(.view) #drawSec .p.bye,body:not(.tv):not(.view) #drawSec .p.tbd{color:var(--mu)!important}
+body:not(.tv):not(.view) #drawSec .eds:hover{background:var(--hov)!important}body:not(.tv):not(.view) #drawSec .eds.sel{background:var(--sel)!important}
+body:not(.tv):not(.view) #drawSec .edhead{color:var(--tx)!important;border-radius:8px!important}
+body:not(.tv):not(.view) #drawSec .chk{border-radius:6px!important}body:not(.tv):not(.view) #drawSec .lockchip{border-radius:999px!important}
+body:not(.tv):not(.view) #drawSec table{border-collapse:collapse}
+body:not(.tv):not(.view) #drawSec th{color:var(--mu)!important;font-size:11.5px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;background:var(--sf2)}
+body:not(.tv):not(.view) #drawSec th,body:not(.tv):not(.view) #drawSec td,body:not(.tv):not(.view) #drawSec .bk{border-bottom:1px solid var(--bd)!important}
+body:not(.tv):not(.view) #drawSec tbody tr:hover td{background:var(--hov)}
+.stagebar{margin:4px 0 10px;padding:8px 12px;border-radius:8px;font-size:13px;font-weight:600;background:color-mix(in srgb,var(--wn,#d29922) 12%,transparent);border:1px solid color-mix(in srgb,var(--wn,#d29922) 40%,transparent);color:var(--wn,#d29922)}
+.stagebar.ok{background:color-mix(in srgb,var(--ok,#2ea043) 12%,transparent);border-color:color-mix(in srgb,var(--ok,#2ea043) 40%,transparent);color:var(--ok,#2ea043)}
+#drawSec .fblock{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px;margin-top:14px;padding:12px;border-radius:10px;background:var(--sf2,rgba(255,255,255,.035));border:1px dashed var(--bd2,rgba(255,255,255,.18))}
+#drawSec .fbcol{display:flex;flex-direction:column;gap:10px}
+/* scoreboard page */
+body:not(.tv):not(.view):not(.display) #op{padding:14px 18px!important;gap:12px!important}
+body:not(.tv):not(.view):not(.display) #op #board{border-radius:8px!important;box-shadow:0 0 0 1px var(--bd2),0 6px 20px rgba(0,0,0,.25)!important}
+body.tv #board,body.display #board{box-shadow:none!important;border-radius:0!important}
+/* overlays */
+#lockOv{z-index:200}
+body:not(.tv):not(.view) #lockOv>div{background:var(--sf)!important;color:var(--tx)!important;border:1px solid var(--bd)!important;border-radius:12px!important;box-shadow:0 20px 60px rgba(0,0,0,.4)!important}
+body:not(.tv):not(.view) #qrOv .qrm{border-radius:12px!important}
+/* weigh-in badges stay readable in both modes */
+body:not(.tv):not(.view) .wb.wok{color:var(--ok)}body:not(.tv):not(.view) .wb.wdc{color:var(--wn)}
+/* narrow laptops: icon-only sidebar */
+@media (max-width:1180px){
+ body:not(.tv):not(.view){padding-left:60px}
+ body:not(.tv):not(.view):not(.display) #appSide{width:60px;padding:12px 8px 36px}
+ #appSide .brand>div:last-child,#appSide .tn,#appSide .sec,#appSide .lb,#appSide #sdMat{display:none!important}
+ #appSide .brand{justify-content:center;padding:4px 0 12px}#appSide a.it{justify-content:center;padding:9px 0}
+ body:not(.tv):not(.view):not(.display) #appStat{left:60px}
+}
 
 /* ===== PRINT: always black text on white paper, in dark or light mode (must stay the LAST rules) ===== */
 @media print{
  html,html body,html body:not(.tv),html body:not(.tv):not(.view),html body.light,html body.light:not(.tv),html body.light:not(.tv):not(.view),html body.view,html body.tv{background:#fff!important;background-image:none!important;background-attachment:scroll!important;color:#000!important}
  html::before,html::after,body::before,body::after{content:none!important;display:none!important}
+ html,html body,html body:not(.tv):not(.view),html body.light:not(.tv):not(.view){padding:0!important;min-height:0!important;height:auto!important}
  #printArea,#printArea *,body.view #viewRoot,body.view #viewRoot *{background:transparent!important;background-image:none!important;color:#000!important;-webkit-text-fill-color:#000!important;box-shadow:none!important;text-shadow:none!important;-webkit-backdrop-filter:none!important;backdrop-filter:none!important;filter:none!important;opacity:1!important}
  #printArea,body.view #viewRoot{background:#fff!important}
  /* grey-scale accents (white side = light grey bar, blue side = black bar) */
@@ -560,8 +690,9 @@ body.light:not(.tv) #drawSec #demo{background:linear-gradient(180deg,rgba(255,25
 </style>
 </head>
 <body data-tab="draw">
+<aside id="appSide"><div class="brand"><div class="logo">JT</div><div><div class="bt">Judo Tournament</div><div class="bs">Draw · Scoring · Print</div></div></div><div class="tn"><b id="sdEvN">Tournament</b><span id="sdEvD"></span></div><div class="sec">Competition</div><a class="it" data-go="draw" title="Draw &amp; brackets"><svg viewBox="0 0 24 24"><path d="M3 5h5v4H3zM3 15h5v4H3zM16 10h5v4h-5zM8 7h3v10H8M11 12h5"/></svg><span class="lb">Draw &amp; brackets</span></a><a class="it" data-go="ath" title="Athletes &amp; weigh-in"><svg viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.2"/><path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6"/><circle cx="17.5" cy="9" r="2.4"/><path d="M16 14.2c2.8.2 5 2.6 5 5.8"/></svg><span class="lb">Athletes &amp; weigh-in</span></a><a class="it" data-go="evt" title="Events (blank sheets)"><svg viewBox="0 0 24 24"><rect x="4" y="3.5" width="16" height="17" rx="2"/><path d="M8 8h8M8 12h8M8 16h5"/></svg><span class="lb">Events (blank sheets)</span></a><a class="it" data-go="setup" title="Tournament setup"><svg viewBox="0 0 24 24"><path d="M4 6h10M18 6h2M4 12h4M12 12h8M4 18h12M20 18h0"/><circle cx="16" cy="6" r="2"/><circle cx="10" cy="12" r="2"/><circle cx="18" cy="18" r="2"/></svg><span class="lb">Tournament setup</span></a><div class="sec">Live</div><a class="it" data-go="sb" title="Scoreboard"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="13" rx="2"/><path d="M8 21h8M12 17v4M7.5 10.5h3M13.5 10.5h3"/></svg><span class="lb">Scoreboard</span></a><a class="it" data-go="tv" title="TV display"><svg viewBox="0 0 24 24"><rect x="2.5" y="5" width="19" height="12.5" rx="2"/><path d="M8 21h8M9 2l3 3 3-3"/></svg><span class="lb">TV display</span></a><div class="sec">Output</div><a class="it" data-go="print" title="Print centre"><svg viewBox="0 0 24 24"><path d="M7 9V3.5h10V9"/><rect x="3.5" y="9" width="17" height="8" rx="1.5"/><path d="M7 14h10v6.5H7z"/></svg><span class="lb">Print centre</span></a><a class="it" data-go="xls" title="Results (Excel)"><svg viewBox="0 0 24 24"><path d="M14 3.5H7a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8.5z"/><path d="M14 3.5v5h5M9.5 12.5l5 5M14.5 12.5l-5 5"/></svg><span class="lb">Results (Excel)</span></a><a class="it" data-go="bk" title="Backup &amp; restore"><svg viewBox="0 0 24 24"><ellipse cx="12" cy="5.5" rx="7.5" ry="2.8"/><path d="M4.5 5.5v13c0 1.5 3.4 2.8 7.5 2.8s7.5-1.3 7.5-2.8v-13M4.5 12c0 1.5 3.4 2.8 7.5 2.8s7.5-1.3 7.5-2.8"/></svg><span class="lb">Backup &amp; restore</span></a><div class="foot"><div id="sdMat"></div><a class="it" data-go="theme" title="Light mode"><svg viewBox="0 0 24 24"><path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"/></svg><span class="lb" id="sdTheme">Light mode</span></a></div></aside><footer id="appStat"><span id="stSave">● Saved</span><span id="stCnt"></span><span id="stDone"></span><span id="stTv"></span><span id="stBk"></span><span class="sp"></span><span id="stMat"></span><span id="stClk"></span></footer>
 <div id="lockOv"><div><b>⚠ Admin already open</b><p id="lockTxt"></p><button onclick="takeControl()">Take control in this tab</button><p style="font-size:13px;opacity:.7">Only one admin screen can control the tournament at a time. The TV window is separate and is fine.</p></div></div>
-<nav><b>Judo Tournament System <span id="matTag" style="color:#f5c518"></span></b><button id="thBtn" title="Dark / Light mode">☀ Light</button><button id="tabDraw">Draw</button><button id="tabSb">Scoreboard</button></nav>
+<nav><span id="pgTitle">Draw &amp; brackets</span><b>Judo Tournament System <span id="matTag" style="color:#f5c518"></span></b><button id="thBtn" title="Dark / Light mode">☀ Light</button><button id="tabDraw">Draw</button><button id="tabSb">Scoreboard</button></nav>
 
 <section id="drawSec"><header>
   <h1>Judo Draw System</h1>
@@ -1972,6 +2103,40 @@ if(TV){
   fill();render();SB.autoLoad(false,true);SB.refreshRun();requestAnimationFrame(loop);
 }
 
+</script>
+<script>
+/* App shell: sidebar navigation + status bar. Only presses the app's existing buttons; no tournament logic here. */
+(function(){
+  if(location.hash==='#display'||/[#&]v=/.test(location.hash)||!document.getElementById('appSide'))return;
+  const B=document.body,$=id=>document.getElementById(id),later=f=>setTimeout(f,40);
+  const open=id=>{$('tabDraw').click();const p=$(id);if(p){p.open=true;later(()=>p.scrollIntoView({behavior:'smooth',block:'start'}));}};
+  const go={draw:()=>{$('tabDraw').click();scrollTo({top:0,behavior:'smooth'});},ath:()=>open('athPanel'),evt:()=>open('evtPanel'),setup:()=>open('evPanel'),
+    print:()=>{$('tabDraw').click();$('prAll').click();},xls:()=>$('resCsv').click(),bk:()=>{$('tabDraw').click();$('bkOpen').click();},
+    sb:()=>{$('tabSb').click();scrollTo({top:0});},tv:()=>{$('tabSb').click();$('bTV').click();},theme:()=>$('thBtn').click()};
+  const TT={draw:'Draw & brackets',ath:'Athletes & weigh-in',evt:'Events for blank sheets',setup:'Tournament setup',print:'Print centre',bk:'Backup & restore',sb:'Scoreboard',tv:'Scoreboard'};
+  let act='';
+  const setAct=k=>{act=k;document.querySelectorAll('#appSide a.it[data-go]').forEach(a=>a.classList.toggle('on',a.dataset.go===k));if(TT[k])$('pgTitle').textContent=TT[k];};
+  document.querySelectorAll('#appSide a.it[data-go]').forEach(a=>a.addEventListener('click',e=>{e.preventDefault();const k=a.dataset.go;if(k!=='theme'&&k!=='xls')setAct(k);try{go[k]();}catch(err){}}));
+  new MutationObserver(()=>{const t=B.dataset.tab;if(t==='sb'&&act!=='sb'&&act!=='tv')setAct('sb');else if(t==='draw'&&(act==='sb'||act==='tv'||!act))setAct('draw');}).observe(B,{attributes:true,attributeFilter:['data-tab']});
+  setAct(B.dataset.tab==='sb'?'sb':'draw');
+  let lastJ=null,savedAt=Date.now();
+  const hm=t=>new Date(t).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
+  function stat(){let j='';try{j=localStorage.getItem('judoDraw')||'';}catch(e){}
+    if(j!==lastJ){if(lastJ!==null)savedAt=Date.now();lastJ=j;let d={};try{d=JSON.parse(j||'{}')||{};}catch(e){}
+      const ath=d.ath||[],dr=d.draws||{};let tot=0,done=0;
+      for(const k in dr){const x=dr[k],f=m=>{if(!m||m.bye||m.void)return;tot++;if(m.w)done++;};(x.rounds||[]).forEach(r=>r.forEach(f));if(x.x){(x.x.rep||[]).forEach(f);(x.x.br||[]).forEach(f);}}
+      const dq=ath.filter(a=>a.dq).length,m=d.meta||{};
+      $('stCnt').textContent=ath.length+' athletes · '+Object.keys(dr).length+' categories'+(dq?' · '+dq+' DQ':'');
+      $('stDone').textContent='Contests done '+done+' / '+tot;
+      $('sdEvN').textContent=m.name||'Tournament not named yet';$('sdEvD').textContent=[m.venue,m.city].filter(Boolean).join(', ')||'Fill in Tournament setup';}
+    $('stSave').textContent='● Saved '+hm(savedAt);
+    const tv=$('tvStat'),tt=tv?tv.textContent.trim():'';$('stTv').textContent=tt||'TV window not open';
+    const mt=($('matTag')?$('matTag').textContent:'').replace(/^·\s*/,'');$('stMat').textContent=mt;
+    const fs=$('fmtSel');$('sdMat').textContent=mt+(fs&&fs.selectedOptions[0]?' · '+fs.selectedOptions[0].text.split(' (')[0]:'');
+    $('sdTheme').textContent=B.classList.contains('light')?'Dark mode':'Light mode';$('stClk').textContent=new Date().toLocaleTimeString();}
+  function bk(){try{const s=localStorage.getItem('judoBackups')||'',m=/"t":(\d+)/.exec(s.slice(0,400));$('stBk').textContent=m?'Last backup '+hm(+m[1]):'No backup yet';}catch(e){}}
+  stat();bk();setInterval(stat,1000);setInterval(bk,10000);
+})();
 </script>
 </body>
 </html>

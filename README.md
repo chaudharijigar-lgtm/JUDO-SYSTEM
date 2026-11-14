@@ -48,3 +48,8 @@ Add a "Ranking" column (1 = best) or "Ranking Points" column to the upload sheet
 
 ## Events for blank sheets (Draw tab → 📋 Events for blank sheets)
 Add events by hand, "+ All IJF weights" (Senior / Junior / Cadet) or "+ From athlete list". Then Print → any blank form → scope "Saved events" (or the "Print all blank forms for these events" button). Each event gets its sheets with the event heading and no names. Tick "No athlete names" to print a category's forms heading-only even when athletes are entered.
+
+## Professional layout (v12)
+- Left menu: Draw & brackets · Athletes & weigh-in · Events · Tournament setup · Scoreboard · TV display · Print centre · Results (Excel) · Backup & restore · Light / Dark.
+- Top bar: page name, mat, Draw / Scoreboard switch. Bottom status bar: last save, athletes, contests done, TV connection, last backup, mat, clock.
+- On small laptops (under ~1180 px wide) the menu shows icons only. The TV screen, "This screen = board" mode, the phone QR pages and all prints are unchanged.
