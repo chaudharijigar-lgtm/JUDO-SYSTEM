@@ -29,3 +29,22 @@ Draw (weight category knockout with seeding) + live scoreboard + TV display, in 
 - **Blank fixture for referees**: entry & seeding list plus every stage with empty name lines and I / W / Y / S boxes. "As per category" prints that category's bracket; an empty-sheet size (2 – 64) prints it without any athletes.
 - **Score sheet · blank**: same heading as the results (tournament, category, mat, draw ID, QR), one row per contest in match order with empty score boxes for White and Blue, golden score, time, winner and remarks.
 - **Score sheet · filled from the scoreboard**: made automatically from what the admin scores — final I / W / Y / S for both sides, golden score, contest time, winner, how it was won, when it was recorded, and a score log of every score/penalty with its match time. Print it after each category for the file.
+
+## Weigh-in (Draw tab → Athletes → ⚖ Weigh-in)
+- Pick the category on the left; the list shows its athletes. Type the weight in kg and press Enter (jumps to the next athlete).
+- Above the category limit (e.g. 60.5 in −60 kg) = OVER → disqualified automatically. The row turns red, the opponent gets a bye, the draw shows the name struck through with "DQ", and the results show "DQ".
+- Typed a wrong weight? Correct it and the athlete is back in the draw. "+" categories have no upper limit. An allowance in grams can be set (default 0).
+- If an athlete who already fought is found overweight, he is flagged but no result is changed (decide on the mat).
+- An Excel column named "Weigh-in" or "Actual weight" is read as the official weight on upload.
+
+## Blank forms with no athletes at all
+Print → "All blank forms" (or Athlete list / Weigh-in sheet / Blank fixture / Score sheet) → choose an empty-sheet size (2 – 64 athletes) → Print.
+
+## Contest time by age group (Draw tab → Tournament details)
+Sub-Junior 3 min, Cadet / Junior / Senior 4 min by default; change any of them (2 – 5 min). The scoreboard sets the time by itself whenever a match is loaded from the draw.
+
+## Ranking → seeding
+Add a "Ranking" column (1 = best) or "Ranking Points" column to the upload sheet. In each category the best ranked get seeds 1–8 (half the bracket in small categories) and are placed IJF-style. A category that already has a Seed column keeps those seeds.
+
+## Events for blank sheets (Draw tab → 📋 Events for blank sheets)
+Add events by hand, "+ All IJF weights" (Senior / Junior / Cadet) or "+ From athlete list". Then Print → any blank form → scope "Saved events" (or the "Print all blank forms for these events" button). Each event gets its sheets with the event heading and no names. Tick "No athlete names" to print a category's forms heading-only even when athletes are entered.

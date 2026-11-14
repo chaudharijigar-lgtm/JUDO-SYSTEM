@@ -152,6 +152,14 @@ body.tv #op,body.display #op{display:flex!important}
 #printArea .pss .swon{background:#dcdcdc}#printArea .pss .srs{font-size:6.8pt}
 #printArea .pss.sblk td{height:9.6mm}#printArea .pss tr{break-inside:avoid}
 #printArea .pss tr.shaslog td{border-bottom-style:dotted}#printArea .pss tr.slog td{font-size:6.1pt;color:#333;padding:.3mm 1mm .7mm;border-top:0;white-space:normal}
+#printArea .pls td{height:7.2mm}#printArea .pls th{height:6mm}#printArea .pls .sn{font-size:8pt}#printArea .pls .scl{font-size:7pt;color:#333}#printArea .pss tr.lover td{background:#dcdcdc;font-weight:800}
+.durbar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin:12px 0 4px}.durbar label{display:flex;align-items:center;gap:6px}
+.evtf select,.evtf input{min-width:120px}#prNoNmL{display:flex;align-items:center;gap:6px;font-size:13px}
+.wtbar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:10px 0 4px}.wtbar label{display:flex;align-items:center;gap:6px}.wtbar #wtTol{width:70px}.wtbar #athQ{min-width:180px}.wtbar #wtSum{font-weight:700;opacity:.85}
+.wthelp{font-size:12px;opacity:.75;margin:0 0 8px;line-height:1.5}
+#athT input.wt{width:86px;font-weight:700}#athT tr.wdq td{background:rgba(255,69,58,.18)!important}#athT tr.wdecl td{background:rgba(255,159,10,.13)!important}
+.wb{display:inline-block;padding:2px 9px;border-radius:99px;font-size:12px;font-weight:700;opacity:.7;white-space:nowrap}.wb.wok{background:rgba(48,209,88,.2);opacity:1}.wb.wov{background:#FF453A;color:#fff;opacity:1}.wb.wdc{background:rgba(255,159,10,.28);opacity:1}
+.p.dq .nm b{color:#FF453A;font-weight:900}.p.dq .nm s{opacity:.75}
 #printArea .prk2.c3{gap:3mm}#printArea .prk2 .pmd td,#printArea .prk2 .pmd th{padding:.9mm 1.4mm}#printArea .prk2 .pmd{font-size:8pt}#printArea .prk2.c3 .prk td:first-child{width:9mm}
 #printArea.pmeasure{display:block!important;position:absolute!important;left:-30000px;top:0;width:283mm;visibility:hidden;color:#000;font-family:Arial,Helvetica,sans-serif}
 #printArea.pmeasure .ppage{height:194mm;display:flex;flex-direction:column;overflow:hidden}
@@ -534,7 +542,7 @@ body.light:not(.tv) #drawSec #demo{background:linear-gradient(180deg,rgba(255,25
  #printArea .ps.lost,#printArea .ps.lost *,#printArea .bye{color:#777!important;-webkit-text-fill-color:#777!important}
  #printArea .pc,#printArea .pmt,#printArea .pdt,#printArea .pnote,#printArea .qrl,#printArea .prn{color:#333!important;-webkit-text-fill-color:#333!important}
  #printArea .pmd th,#printArea .pmd td{border-color:#777!important}
- #printArea .pss th{background:#ececec!important}#printArea .pss td.swon{background:#dcdcdc!important}
+ #printArea .pss th{background:#ececec!important}#printArea .pss tr.lover td{background:#dcdcdc!important}#printArea .pss td.swon{background:#dcdcdc!important}
  #printArea .pss .scl,#printArea .pss .shn,#printArea .pss tr.slog td{color:#444!important;-webkit-text-fill-color:#444!important}#printArea .pss tr.slog td b{color:#000!important;-webkit-text-fill-color:#000!important}
  #printArea .pft{border-top-color:#777!important}
  #printArea svg rect[fill="white"],#printArea svg rect[fill="#ffffff"]{fill:#fff!important}
@@ -596,25 +604,36 @@ body.light:not(.tv) #drawSec #demo{background:linear-gradient(180deg,rgba(255,25
         <label>Tournament director<input id="ev_dir"></label>
         <label>Chief referee<input id="ev_chief"></label>
         <label>Technical delegate<input id="ev_td"></label>
-      </div><div class="hint">Shown on every printed sheet, on the QR pages and on the TV scoreboard header. Saved with backups.</div></details>
+      </div><div class="hint">Shown on every printed sheet, on the QR pages and on the TV scoreboard header. Saved with backups.</div>
+      <div class="durbar"><b>⏱ Contest time by age group</b><label>Sub-Junior<select data-age="Sub-Junior"></select></label><label>Cadet<select data-age="Cadet"></select></label><label>Junior<select data-age="Junior"></select></label><label>Senior<select data-age="Senior"></select></label><label>Other groups<select data-age="*"></select></label></div>
+      <div class="hint">Set automatically on the scoreboard whenever a match is loaded from the draw (the scoreboard's own "Match time" is only for manual matches). Golden score has no time limit.</div></details>
+    <details class="panel" id="evtPanel" style="margin-bottom:12px"><summary>📋 Events for blank sheets <span class="hint" id="evtSum"></span></summary>
+      <div class="form evtf"><select id="et_g"><option>Male</option><option>Female</option></select>
+        <input id="et_age" list="et_ages" placeholder="Age group (Sub-Junior, Cadet…)"><datalist id="et_ages"><option value="Sub-Junior"></option><option value="Cadet"></option><option value="Junior"></option><option value="Senior"></option></datalist>
+        <input id="et_cat" placeholder="Weight category (-30 kg)"><select id="et_n"><option value="4">up to 4 athletes</option><option value="8">up to 8 athletes</option><option value="16" selected>up to 16 athletes</option><option value="32">up to 32 athletes</option><option value="64">up to 64 athletes</option></select>
+        <button id="et_add">Add event</button><button id="et_std">+ All IJF weights for this gender &amp; age</button><button id="et_from">+ From athlete list</button></div>
+      <div class="hint">Add the events once (they stay when athletes are cleared or a new list is uploaded). Then Print → choose any blank form → scope <b>"Saved events"</b>: every event gets its own blank sheets with the event heading and no names.</div>
+      <div id="et_list"></div></details>
     <div id="qrOv" onclick="if(event.target===this)this.style.display='none'"><div class="qrm"><div class="qrh"><b id="qrCat"></b><button onclick="document.getElementById('qrOv').style.display='none'">Close</button></div><div id="qrBox"></div><div class="hint">Scan with any phone camera. Opens a read-only page (no editing). The QR holds the data at this moment; after new results, open ▣ QR again.</div></div></div>
     <div class="panel" id="prPanel" style="display:none;margin-bottom:12px"><div class="tools"><h3 style="font-size:16px">Print draw sheets</h3>
-      <select id="prStage"><option value="elim">1 · Elimination (rounds up to Quarter-final)</option><option value="final">2 · Final block (Repechage, Semi-final, Bronze, Final)</option><option value="full">Full draw (stage 1 + stage 2)</option><option value="res">Results (medals + rank list)</option><option value="blank">Blank fixture for referees (fill by hand)</option><option value="sblank">Score sheet · blank (table officials write the scores)</option><option value="sfill">Score sheet · filled from the scoreboard (proof / file copy)</option></select>
-      <select id="prScope"><option value="this">This category</option><option value="all">All categories</option><option value="Male">All Male categories</option><option value="Female">All Female categories</option></select>
+      <select id="prStage"><option value="elim">1 · Elimination (rounds up to Quarter-final)</option><option value="final">2 · Final block (Repechage, Semi-final, Bronze, Final)</option><option value="full">Full draw (stage 1 + stage 2)</option><option value="res">Results (medals + rank list)</option><option value="blank">Blank fixture for referees (fill by hand)</option><option value="sblank">Score sheet · blank (table officials write the scores)</option><option value="sfill">Score sheet · filled from the scoreboard (proof / file copy)</option><option value="alist">Athlete list · roll call (category-wise)</option><option value="wsheet">Weigh-in sheet (category-wise, weights if entered)</option><option value="allblank">All blank forms · one set (athlete list, weigh-in, fixture, score sheet)</option></select>
+      <select id="prScope"><option value="this">This category</option><option value="all">All categories</option><option value="Male">All Male categories</option><option value="Female">All Female categories</option><option value="events">Saved events (blank, heading only)</option></select><label id="prNoNmL" style="display:none"><input type="checkbox" id="prNoNm"> No athlete names (heading only)</label>
       <select id="prSize" style="display:none"><option value="auto">Size: as per category (name printed)</option><option value="2">Empty sheet · 2 athletes</option><option value="4">Empty sheet · 3–4 athletes</option><option value="8">Empty sheet · 5–8 athletes</option><option value="16">Empty sheet · 9–16 athletes</option><option value="32">Empty sheet · 17–32 athletes</option><option value="64">Empty sheet · 33–64 athletes</option></select>
       <button class="pri" id="prGo">Print now</button><button id="prX">Close</button></div>
       <div class="hint" id="prHint">A4 landscape · one page per category (big draws split into pools) · print stage 1 before the event, stage 2 once elimination is complete.</div></div>
     <div class="panel" id="rep" style="display:none;margin-bottom:12px;border-color:#a16207;line-height:1.6"></div>
     <div class="panel" id="view"><div class="empty">1. Click <b>Download template</b> and fill it in Excel (or use your own sheet with the same column names).<br>2. Click <b>Upload Excel / CSV</b>.<br>3. Pick a weight category on the left and click <b>Make draw</b>.<br>4. Click the winner's name in each match. Winners move forward to the final automatically.</div></div>
     <details class="panel" id="athPanel" style="margin-top:12px">
-      <summary>Athletes (<span id="athCount">0</span>): edit seeds, add or remove</summary>
+      <summary>Athletes (<span id="athCount">0</span>)<span id="athDQ"></span>: ⚖ weigh-in, seeds, add or remove</summary>
       <div class="form">
         <input id="aN" placeholder="Name"><input id="aC" placeholder="Club / district">
         <input id="aG" placeholder="Gender (Male/Female)"><input id="aA" placeholder="Age group (Senior...)">
-        <input id="aW" placeholder="Weight category (-73 kg)"><input id="aS" placeholder="Seed (optional)">
+        <input id="aW" placeholder="Weight category (-73 kg)"><input id="aS" placeholder="Seed (optional)"><input id="aWt" placeholder="Weigh-in kg (optional)" inputmode="decimal">
         <button id="addA">Add athlete</button>
       </div>
-      <div style="overflow-x:auto"><table><thead><tr><th>Name</th><th>Club</th><th>Category</th><th>Seed</th><th></th></tr></thead><tbody id="athT"></tbody></table></div>
+      <div class="wtbar"><b>⚖ Weigh-in</b><select id="athF"><option value="cur">Selected category</option><option value="all">All categories</option><option value="nw">Not weighed yet</option><option value="dq">Overweight / DQ</option></select><input id="athQ" placeholder="Search name or district"><label>Allowance <input id="wtTol" type="number" min="0" step="10" placeholder="0"> g</label><span id="wtSum"></span></div>
+      <div class="wthelp">Type the weight in kg and press <b>Enter</b> (goes to the next athlete). Above the category limit (e.g. 60.5 in −60 kg) = <b>OVER → disqualified</b> automatically: the opponent gets a bye. Correct a wrong weight any time and the athlete is back in the draw.</div>
+      <div style="overflow-x:auto"><table><thead><tr><th>Name</th><th>Club</th><th>Category</th><th>Weigh-in (kg)</th><th>Status</th><th>Seed</th><th></th></tr></thead><tbody id="athT"></tbody></table></div>
     </details>
   </section>
 </main></section>
@@ -687,7 +706,7 @@ body.light:not(.tv) #drawSec #demo{background:linear-gradient(180deg,rgba(255,25
       <label>Event<input id="fEvent"></label>
       <label>Mat<input id="fMat"></label>
       <label>Match no.<input id="fMatch"></label>
-      <label>Match time<select id="fDur"><option value="120">2 min</option><option value="180">3 min</option><option value="240">4 min</option></select></label>
+      <label>Match time<select id="fDur"><option value="120">2 min</option><option value="150">2½ min</option><option value="180">3 min</option><option value="240">4 min</option><option value="300">5 min</option></select></label>
       <label class="chk"><input type="checkbox" id="fYuko"> Use yuko (IJF 2025)</label>
       <button id="bSwap">Swap white / blue</button>
     </div>
@@ -774,7 +793,9 @@ const COLS={name:['name','athletename','athlete','playername','fullname','nameof
  gender:['gender','sex','mf','boysgirls'],age:['agegroup','agecategory','group','age','division','level'],
  cat:['weightcategory','category','weightclass','wtcategory','weightcat','wtcat','event'],
  bw:['bodyweight','weight','weightkg','kg','wt','actualweight','weighin','weighinweight','bodywt'],
- seed:['seed','seeding','seedno','rank']};
+ seed:['seed','seeding','seedno','seednumber'],
+ rk:['ranking','rank','worldranking','wrl','wrlrank','nationalranking','stateranking','rankingposition','rankno','rankposition','rankingno'],
+ pts:['rankingpoints','points','wrlpoints','rankpoints','rankingpts']};
 const LIM={senM:[60,66,73,81,90,100],senF:[48,52,57,63,70,78],cadM:[50,55,60,66,73,81,90],cadF:[40,44,48,52,57,63,70]};
 function normGender(v){const t=String(v||'').trim().toLowerCase();
   if(/^(m|male|man|men|boy|boys|purush|ladka|ladke|bhai|पुरुष|लड़का|लडका|पुरूष|પુરુષ|ભાઈ|છોકરો|છોકરા)$/.test(t)||/^(male|boy|men)/.test(t))return 'Male';
@@ -802,6 +823,16 @@ function normCat(v,bw,g,age){
   if(w>0){const c=catFromBW(w,g,age);return c||('-'+Math.ceil(w)+' kg');}
   return t;}
 function normAth(a){a.gender=normGender(a.gender);a.age=normAge(a.age);a.cat=normCat(a.cat,a.bw,a.gender,a.age);return a;}
+// ---------- Weigh-in: official weight, over-limit = disqualified (treated as a BYE in the draw) ----------
+function wLimit(cat){const m=String(cat||'').match(/^\s*[-−]\s*(\d+(?:[.,]\d+)?)/);return m?parseFloat(m[1].replace(',','.')):null;}
+function wTol(){const g=parseFloat(((typeof D!=='undefined'&&D.meta)||{}).wtol);return g>0?g/1000:0;}
+function wDecl(a){const w=parseFloat(String(a.bw??'').replace(',','.'));return w>0?w:0;}
+function wStatus(a){const lim=wLimit(a.cat),w=+a.wt;
+  if(w>0)return (lim!=null&&w>lim+wTol()+1e-9)?{k:'over',w,lim}:{k:'ok',w,lim};
+  const d=wDecl(a);if(d&&lim!=null&&d>lim+wTol()+1e-9)return {k:'decl',w:d,lim};return {k:'none',w:0,lim};}
+let _dqA=null,_dqV=-1,_dqS=new Set();
+function dqSet(){if(_dqA!==D.ath||_dqV!==(D.ath.dqv||0)){_dqA=D.ath;_dqV=D.ath.dqv||0;_dqS=new Set(D.ath.filter(a=>a.dq&&!a.dqKeep).map(a=>a.id));}return _dqS;}
+const isOut=id=>!!id&&dqSet().has(id);
 function wNum(c){const m=String(c||'').match(/([+-]?)(\d+(\.\d+)?)/);if(!m)return 9999;return (+m[2])+(m[1]==='+'?1000:0);}
 function aoaToRows(aoa){
   const norm=x=>String(x??'').toLowerCase().replace(/[^a-z]/g,'');
@@ -815,10 +846,21 @@ function rowsToAth(rows){
   const keys=Object.keys(rows[0]),map={};
   for(const f in COLS){const k=keys.find(k=>COLS[f].includes(k.toLowerCase().replace(/[^a-z]/g,'')));if(k)map[f]=k;}
   if(!map.name)throw new Error('No "Name" column found. Use the template headings.');
-  return rows.map(r=>({id:uid(),name:String(r[map.name]??'').trim(),club:String(r[map.club]??'').trim(),
+  const out=rows.map(r=>({id:uid(),name:String(r[map.name]??'').trim(),club:String(r[map.club]??'').trim(),
     gender:String(r[map.gender]??'').trim(),age:String(r[map.age]??'').trim(),cat:String(r[map.cat]??'').trim(),
-    bw:String(r[map.bw]??'').trim(),seed:parseInt(r[map.seed])||0})).filter(a=>a.name).map(normAth);
+    bw:String(r[map.bw]??'').trim(),seed:parseInt(r[map.seed])||0,rk:parseFloat(r[map.rk])||0,pts:parseFloat(r[map.pts])||0})).filter(a=>a.name).map(normAth)
+    .map(a=>{if(map.bw&&['actualweight','weighin','weighinweight'].includes(map.bw.toLowerCase().replace(/[^a-z]/g,''))){const w=parseFloat(String(a.bw).replace(',','.'));if(w>0){a.wt=Math.round(w*100)/100;a.dq=wStatus(a).k==='over';}}return a;})
+    .map(a=>{if(!(a.rk>0))delete a.rk;if(!(a.pts>0))delete a.pts;return a;});
+  return rankSeeds(out);
 }
+// World-style seeding from a Ranking (position) or Ranking points column: the best ranked get seeds 1–8
+// (half the bracket in small categories). A category that already has a Seed column is left as it is.
+function rankSeeds(list){const g={};for(const a of list)(g[catKey(a)]=g[catKey(a)]||[]).push(a);
+  for(const k in g){const L=g[k];if(L.some(a=>a.seed>0))continue;const ok=L.filter(a=>!a.dq),r=ok.filter(a=>a.rk>0||a.pts>0);if(!r.length)continue;
+    r.sort((a,b)=>((a.rk>0)&&(b.rk>0)?a.rk-b.rk:a.rk>0?-1:b.rk>0?1:0)||(b.pts||0)-(a.pts||0));
+    const S=Math.max(2,1<<Math.ceil(Math.log2(ok.length||1))),cap=S>=4?Math.min(8,S/2):0;
+    r.slice(0,cap).forEach((a,i)=>a.seed=i+1);}
+  return list;}
 function parseCSV(t){
   t=t.replace(/^\ufeff/,'');
   const first=(t.split(/\r?\n/).find(l=>l.trim())||'');
@@ -890,7 +932,7 @@ let gFilter='All';
 function order(size){let o=[1,2];while(o.length<size){const n=o.length*2,r=[];for(const x of o)r.push(x,n+1-x);o=r;}return o;}
 function meetRound(i,j){return Math.floor(Math.log2(i^j));}
 function makeDraw(k){
-  const list=D.ath.filter(a=>catKey(a)===k);const n=list.length;if(!n)return;
+  const list=D.ath.filter(a=>catKey(a)===k&&!a.dq);const n=list.length;if(!n)return;
   const size=Math.max(2,1<<Math.ceil(Math.log2(Math.max(n,1))));
   const ord=order(size),slotOf={};ord.forEach((r,i)=>slotOf[r]=i);
   const seeded=list.filter(a=>a.seed>0).sort((a,b)=>a.seed-b.seed);
@@ -915,13 +957,13 @@ function fmtNow(){try{return localStorage.getItem('judoFmt')||'ijf';}catch(e){re
 function getM(dr,r,i){if(!dr)return null;if(r>=0)return dr.rounds[r]&&dr.rounds[r][i];if(!dr.x)return null;return r===-1?dr.x.rep[i]:r===-2?dr.x.br[i]:null;}
 function eachM(dr,cb){dr.rounds.forEach((rd,r)=>rd.forEach((m,i)=>cb(m,r,i)));if(dr.x){dr.x.rep.forEach((m,i)=>cb(m,-1,i));dr.x.br.forEach((m,i)=>cb(m,-2,i));}}
 function loserSt(dr,r,i){const m=dr.rounds[r][i],[a,b]=players(dr,r,i);
-  if(r===0&&(!a||!b))return{k:'none'};if(!a||!b||!m.w)return{k:'pend'};return{k:'id',id:m.w===a?b:a};}
+  if((r===0&&(!a||!b))||m.bye)return{k:'none'};if(!a||!b||!m.w)return{k:'pend'};return{k:'id',id:m.w===a?b:a};}
 function extraSt(dr,r,i){const L=dr.rounds.length;
   if(r===-1)return [loserSt(dr,L-3,2*i),loserSt(dr,L-3,2*i+1)];
   const rm=dr.x.rep[i],rs=rm.void?{k:'none'}:rm.w?{k:'id',id:rm.w}:{k:'pend'};
   return [rs,loserSt(dr,L-2,1-i)];}
 function players(dr,r,i){
-  if(r===0)return [dr.slots[2*i],dr.slots[2*i+1]];
+  if(r===0){const x=dr.slots[2*i],y=dr.slots[2*i+1];return [isOut(x)?null:x,isOut(y)?null:y];}
   if(r>0)return [dr.rounds[r-1][2*i].w,dr.rounds[r-1][2*i+1].w];
   if(!dr.x)return [null,null];
   return extraSt(dr,r,i).map(t=>t.k==='id'?t.id:null);
@@ -932,9 +974,12 @@ function resolve(k){
   if(dr.x&&L<3)dr.x=null;
   dr.rounds.forEach((rd,r)=>rd.forEach((m,i)=>{
     const [a,b]=players(dr,r,i);
-    if(r===0&&a&&!b){m.w=a;m.auto=true;}else if(r===0&&b&&!a){m.w=b;m.auto=true;}
+    // a side is "dead" when nobody can ever arrive there (empty slot, or both feeders empty)
+    const da=r===0?!a:!!dr.rounds[r-1][2*i].dead,db=r===0?!b:!!dr.rounds[r-1][2*i+1].dead;
+    m.dead=da&&db;
+    if(a&&!b&&db){m.w=a;m.auto=true;}else if(b&&!a&&da){m.w=b;m.auto=true;}
     else{if(m.auto){m.w=null;m.res=null;m.auto=false;}if(m.w&&m.w!==a&&m.w!==b){m.w=null;m.res=null;}}
-    m.bye=r===0&&(!a||!b);
+    m.bye=da||db;
   }));
   if(dr.x)[-1,-2].forEach(r=>[0,1].forEach(i=>{
     const m=getM(dr,r,i),[A,B]=extraSt(dr,r,i);m.void=false;m.bye=false;
@@ -999,7 +1044,10 @@ function report(list){
   const single=cats().filter(c=>c.list.length===1);
   const seen={},dups=[];list.forEach(a=>{const key=catKey(a)+'|'+a.name.trim().toLowerCase()+'|'+(a.club||'').trim().toLowerCase();if(seen[key])dups.push(a.name+' ('+catKey(a)+')');seen[key]=1;});
   const dseed=[];cats().forEach(c=>{const ss=c.list.filter(a=>a.seed>0).map(a=>a.seed);const d=ss.filter((x,i)=>ss.indexOf(x)!==i);if(d.length)dseed.push(c.k+': seed '+[...new Set(d)].join(', '));});
-  let h='';
+  let h='';const dq=list.filter(a=>a.dq);
+  const rc=cats().filter(c=>c.list.some(a=>a.rk>0||a.pts>0));
+  if(rc.length)h+=`<p><b>Seeding from the ranking column</b> (best ranked → seeds 1–8; a Seed column in a category overrides it): ${rc.map(c=>esc(c.k.split(' · ').slice(1).join(' '))+' '+c.list.filter(a=>a.seed>0).length+' seeded').join(' · ')}</p>`;
+  if(dq.length)h+=`<p><b>${dq.length} overweight at weigh-in → disqualified (not put in the draw):</b> ${dq.slice(0,12).map(a=>esc(a.name)+' '+(+a.wt).toFixed(2)+' kg / '+esc(a.cat)).join(', ')}${dq.length>12?'…':''}</p>`;
   if(dups.length)h+=`<p><b>${dups.length} possible duplicate entries:</b> ${dups.slice(0,10).map(esc).join(', ')}${dups.length>10?'…':''}</p>`;
   if(dseed.length)h+=`<p><b>Same seed number used twice:</b> ${dseed.map(esc).join(' · ')}</p>`;
   if(noG.length)h+=`<p><b>${noG.length} without Male/Female:</b> ${noG.slice(0,15).map(a=>esc(a.name)).join(', ')}${noG.length>15?'…':''}</p>`;
@@ -1117,7 +1165,8 @@ function renderView(){
     const mHTML=(r,i,sub)=>{const m=getM(dr,r,i),[a,b]=players(dr,r,i);
       const cl=id=>{if(!id)return (r===0||m.bye||m.void)?'bye':'tbd';return m.w?(m.w===id?'win':'lose'):'';};
       const lab=m.void?'No contest':m.bye?'Bye':'Match '+m.no;
-      return `<div class="m${r<0?' xm':''}" data-r="${r}" data-i="${i}"><div class="mn"><span>${lab}${sub?' · '+esc(sub):''}</span><span>${m.void?'':m.bye?'auto':m.w?'done':(a&&b?'<button class="sm scb" data-sc="1">▶ Score</button>':'')}</span></div>${pHTML(a,'w '+cl(a))}${pHTML(b,'b '+cl(b))}</div>`;};
+      const sd=(id,s,c)=>{if(!id&&r===0){const q=dr.slots[2*i+s],z=q&&isOut(q)&&byId(q);if(z)return `<div class="p ${c} bye dq"><span class="c"></span><div><div class="nm"><s>${esc(z.name)}</s> <b>DQ</b></div><div class="cl">Overweight ${(+z.wt).toFixed(2)} kg</div></div></div>`;}return pHTML(id,c+' '+cl(id));};
+      return `<div class="m${r<0?' xm':''}" data-r="${r}" data-i="${i}"><div class="mn"><span>${lab}${sub?' · '+esc(sub):''}</span><span>${m.void?'':m.bye?'auto':m.w?'done':(a&&b?'<button class="sm scb" data-sc="1">▶ Score</button>':'')}</span></div>${sd(a,0,'w')}${sd(b,1,'b')}</div>`;};
     if(si.hasElim)h+=`<div class="stagebar ${si.elimDone?'ok':''}">${si.elimDone?'✔ Elimination complete · Final block is ready to print':'Elimination: '+si.done+' / '+si.total+' matches done'}</div>`;
     h+='<div class="bracket">';
     dr.rounds.forEach((rd,r)=>{
@@ -1156,18 +1205,62 @@ function renderView(){
   }
 }
 let reDrawArm=0;function reDrawOK(){if(Date.now()-reDrawArm<4000)return true;reDrawArm=Date.now();msg('Results already entered. Click Re-draw again within 4 seconds to throw them away.');return false;}
+let athF='cur',athQ='',athFocus=null;
+function wBadge(a){const s=wStatus(a);
+  if(s.k==='over')return `<span class="wb wov">OVER +${(s.w-s.lim).toFixed(2)} kg · DQ</span>${a.dqKeep?' <small>already competed: draw unchanged</small>':''}`;
+  if(s.k==='ok')return `<span class="wb wok">✔ OK${s.lim!=null?' (limit '+s.lim+')':''}</span>`;
+  if(s.k==='decl')return `<span class="wb wdc">Declared ${s.w} &gt; ${s.lim} · weigh in</span>`;
+  return '<span class="wb">not weighed</span>';}
 function renderAth(){
   $('athCount').textContent=D.ath.length;
-  const rows=D.ath.slice().sort((a,b)=>catKey(a).localeCompare(catKey(b),undefined,{numeric:true})||a.name.localeCompare(b.name));
-  $('athT').innerHTML=rows.map(a=>`<tr><td>${esc(a.name)}</td><td>${esc(a.club)}</td><td>${esc(catKey(a))}</td><td><input type="number" min="0" value="${a.seed||''}" data-s="${a.id}"></td><td><button class="sm warn" data-d="${a.id}">Remove</button></td></tr>`).join('');
+  const nW=D.ath.filter(a=>+a.wt>0).length,nDQ=D.ath.filter(a=>a.dq).length;
+  $('athDQ').textContent=nDQ?' · ⚠ '+nDQ+' DQ':'';$('wtSum').textContent='Weighed '+nW+' / '+D.ath.length+(nDQ?' · '+nDQ+' overweight (DQ)':'');
+  if(document.activeElement!==$('wtTol'))$('wtTol').value=(D.meta&&D.meta.wtol)||'';$('athF').value=athF;
+  let rows=D.ath.slice();const q=athQ.trim().toLowerCase();
+  if(athF==='cur'&&cur)rows=rows.filter(a=>catKey(a)===cur);else if(athF==='nw')rows=rows.filter(a=>!(+a.wt>0));else if(athF==='dq')rows=rows.filter(a=>a.dq||wStatus(a).k==='decl');
+  if(q)rows=rows.filter(a=>(a.name+' '+(a.club||'')).toLowerCase().includes(q));
+  rows.sort((a,b)=>catKey(a).localeCompare(catKey(b),undefined,{numeric:true})||a.name.localeCompare(b.name));
+  $('athT').innerHTML=rows.map(a=>{const k=wStatus(a).k;return `<tr class="${a.dq?'wdq':k==='decl'?'wdecl':''}"><td>${esc(a.name)}</td><td>${esc(a.club)}</td><td>${esc(catKey(a))}</td><td><input class="wt" type="number" step="0.01" min="0" inputmode="decimal" placeholder="kg" value="${+a.wt>0?+a.wt:''}" data-w="${a.id}"></td><td>${wBadge(a)}</td><td><input type="number" min="0" value="${a.seed||''}" data-s="${a.id}"${a.rk>0?` title="Ranking #${a.rk}"`:''}>${a.rk>0?` <small>#${a.rk}</small>`:''}</td><td><button class="sm warn" data-d="${a.id}">Remove</button></td></tr>`;}).join('')
+    ||`<tr><td colspan="7" class="wthelp">${D.ath.length?'No athlete matches this filter.':'No athletes yet.'}</td></tr>`;
+  $('athT').querySelectorAll('[data-w]').forEach(inp=>{inp.onchange=()=>setWeight(inp.dataset.w,inp.value);
+    inp.onkeydown=e=>{if(e.key!=='Enter')return;e.preventDefault();const all=[...$('athT').querySelectorAll('[data-w]')],nx=all[all.indexOf(inp)+1];athFocus=nx?nx.dataset.w:null;
+      if(!setWeight(inp.dataset.w,inp.value)&&nx){athFocus=null;nx.focus();nx.select();}};});
+  if(athFocus){const f=$('athT').querySelector('[data-w="'+athFocus+'"]');athFocus=null;if(f){f.focus();f.select();}}
   $('athT').querySelectorAll('[data-s]').forEach(i=>i.onchange=()=>{byId(i.dataset.s).seed=parseInt(i.value)||0;save();msg('Seed saved. Click Make draw / Re-draw to use it.');});
   $('athT').querySelectorAll('[data-d]').forEach(b=>b.onclick=()=>{const a=byId(b.dataset.d);{const dd=D.draws[catKey(a)];if(dd&&dd.locked)return msg('The draw for '+catKey(a)+' is locked. Unlock it first.');if(b.dataset.arm!=='1'){b.dataset.arm='1';b.textContent='Confirm?';setTimeout(()=>{b.dataset.arm='';b.textContent='Remove';},4000);return msg('Click Confirm? to remove '+a.name+(dd&&hasResults(dd)?' · ⚠ its category draw will be made again and results cleared':''));}}if(D.draws[catKey(a)]&&hasResults(D.draws[catKey(a)]))backup('Before removing '+a.name);D.ath=D.ath.filter(x=>x.id!==a.id);const ck=catKey(a);if(D.ath.some(x=>catKey(x)===ck))makeDraw(ck);else delete D.draws[ck];save();renderAll();window.SB&&SB.autoLoad(false,true);msg(a.name+' removed. New draw made for '+catKey(a)+'.');});
 }
 function renderAll(){renderCats();renderView();renderAth();}
+function playedIn(dr,id){let p=false;eachM(dr,(m,r,i)=>{if(p||!m.w||m.auto||m.bye)return;const [x,y]=players(dr,r,i);if(x===id||y===id)p=true;});return p;}
+// returns true when something changed (the list is re-drawn)
+function setWeight(id,val){const a=byId(id);if(!a||window.READONLY)return false;
+  const t=String(val??'').trim().replace(',','.');let w=t===''?'':parseFloat(t);
+  if(w!==''&&!(w>0&&w<400)){msg('Enter the weight in kg, for example 60.45');renderAth();return true;}
+  if(w!=='')w=Math.round(w*100)/100;
+  if(String(a.wt??'')===String(w))return false;
+  const k=catKey(a),dr=D.draws[k],was=!!a.dq,wasOut=isOut(a.id);
+  a.wt=w;const st=wStatus(a);a.dq=st.k==='over';
+  if(a.dq&&!was)a.dqKeep=!!(dr&&playedIn(dr,a.id));if(!a.dq)delete a.dqKeep;
+  D.ath.dqv=(D.ath.dqv||0)+1;const nowOut=isOut(a.id);
+  if(dr&&wasOut!==nowOut)resolve(k);
+  if(dr&&was!==a.dq)dlog(dr,a.dq?'Weigh-in: '+a.name+' '+w+' kg > '+st.lim+' kg → disqualified'+(a.dqKeep?' (already competed, draw unchanged)':' · treated as a bye, opponent advances'):'Weigh-in corrected: '+a.name+' '+(w===''?'no weight':w+' kg')+' → back in the draw');
+  save();renderAll();
+  if(dr&&wasOut!==nowOut&&window.SB&&typeof S!=='undefined'&&S&&S.link&&S.link.cat===k&&!S.win&&(S.link.w===a.id||S.link.b===a.id))SB.autoLoad(true,true);
+  if(a.dq&&!was)msg('⚠ '+a.name+': '+w+' kg is over the '+a.cat+' limit ('+st.lim+' kg) → DISQUALIFIED'+(a.dqKeep?'. Already has results, so the draw was not changed: decide on the mat.':dr?'. The opponent advances (shown as DQ in the draw).':'. Will not be put in the draw.'));
+  else if(was&&!a.dq)msg(a.name+': weight '+(w===''?'cleared':w+' kg')+' · no longer disqualified'+(dr&&!dr.slots.includes(a.id)?'. This draw was made without them: click Re-draw for '+k+' to add them back.':''));
+  else msg(w===''?'Weight cleared for '+a.name:a.name+': '+w+' kg · '+(st.k==='ok'?'OK':'saved'));
+  return true;}
+function reWeigh(){const ch=new Set();
+  for(const a of D.ath){if(!(+a.wt>0))continue;const dq=wStatus(a).k==='over';if(dq===!!a.dq)continue;const dr=D.draws[catKey(a)];
+    if(dq)a.dqKeep=!!(dr&&playedIn(dr,a.id));else delete a.dqKeep;a.dq=dq;ch.add(catKey(a));}
+  D.ath.dqv=(D.ath.dqv||0)+1;ch.forEach(k=>{if(D.draws[k])resolve(k);});save();renderAll();return ch.size;}
+$('athF').onchange=()=>{athF=$('athF').value;renderAth();};
+$('athQ').oninput=()=>{athQ=$('athQ').value;renderAth();};
+$('wtTol').onchange=()=>{if(window.READONLY)return;const g=Math.max(0,parseFloat($('wtTol').value)||0);M().wtol=g;const n=reWeigh();msg('Weigh-in allowance '+g+' g'+(n?' · '+n+' categories updated':''));};
 
 $('addA').onclick=()=>{
   const a=normAth({id:uid(),name:$('aN').value.trim(),club:$('aC').value.trim(),gender:$('aG').value.trim(),age:$('aA').value.trim(),cat:$('aW').value.trim(),bw:'',seed:parseInt($('aS').value)||0});
-  if(!a.name)return msg('Enter a name');{const dd=D.draws[catKey(a)];if(dd&&dd.locked)return msg('The draw for '+catKey(a)+' is locked. Unlock it first (Unlock button in that category).');if(dd&&hasResults(dd)&&Date.now()-addArm>4000){addArm=Date.now();return msg('⚠ '+catKey(a)+' already has results. Adding an athlete makes a new draw and clears them. Click Add again within 4 sec to continue.');}}D.ath.push(a);makeDraw(catKey(a));save();['aN','aS'].forEach(i=>$(i).value='');renderAll();msg(a.name+' added to '+catKey(a));
+  {const wv=parseFloat(($('aWt').value||'').replace(',','.'));if(wv>0){a.wt=Math.round(wv*100)/100;a.dq=wStatus(a).k==='over';}}
+  if(!a.name)return msg('Enter a name');{const dd=D.draws[catKey(a)];if(dd&&dd.locked)return msg('The draw for '+catKey(a)+' is locked. Unlock it first (Unlock button in that category).');if(dd&&hasResults(dd)&&Date.now()-addArm>4000){addArm=Date.now();return msg('⚠ '+catKey(a)+' already has results. Adding an athlete makes a new draw and clears them. Click Add again within 4 sec to continue.');}}D.ath.push(a);D.ath.dqv=(D.ath.dqv||0)+1;makeDraw(catKey(a));save();['aN','aS','aWt'].forEach(i=>$(i).value='');renderAll();msg(a.name+' added to '+catKey(a)+(a.dq?' · ⚠ OVERWEIGHT '+a.wt+' kg → disqualified, not in the draw':''));
 };
 $('demo').onclick=()=>{if(D.ath.length&&Date.now()-demoArm>4000){demoArm=Date.now();return msg('This replaces the current athletes and draws. Click Load demo data again within 4 seconds to continue.');}importList(demoList());};
 $('bkOpen').onclick=()=>{const p=$('bkPanel');p.open=true;p.scrollIntoView({behavior:'smooth'});};
@@ -1179,7 +1272,7 @@ function download(name,text){
   catch(e){copyText(text);}
 }
 function copyText(t){try{navigator.clipboard.writeText(t).then(()=>msg('Copied. Paste into Excel or WhatsApp.'),()=>msg('Copy blocked by the browser'));}catch(e){msg('Copy blocked by the browser');}}
-$('tpl').onclick=()=>download('judo_athletes_template.csv','Name,Club/District,Gender,Age Group,Weight Category,Body Weight,Seed\nRohan Patel,Ahmedabad,Male,Senior,-73 kg,,1\nAmit Desai,Surat,Male,Senior,-73 kg,,2\nKaran Shah,Vadodara,Male,Senior,,71.4,\nPriya Joshi,Rajkot,Female,Senior,-57 kg,,\nNeha Patel,Surat,Female,Cadet,,46.2,\n');
+$('tpl').onclick=()=>download('judo_athletes_template.csv','Name,Club/District,Gender,Age Group,Weight Category,Body Weight,Seed,Ranking\nRohan Patel,Ahmedabad,Male,Senior,-73 kg,,,1\nAmit Desai,Surat,Male,Senior,-73 kg,,,3\nKaran Shah,Vadodara,Male,Senior,,71.4,,2\nPriya Joshi,Rajkot,Female,Senior,-57 kg,,,\nNeha Patel,Surat,Female,Cadet,,46.2,,\n');
 const nmc=id=>{const a=id&&byId(id);return a?a.name+(a.club?' ('+a.club+')':''):'';};
 function resultsText(keys){return keys.map(k=>{const m=medals(k);if(!m)return k+': no draw';return `${k}\nGold: ${nmc(m.gold)||'-'}\nSilver: ${nmc(m.silver)||'-'}\nBronze: ${nmc(m.bronze[0])||'-'}\nBronze: ${nmc(m.bronze[1])||'-'}`;}).join('\n\n');}
 $('resCsv').onclick=()=>{
@@ -1239,7 +1332,7 @@ function rankRows(){
     if(isI)dr.x.br.forEach(m=>{if(m.w&&m.bye)rank[m.w]=3;});
     for(const a of c.list){const rk=rank[a.id]||'';
       if(rk===1)T(a.club).g++;else if(rk===2)T(a.club).s++;else if(rk===3)T(a.club).b++;
-      out.push({cat:c.k,g:a.gender,age:a.age,w:a.cat,rank:rk,name:a.name,club:a.club,won:won[a.id]||0,seed:a.seed||''});}
+      out.push({cat:c.k,g:a.gender,age:a.age,w:a.cat,rank:rk,name:a.name,club:a.club,won:won[a.id]||0,seed:a.seed||'',dq:a.dq&&!a.dqKeep?'Overweight '+(+a.wt).toFixed(2)+' kg':''});}
   }
   return {out,tally,log};
 }
@@ -1250,17 +1343,17 @@ function exportExcel(){
     medal.push([c.k,...A(m&&m.gold),...A(m&&m.silver),...A(m&&m.bronze[0]),...A(m&&m.bronze[1])]);}
   const rk=[['Category','Gender','Age group','Weight','Rank','Medal','Name','District / Club','Matches won','Seed']];
   const md=r=>r===1?'Gold':r===2?'Silver':r===3?'Bronze':'';
-  out.forEach(x=>rk.push([x.cat,x.g,x.age,x.w,x.rank===''?'In progress':x.rank,md(x.rank),x.name,x.club,x.won,x.seed]));
+  out.forEach(x=>rk.push([x.cat,x.g,x.age,x.w,x.rank===''?(x.dq?'DQ · '+x.dq:'In progress'):x.rank,md(x.rank),x.name,x.club,x.won,x.seed]));
   const ty=[['District / Club','Gold','Silver','Bronze','Total']];
   Object.entries(tally).filter(([k,v])=>v.g+v.s+v.b).sort((a,b)=>b[1].g-a[1].g||b[1].s-a[1].s||b[1].b-a[1].b).forEach(([k,v])=>ty.push([k,v.g,v.s,v.b,v.g+v.s+v.b]));
   const lg=[['Match','Category','Round','White','District','Blue','District','Winner','Result','Score (I-W-Y)','Time']].concat(log.sort((a,b)=>a[1].localeCompare(b[1])||a[0]-b[0]));
-  const pt=[['Name','District / Club','Gender','Age group','Weight category','Seed']].concat(D.ath.map(a=>[a.name,a.club,a.gender,a.age,a.cat,a.seed||'']));
+  const pt=[['Name','District / Club','Gender','Age group','Weight category','Seed','Weigh-in (kg)','Weigh-in result']].concat(D.ath.map(a=>{const w=wStatus(a);return [a.name,a.club,a.gender,a.age,a.cat,a.seed||'',+a.wt>0?+a.wt:'',w.k==='over'?'OVER · disqualified':w.k==='ok'?'OK':'not weighed'];}));
   const file='judo_results_'+(MATCFG().mat||'mat').replace(/\W+/g,'');
   if(window.XLSX){
     try{const wb=XLSX.utils.book_new();
       const add=(rows,name,w)=>{const ws=XLSX.utils.aoa_to_sheet(rows);ws['!cols']=w.map(x=>({wch:x}));XLSX.utils.book_append_sheet(wb,ws,name);};
       add(medal,'Medal Winners',[26,22,14,22,14,22,14,22,14]);add(rk,'Rank List',[26,8,10,9,11,8,24,16,8,6]);
-      add(ty,'District Tally',[22,7,7,7,7]);add(lg,'Match Log',[7,26,13,22,13,22,13,22,26,20,9]);add([['Tournament',evName()],['Organised by',M().org||''],['Venue',M().venue||''],['City / State',M().city||''],['Dates',dateRange()],['Level',M().level||''],['Tournament director',M().dir||''],['Chief referee',M().chief||''],['Technical delegate',M().td||''],['Exported',new Date().toLocaleString()]],'Tournament',[22,50]);add(pt,'All Participants',[24,16,8,10,10,6]);
+      add(ty,'District Tally',[22,7,7,7,7]);add(lg,'Match Log',[7,26,13,22,13,22,13,22,26,20,9]);add([['Tournament',evName()],['Organised by',M().org||''],['Venue',M().venue||''],['City / State',M().city||''],['Dates',dateRange()],['Level',M().level||''],['Tournament director',M().dir||''],['Chief referee',M().chief||''],['Technical delegate',M().td||''],['Exported',new Date().toLocaleString()]],'Tournament',[22,50]);add(pt,'All Participants',[24,16,8,10,10,6,12,18]);
       XLSX.writeFile(wb,file+'.xlsx');msg('Excel downloaded: '+file+'.xlsx (medals, ranks, district tally, match log, participants)');return;}
     catch(e){}
   }
@@ -1275,7 +1368,33 @@ function fmtD(d){if(!d)return '';const x=new Date(d+'T00:00:00');return isNaN(x)
 function dateRange(){const m=M();if(!m.d1&&!m.d2)return '';if(!m.d2||m.d2===m.d1)return fmtD(m.d1||m.d2);return fmtD(m.d1)+' – '+fmtD(m.d2);}
 function evName(){return M().name||((typeof S!=='undefined'&&S&&S.ev)||'Judo Championship');}
 function evLine(){const m=M();return [m.venue,m.city].filter(Boolean).join(', ')+(dateRange()?' · '+dateRange():'');}
-function fillEv(){const m=M();EVK.forEach(k=>{const el=$('ev_'+k);if(el)el.value=m[k]||'';});$('evSum').textContent=m.name?'· '+m.name+(dateRange()?' · '+dateRange():''):'· not filled yet';if(!m.name&&!D.ath.length)$('evPanel').open=true;}
+// ---------- Events kept for blank sheets (stay in tournament details, not in the athlete list) ----------
+const EVS=()=>{const m=M();return (m.events=Array.isArray(m.events)?m.events:[]);};
+const evKey=e=>catKey({gender:e.g,age:e.age,cat:e.cat});
+const bsz=n=>Math.max(2,1<<Math.ceil(Math.log2(Math.max(n,1))));
+function addEvt(g,age,cat,n,quiet){g=normGender(g)||g;age=normAge(age)||age;cat=normCat(cat,'',g,age);if(!cat)return quiet?0:(msg('Type the weight category, e.g. -30 kg'),0);
+  const e={g,age,cat,n:+n||16},k=evKey(e);if(EVS().some(x=>evKey(x)===k))return quiet?0:(msg(k+' is already in the list'),0);EVS().push(e);return 1;}
+function sortEvt(){EVS().sort((a,b)=>gOrd(a.g)-gOrd(b.g)||aOrd(a.age)-aOrd(b.age)||String(a.age).localeCompare(b.age)||wNum(a.cat)-wNum(b.cat));}
+let etArm=0;
+function renderEvt(){const ev=EVS();$('evtSum').textContent=ev.length?'· '+ev.length+' events':'· none yet';
+  $('et_list').innerHTML=ev.length?`<div style="overflow-x:auto"><table><thead><tr><th>Event</th><th>Blank sheet size</th><th></th></tr></thead><tbody>${ev.map((e,i)=>`<tr><td><b>${esc(evKey(e))}</b></td><td><select data-en="${i}">${[2,4,8,16,32,64].map(v=>`<option value="${v}"${+e.n===v?' selected':''}>${v===2?'2 athletes':'up to '+v+' athletes'}</option>`).join('')}</select></td><td><button class="sm warn" data-ed="${i}">Remove</button></td></tr>`).join('')}</tbody></table></div><div class="tools" style="margin-top:8px"><button id="et_print">🖨 Print all blank forms for these events</button><button class="warn" id="et_clear">Remove all events</button></div>`:'';
+  $('et_list').querySelectorAll('[data-en]').forEach(x=>x.onchange=()=>{EVS()[+x.dataset.en].n=+x.value;save();});
+  $('et_list').querySelectorAll('[data-ed]').forEach(x=>x.onclick=()=>{const e=EVS().splice(+x.dataset.ed,1)[0];save();renderEvt();msg('Removed '+evKey(e));});
+  if($('et_clear'))$('et_clear').onclick=()=>{if(Date.now()-etArm>4000){etArm=Date.now();return msg('Click "Remove all events" again within 4 seconds to clear the event list.');}M().events=[];save();renderEvt();msg('Event list cleared');};
+  if($('et_print'))$('et_print').onclick=()=>{openPrint('events');$('prStage').value='allblank';syncPr();$('prGo').click();};}
+$('et_add').onclick=()=>{if(window.READONLY)return;if(!$('et_age').value.trim())return msg('Type the age group, e.g. Sub-Junior');
+  if(addEvt($('et_g').value,$('et_age').value,$('et_cat').value,$('et_n').value)){sortEvt();save();renderEvt();$('et_cat').value='';$('et_cat').focus();msg('Event added');}};
+$('et_cat').onkeydown=e=>{if(e.key==='Enter')$('et_add').click();};
+$('et_std').onclick=()=>{if(window.READONLY)return;const g=$('et_g').value,age=normAge($('et_age').value)||$('et_age').value.trim(),T=table(g,age);
+  if(!age)return msg('Type the age group first (Senior, Junior or Cadet)');if(!T||!/^(senior|junior|cadet)$/i.test(String(age).trim()))return msg('No IJF list for "'+age+'": add each weight by hand (e.g. -30 kg).');
+  let n=0;T.forEach(w=>n+=addEvt(g,age,'-'+w+' kg',$('et_n').value,true));n+=addEvt(g,age,'+'+T[T.length-1]+' kg',$('et_n').value,true);sortEvt();save();renderEvt();msg(n+' events added for '+g+' · '+age);};
+$('et_from').onclick=()=>{if(window.READONLY)return;let n=0;for(const c of cats()){const dr=D.draws[c.k];n+=addEvt(c.g,c.a,c.c,dr?dr.size:bsz(c.list.length),true);}sortEvt();save();renderEvt();msg(n?n+' events added from the athlete list':'No new categories in the athlete list');};
+const DUR_DEF={'Sub-Junior':180,'Cadet':240,'Junior':240,'Senior':240,'*':240};
+function durFor(age){const d=Object.assign({},DUR_DEF,(D.meta&&D.meta.durs)||{});return +(d[age]||d['*'])||240;}
+window.durFor=durFor;
+function fillDur(){document.querySelectorAll('select[data-age]').forEach(x=>{if(!x.options.length)x.innerHTML=[[120,'2 min'],[150,'2½ min'],[180,'3 min'],[240,'4 min'],[300,'5 min']].map(([v,t])=>`<option value="${v}">${t}</option>`).join('');x.value=String(durFor(x.dataset.age));
+  x.onchange=()=>{if(window.READONLY)return;const m=M();m.durs=Object.assign({},m.durs||{},{[x.dataset.age]:+x.value});save();msg('Contest time for '+(x.dataset.age==='*'?'other age groups':x.dataset.age)+': '+x.options[x.selectedIndex].text+' · used from the next match loaded from the draw');};});}
+function fillEv(){fillDur();renderEvt();const m=M();EVK.forEach(k=>{const el=$('ev_'+k);if(el)el.value=m[k]||'';});$('evSum').textContent=m.name?'· '+m.name+(dateRange()?' · '+dateRange():''):'· not filled yet';if(!m.name&&!D.ath.length)$('evPanel').open=true;}
 EVK.forEach(k=>{const el=$('ev_'+k);if(el)el.addEventListener('input',()=>{M()[k]=el.value;save();$('evSum').textContent=M().name?'· '+M().name+(dateRange()?' · '+dateRange():''):'· not filled yet';
   if(k==='name'&&typeof S!=='undefined'&&S&&!window.READONLY){S.ev=el.value||'State Judo Championship';try{fill();render();}catch(e){}}});});
 function b64u(bytes){let s='';for(let i=0;i<bytes.length;i++)s+=String.fromCharCode(bytes[i]);return btoa(s).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,'');}
@@ -1301,7 +1420,8 @@ async function fillQRs(root){const cache={};
 function pAth(id){const a=id&&byId(id);return a?`<div class="pn">${esc(a.name)}${a.seed>0?' <sup>S'+a.seed+'</sup>':''}</div><div class="pc">${esc(a.club)}</div>`:'';}
 function pBox(dr,r,i,sub){const m=getM(dr,r,i),[a,b]=players(dr,r,i);
   const side=(id,c)=>{const st=m.w&&id&&!m.bye?(m.w===id?' won':' lost'):'';
-    const e=!id?((r===0||m.bye||m.void)?'<div class="pn bye">BYE</div>':'<div class="pn">&nbsp;</div><div class="pc">&nbsp;</div>'):pAth(id);
+    const q=!id&&r===0&&dr.slots[2*i+(c==='sb'?1:0)],z=q&&isOut(q)&&byId(q);
+    const e=z?`<div class="pn bye"><s>${esc(z.name)}</s> · DQ</div><div class="pc">overweight ${(+z.wt).toFixed(2)} kg</div>`:!id?((r===0||m.bye||m.void)?'<div class="pn bye">BYE</div>':'<div class="pn">&nbsp;</div><div class="pc">&nbsp;</div>'):pAth(id);
     return `<div class="ps ${c}${st}">${e}</div>`;};
   const lab=m.void?'No contest':m.bye?'Bye':'Match '+m.no;
   return `<div class="pbox"><div class="pl"><span>${lab}</span>${sub?`<span>${esc(sub)}</span>`:''}</div>${side(a,'sw')}${side(b,'sb')}</div>`;}
@@ -1327,7 +1447,7 @@ function pageFinal(k){const dr=D.draws[k];const L=dr.rounds.length;let grid='',t
   return `<div class="ppage">${pHead(k,t)}<div class="pfb">${grid}</div>${pMedal(k)}${pFootF()}</div>`;}
 function pageRes(k){const rows=rankRows().out.filter(x=>x.cat===k).sort((a,b)=>(a.rank||99)-(b.rank||99)||a.name.localeCompare(b.name));
   const nc=rows.length<=18?1:rows.length<=40?2:3,per=Math.ceil(rows.length/nc)||1;
-  const th=`<tr><th>Rank</th><th>Name</th><th>District / Club</th><th>${nc>2?'Won':'Matches won'}</th></tr>`,tr=x=>`<tr><td>${x.rank||'–'}</td><td>${esc(x.name)}</td><td>${esc(x.club)}</td><td>${x.won}</td></tr>`;
+  const th=`<tr><th>Rank</th><th>Name</th><th>District / Club</th><th>${nc>2?'Won':'Matches won'}</th></tr>`,tr=x=>`<tr><td>${x.rank||(x.dq?'DQ':'–')}</td><td>${esc(x.name)}</td><td>${esc(x.club)}</td><td>${x.won}</td></tr>`;
   const tb=Array.from({length:nc},(_,c)=>`<table class="pmd prk">${th}${rows.slice(c*per,(c+1)*per).map(tr).join('')}</table>`).join('');
   const list=nc>1?`<div class="prk2${nc>2?' c3':''}">${tb}</div>`:tb;
   return `<div class="ppage">${pHead(k,'Results · Medals and rank list','r')}${pMedal(k)}<div class="prb"><div class="prbi">${list}</div></div>${pFootF()}</div>`;}
@@ -1354,7 +1474,7 @@ function bBox(no,sub,A,B){const sc='<span class="bsc"><i></i><i></i><i></i><i></
   const row=(p,c)=>`<div class="ps ${c} bxr"><span class="bpos">${p?p.pos:''}</span><span class="bln">${p&&p.seed?'<em>S'+p.seed+'</em>':''}</span>${sc}</div>`;
   return `<div class="pbox bx"><div class="pl"><span>Match ${no}</span><span class="bxs">${sub?esc(sub):''}</span><span class="bsc"><i>I</i><i>W</i><i>Y</i><i>S</i></span></div>${row(A,'sw')}${row(B,'sb')}</div>`;}
 function bHead(k,title,size){const m=M(),n=k?D.ath.filter(a=>catKey(a)===k).length:0;
-  return `<div class="phd bhd"><div class="pevb"><div class="pev">${esc(evName())}</div>${m.org?`<div class="pmt">${esc(m.org)}</div>`:''}<div class="pmt">${esc(evLine())}</div><div class="pmt">Mat: ________ · Bracket of ${size}${k?' · '+n+' athletes':' · Athletes: ______'}</div></div><div class="pti">${k?`<div class="pcat">${esc(k)}</div>`:'<div class="pcat bcat">Category: ________________________</div>'}<div class="pst">${esc(title)}</div></div><div class="pdt"><b>REFEREE SHEET · fill by hand</b><br>Date: ______________<br>Sheet ____ of ____</div></div>`;}
+  return `<div class="phd bhd"><div class="pevb"><div class="pev">${esc(evName())}</div>${m.org?`<div class="pmt">${esc(m.org)}</div>`:''}<div class="pmt">${esc(evLine())}</div><div class="pmt">Mat: ________ · Bracket of ${size}${n?' · '+n+' athletes':' · Athletes: ______'}</div></div><div class="pti">${k?`<div class="pcat">${esc(k)}</div>`:'<div class="pcat bcat">Category: ________________________</div>'}<div class="pst">${esc(title)}</div></div><div class="pdt"><b>REFEREE SHEET · fill by hand</b><br>Date: ______________<br>Sheet ____ of ____</div></div>`;}
 const bNote='<div class="pnote">I = Ippon · W = Waza-ari · Y = Yuko · S = Shido (3 shido = Hansoku-make) · grey bar = White (Shiro), black bar = Blue (Ao) · write the winner in the box shown ("W 3" = winner of match 3, "L 3" = loser) · S1–S8 = seed positions: Seed 1 → Pool A, Seed 2 → Pool C, Seed 3 → Pool D, Seed 4 → Pool B, Seeds 5–8 one per pool · byes go to the top seeds first.</div>';
 function pFootB(){return bNote+pFootF().slice(pNote.length);}
 function bSlot(P,i){return {pos:i+1,seed:P.seedAt[i]};}
@@ -1430,6 +1550,47 @@ function scoreHTML(st,sc){const fill=st==='sfill';
   if(!ks.length){msg('No draw to print. Pick a category or make the draws first'+(fill?'.':', or choose an empty-sheet size.'));return '';}
   if(fill){const played=ks.filter(k=>scRows(k).some(x=>x.m.w));if(!played.length){msg('No contest has been scored yet in '+(ks.length>1?'these categories':'this category')+'. The filled score sheet appears as soon as results are saved from the scoreboard.');return '';}ks=played;}
   return ks.map(k=>scPages(scRows(k),fill,t=>pHead(k,(fill?'Contest score sheet · recorded by the scoreboard (file copy)':'Contest score sheet · blank · for table officials')+t,fill?'r':'s'))).join('');}
+// ---------- Athlete list (roll call) and weigh-in sheet ----------
+const prKeys=sc=>(sc==='this'?(cur?[cur]:[]):cats().filter(c=>sc==='all'||c.g===sc).map(c=>c.k));
+function lHead(k,title,plain){if(!plain&&k&&D.draws[k])return pHead(k,title,'s');const m=M(),n=k&&!plain?D.ath.filter(a=>catKey(a)===k).length:0;
+  return `<div class="phd bhd"><div class="pevb"><div class="pev">${esc(evName())}</div>${m.org?`<div class="pmt">${esc(m.org)}</div>`:''}<div class="pmt">${esc(evLine())}</div><div class="pmt">${n?esc(MATCFG().mat||'')+' · '+n+' athletes':'Mat: ________ · Athletes: ______'}</div></div><div class="pti">${k?`<div class="pcat">${esc(k)}</div>`:'<div class="pcat bcat">Category: ________________________</div>'}<div class="pst">${esc(title)}</div></div><div class="pdt">${n?'':'<b>FILL BY HAND</b><br>Date: ______________<br>'}Printed ${new Date().toLocaleString()}</div></div>`;}
+function lFoot(W){const m=M(),t=wTol();return `<div class="pnote">${W?'Limit = upper limit of the category (“+” categories have no upper limit)'+(t?' · allowance '+Math.round(t*1000)+' g':'')+' · above the limit = OVER → disqualified, cannot compete in this category · write the weight with 2 decimals (e.g. 60.45).':'Present ✓ = athlete answered the roll call (judogi and ID checked) · Weigh-in = official weight if already taken · S1–S8 = seed.'}</div><div class="pft"><span>${W?'Weigh-in official':'Checked by'}: ________________</span><span>${W?'Witness':'Team manager'}: ________________</span><span>Chief referee: ${m.chief?esc(m.chief)+' ':''}________________</span></div>`;}
+function lTable(rows,off,W,blank,k){const kp=k?String(k).split(' · '):[],kc=kp.length?kp[kp.length-1]:'',kg=kp.slice(0,-1).join(' · '),kl=k?wLimit(kc):null;
+  const cols=W?[['No.',10],['Name',64],['District / Club',48],['Category',24],['Limit (kg)',18],['Declared (kg)',20],['Weight (kg)',24],['Result',32],['Official',0]]
+    :[['No.',10],['Name',64],['District / Club',48],['Gender · Age',28],['Category',24],['Seed / rank',16],['Weigh-in (kg)',22],['Present ✓',18],['Signature',0]];
+  const body=rows.map((a,i)=>{const no=off+i+1;
+    if(!a){const pre=W?{3:esc(kc),4:k?(kl!=null?kl.toFixed(1):'no limit'):''}:{3:esc(kg),4:esc(kc)};return '<tr>'+cols.map((c,j)=>j?`<td${j===4&&W?' class="qv"':''}>${pre[j]||''}</td>`:`<td class="qv">${no}</td>`).join('')+'</tr>';}
+    const st=wStatus(a),lim=wLimit(a.cat),d=wDecl(a),wt=+a.wt>0?(+a.wt).toFixed(2):'',over=!blank&&a.dq;
+    const nm=`<td><div class="sn">${esc(a.name)}</div></td><td><div class="scl">${esc(a.club||'')}</div></td>`;
+    if(W)return `<tr class="${over?'lover':''}"><td class="qv">${no}</td>${nm}<td>${esc(a.cat)}</td><td class="qv">${lim!=null?lim.toFixed(1):'no limit'}</td><td class="qv">${d?d.toFixed(2):''}</td><td class="qv">${blank?'':wt}</td><td class="qv">${blank?'':st.k==='over'?'OVER +'+(st.w-st.lim).toFixed(2)+' · DQ':st.k==='ok'?'OK':''}</td><td></td></tr>`;
+    return `<tr class="${over?'lover':''}"><td class="qv">${no}</td>${nm}<td>${esc([a.gender,a.age].filter(Boolean).join(' · '))}</td><td>${esc(a.cat)}</td><td class="qv">${a.seed>0?'S'+a.seed:''}${a.rk>0?(a.seed>0?' · ':'')+'#'+a.rk:''}</td><td class="qv">${blank?'':wt+(over?' DQ':'')}</td><td></td><td></td></tr>`;}).join('');
+  return `<table class="pss pls"><colgroup>${cols.map(c=>c[1]?`<col style="width:${c[1]}mm">`:'<col>').join('')}</colgroup><tr>${cols.map(c=>`<th>${c[0]}</th>`).join('')}</tr>${body}</table>`;}
+function listPages(k,st,n,blank,nn){const W=st==='wsheet',per=17;
+  const rows=k&&!nn?D.ath.filter(a=>catKey(a)===k).sort((a,b)=>a.name.localeCompare(b.name)):Array.from({length:Math.ceil(Math.max(n||1,1)/per)*per},()=>null);
+  const pages=[];for(let i=0;i<rows.length;i+=per)pages.push(rows.slice(i,i+per));if(!pages.length)pages.push([]);
+  const title=(W?'Weigh-in sheet':'Athlete list · roll call')+(k&&!nn?'':' · blank');
+  return pages.map((pg,pi)=>`<div class="ppage">${lHead(k,title+(pages.length>1?' · sheet '+(pi+1)+' of '+pages.length:''),nn)}<div class="prb"><div class="prbi">${lTable(pg,pi*per,W,blank||!k,k)}</div></div>${lFoot(W)}</div>`).join('');}
+// heading-only forms: category / event name printed, no athlete names (k = null → category written by hand)
+function nnPages(st,k,size,f){
+  if(st==='blank')return pageBlank(k,size,f);
+  if(st==='sblank')return scPages(scPlanRows(size,f),false,t=>bHead(k,'Contest score sheet · blank'+t,size));
+  if(st==='alist'||st==='wsheet')return listPages(k,st,size,true,true);
+  if(st==='allblank')return ['alist','wsheet','blank','sblank'].map(x=>nnPages(x,k,size,f)).join('');return '';}
+function nnHTML(st,sc){const f=fmtNow();
+  if(sc==='events'){const ev=EVS();if(!ev.length){msg('No saved events yet: add them in "📋 Events for blank sheets" (Draw tab) first.');return '';}return ev.map(e=>nnPages(st,evKey(e),+e.n||16,f)).join('');}
+  const ks=prKeys(sc).filter(k=>D.ath.some(a=>catKey(a)===k));
+  if(!ks.length){msg(D.ath.length?'Pick a category first (or print all / boys / girls).':'No athletes yet: use scope "Saved events" or an empty-sheet size.');return '';}
+  return ks.map(k=>{const dr=D.draws[k];return nnPages(st,k,dr?dr.size:bsz(D.ath.filter(a=>catKey(a)===k&&!a.dq).length),dr&&dr.fmt||f);}).join('');}
+function listHTML(st,sc){const sz=$('prSize').value;if(sz!=='auto')return listPages(null,st,+sz,true);
+  const ks=prKeys(sc).filter(k=>D.ath.some(a=>catKey(a)===k));
+  if(!ks.length){msg(D.ath.length?'Pick a category first (or print all / boys / girls).':'No athletes yet. Choose an empty-sheet size to print a blank form.');return '';}
+  return ks.map(k=>listPages(k,st,0,false)).join('');}
+function allBlankHTML(sc){const sz=$('prSize').value,f=fmtNow();
+  if(sz!=='auto'){const n=+sz;return listPages(null,'alist',n,true)+listPages(null,'wsheet',n,true)+pageBlank(null,n,f)+scPages(scPlanRows(n,f),false,t=>bHead(null,'Contest score sheet · blank'+t,n));}
+  const ks=prKeys(sc).filter(k=>D.ath.some(a=>catKey(a)===k));
+  if(!ks.length){msg(D.ath.length?'Pick a category first (or print all / boys / girls).':'No athletes yet. Choose an empty-sheet size to print the blank set.');return '';}
+  return ks.map(k=>{const dr=D.draws[k],n=D.ath.filter(a=>catKey(a)===k&&!a.dq).length,size=dr?dr.size:Math.max(2,1<<Math.ceil(Math.log2(Math.max(n,1))));
+    return listPages(k,'alist',0,true)+listPages(k,'wsheet',0,true)+pageBlank(k,size,dr&&dr.fmt||f)+(dr?scPages(scRows(k),false,t=>pHead(k,'Contest score sheet · blank · for table officials'+t,'s')):scPages(scPlanRows(size,f),false,t=>bHead(k,'Contest score sheet · blank'+t,size)));}).join('');}
 function pageBlank(k,size,fmt){const P=blankPlan(size,fmt);return bList(k,size,P)+bElim(k,size,P)+bFinal(k,size,P);}
 function blankHTML(sc){const sz=$('prSize').value;if(sz!=='auto')return pageBlank(null,+sz,fmtNow());
   const cm={};cats().forEach(c=>cm[c.k]=c.list.length);
@@ -1437,14 +1598,21 @@ function blankHTML(sc){const sz=$('prSize').value;if(sz!=='auto')return pageBlan
   if(!ks.length){msg('Pick a category first, or choose an empty-sheet size to print blank fixtures without athletes.');return '';}
   return ks.map(k=>{const dr=D.draws[k],n=cm[k]||0;return pageBlank(k,dr?dr.size:Math.max(2,1<<Math.ceil(Math.log2(Math.max(n,1)))),dr&&dr.fmt||fmtNow());}).join('');}
 function openPrint(scope){const p=$('prPanel');p.style.display='block';$('prScope').value=scope||'this';
+  if(!D.ath.length&&!['blank','sblank','alist','wsheet','allblank'].includes($('prStage').value)){$('prStage').value='allblank';$('prSize').value='32';}
+  if(!D.ath.length&&EVS().length&&scope!=='this')$('prScope').value='events';else if(!D.ath.length&&EVS().length&&!cur)$('prScope').value='events';
   const dr=cur&&D.draws[cur];if(dr){const si=stageInfo(dr);$('prStage').value=si.hasElim&&!si.elimDone?'elim':'final';}
   syncPr();p.scrollIntoView({behavior:'smooth',block:'start'});}
 const PR_HINT='A4 landscape · one page per category (big draws split into pools) · print stage 1 before the event, stage 2 once elimination is complete.';
-function syncPr(){const st=$('prStage').value,b=st==='blank'||st==='sblank';$('prSize').style.display=b?'':'none';$('prScope').disabled=b&&$('prSize').value!=='auto';
+function syncPr(){const st=$('prStage').value,b=['blank','sblank','alist','wsheet','allblank'].includes(st),evs=$('prScope').value==='events';
+  $('prSize').style.display=b&&!evs?'':'none';$('prScope').disabled=false;$('prNoNmL').style.display=b&&!evs&&$('prSize').value==='auto'?'':'none';
+  if(evs){$('prHint').textContent=b?'Saved events: each event gets its own '+($('prStage').selectedOptions[0]||{}).text+' with the event heading and no athlete names, in the sheet size set for that event.':'Saved events print blank forms only: choose Blank fixture, Score sheet · blank, Athlete list, Weigh-in sheet or All blank forms.';return;}
   if(st==='sblank'){$('prHint').textContent='Blank contest score sheet: same heading as the results (tournament, category, mat, draw ID, QR) and one row per contest in match order with empty I / W / Y / S boxes for White and Blue, golden score, time, winner and remarks. Athletes already known are printed; the rest show where they come from ("Winner of match 13"). An empty-sheet size prints it without athletes.';return;}
+  if(st==='alist'){$('prHint').textContent='Athlete list for the roll call: one list per category (A–Z) with district, gender · age, seed, weigh-in weight, a Present ✓ box and signature. An empty-sheet size prints a blank entry form to fill by hand.';return;}
+  if(st==='wsheet'){$('prHint').textContent='Weigh-in sheet per category: limit, declared weight, official weight (printed if already entered, blank to write by hand), result (OK / OVER → DQ) and the official\'s initials. An empty-sheet size prints a blank weigh-in form.';return;}
+  if(st==='allblank'){$('prHint').textContent='One complete set of blank forms: athlete list, weigh-in sheet, blank fixture (all stages to the final) and blank score sheet. Choose an empty-sheet size to print it with no athletes at all, or "as per category" to print each category\'s set with the names.';return;}
   if(st==='sfill'){$('prHint').textContent='Filled contest score sheet for the file: every contest scored on the admin scoreboard with final I / W / Y / S for both sides, golden score, contest time, winner, how it was won, time recorded and the full score log (each score and penalty with its match time). Print it after each category as proof.';return;}
   $('prHint').textContent=b?'Blank referee sheets: entry & seeding list, every stage with empty name lines and I / W / Y / S score boxes, medal table and signatures. "As per category" prints each category\'s own bracket with its name; an empty-sheet size prints a sheet for any category (no athletes needed).':PR_HINT;}
-$('prStage').onchange=syncPr;$('prSize').onchange=syncPr;
+$('prStage').onchange=syncPr;$('prSize').onchange=syncPr;$('prScope').onchange=syncPr;
 $('prAll').onclick=()=>openPrint(cur?'this':'all');
 document.addEventListener('keydown',e=>{
   if(window.READONLY||window.VIEW||location.hash==='#display')return;
@@ -1456,8 +1624,14 @@ document.addEventListener('keydown',e=>{
 $('prGo').onclick=async()=>{
   const st=$('prStage').value,sc=$('prScope').value;
   let html='',skipped=0,keys=[];
-  if(st==='blank'){html=blankHTML(sc);if(!html)return;}
+  const BL=['blank','sblank','alist','wsheet','allblank'].includes(st);
+  if(sc==='events'&&!BL)return msg('Saved events print blank forms only: choose Blank fixture, Score sheet · blank, Athlete list, Weigh-in sheet or All blank forms.');
+  if(BL&&(sc==='events'||($('prNoNm').checked&&$('prSize').value==='auto'))){html=nnHTML(st,sc);if(!html)return;}
+  else if(st==='blank'){html=blankHTML(sc);if(!html)return;}
   else if(st==='sblank'||st==='sfill'){html=scoreHTML(st,sc);if(!html)return;}
+  else if(st==='alist'||st==='wsheet'){html=listHTML(st,sc);if(!html)return;}
+  else if(st==='allblank'){html=allBlankHTML(sc);if(!html)return;}
+  else if(!D.ath.length)return msg('No athletes yet. To print empty forms choose "All blank forms" (or a blank fixture / score sheet / athlete list / weigh-in sheet) with an empty-sheet size.');
   else{keys=sc==='this'?(cur?[cur]:[]):cats().filter(c=>sc==='all'||c.g===sc).map(c=>c.k);
   keys=keys.filter(k=>D.draws[k]);if(!keys.length)return msg('No draw to print. Pick a category or make the draws first.');}
   for(const k of keys){const dr=D.draws[k],L=dr.rounds.length;
@@ -1766,7 +1940,8 @@ if(TV){
   window.SB={load(x){if(!x.auto&&!okSwitch('load'))return;snap();const k=S;S=fresh(k);
     const A=split(x.a.name),B=split(x.b.name);
     Object.assign(S.p.w,{n:A.n,f:A.f,c:code(x.a.club),club:x.a.club||''});Object.assign(S.p.b,{n:B.n,f:B.f,c:code(x.b.club),club:x.b.club||''});
-    S.manual=false;try{const mm=JSON.parse(localStorage.getItem('judoDraw')||'{}').meta;if(mm&&mm.name)S.ev=mm.name;}catch(e){}S.cat=x.cat+' · '+x.round;if(window.MATCFG)S.mat=MATCFG().mat||S.mat;S.match=String(x.no);S.link={cat:x.cat,r:x.r,i:x.i,w:x.a.id,b:x.b.id};
+    S.manual=false;try{const mm=JSON.parse(localStorage.getItem('judoDraw')||'{}').meta;if(mm&&mm.name)S.ev=mm.name;}catch(e){}
+    try{const t=window.durFor?window.durFor(String(x.cat).split(' · ')[1]||''):0;if(t){S.dur=t;S.ms=t*1000;}}catch(e){}S.cat=x.cat+' · '+x.round;if(window.MATCFG)S.mat=MATCFG().mat||S.mat;S.match=String(x.no);S.link={cat:x.cat,r:x.r,i:x.i,w:x.a.id,b:x.b.id};
     fill();render();if(!x.noTab)tab('sb');msg('Loaded match '+x.no+': '+x.a.name+' (white) vs '+x.b.name+' (blue)');}};
   SB.clearHist=function(){H=[];};
   SB.showPodium=function(k){const pd=window.DR&&DR.podium(k);if(!pd)return msg('Podium is available when the category is finished'),false;S.pod=Object.assign({mat:S.mat||''},pd);render();tab('sb');msg('🏆 Podium for '+k+' is on the TV · Esc to close');return true;};
