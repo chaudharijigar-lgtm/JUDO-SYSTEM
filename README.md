@@ -1,4 +1,4 @@
-# TatamiPro · Judo tournament manager (v15)
+# TatamiPro · Judo tournament manager (v18)
 
 Draw (seeding, ranking, qualifier, knockout up to 128), weigh-in, live scoreboard + TV, schedule, results, prints, QR pages and WhatsApp sharing, in one web page. The name and logo can be changed in Settings.
 
@@ -8,6 +8,7 @@ Draw (seeding, ranking, qualifier, knockout up to 128), weigh-in, live scoreboar
 - `manifest.webmanifest`, `icon-192.png`, `icon-512.png` – install as an app
 - `xlsx.full.min.js` – Excel reader/writer (works offline)
 - `qrcode.js` – QR codes (works offline)
+- `jsqr.js` – reads ID card QR codes with the laptop camera at check-in (jsQR, Apache-2.0; works offline)
 - `judo_demo_athletes.xlsx` – demo list: 359 athletes, 14 senior IJF categories
 
 ## Deploy on GitHub Pages
@@ -20,6 +21,24 @@ Draw (seeding, ranking, qualifier, knockout up to 128), weigh-in, live scoreboar
 - Chrome / Edge (Windows, Mac, Linux, Android): the **⬇ Install** button in the top bar (or browser menu → Install).
 - iPhone / iPad: Safari → Share → Add to Home Screen.
 - Laptop and desktop get the desktop layout; phones get the phone layout (menu scrolls sideways, tables scroll).
+
+## New in v18 · tournament-day safety (15 Nov 2026)
+- **Laptop role** (Settings → Laptop role): *Mat laptop* keeps the scoreboard, weigh-in, results, prints and backups, and hides/blocks Make all draws, Re-draw, Edit, Lock, Clear all, Excel upload, demo data, branding and the live-room create/leave/close buttons. An orange badge in the status bar shows the role. With an admin PIN set (Settings → Security), switching back to Main desk needs the PIN.
+- **Clock check**: when the laptop clock is more than 1 minute off the internet time (live sync server or the website's own clock), a red warning shows in the status bar. New results are stamped with the corrected time, so the change log and merges stay in order.
+- **Close tournament** (Settings → Live sync, main desk that created the room): deletes the online room and the public live results page. Every laptop keeps its own data; the join and live links stop working. Needs the **new Firebase rules** (Copy rules → Firebase → Realtime Database → Rules → Publish).
+- **Call room screen** (Athletes → Check-in → 📣 Call room screen, or `#callroom`): a TV page with the next 5 contests on every mat (on the mat · get ready · warm up), with check-in marks. Updates by itself.
+- **Check-in** (Athletes page): scan the QR on the ID card with the laptop camera or a USB QR scanner, or type a name. Athletes due soon who are not checked in are listed in red, and on the call room screen.
+- **Change log** (Results page, bottom; Print → 📜 Change log): every result entered, changed or removed, with time, mat and the old winner when it changed. For the jury and appeals.
+- **Practice mode** (Settings → Practice): puts the real tournament aside on this laptop, loads demo athletes and draws, and pauses live sync, folder backups and the OBS overlay. *End practice* brings the real tournament back exactly as it was.
+- **Smaller backups**: the 12 automatic backups are now compressed (several times smaller), so they never fill the browser storage. Old backups still restore.
+- **Operator guide** (Print → ❓ Mat operator guide): one A4 page with the keys, every-contest steps, what to do when something goes wrong and the main desk names.
+- Outside the software: keep every laptop on a charger/UPS, use a wired keyboard for the scoreboard, and keep a mobile hotspot ready as backup internet.
+
+## v17.2 · audit fixes (15 Nov 2026)
+- Security: a category name containing HTML (from the Excel file) could run as code in the scoreboard's category list. Now shown as plain text everywhere (checked: admin, TV, overlay, QR pages, all 16 print types).
+- Certificates: each certificate keeps one number for good (per athlete and type) and numbers never repeat between separate prints.
+- Live sync: restoring an old backup no longer rolls back newer results of other mats (it merges with the room). Removing an athlete (or the last athlete of a category) is now shared and does not come back. Clear all, a new athlete list and demo data are blocked while the laptop is in a live room (they would double every athlete).
+- Checked: 431 athletes / 48 categories / 509 contests, every page at 390–1920 px, every print type, no memory or listener growth, about 50–70 ms per saved result, about 1.8 MB of the browser's ~5 MB storage.
 
 ## New in v17 · live sync between mats + public live results page (internet, free Firebase)
 - Settings → **☁ Live sync between mats**. Every laptop keeps working offline; with internet, draws, results, weigh-ins, officials and event settings reach every other laptop in 1–3 seconds.
