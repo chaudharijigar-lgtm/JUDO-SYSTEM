@@ -2059,7 +2059,8 @@ function renderSync(){const el=$('pgSync');if(!el)return;const c=SYNC.cfg(),x=SY
      <li>Build → <b>Realtime Database</b> → Create database → location <b>Singapore (asia-southeast1)</b> → Start in <b>locked mode</b>.</li>
      <li>Realtime Database → <b>Rules</b> tab → delete everything → paste these rules → <b>Publish</b>. <button class="sm" id="syRules">Copy rules</button></li>
      <li>Build → <b>Authentication</b> → Get started → Sign-in method → <b>Anonymous</b> → Enable → Save.</li>
-     <li>Copy the <b>Database URL</b> (top of the Realtime Database page, https://…firebasedatabase.app) and the <b>Web API key</b> (⚙ Project settings → General) into the boxes above → Create live room.</li></ol>
+     <li><b>Web API key:</b> ⚙ Project settings → General → <b>Your apps</b> → <b>&lt;/&gt;</b> (Web) → nickname "TatamiPro" (no Hosting) → Register app → in the code shown copy only the value of <b>apiKey</b> ("AIza…"). Seen "No Web API key for this project"? That goes away once the web app is added.</li>
+     <li>Copy the <b>Database URL</b> (top of the Realtime Database → Data page, https://…firebasedatabase.app) and the <b>Web API key</b> into the boxes above → Create live room.</li></ol>
      <div class="hint">Free plan: 100 laptops/phones connected at the same time and 10 GB download a month: plenty for a tournament (the public page does not keep a connection open). Your data stays in your own Firebase project.</div></details>`;}
   else{const mem=Object.values(x.members||{}).map(m=>m&&m.mat).filter(Boolean),code=SYNC.joinCode(),ll=SYNC.liveLink();
     el.innerHTML=`<div class="obsh"><h3>☁ Live sync between mats</h3>${chip}</div>
