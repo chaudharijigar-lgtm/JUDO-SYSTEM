@@ -1170,6 +1170,11 @@ body.matmode #pgBrand>:not(#obsBox),body.matmode #evPanel>:not(.sndbar):not(#sn_
 body.matmode #evPanel{padding-top:6px}
 body.matmode:not(.callrole) #pgCheck,body.matmode #ciCall2,body.callrole #mainMenu [data-page=sb],body.callrole #obsBox,body.callrole #evPanel{display:none!important}
 .rolegrid.rg3{grid-template-columns:repeat(3,minmax(0,1fr))}@media (max-width:1000px){.rolegrid.rg3{grid-template-columns:1fr}}
+.symats{display:grid;gap:6px}.symats .mlhead{display:flex;align-items:center;gap:14px;flex-wrap:wrap}.symats .mln{display:flex!important;flex-direction:row!important;align-items:center;gap:6px;font-size:13px;font-weight:600}.symats .mln select{width:auto!important;min-width:72px;padding:4px 8px!important}
+.mlrow{display:flex;flex-wrap:wrap;gap:6px 12px;align-items:center;padding:6px 0;border-bottom:1px solid rgba(127,127,127,.18)}.mlrow b{min-width:120px}.mlrow .hint{flex:1;min-width:140px}.mlbt{display:flex;gap:6px;flex-wrap:wrap}
+.mlcode{font-family:ui-monospace,Consolas,monospace;letter-spacing:.12em;font-size:14px}
+.mllock{margin-top:10px;padding:10px 12px;border:1px solid rgba(255,159,10,.6);border-radius:12px;display:grid;gap:6px}.mllock input{max-width:180px}
+body.lockedmat .sycol:has(#syJoin){display:none!important}
 #cats .runtag{font-size:10.5px;font-weight:800;color:#ff9f0a;margin-left:6px;white-space:nowrap}
 #runCat.pinned{border-color:#30d158!important;box-shadow:0 0 0 1px #30d158 inset}
 .syrej{border:1px solid rgba(48,209,88,.5);border-radius:12px;padding:10px 12px;margin:8px 0}
@@ -1976,7 +1981,7 @@ const SYNC=(()=>{const CK='judoSync',FK='judoSyncFp';
     let o=R;for(let i=0;i<seg.length-1;i++){if(o[seg[i]]==null||typeof o[seg[i]]!=='object')o[seg[i]]={};o=o[seg[i]];}
     const k=seg[seg.length-1];if(data===null)delete o[k];else o[k]=data;return [seg.join('/')];}
   async function isClosed(c){try{const r=await fetch(c.url+'/closed/'+c.room+'.json');return r.ok&&(await r.json())===true;}catch(x){return false;}}
-  function roomGone(){cfg({on:false,closed:Date.now()});try{localStorage.removeItem('judoRunSeen');}catch(e){}R.run={};try{if(es)es.close();}catch(e){}es=null;ready=false;show('off');note('The live room was closed by the main desk · this laptop keeps its data');try{msg('The live room was closed by the main desk. This laptop keeps all its data and works on its own.');}catch(e){}try{window.dispatchEvent(new Event('syncstatus'));if(window.APP&&APP.renderSync)APP.renderSync();}catch(e){}}
+  function roomGone(){cfg({on:false,closed:Date.now()});try{localStorage.removeItem('judoLock');}catch(e){}try{localStorage.removeItem('judoRunSeen');}catch(e){}R.run={};try{if(es)es.close();}catch(e){}es=null;ready=false;show('off');note('The live room was closed by the main desk · this laptop keeps its data');try{msg('The live room was closed by the main desk. This laptop keeps all its data and works on its own.');}catch(e){}try{window.dispatchEvent(new Event('syncstatus'));if(window.APP&&APP.renderSync)APP.renderSync();}catch(e){}}
   function onEv(type,raw){let m;try{m=JSON.parse(raw);}catch(e){return;}if(!m)return;lastOk=Date.now();link=true;const tch=[];
     if(type==='put'&&(m.path==='/'||!m.path)&&(m.data==null||(typeof m.data==='object'&&!m.data.uids))){roomGone();return;}
     if(type==='put')tch.push(...setPath(m.path,m.data));
@@ -2172,6 +2177,18 @@ const FB_RULES=`{
   }
 }`;
 let syncForm='';
+// ---------- mat links: one join link per mat; opening it joins the room, names the laptop and locks it to that mat ----------
+const matLink=v=>location.href.split('#')[0]+'#join='+SYNC.joinCode()+(v==='call'?'&role=call':'&mat='+(+v||1));
+function unlockCode(room){return (String(SYNC.hsh(String(room||'')+'|tp-unlock')).replace(/[^a-z0-9]/gi,'')+'000000').slice(0,6).toUpperCase();}
+function matLinksHTML(){const sc=M().sched||{},n=Math.max(1,Math.min(8,+sc.mats||1)),T=window.TP_RUN,cs=cats(),assigned=Object.values(sc.it||{}).some(v=>v&&v.mat!=null&&v.mat!=='');
+  const cnt=i=>assigned?cs.filter(c=>T.schedMat(c.k)===i).length:0;
+  const row=(v,label,sub)=>`<div class="mlrow"><b>${esc(label)}</b><span class="hint">${sub}</span><span class="mlbt"><button class="sm" data-ml="copy|${v}">Copy link</button><button class="sm" data-ml="wa|${v}">📤 WhatsApp</button><button class="sm" data-ml="qr|${v}">QR</button></span></div>`;
+  return `<div class="sycl symats"><div class="mlhead"><b>📲 Mat laptop links</b><label class="mln">Mats <select id="syMats">${[1,2,3,4,5,6,7,8].map(i=>`<option${i===n?' selected':''}>${i}</option>`).join('')}</select></label></div>
+    <div class="hint">One link per mat (number of mats from the Schedule). Opening a link on a laptop joins the room, names it "Mat 2", makes it a Mat laptop (Scoreboard + Weigh-in) and locks it to that mat: it cannot switch to another mat or to the main desk.${assigned?'':' <b>Give every category its mat on the Schedule page</b> so each mat gets its own categories.'}</div>
+    ${Array.from({length:n},(_,i)=>row(i+1,'Mat '+(i+1),assigned?cnt(i+1)+' categories in the schedule':'mat '+(i+1))).join('')}${row('call','Call room laptop','check-in · weigh-in · call room TV')}
+    <div id="syMlQr"></div>
+    <label class="chk"><input type="checkbox" id="syStrict"${M().strictMats?' checked':''}> Mat laptops show and run <b>only their own scheduled categories</b> (Run category and Load next)${assigned?'':' · needs the mat per category in the Schedule'}</label>
+    <div class="hint">Unlock code for a locked laptop (Mat setup → Laptop role → Unlock): <b class="mlcode">${esc(unlockCode(SYNC.cfg().room))}</b> · The main desk runs Mat 1 itself? Then do not open the Mat 1 link on another laptop.</div></div>`;}
 async function copyTxt(t,okMsg){let ok=false;try{await navigator.clipboard.writeText(t);ok=true;}catch(e){}if(!ok){try{const ta=document.createElement('textarea');ta.value=t;document.body.appendChild(ta);ta.select();ok=document.execCommand('copy');ta.remove();}catch(e){}}msg(ok?okMsg:'Select the text and copy it (Ctrl+C).');}
 function renderSync(){const el=$('pgSync');if(!el)return;const c=SYNC.cfg(),x=SYNC.status(),on=!!c.on;
   const chip=`<span class="obsst ${x.st==='ok'?'live':x.st==='err'||x.st==='offline'?'err':''}" id="syStat">${x.st==='ok'?'● Live · synced':x.st==='wait'?'Connecting…':x.st==='offline'?'Offline · will sync':x.st==='err'?'⚠ '+esc(x.err):'○ Off'}</span>`;
@@ -2196,6 +2213,7 @@ function renderSync(){const el=$('pgSync');if(!el)return;const c=SYNC.cfg(),x=SY
       <div class="syrow"><input readonly value="${esc(code)}" id="syCodeOut"><button class="sm" id="syCopyCode">Copy code</button></div><div class="tools"><button class="sm" id="syCopyLink">Copy join link</button><button class="sm" id="syWaLink">📤 WhatsApp join link</button></div></div>
      <div class="sycol"><b>Public live results page</b><div class="hint">Anyone with this link sees every mat live, medal winners, the district medal tally and the overall championship (read only).</div>
       <div class="syrow"><input readonly value="${esc(ll)}"><button class="sm" id="syCopyLive">Copy</button></div><div class="tools"><button class="sm" id="syOpenLive">Open</button><button class="sm" id="syWaLive">📤 WhatsApp</button><button class="sm" id="syQrLive">QR to print / show</button></div><div id="syQr"></div></div></div>
+    ${!MATMODE()?matLinksHTML():''}
     ${c.host?`<div class="sycl"><b>After the tournament</b><div class="hint">Deletes the online room and the public results page (all laptops keep their own data). The join link and the live link stop working. Sub-junior and cadet athletes are minors: close the room soon after the results are final, and follow your federation's rules on children's data. Needs the new rules (Copy rules → Publish) from version 18.</div><button class="warn" id="syClose">🗑 Close tournament &amp; delete online data</button></div>`:''}
     <div class="tools"><label class="chk"><input type="checkbox" id="syPub"${c.pub?' checked':''}> This laptop updates the public results page (one laptop is enough: the main desk)</label><label class="chk"><input type="checkbox" id="syLive"${c.live!==false?' checked':''}> Show this laptop's scoreboard on the live page (untick if this laptop does not run a mat)</label><button id="syNow">Sync now</button><button class="warn" id="syLeave">Leave the room</button></div>
     ${x.log&&x.log.length?`<div class="sylog"><b>Recent</b>${x.log.map(l=>`<div><span class="hint">${new Date(l.t).toLocaleTimeString()}</span> ${esc(l.a)}</div>`).join('')}</div>`:''}
@@ -2212,6 +2230,12 @@ function renderSync(){const el=$('pgSync');if(!el)return;const c=SYNC.cfg(),x=SY
   if($('syCopyLive'))$('syCopyLive').onclick=()=>copyTxt(SYNC.liveLink(),'Live results link copied.');
   if($('syOpenLive'))$('syOpenLive').onclick=()=>window.open(SYNC.liveLink(),'_blank');
   if($('syWaLive'))$('syWaLive').onclick=()=>window.open('https://wa.me/?text='+encodeURIComponent('🥋 '+evName()+' · live results (all mats):\n'+SYNC.liveLink()),'_blank');
+  el.querySelectorAll('[data-ml]').forEach(bt=>bt.onclick=()=>{const [kind,v]=bt.dataset.ml.split('|'),lk=matLink(v),nm=v==='call'?'Call room laptop':'Mat '+v;
+    if(kind==='copy')copyTxt(lk,nm+' link copied: open it on that laptop (Chrome).');
+    else if(kind==='wa')window.open('https://wa.me/?text='+encodeURIComponent('TatamiPro · '+nm+' · open on the '+(v==='call'?'call room':'mat '+v)+' laptop (Chrome):\n'+lk),'_blank');
+    else if(kind==='qr'){const q=qrSvg(lk),box=$('syMlQr');if(box)box.innerHTML=q?`<div class="syqr">${q}<small>Scan on the ${esc(nm)} laptop</small></div>`:'<div class="hint">QR not available (qrcode.js missing).</div>';}});
+  if($('syStrict'))$('syStrict').onchange=()=>{M().strictMats=$('syStrict').checked;save();renderSync();msg($('syStrict').checked?'Mat laptops now show and run only their own scheduled categories.':'Mat laptops may also pick other categories again (Run category).');};
+  if($('syMats'))$('syMats').onchange=()=>{const n=Math.max(1,Math.min(8,+$('syMats').value||1));SCH().mats=n;save();renderSync();msg(n+' mats: one link per mat below. Give every category its mat on the Schedule page.');};
   if($('syQrLive'))$('syQrLive').onclick=()=>{const q=qrSvg(SYNC.liveLink());$('syQr').innerHTML=q?`<div class="syqr">${q}<small>Scan · live results</small></div>`:'<div class="hint">QR not available (qrcode.js missing).</div>';};
   if($('syPub'))$('syPub').onchange=()=>{SYNC.cfg({pub:$('syPub').checked});SYNC.queue(100);};
   if($('syLive'))$('syLive').onchange=()=>{SYNC.cfg({live:$('syLive').checked});SYNC.queue(100);};
@@ -2221,8 +2245,18 @@ function renderSync(){const el=$('pgSync');if(!el)return;const c=SYNC.cfg(),x=SY
   if($('syLeave'))$('syLeave').onclick=e=>{const b=e.target;if(b.dataset.arm!=='1'){b.dataset.arm='1';b.textContent='Click again to leave (the mats stay connected)';setTimeout(()=>{if(b.isConnected){b.dataset.arm='';b.textContent='Leave the room';}},4000);return;}const wasHost=SYNC.cfg().host&&SYNC.cfg().pub;SYNC.leave();renderSync();msg('Left the live room. The mat laptops stay connected and keep sharing.'+(wasHost?' The public results page pauses until this laptop is back.':'')+' Settings → Live sync → ↻ Rejoin brings this laptop back with everything.');};}
 window.addEventListener('syncstatus',()=>{const e=document.getElementById('syStat');if(!e)return;const x=SYNC.status();e.className='obsst '+(x.st==='ok'?'live':x.st==='err'||x.st==='offline'?'err':'');e.textContent=x.st==='ok'?'● Live · synced':x.st==='wait'?'Connecting…':x.st==='offline'?'Offline · will sync':x.st==='err'?'⚠ '+x.err:'○ Off';});
 // join link "#join=TP1.…" → join on this laptop
-(function(){const h=location.hash;if(!/^#join=/.test(h)||window.VIEW)return;if(window.READONLY){setTimeout(()=>msg('TatamiPro is already open in another tab or window: close it, then open the join link again.'),900);return;}const code=decodeURIComponent(h.slice(6));try{history.replaceState(null,'',location.pathname+location.search);}catch(e){}
-  setTimeout(async()=>{try{await SYNC.join(code);msg('Joined the live room ✓ · results of the other mats arrive in a few seconds. Set this laptop\'s mat name on the Draw page.');}catch(e){msg('Live sync: '+e.message);}try{goPage('set');}catch(e){}},900);})();
+(function(){const h=location.hash;if(!/^#join=/.test(h)||window.VIEW)return;if(window.READONLY){setTimeout(()=>msg('TatamiPro is already open in another tab or window: close it, then open the join link again.'),900);return;}
+  const parts=h.slice(6).split('&'),code=decodeURIComponent(parts[0]),q={};parts.slice(1).forEach(p=>{const i=p.indexOf('=');if(i>0)q[p.slice(0,i)]=decodeURIComponent(p.slice(i+1));});try{history.replaceState(null,'',location.pathname+location.search);}catch(e){}
+  const role=q.role==='call'?'call':q.mat?'mat':'',nm=role==='call'?'Call room':role?'Mat '+Math.max(1,Math.min(8,+q.mat||1)):'';
+  setTimeout(async()=>{let o=null;try{o=SYNC.b64d(code);}catch(e){}const c0=SYNC.cfg(),L=LOCK();
+    if(L&&(!o||o.r!==L.room||(role&&nm!==L.mat))){msg('🔒 This laptop is locked to '+L.mat+' by the main desk. Ask the main desk for the unlock code (Mat setup → Laptop role) to use another link.');try{goPage('sb');}catch(e){}return;}
+    if(role&&o&&c0.host&&c0.room===o.r){msg('This laptop is the main desk of this room: open the '+nm+' link on the '+(role==='call'?'call room':'mat')+' laptop, not here.');return;}
+    try{await SYNC.join(code);}catch(e){msg('Live sync: '+e.message);try{goPage('set');}catch(x){}return;}
+    if(!role){msg('Joined the live room ✓ · results of the other mats arrive in a few seconds. Set this laptop\'s mat name on the Draw page.');try{goPage('set');}catch(e){}return;}
+    try{localStorage.setItem('judoMat',JSON.stringify({mat:nm,g:'All'}));}catch(e){}try{applyMat();}catch(e){}
+    try{localStorage.setItem('judoLock',JSON.stringify({role,mat:nm,room:SYNC.cfg().room,t:Date.now()}));}catch(e){}
+    setRole(role);try{SYNC.touch();}catch(e){}
+    msg('Joined as '+nm+' ✓ · this laptop is locked to '+nm+' (only the main desk can unlock it).');},900);})();
 setTimeout(()=>{try{SYNC.resume();}catch(e){}},1200);
 
 // ---------- public live results page: #live=… (read only, polls small files so the free plan is enough) ----------
@@ -2253,7 +2287,8 @@ window.LIVEPG=root=>{let q;try{q=SYNC.b64d(location.hash.slice(6));}catch(e){roo
 // =================== v18 · mat mode, clock check, change log, call room, check-in, practice mode, compressed backups, operator guide ===================
 function NOW(){return Date.now()+(+window.SRVOFF||0);}
 // ---------- laptop role: main desk (everything) or mat laptop (scoreboard, weigh-in, results; no re-draw, uploads, clear, settings) ----------
-const ROLE=()=>{try{return localStorage.getItem('judoRole')||'';}catch(e){return '';}};
+function LOCK(){try{const o=JSON.parse(localStorage.getItem('judoLock')||'null');return o&&o.role&&o.mat?o:null;}catch(e){return null;}}
+const ROLE=()=>{try{const L=LOCK();if(L&&localStorage.getItem('judoRole')!==L.role)localStorage.setItem('judoRole',L.role);return localStorage.getItem('judoRole')||'';}catch(e){return '';}};
 const MATMODE=()=>/^(mat|call)$/.test(ROLE());
 const myMatNo=()=>{const m=String(MATCFG().mat||'').match(/\d+/);return m?+m[0]:0;};
 window.TP_RUN={
@@ -2263,15 +2298,19 @@ window.TP_RUN={
   matFilter(){const s=M().sched||{},n=myMatNo(),m=+s.mats||1;if(ROLE()!=='mat'||m<2||!n||n>m)return 0;return Object.values(s.it||{}).some(v=>v&&v.mat!=null&&v.mat!==''&&v.mat!=='all')?n:0;},
   schedMat(k){const s=M().sched||{},it=(s.it||{})[k];return Math.min(+s.mats||1,+(it&&it.mat)||1);},
   claimed(k){const S0=window.SYNC;return !!(S0&&S0.claimOf&&S0.claimOf(k));},
+  strict(){return !!(M().strictMats&&this.matFilter());},
+  own(k){const mf=this.matFilter();return !mf||this.schedMat(k)===mf||this.mine(k);},
   claim(k,force){return ROLE()==='call'||!window.SYNC?null:SYNC.claim(k,force);},
   release(k,force){if(window.SYNC)SYNC.release(k,force);}};
 (function(){if(/^#(live|v)=/.test(location.hash))return;let wl=null;   // keep the screen awake (scoreboard, TV, call room)
   const go=async()=>{try{if(wl||document.visibilityState!=='visible'||!('wakeLock' in navigator))return;wl=await navigator.wakeLock.request('screen');wl.addEventListener('release',()=>{wl=null;});}catch(e){wl=null;}};
   document.addEventListener('visibilitychange',go);setInterval(go,60000);setTimeout(go,1500);})();
-function applyRole(){const on=MATMODE(),call=ROLE()==='call';document.body.classList.toggle('matmode',on);document.body.classList.toggle('callrole',call);
+function applyRole(){const on=MATMODE(),call=ROLE()==='call',L=LOCK();document.body.classList.toggle('matmode',on);document.body.classList.toggle('callrole',call);document.body.classList.toggle('lockedmat',!!L);
+  if(L&&MATCFG().mat!==L.mat){try{localStorage.setItem('judoMat',JSON.stringify({mat:L.mat,g:'All'}));applyMat();}catch(e){}}
+  ['matName','matG'].forEach(id=>{const e=$(id);if(e){e.disabled=!!L;e.title=L?'Locked to '+L.mat+' by the main desk':'';}});
   document.querySelectorAll('#mainMenu [data-page=ath] span,#mainMenu [data-page=set] span').forEach(x=>{if(!x.dataset.lbl)x.dataset.lbl=x.textContent;x.textContent=on?(x.closest('[data-page=ath]')?(call?'Check-in':'Weigh-in'):(call?'Setup':'Mat setup')):x.dataset.lbl;const bt=x.closest('button');if(bt)bt.title=x.textContent;});
   if(on&&window.goPage&&!(call?/^(ath|set)$/:/^(sb|ath|set)$/).test(document.body.dataset.page||''))try{goPage(call?'ath':'sb');}catch(e){}
-  const b=$('roleBadge');if(b){b.style.display=on?'':'none';b.textContent=call?'CALL ROOM':'MAT MODE'+(MATCFG().mat?' · '+MATCFG().mat:'');}}
+  const b=$('roleBadge');if(b){b.style.display=on?'':'none';b.textContent=(L?'🔒 ':'')+(call?'CALL ROOM':'MAT MODE'+(MATCFG().mat?' · '+MATCFG().mat:''));}}
 const MAT_BLOCK='#genAll,#mk,#ed,#clear,#demo,#tpl,#athT [data-d],#addA,#aAdd,#bkList [data-bk],#wipeBtn,#qMk,#qBtn,#lk,#syNew,#syLeave,#syClose';
 document.addEventListener('click',e=>{if(!MATMODE())return;const t=e.target.closest&&e.target.closest(MAT_BLOCK);if(!t)return;e.stopImmediatePropagation();e.preventDefault();
   msg('Mat mode: this is done on the main desk laptop. (Settings → Laptop role to change, admin PIN needed.)');},true);
@@ -2292,6 +2331,10 @@ function renderRole(){const el=$('pgRole');if(!el)return;const r=ROLE(),on=MATMO
    <label class="rolebox${is('mat')?' on':''}"><input type="radio" name="role" value="mat"${is('mat')?' checked':''}><b>Mat laptop</b><span>Only Scoreboard, Weigh-in and Mat setup (live sync, backups, sound, OBS). No draw page, re-draw, uploads, Clear all or settings: nothing on a mat can change the whole tournament by mistake.</span></label>
    <label class="rolebox${is('call')?' on':''}"><input type="radio" name="role" value="call"${is('call')?' checked':''}><b>Call room laptop</b><span>Only ID card check-in, weigh-in, Fusen-gachi for absent athletes and the call room TV. No scoreboard, no draws, no settings.</span></label></div>
    <div class="hint">${on?'Switching back to main desk needs the admin PIN'+(pin?'.':' (no PIN set yet: anyone can switch back · set one under Security).'):'Set the mat name first (Draw page → Mat), then choose Mat laptop. '+(pin?'The admin PIN is needed to switch back.':'Tip: set an admin PIN under Security so mat operators cannot switch back.')}</div>`;
+  const L0=LOCK();if(L0){el.querySelectorAll('input[name=role]').forEach(i=>{i.disabled=true;});
+    el.insertAdjacentHTML('beforeend',`<div class="mllock"><b>🔒 Locked to ${esc(L0.mat)} by the main desk</b><div class="hint">This laptop was set up with the ${esc(L0.mat)} link: its role and mat cannot be changed here. To change it, enter the unlock code from the main desk (Settings → Live sync → Mat laptop links).</div><div class="syrow"><input id="mlUn" placeholder="Unlock code" maxlength="8" autocomplete="off"><button id="mlUnB">Unlock</button></div></div>`);
+    $('mlUnB').onclick=()=>{const v=String($('mlUn').value||'').trim().toUpperCase();if(v&&v===unlockCode(L0.room)){try{localStorage.removeItem('judoLock');}catch(e){}applyRole();renderRole();msg('Unlocked: role and mat name can be changed again (main desk needs the admin PIN if one is set).');}else msg('Wrong unlock code.');};
+    return;}
   el.querySelectorAll('input[name=role]').forEach(i=>i.onchange=()=>{const v=i.value;if(v==='main')needPin('Switch this laptop back to main desk',()=>{setRole('main');msg('This laptop is the main desk again.');});
     else if(!MATMODE()){setRole(v);msg(v==='call'?'Call room laptop: check-in, weigh-in and the call room TV only.':'Mat mode on for this laptop.');}
     else needPin('Change the role of this laptop',()=>{setRole(v);msg(v==='call'?'Call room laptop: check-in, weigh-in and the call room TV only.':'Mat mode on for this laptop.');});renderRole();});}
@@ -2556,7 +2599,7 @@ function MATCFG(){let c={g:'All',mat:'Mat 1'};try{c=Object.assign(c,JSON.parse(l
 window.MATCFG=MATCFG;
 function applyMat(){const c=MATCFG();$('matName').value=c.mat;$('matG').value=c.g;
   document.getElementById('matTag').textContent='· '+(c.mat||'Mat')+(c.g==='All'?'':' · '+(c.g==='Male'?'Boys':'Girls'));}
-function saveMat(){if(window.READONLY)return;const c={mat:$('matName').value.trim()||'Mat 1',g:$('matG').value};try{localStorage.setItem('judoMat',JSON.stringify(c));}catch(e){}applyMat();if(window.SYNC&&SYNC.touch)SYNC.touch();
+function saveMat(){if(window.READONLY)return;if(LOCK()){applyMat();try{applyRole();}catch(e){}return msg('🔒 This laptop is locked to '+LOCK().mat+' by the main desk.');}const c={mat:$('matName').value.trim()||'Mat 1',g:$('matG').value};try{localStorage.setItem('judoMat',JSON.stringify(c));}catch(e){}applyMat();if(window.SYNC&&SYNC.touch)SYNC.touch();
   const wrong=c.g!=='All'&&D.ath.some(a=>a.gender!==c.g);
   msg(wrong?'Saved. Upload the athlete list again so this laptop keeps only '+(c.g==='Male'?'boys':'girls')+'.':'Saved: this laptop = '+c.mat+(c.g==='All'?'':' · '+(c.g==='Male'?'Boys':'Girls')));}
 $('matName').onchange=saveMat;$('matG').onchange=saveMat;applyMat();
@@ -3921,7 +3964,8 @@ window.DR={
     const b=pool[0];return info(b.c,b.r,b.i);},
   pick(o){o=o||{};const mode=orderMode(),QS=c=>QZ()[c]&&QZ()[c].stage==='q'?QZ()[c]:null,T=window.TP_RUN,mf=o.only?0:(T?T.matFilter():0);
     let keys=cats().map(c=>c.k).filter(c=>(D.draws[c]||QS(c))&&(!o.only||c===o.only)&&!(T&&!o.force&&T.lockOf(c)));
-    if(mf)keys=keys.filter(c=>T.schedMat(c)===mf||T.mine(c)||c===o.pref);
+    if(mf)keys=keys.filter(c=>T.schedMat(c)===mf||T.mine(c)||(c===o.pref&&!T.strict()));
+    if(o.only&&T&&T.strict()&&!T.own(o.only))return null;
     else if(T&&!o.only&&T.isolated())keys=keys.filter(c=>T.mine(c)||c===o.pref);   // out of touch with the room: only go on with this laptop's own categories (pick a new one by hand)
     const ready=[];
     for(const c of keys){const q=QS(c);
@@ -4369,6 +4413,7 @@ if(TV){
   const RUN=()=>{try{return localStorage.getItem('judoRun')||'';}catch(e){return '';}},setRun=k=>{try{k?localStorage.setItem('judoRun',k):localStorage.removeItem('judoRun');}catch(e){}};
   let lkArm='',lkAt=0;
   window.SB={load(x){
+    if(window.TP_RUN&&!x.auto&&TP_RUN.strict()&&!TP_RUN.own(x.cat))return msg(x.cat+' is not in the schedule of Mat '+TP_RUN.matFilter()+'. The main desk moves categories on the Schedule page.');
     if(window.TP_RUN&&!x.auto&&!x.force){const lk=TP_RUN.lockOf(x.cat);if(lk){const mm=document.body.classList.contains('matmode');
       if(mm||lkArm!==x.cat||Date.now()-lkAt>4000){lkArm=x.cat;lkAt=Date.now();return msg('🔒 '+x.cat+' is running on '+(lk.mat||'another mat')+(mm?'. Only the main desk can move it.':'. Click again within 4 seconds to take it over on this laptop.'));}
       lkArm='';x.force=true;}}
@@ -4390,7 +4435,8 @@ if(TV){
     const opt=x=>{const lk=T&&T.lockOf(x.k),other=mf&&T.schedMat(x.k)!==mf&&!T.mine(x.k),dis=mm&&(x.done||lk);
       const lab=x.done?'✔ '+strike(x.k)+' · finished':lk?'🔒 '+x.k+' · running on '+(lk.mat||'another mat'):(x.k===cur?'▶ ':'')+x.k+' · '+x.left+' left'+(x.hasElim?(x.elimDone?' · final block':' · elimination'):'')+(other?' · Mat '+T.schedMat(x.k)+' (schedule)':'');
       return `<option value="${eh(x.k)}"${dis?' disabled':''}>${eh(lab)}</option>`;};
-    sel.innerHTML=`<option value="__auto">▶ Run category: ${pin?'automatic (pick to go back)':'automatic'+(mf?' · Mat '+mf+' schedule':'')}</option>`+st.map(opt).join('')+(cur&&T&&T.mine(cur)?`<option value="__rel">✋ Hand over ${eh(cur)} to another mat</option>`:'');
+    const stS=T&&T.strict()?st.filter(x=>T.own(x.k)):st;
+    sel.innerHTML=`<option value="__auto">▶ Run category: ${pin?'automatic (pick to go back)':'automatic'+(mf?' · Mat '+mf+' schedule':'')}</option>`+stS.map(opt).join('')+(cur&&T&&T.mine(cur)?`<option value="__rel">✋ Hand over ${eh(cur)} to another mat</option>`:'');
     sel.value=cur&&st.some(x=>x.k===cur)?cur:'__auto';sel.classList.toggle('pinned',!!pin);};
   SB.reset=function(){S=fresh(S);S.match='1';S.link=null;S.manual=false;H=[];fill();render();};
   SB.autoLoad=function(force,noTab){
@@ -4409,6 +4455,7 @@ if(TV){
   $('runCat').onchange=e=>{const k=e.target.value,T=window.TP_RUN;e.target.blur();
     if(k==='__auto'||!k){setRun('');SB.refreshRun();return msg('Run category: automatic'+(T&&T.matFilter()?' (this mat\'s schedule)':''));}
     if(k==='__rel'){const c0=RUN()||(S.link&&S.link.cat);if(c0&&T)T.release(c0);setRun('');SB.refreshRun();return msg('Handed over: another mat can run '+(c0||'this category')+' now.');}
+    if(T&&T.strict()&&!T.own(k)){SB.refreshRun();return msg(k+' is not in the schedule of Mat '+T.matFilter()+'. The main desk moves categories on the Schedule page.');}
     const lk=T&&T.lockOf(k);if(lk&&document.body.classList.contains('matmode')){SB.refreshRun();return msg('🔒 '+k+' is running on '+(lk.mat||'another mat')+'. Only the main desk can move it.');}
     if(S.link&&S.link.cat===k&&!S.win&&!lk){setRun(k);T&&T.claim(k);SB.refreshRun();return msg('Running '+k+' on this laptop.');}
     const x=DR.pick?DR.pick({only:k,force:!!lk}):DR.next(k,null,k);

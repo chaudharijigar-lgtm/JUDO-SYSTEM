@@ -1,4 +1,4 @@
-# TatamiPro · Judo tournament manager (v18.5)
+# TatamiPro · Judo tournament manager (v18.6)
 
 Draw (seeding, ranking, qualifier, knockout up to 128), weigh-in, live scoreboard + TV, schedule, results, prints, QR pages and WhatsApp sharing, in one web page. The name and logo can be changed in Settings.
 
@@ -21,6 +21,15 @@ Draw (seeding, ranking, qualifier, knockout up to 128), weigh-in, live scoreboar
 - Chrome / Edge (Windows, Mac, Linux, Android): the **⬇ Install** button in the top bar (or browser menu → Install).
 - iPhone / iPad: Safari → Share → Add to Home Screen.
 - Laptop and desktop get the desktop layout; phones get the phone layout (menu scrolls sideways, tables scroll).
+
+## v18.6 · one link per mat, locked mat laptops, strict schedule (15 Nov 2026)
+- **Mat laptop links** (main desk · Settings → Live sync, after Create live room): one link per mat. The number of mats comes from the Schedule and can be changed right there. There is also a **Call room laptop** link. Each link has Copy, 📤 WhatsApp and QR.
+- **Opening a mat link** on a laptop joins the room, names the laptop "Mat 2", makes it a Mat laptop and **locks** it to Mat 2:
+  - the role buttons and the mat name cannot be changed, not even by a reload;
+  - the link of another mat is refused.
+  To change a locked laptop, enter the **unlock code** shown on the main desk (Mat setup → Laptop role → Unlock). Close tournament unlocks every laptop. A mat link opened on the main desk itself is refused.
+- **Mat laptops show and run only their own scheduled categories** (tick it under the mat links): Run category lists only that mat's categories, and Load next and manual loads stay inside them. The main desk moves a category to another mat on the Schedule page; the change reaches the mats live.
+- Checked in a 4-laptop trial (main desk + Mat 2 + Mat 3 joined by their links + call room by its link, strict on, Mat 3 offline for a while, main desk left and rejoined): same results on every laptop, every category on its own mat, no errors.
 
 ## v18.5 · audit fixes after a full 4-laptop trial (15 Nov 2026)
 Trial: main desk (also Mat 1) + Mat 2 + Mat 3 + call room laptop in one live room, a whole tournament played on three mats at once, with Mat 3 losing the internet and the main desk leaving and rejoining. Faults found and fixed:
