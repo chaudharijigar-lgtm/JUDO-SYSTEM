@@ -21,6 +21,19 @@ Draw (seeding, ranking, qualifier, knockout up to 128), weigh-in, live scoreboar
 - iPhone / iPad: Safari → Share → Add to Home Screen.
 - Laptop and desktop get the desktop layout; phones get the phone layout (menu scrolls sideways, tables scroll).
 
+## New in v17 · live sync between mats + public live results page (internet, free Firebase)
+- Settings → **☁ Live sync between mats**. Every laptop keeps working offline; with internet, draws, results, weigh-ins, officials and event settings reach every other laptop in 1–3 seconds.
+- **Main desk, once:** create a free Firebase project → Realtime Database (Singapore, locked mode) → Rules: paste the rules from TatamiPro (Copy rules) → Publish → Authentication → Anonymous → Enable → copy the Database URL and Web API key into TatamiPro → **Create live room**.
+- **Mat laptops:** open the **join link** (WhatsApp) or paste the join code → Join. Set the mat name on the Draw page.
+- Same category changed on two laptops (for example while one was offline): results are merged contest by contest; a different winner for the same contest → the newer result wins (listed under "Recent"). Deleting is never shared: a cleared laptop gets everything back from the room.
+- **Public live results page** (link / WhatsApp / QR): every mat's current contest with scores and clock, medal winners, district medal tally, overall championship. Read only; it reads small files every 5 seconds, so the free plan is enough (100 connections, 10 GB a month).
+- Security: only laptops with the join code can read or change the room (the room key is long and random); the public page can only read results. Keep the join code inside the organising team.
+
+## New in v16.2 · mats → main desk (offline, no internet)
+- **📤 Results file** (Results page or Settings → Backup & restore) on each mat laptop → send it to the main desk (pen drive, WhatsApp, email).
+- **📥 Merge results files from mats** on the main desk (several files at once). Results are added contest by contest, nothing is deleted; a different winner for the same contest → the newer result wins and the report lists it. Weigh-ins and late athletes come over too. Lists uploaded separately on each laptop are matched by name + district + category.
+- A backup is saved just before every merge. Merging the main desk file on a mat laptop gives it every other mat's results.
+
 ## New in v16
 - **Backups outside the laptop** (Settings → Backup & restore → 📁): pick a folder on a USB pen drive or inside Google Drive / OneDrive for desktop; a backup file is written there when a category finishes and every N contests (plus "Write backup now"). Chrome / Edge only. After the page is opened again, click "⚠ Backup folder: click to reconnect" in the bottom bar and pick the same folder. Optional: also download a backup file into Downloads.
 - **Certificates** (Print → 🎓 Certificates, or Results → Certificates): merit certificates for medal winners (finished categories only) and participation certificates for every athlete who fought. Full design or "text only" for pre-printed certificate paper; numbered, with a QR to check them.

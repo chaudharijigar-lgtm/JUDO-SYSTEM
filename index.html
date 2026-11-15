@@ -1127,6 +1127,33 @@ body.ovl[data-ovpos=tr] #ovBar{left:auto;right:2.2vw;bottom:auto;top:4vh}body.ov
 .obsurl{display:inline-block;padding:3px 8px;border-radius:8px;background:rgba(127,127,127,.16);font:12.5px ui-monospace,Consolas,monospace;word-break:break-all}
 .obsbox details{margin-top:10px}.obsbox summary{cursor:pointer;font-weight:700;font-size:13px}
 
+/* ===== v17 merge ===== */
+.mgbox .mgt{display:flex;gap:10px;align-items:baseline;flex-wrap:wrap;margin-bottom:6px}.mgbox .tools{margin:6px 0}
+.mgRep{margin-top:8px}.mgRep:empty{display:none}.mgh{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
+.mgr{padding:8px 10px;border-radius:10px;background:rgba(127,127,127,.1);margin-bottom:6px;font-size:13px}.mgr ul{margin:4px 0 0 18px}.mgr.err{color:#ff6b6b}
+.mgcf{margin-top:6px;color:#ff9f0a}.mgcf ul{color:inherit}
+
+/* ===== v17 live sync ===== */
+#pgSync h3{margin:0}.sygrid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:10px 0}.sycol{padding:12px;border:1px solid rgba(127,127,127,.25);border-radius:12px;display:flex;flex-direction:column;gap:6px}
+.syrow{display:flex;gap:8px;align-items:center}.syrow input{flex:1;min-width:0}@media (max-width:900px){.sygrid{grid-template-columns:1fr}}
+.systeps{margin-top:8px}.systeps summary{cursor:pointer;font-weight:700}.systeps ol{margin:8px 0 8px 20px;display:grid;gap:6px;font-size:13.5px;line-height:1.45}
+.sylog{margin:8px 0;padding:8px 10px;border-radius:10px;background:rgba(127,127,127,.1);font-size:12.5px;display:grid;gap:3px}
+.syqr{display:inline-flex;flex-direction:column;align-items:center;gap:4px;background:#fff;color:#000;padding:10px;border-radius:10px;margin-top:6px}.syqr svg{width:170px;height:170px}
+/* public live results page */
+#viewRoot .lvtabs{display:flex;gap:6px;flex-wrap:wrap;margin:10px 0}#viewRoot .lvtabs button{flex:1;min-width:120px;padding:9px 10px;border-radius:12px;border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.06);color:#fff;font-weight:700}
+#viewRoot .lvtabs button.on{background:#fff;color:#0b1220}
+#viewRoot .lvmat{padding:0!important;overflow:hidden}#viewRoot .lvmat.old{opacity:.55}
+#viewRoot .lvmh{display:flex;justify-content:space-between;gap:10px;padding:8px 12px;font-size:13px;background:rgba(0,0,0,.25)}#viewRoot .lvmh span{opacity:.8;text-align:right}
+#viewRoot .lvp{display:flex;align-items:center;gap:10px;padding:9px 12px}#viewRoot .lvp.w{background:#f4f6fa;color:#0b1220}#viewRoot .lvp.b{background:#1f4fd8;color:#fff}
+#viewRoot .lvp.win{box-shadow:inset 6px 0 0 #ffd60a}#viewRoot .lvn{flex:1;min-width:0;font-weight:800;font-size:16px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}#viewRoot .lvn small{font-weight:600;opacity:.65;margin-left:8px;font-size:12px}
+#viewRoot .lvsh{color:#ffd60a;letter-spacing:2px;text-shadow:0 0 1px #000}#viewRoot .lvsh.r{color:#ff3b30}
+#viewRoot .lvsc{display:flex;gap:10px}#viewRoot .lvsc i{font-style:normal;font-weight:900;font-size:22px;min-width:16px;text-align:center}
+#viewRoot .lvft{display:flex;gap:12px;align-items:center;flex-wrap:wrap;padding:8px 12px;background:rgba(0,0,0,.3)}#viewRoot .lvclk{font-weight:900;font-size:20px;color:#ffb340;font-variant-numeric:tabular-nums}#viewRoot .lvclk.run{color:#fff}
+#viewRoot .lvos{color:#ffd60a;font-weight:800;font-size:13px}#viewRoot .lvwin{background:#ffd60a;color:#0b1220;padding:3px 9px;border-radius:8px;font-weight:800;font-size:13px}
+#viewRoot .lvt{width:100%;border-collapse:collapse}#viewRoot .lvt th,#viewRoot .lvt td{padding:7px 6px;text-align:left;border-bottom:1px solid rgba(255,255,255,.1)}#viewRoot .lvt th{font-size:12px;opacity:.7}
+#viewRoot .vfoot{text-align:center;margin:16px 0 30px}
+#viewRoot .lvrun{display:grid;gap:6px;font-weight:600}#viewRoot .lvidle{opacity:.7}
+
 /* ===== PRINT: always black text on white paper, in dark or light mode (must stay the LAST rules) ===== */
 @media print{
  html,html body,html body:not(.tv),html body:not(.tv):not(.view),html body.light,html body.light:not(.tv),html body.light:not(.tv):not(.view),html body.view,html body.tv{background:#fff!important;background-image:none!important;background-attachment:scroll!important;color:#000!important}
@@ -1166,7 +1193,7 @@ body.ovl[data-ovpos=tr] #ovBar{left:auto;right:2.2vw;bottom:auto;top:4vh}body.ov
 </style>
 </head>
 <body data-tab="draw" class="glass">
-<footer id="appStat"><span id="stSave">● Saved</span><span id="stCnt"></span><span id="stDone"></span><span id="stTv"></span><span id="stObs" style="display:none"></span><span id="stBk"></span><span class="sp"></span><span id="stMat"></span><span id="stClk"></span></footer>
+<footer id="appStat"><span id="stSave">● Saved</span><span id="stCnt"></span><span id="stDone"></span><span id="stTv"></span><span id="stObs" style="display:none"></span><span id="stSync" style="display:none"></span><span id="stBk"></span><span class="sp"></span><span id="stMat"></span><span id="stClk"></span></footer>
 <div id="lockOv"><div><b>⚠ Admin already open</b><p id="lockTxt"></p><button onclick="takeControl()">Take control in this tab</button><p style="font-size:13px;opacity:.7">Only one admin screen can control the tournament at a time. The TV window is separate and is fine.</p></div></div>
 <nav id="topNav"><div class="brand" id="brandBox" title="Dashboard"><span class="blogo" id="brandLogo">TP</span><span class="bname"><b><span id="brandName">TatamiPro</span> <span id="matTag" style="color:#f5c518"></span></b><small id="brandEv">Judo tournament manager</small></span></div><div class="menu" id="mainMenu"><button data-page="home"><svg viewBox="0 0 24 24"><path d="M3 11.5 12 4l9 7.5"/><path d="M5.5 10v9.5h13V10"/><path d="M10 19.5v-5h4v5"/></svg><span>Dashboard</span></button><button data-page="ath"><svg viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.2"/><path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6"/><circle cx="17.5" cy="9" r="2.4"/><path d="M16 14.2c2.8.2 5 2.6 5 5.8"/></svg><span>Athletes</span></button><button id="tabDraw" data-page="draw"><svg viewBox="0 0 24 24"><path d="M3 5h5v4H3zM3 15h5v4H3zM16 10h5v4h-5zM8 7h3v10H8M11 12h5"/></svg><span>Draw</span></button><button id="tabSb" data-page="sb"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="13" rx="2"/><path d="M8 21h8M12 17v4M7.5 10.5h3M13.5 10.5h3"/></svg><span>Scoreboard</span></button><button data-page="sched"><svg viewBox="0 0 24 24"><rect x="3.5" y="5" width="17" height="15.5" rx="2"/><path d="M3.5 10h17M8 3v4M16 3v4M7.5 13.5h3M7.5 17h3M13.5 13.5h3"/></svg><span>Schedule</span></button><button data-page="res"><svg viewBox="0 0 24 24"><path d="M8 21h8M12 17v4M7 4h10v5a5 5 0 0 1-10 0z"/><path d="M7 6H4v1a3 3 0 0 0 3 3M17 6h3v1a3 3 0 0 1-3 3"/></svg><span>Results</span></button><button data-page="off"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="9" cy="11" r="2.2"/><path d="M5.8 16.3c.6-1.6 1.8-2.4 3.2-2.4s2.6.8 3.2 2.4M14.5 10h4M14.5 13.5h3"/></svg><span>Officials</span></button><button data-page="print"><svg viewBox="0 0 24 24"><path d="M7 9V3.5h10V9"/><rect x="3.5" y="9" width="17" height="8" rx="1.5"/><path d="M7 14h10v6.5H7z"/></svg><span>Print</span></button><button data-page="set"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1A1.7 1.7 0 0 0 4.6 9a1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg><span>Settings</span></button></div><div class="acts"><button id="navInstall" style="display:none" title="Install as an app on this device">⬇ Install</button><button id="navShare" title="Share on WhatsApp: details, schedule, fixtures, results"><svg viewBox="0 0 24 24"><path d="M4 20l1.2-3.6A8 8 0 1 1 8 19.1z"/><path d="M9 8.6c0 3.2 2.9 6.4 6.3 6.6l1.1-1.4-1.9-1-0.9.8c-1-.4-2.1-1.5-2.5-2.5l.8-.9-1-1.9z"/></svg><span>Share</span></button><button id="navLock" style="display:none" title="Lock the admin now (PIN needed to open)"><svg viewBox="0 0 24 24"><rect x="5" y="10.5" width="14" height="10" rx="2"/><path d="M8 10.5V7.5a4 4 0 0 1 8 0v3"/></svg><span>Lock</span></button><button id="navTV" title="Open the TV window"><svg viewBox="0 0 24 24"><rect x="2.5" y="5" width="19" height="12.5" rx="2"/><path d="M8 21h8M9 2l3 3 3-3"/></svg><span>TV</span></button><button id="thBtn" title="Dark / Light mode">☀ Light</button></div></nav>
 <div id="shOv"><div class="shm"><div class="shh"><b>📤 Share on WhatsApp</b><button id="shX">Close</button></div>
@@ -1209,12 +1236,13 @@ body.ovl[data-ovpos=tr] #ovBar{left:auto;right:2.2vw;bottom:auto;top:4vh}body.ov
     <p class="hint" style="margin-top:8px">● grey = no draw · ● yellow = draw made · ● green = final done</p>
   </aside>
   <section>
-    <div id="pgHome"></div><div id="pgSched"></div><div id="pgRes"></div><div id="pgOff"></div><div class="panel" id="pgBrand" style="margin-bottom:12px"></div><div class="panel" id="pgSec" style="margin-bottom:12px"></div>
+    <div id="pgHome"></div><div id="pgSched"></div><div id="pgRes"></div><div id="pgOff"></div><div class="panel" id="pgBrand" style="margin-bottom:12px"></div><div class="panel" id="pgSync" style="margin-bottom:12px"></div><div class="panel" id="pgSec" style="margin-bottom:12px"></div>
     <details class="panel" id="bkPanel" style="margin-bottom:12px"><summary>Backup &amp; restore</summary>
       <div class="tools" style="margin-top:8px"><button class="pri" id="bkNow">Save backup now</button><button id="bkFile">Download backup file</button>
       <label class="filebtn" style="background:#1b2338;border-color:#2c3653">Restore from backup file<input type="file" id="bkRestore" accept=".json"></label></div>
       <div class="hint">Everything also saves automatically in this browser after every change. Closing and reopening continues from the last point.</div>
       <div id="bkFold"></div>
+      <div class="mgSetWrap"></div>
       <h2 style="margin-top:10px">Automatic backups (latest first)</h2><div id="bkList"></div></details>
     <details class="panel" id="evPanel" style="margin-bottom:12px"><summary>🏆 Tournament details <span class="hint" id="evSum"></span></summary>
       <div class="form evf">
@@ -1416,7 +1444,7 @@ try{const h=location.hash;if(h==='#overlay'||/^#obs\b/.test(h)){sessionStorage.s
 window.OVL=(()=>{try{return location.hash==='#display'&&sessionStorage.getItem('judoOvl')==='1';}catch(e){return false;}})();
 window.OBSV=(()=>{try{return window.OVL&&sessionStorage.getItem('judoObsv')==='1';}catch(e){return false;}})();
 window.READONLY=false;
-window.VIEW=location.hash.indexOf('#v=')===0;
+window.VIEW=location.hash.indexOf('#v=')===0||location.hash.indexOf('#live=')===0;
 if(window.VIEW){window.READONLY=true;
   const E=x=>String(x==null?'':x).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
   const unb32=x=>{const A='ABCDEFGHIJKLMNOPQRSTUVWXYZ234567';const out=[];let bits=0,val=0;for(const ch of x.toUpperCase()){const v=A.indexOf(ch);if(v<0)continue;val=(val<<5)|v;bits+=5;if(bits>=8){out.push((val>>>(bits-8))&255);bits-=8;}}return new Uint8Array(out);};
@@ -1426,6 +1454,7 @@ if(window.VIEW){window.READONLY=true;
     return JSON.parse(new TextDecoder().decode(u));};
   document.addEventListener('DOMContentLoaded',async()=>{
     document.body.classList.add('view');const root=document.createElement('div');root.id='viewRoot';document.body.appendChild(root);
+    if(location.hash.indexOf('#live=')===0){if(window.LIVEPG)LIVEPG(root);else root.innerHTML='<div class="vcard">Live results are not available in this copy.</div>';return;}
     let d;try{d=await unpack(decodeURIComponent(location.hash.slice(3)));}catch(e){root.innerHTML='<div class="vcard"><b>This QR link is damaged or incomplete.</b><br>Please scan the code again.</div>';return;}
     const m=d.m||{};
     let h=`<div class="vhead"><div class="vev">${E(m.n)}</div>${m.o?`<div class="vsub">${E(m.o)}</div>`:''}<div class="vsub">${E([m.v,m.c].filter(Boolean).join(', '))}${m.d?' · '+E(m.d):''}</div>${m.l?`<div class="vsub">${E(m.l)}</div>`:''}</div>
@@ -1488,7 +1517,7 @@ let t0='draw';try{t0=localStorage.getItem('judoTab')||'draw';}catch(e){} tab(t0)
 const $=id=>document.getElementById(id);
 let D={ath:[],draws:{},meta:{}},cur=null;
 try{const s=JSON.parse(localStorage.getItem('judoDraw'));if(s&&s.ath)D=s;}catch(e){}
-const save=()=>{if(window.READONLY)return;const j=JSON.stringify(D);try{localStorage.setItem('judoDraw',j);}catch(e){try{const L=JSON.parse(localStorage.getItem('judoBackups')||'[]');localStorage.setItem('judoBackups',JSON.stringify(L.slice(0,2)));localStorage.setItem('judoDraw',j);}catch(x){try{localStorage.removeItem('judoBackups');localStorage.setItem('judoDraw',j);}catch(y){msg('Browser storage full: click Backup / Restore → Download backup file now');}}}};
+const save=()=>{if(window.READONLY)return;const j=JSON.stringify(D);try{localStorage.setItem('judoDraw',j);}catch(e){try{const L=JSON.parse(localStorage.getItem('judoBackups')||'[]');localStorage.setItem('judoBackups',JSON.stringify(L.slice(0,2)));localStorage.setItem('judoDraw',j);}catch(x){try{localStorage.removeItem('judoBackups');localStorage.setItem('judoDraw',j);}catch(y){msg('Browser storage full: click Backup / Restore → Download backup file now');}}}try{window.SYNCQ&&SYNCQ();}catch(e){}};
 let mt;const msg=t=>{$('dmsg').textContent=t;clearTimeout(mt);mt=setTimeout(()=>$('dmsg').textContent='',6000);};
 const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const catKey=a=>[a.gender,a.age,a.cat].map(x=>String(x||'').trim()).filter(Boolean).join(' · ')||'No category';
@@ -1770,11 +1799,324 @@ function bkFolderHTML(){const c=FSB.cfg(),can=FSB.can();
     '<div class="hint">This browser cannot write to a folder (works in Chrome or Edge on Windows / Mac / Linux). It can download a backup file into Downloads instead.</div>'}
    <div class="bkopt"><label class="chk"><input type="checkbox" id="bfCat"${c.cat?' checked':''}> when a category finishes</label><label>and every <select id="bfEv">${[0,5,10,20,30].map(n=>`<option value="${n}"${+c.every===n?' selected':''}>${n||'—'}</option>`).join('')}</select> contests</label><label class="chk"><input type="checkbox" id="bfDl"${c.dl?' checked':''}> also download a file into Downloads${can?' (if the folder is not reachable)':''}</label></div>
    <div class="hint">Two files are written each time: one with the date and time, and "…_latest.json". Restore any of them with "Restore from backup file". When the page is opened again (restart, reload), the status bar shows "click to reconnect": pick the same folder (Chrome opens it directly) and the backups continue.</div></div>`;}
-function bindBkFolder(){const box=$('bkFold');if(!box)return;box.innerHTML=bkFolderHTML();
+function bindBkFolder(){{const w=document.querySelector('.mgSetWrap');if(w&&!window.READONLY){w.innerHTML=mergeBoxHTML();bindMergeBoxes(w);}}const box=$('bkFold');if(!box)return;box.innerHTML=bkFolderHTML();
   if($('bfPick'))$('bfPick').onclick=async()=>{if(await FSB.pick()){msg('Backup folder connected: a first backup was written.');bindBkFolder();}};
   if($('bfNow'))$('bfNow').onclick=async()=>{msg(await FSB.write('Written by hand',true)?'Backup written to the folder.':'Could not write: choose the folder again.');bindBkFolder();};
   if($('bfOff'))$('bfOff').onclick=()=>{FSB.cfg({on:false});bindBkFolder();};
   $('bfCat').onchange=()=>FSB.cfg({cat:$('bfCat').checked});$('bfEv').onchange=()=>FSB.cfg({every:+$('bfEv').value});$('bfDl').onchange=()=>FSB.cfg({dl:$('bfDl').checked});}
+// =================== v17 · mats → main desk: results files (offline) and the merge used by live sync ===================
+const sameDraw=(a,b)=>!!a&&!!b&&(a.fmt||'')===(b.fmt||'')&&a.size===b.size&&!!a.x===!!b.x&&JSON.stringify(a.slots)===JSON.stringify(b.slots);
+const nDone=dr=>{let n=0;if(dr)eachM(dr,m=>{if(m.w&&!m.bye&&!m.void&&!m.auto)n++;});return n;};
+const qNres=q=>q&&q.m?q.m.filter(m=>m.w&&!m.auto).length:0;
+const resT=m=>(m&&m.res&&+m.res.t)||0;
+const dcl=o=>o==null?o:JSON.parse(JSON.stringify(o));
+const athKey=a=>nrm(a.name)+'|'+nrm(a.club)+'|'+catKey(a);
+function newRep(src){return {src,cats:[],add:0,chg:0,ath:0,wt:0,cf:[],off:0};}
+// athletes: same id, or same name + district + category (lists uploaded separately on each laptop get different ids)
+function mergeAth(inc,rep){const byI={},byK={},map={};D.ath.forEach(a=>{byI[a.id]=a;byK[athKey(a)]=a;});
+  for(const x of inc||[]){let a=byI[x.id];
+    if(!a){const b=byK[athKey(x)];if(b){map[x.id]=b.id;a=b;}}
+    if(!a){const n=dcl(x);D.ath.push(n);byI[n.id]=n;byK[athKey(n)]=n;rep.ath++;continue;}
+    const has=v=>v!==''&&v!=null;
+    if(!has(a.wt)&&has(x.wt)){a.wt=x.wt;a.dq=!!x.dq;if(x.dqKeep)a.dqKeep=true;else delete a.dqKeep;rep.wt++;}
+    else if(has(x.wt)&&has(a.wt)&&String(a.wt)!==String(x.wt))rep.cf.push(`${a.name}: weight ${a.wt} kg here, ${x.wt} kg in ${rep.src} → kept ${a.wt} kg`);
+    if(x.nq&&!a.nq){a.nq=x.nq;a.nqWhy=x.nqWhy;}
+    if(!a.dob&&x.dob)a.dob=x.dob;}
+  D.ath.dqv=(D.ath.dqv||0)+1;return map;}
+const remap=(o,map)=>o==null||!Object.keys(map).length?dcl(o):JSON.parse(JSON.stringify(o),(k,v)=>typeof v==='string'&&map[v]?map[v]:v);
+// one category: union of results contest by contest when both laptops have the same draw; otherwise the draw with results wins
+function mergeCat(k,dr,q,rep){const loc=D.draws[k],lq=QZ()[k],nm=k;let did=false;
+  if(q){if(!lq||(qNres(q)>0&&!qNres(lq))){QZ()[k]=dcl(q);did=true;}
+    else if(lq.at===q.at&&lq.m.length===q.m.length){q.m.forEach((mi,i)=>{const ml=lq.m[i];if(!mi.w||mi.auto||!ml)return;
+        if(!ml.w||ml.auto){ml.w=mi.w;ml.res=dcl(mi.res);ml.auto=false;rep.add++;did=true;}
+        else if(ml.w!==mi.w&&resT(mi)>resT(ml)){ml.w=mi.w;ml.res=dcl(mi.res);rep.chg++;did=true;rep.cf.push(`${nm} · qualifier ${ml.no||i+1}: winner changed (newer result from ${rep.src})`);}});
+      if(q.stage!==lq.stage&&q.stage!=='q'){lq.stage=q.stage;did=true;}}
+    else if(qNres(q)>qNres(lq)){rep.cf.push(`${nm}: qualifier made differently in ${rep.src} · took the one with more results`);QZ()[k]=dcl(q);did=true;}
+    if(did)try{qResolve(k);}catch(e){}}
+  if(dr){
+    if(!loc){D.draws[k]=dcl(dr);rep.add+=nDone(dr);rep.cats.push(k+' · new from '+rep.src);did=true;}
+    else if(sameDraw(loc,dr)){let a=0,c=0;
+      eachM(dr,(mi,r,i)=>{if(!mi.w||mi.auto||mi.bye)return;const ml=getM(loc,r,i);if(!ml)return;
+        if(!ml.w||ml.auto){ml.w=mi.w;ml.res=dcl(mi.res);ml.auto=false;a++;}
+        else if(ml.w!==mi.w){const nA=(byId(ml.w)||{}).name||'?',nB=(byId(mi.w)||{}).name||'?';
+          if(resT(mi)>resT(ml)){ml.w=mi.w;ml.res=dcl(mi.res);c++;rep.cf.push(`${nm} · match ${ml.no||'?'}: ${nB} (newer, ${rep.src}) instead of ${nA}`);}
+          else rep.cf.push(`${nm} · match ${ml.no||'?'}: kept ${nA} (newer here) · ${rep.src} had ${nB}`);}});
+      if(dr.locked&&!loc.locked){loc.locked=dr.locked;did=true;}
+      if(dr.log){const seen=new Set((loc.log||[]).map(x=>x.t+'|'+x.a));const add=dr.log.filter(x=>!seen.has(x.t+'|'+x.a));if(add.length){loc.log=(loc.log||[]).concat(add).sort((x,y)=>x.t-y.t).slice(-80);}}
+      if(a||c){resolve(k);rep.add+=a;rep.chg+=c;rep.cats.push(k+' · '+(a?a+' result'+(a>1?'s':''):'')+(a&&c?', ':'')+(c?c+' changed':''));did=true;}}
+    else{const nl=nDone(loc),ni=nDone(dr);
+      if(ni>0&&nl===0){D.draws[k]=dcl(dr);rep.add+=ni;rep.cats.push(k+' · whole draw taken from '+rep.src+' (it was drawn differently there)');did=true;}
+      else if(ni>0&&nl>0){if(ni>nl){D.draws[k]=dcl(dr);rep.add+=ni-nl;did=true;}rep.cf.push(`${nm}: drawn differently on both laptops and both have results · kept the one with more results (${ni>nl?rep.src:'this laptop'}) · check this category`);}}}
+  return did;}
+function mergeData(inc,src){const rep=newRep(src);if(!inc||!Array.isArray(inc.ath))throw new Error('no tournament data in this file');
+  const map=mergeAth(inc.ath,rep);
+  const ks=new Set([...Object.keys(inc.draws||{}),...Object.keys(inc.quals||{})]);
+  for(const k of ks)mergeCat(k,remap((inc.draws||{})[k],map),remap((inc.quals||{})[k],map),rep);
+  const m=M(),im=inc.meta||{};
+  for(const f of ['people','refs'])if(Array.isArray(im[f])&&im[f].length){const L=Array.isArray(m[f])?m[f]:(m[f]=[]);const ids=new Set(L.map(x=>x.id||JSON.stringify(x)));im[f].forEach(x=>{const id=x.id||JSON.stringify(x);if(!ids.has(id)){L.push(dcl(x));ids.add(id);}});}
+  ['name','org','venue','city','d1','d2','level','dir','td','chief'].forEach(f=>{if(!m[f]&&im[f])m[f]=im[f];});
+  return rep;}
+function parseDataFile(o){if(!o)throw new Error('empty file');let d=o.draw!=null?o.draw:(o.ath?o:null);if(typeof d==='string')d=JSON.parse(d);if(!d||!Array.isArray(d.ath))throw new Error('this is not a TatamiPro data or results file');return d;}
+function resultsFile(){const mat=MATCFG().mat||'Mat',o={app:'judo-system',kind:'results',mat,matName:mat,saved:new Date().toISOString(),draw:JSON.stringify(D)};
+  const p=n=>String(n).padStart(2,'0'),d=new Date(),name='TatamiPro_'+mat.replace(/\W+/g,'')+'_results_'+p(d.getHours())+p(d.getMinutes())+'.json';
+  try{const b=new Blob([JSON.stringify(o)],{type:'application/json'}),u=URL.createObjectURL(b),a=document.createElement('a');a.href=u;a.download=name;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(u),2000);
+    msg('Results file downloaded: '+name+' · send it to the main desk (pen drive / WhatsApp / email)');}catch(e){msg('Download blocked here. Open TatamiPro from its website link.');}}
+async function mergeFiles(files){if(window.READONLY)return;if(!files||!files.length)return;
+  backup('Before merging '+files.length+' results file'+(files.length>1?'s':''));const reps=[];
+  for(const f of files){let o;try{o=JSON.parse(await f.text());}catch(e){reps.push({src:f.name,err:'not a TatamiPro file'});continue;}
+    const src=(o.matName||o.mat&&typeof o.mat==='string'&&!/^\{/.test(o.mat)&&o.mat)||(()=>{try{return JSON.parse(o.mat).mat;}catch(e){return '';}})()||f.name;
+    try{reps.push(mergeData(parseDataFile(o),src));}catch(e){reps.push({src:f.name,err:e.message});}}
+  save();renderAll();if(window.SB&&typeof S!=='undefined'&&S&&S.link)try{SB.refreshRun&&SB.refreshRun();}catch(e){}
+  backup('After merging results files');lastMerge=reps;showMerge();
+  const add=reps.reduce((s,r)=>s+(r.add||0),0),cf=reps.reduce((s,r)=>s+((r.cf||[]).length),0);
+  msg(`Merged ${files.length} file${files.length>1?'s':''}: ${add} new result${add===1?'':'s'}${cf?' · '+cf+' to check (see the report)':''}`);}
+let lastMerge=null;
+function mergeReportHTML(reps){return reps.map(r=>r.err?`<div class="mgr err"><b>${esc(r.src)}</b> · ✖ ${esc(r.err)}</div>`:
+  `<div class="mgr"><b>${esc(r.src)}</b> · ${r.add} new result${r.add===1?'':'s'}${r.chg?' · '+r.chg+' changed':''}${r.ath?' · '+r.ath+' new athlete'+(r.ath>1?'s':''):''}${r.wt?' · '+r.wt+' weigh-in'+(r.wt>1?'s':''):''}
+   ${r.cats.length?`<ul>${r.cats.map(c=>`<li>${esc(c)}</li>`).join('')}</ul>`:'<div class="hint">Nothing new in this file.</div>'}${r.cf.length?`<div class="mgcf">⚠ To check:<ul>${r.cf.map(c=>`<li>${esc(c)}</li>`).join('')}</ul></div>`:''}</div>`).join('');}
+function showMerge(){document.querySelectorAll('.mgRep').forEach(e=>{e.innerHTML=lastMerge?`<div class="mgh"><b>Last merge · ${new Date().toLocaleTimeString()}</b><button class="sm" data-mgx="1">✕</button></div>`+mergeReportHTML(lastMerge)+'<div class="hint">A backup was saved just before the merge (Settings → Backup &amp; restore) if anything needs to be undone.</div>':'';
+  const x=e.querySelector('[data-mgx]');if(x)x.onclick=()=>{lastMerge=null;showMerge();};});}
+function mergeBoxHTML(){return `<div class="mgbox"><div class="mgt"><b>🔀 Mats → main desk</b> <span class="hint">offline · no internet needed</span></div>
+  <div class="tools"><button class="mgOut">📤 Results file of this laptop${MATCFG().mat?' ('+esc(MATCFG().mat)+')':''}</button><label class="filebtn pri">📥 Merge results files from mats<input type="file" class="mgIn" accept=".json,application/json" multiple></label></div>
+  <div class="hint">Each mat laptop: <b>📤 Results file</b> → send it to the main desk (pen drive, WhatsApp, email). Main desk: <b>📥 Merge</b> (several files at once). Results are added contest by contest, nothing is deleted; if two laptops have a different winner for the same contest, the newer result wins and the report lists it. Works the other way too: merge the main desk file on a mat laptop to get every other mat's results.</div><div class="mgRep"></div></div>`;}
+function bindMergeBoxes(root){(root||document).querySelectorAll('.mgbox').forEach(b=>{const o=b.querySelector('.mgOut'),i=b.querySelector('.mgIn');
+  if(o)o.onclick=resultsFile;if(i)i.onchange=e=>{const fs=[...e.target.files];e.target.value='';mergeFiles(fs);};});showMerge();}
+
+// =================== v17 · live sync between mats (Firebase Realtime Database, free Spark plan) ===================
+// Every laptop keeps working offline as before. When "live sync" is on, each category, athlete and the event settings are mirrored to a
+// private room in the organiser's own Firebase database. A change on one laptop reaches the others in a second or two; if two laptops changed
+// the same category, results are merged contest by contest (same merge as the offline results files). Deletions are never sent.
+const SYNC=(()=>{const CK='judoSync',FK='judoSyncFp';
+  const cfg=o=>{let c={};try{c=JSON.parse(localStorage.getItem(CK)||'{}')||{};}catch(e){}if(o){c=Object.assign(c,o);try{localStorage.setItem(CK,JSON.stringify(c));}catch(e){}}return c;};
+  const can=()=>!window.VIEW&&!window.READONLY&&location.hash!=='#display';
+  const enc=s=>String(s).replace(/[.#$\/\[\]%]/g,c=>'%'+c.charCodeAt(0).toString(16).toUpperCase().padStart(2,'0'));
+  const dec=s=>String(s).replace(/%([0-9A-F]{2})/g,(m,h)=>String.fromCharCode(parseInt(h,16)));
+  const hsh=s=>{s=String(s);let h=2166136261;for(let i=0;i<s.length;i++){h^=s.charCodeAt(i);h=Math.imul(h,16777619);}return (h>>>0).toString(36)+'.'+s.length;};
+  const rnd=n=>{const a='abcdefghijkmnpqrstuvwxyz23456789';let s='';crypto.getRandomValues(new Uint8Array(n)).forEach(x=>s+=a[x%a.length]);return s;};
+  const b64e=o=>btoa(unescape(encodeURIComponent(JSON.stringify(o)))).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,'');
+  const b64d=s=>JSON.parse(decodeURIComponent(escape(atob(String(s).trim().replace(/^TP1\./,'').replace(/-/g,'+').replace(/_/g,'/')))));
+  const normUrl=u=>{u=String(u||'').trim().replace(/\/+$/,'');if(u&&!/^https?:\/\//.test(u))u='https://'+u;return u;};
+  let tok='',exp=0,es=null,R={c:{},a:{},uids:{}},ready=false,st='off',err='',lastOk=0,busy=false,SYN=null,log=[],liveLast='',liveAt=0,resLast='',resAt=0,lastPush=0,pend=false,deb=null;
+  const loadSyn=()=>{const c=cfg();try{const s=JSON.parse(localStorage.getItem(FK)||'null');if(s&&s.room===c.room){SYN=s;return;}}catch(e){}SYN={room:c.room,c:{},a:{},m:''};};
+  const saveSyn=()=>{try{localStorage.setItem(FK,JSON.stringify(SYN));}catch(e){}};
+  const note=t=>{log.unshift({t:Date.now(),a:t});if(log.length>12)log.pop();};
+  function show(s,e){st=s;if(e!==undefined)err=e;try{const el=document.getElementById('stSync');if(el){const n=Object.keys(R.uids||{}).length;el.style.display=s==='off'?'none':'';
+      el.textContent=s==='ok'?'☁ Live sync'+(n?' · '+n+' laptop'+(n>1?'s':''):'')+(lastOk?' · '+new Date(lastOk).toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'}):''):s==='wait'?'☁ Connecting…':s==='offline'?'☁ Offline · changes wait and sync later':'⚠ Sync: '+err;
+      el.classList.toggle('stwarn',s==='err'||s==='offline');}}catch(x){}try{window.dispatchEvent(new Event('syncstatus'));}catch(x){}}
+  // ---- sign-in (anonymous) and REST
+  const AU=p=>(cfg().authBase||'https://identitytoolkit.googleapis.com/v1/')+p,TU=()=>(cfg().authBase?cfg().authBase+'token':'https://securetoken.googleapis.com/v1/token');
+  const authErr=j=>{const m=(j&&j.error&&(j.error.message||j.error))||'';return /ADMIN_ONLY|OPERATION_NOT_ALLOWED/.test(m)?'anonymous sign-in is off (Firebase → Authentication → Sign-in method → Anonymous → Enable)':/API_KEY|API key/i.test(m)?'the Web API key is wrong':String(m||'sign-in failed');};
+  async function auth(force){const c=cfg();if(!force&&tok&&Date.now()<exp-120000)return tok;
+    if(c.rt){try{const r=await fetch(TU()+'?key='+encodeURIComponent(c.key),{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:'grant_type=refresh_token&refresh_token='+encodeURIComponent(c.rt)});
+      if(r.ok){const j=await r.json();tok=j.id_token;exp=Date.now()+(+j.expires_in||3600)*1000;cfg({rt:j.refresh_token,uid:j.user_id});return tok;}}catch(e){if(!navigator.onLine)throw new Error('offline');}}
+    const r=await fetch(AU('accounts:signUp')+'?key='+encodeURIComponent(c.key),{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({returnSecureToken:true})});
+    const j=await r.json().catch(()=>({}));if(!r.ok)throw new Error(authErr(j));tok=j.idToken;exp=Date.now()+(+j.expiresIn||3600)*1000;cfg({rt:j.refreshToken,uid:j.localId});return tok;}
+  async function rq(method,path,body,retry){const c=cfg(),t=await auth();
+    const r=await fetch(c.url+'/'+path+'.json?auth='+encodeURIComponent(t),{method,headers:{'Content-Type':'application/json'},body:body===undefined?undefined:JSON.stringify(body)});
+    if(r.status===401&&!retry){tok='';return rq(method,path,body,true);}
+    const j=await r.json().catch(()=>null);if(!r.ok)throw new Error(/permission/i.test((j&&j.error)||'')?'no permission (check the Firebase rules)':((j&&j.error)||'HTTP '+r.status));return j;}
+  // ---- stream: the room is mirrored in R; put/patch events say which categories / athletes changed
+  function setPath(path,data){const seg=String(path||'').split('/').filter(Boolean);
+    if(!seg.length){R=data&&typeof data==='object'?data:{};R.c=R.c||{};R.a=R.a||{};R.uids=R.uids||{};return ['*'];}
+    let o=R;for(let i=0;i<seg.length-1;i++){if(o[seg[i]]==null||typeof o[seg[i]]!=='object')o[seg[i]]={};o=o[seg[i]];}
+    const k=seg[seg.length-1];if(data===null)delete o[k];else o[k]=data;return [seg.join('/')];}
+  function onEv(type,raw){let m;try{m=JSON.parse(raw);}catch(e){return;}if(!m)return;lastOk=Date.now();const tch=[];
+    if(type==='put')tch.push(...setPath(m.path,m.data));
+    else if(m.data&&typeof m.data==='object'){const base=m.path==='/'?'':m.path;for(const k of Object.keys(m.data))tch.push(...setPath(base+'/'+k,m.data[k]));}
+    try{applyTouched(tch);}catch(e){note('Could not apply a change: '+e.message);}
+    if(tch.includes('*')&&!ready){ready=true;show('ok');queue(300);}else if(ready)show('ok');}
+  async function stream(){if(!can()||!cfg().on)return;try{if(es)es.close();}catch(e){}es=null;ready=false;let t;
+    try{t=await auth();}catch(e){show(navigator.onLine?'err':'offline',e.message);setTimeout(stream,navigator.onLine?15000:5000);return;}
+    const c=cfg(),src=new EventSource(c.url+'/rooms/'+c.room+'.json?auth='+encodeURIComponent(t));es=src;show('wait');
+    src.addEventListener('put',e=>{if(es===src)onEv('put',e.data);});src.addEventListener('patch',e=>{if(es===src)onEv('patch',e.data);});
+    src.addEventListener('keep-alive',()=>{lastOk=Date.now();});
+    src.addEventListener('cancel',()=>{show('err','no permission: check the Firebase rules and the join code');try{src.close();}catch(x){}if(es===src)es=null;});
+    src.addEventListener('auth_revoked',()=>{try{src.close();}catch(x){}if(es===src){es=null;tok='';setTimeout(stream,300);}});
+    src.onerror=()=>{if(es!==src)return;if(src.readyState===2){es=null;ready=false;show(navigator.onLine?'err':'offline',navigator.onLine?'connection lost · retrying':undefined);setTimeout(stream,5000);}else show(navigator.onLine?'wait':'offline');};}
+  // ---- apply remote data
+  const remD=v=>v&&v.d!=null?v.d:null,remQ=v=>v&&v.q!=null?v.q:null;
+  const locCat=k=>{const d=D.draws[k]?JSON.stringify(D.draws[k]):null,q=QZ()[k]?JSON.stringify(QZ()[k]):null;return {d,q,f:hsh(d+'|'+q)};};
+  let changed=false;const rep0=()=>({src:'live sync',cats:[],add:0,chg:0,ath:0,wt:0,cf:[]});
+  function firstJoinRemap(){if(Object.keys(SYN.a).length||!D.ath.length)return;const rk={};Object.values(R.a||{}).forEach(s=>{try{const a=JSON.parse(s);rk[athKey(a)]=a.id;}catch(e){}});
+    const map={};D.ath.forEach(a=>{if(R.a&&R.a[enc(a.id)])return;const id=rk[athKey(a)];if(id&&id!==a.id)map[a.id]=id;});
+    if(Object.keys(map).length){D=remap(D,map);changed=true;note(Object.keys(map).length+' athletes matched to the room by name, district and category');}}
+  function applyAth(ek,s){const id=dec(ek);if(typeof s!=='string')return;const f=hsh(s);if(f===SYN.a[id])return;let x;try{x=JSON.parse(s);}catch(e){return;}
+    const a=byId(id);if(!a){D.ath.push(x);SYN.a[id]=f;changed=true;return;}const lf=hsh(JSON.stringify(a));
+    if(lf===f){SYN.a[id]=f;return;}
+    if(lf===SYN.a[id]){Object.keys(a).forEach(k=>delete a[k]);Object.assign(a,x);}           // only the room changed → take it
+    else{const has=v=>v!==''&&v!=null;if(!has(a.wt)&&has(x.wt)){a.wt=x.wt;a.dq=!!x.dq;if(x.dqKeep)a.dqKeep=true;}if(x.nq&&!a.nq){a.nq=x.nq;a.nqWhy=x.nqWhy;}}  // both changed → keep this laptop, fill the weigh-in
+    SYN.a[id]=f;changed=true;}
+  function applyMeta(v){if(!v||typeof v.d!=='string')return;const f=hsh(v.d);if(f===SYN.m)return;let x;try{x=JSON.parse(v.d);}catch(e){return;}
+    const lf=hsh(JSON.stringify(D.meta||{}));if(lf===f){SYN.m=f;return;}
+    if(SYN.m&&lf===SYN.m)D.meta=x;
+    else{const m=D.meta=D.meta||{};for(const [k,val] of Object.entries(x)){if(Array.isArray(val)&&Array.isArray(m[k])&&(k==='people'||k==='refs')){const ids=new Set(m[k].map(o=>o.id||JSON.stringify(o)));val.forEach(o=>{const id=o.id||JSON.stringify(o);if(!ids.has(id)){m[k].push(o);ids.add(id);}});}
+      else if(SYN.m||m[k]==null||m[k]===''||(Array.isArray(m[k])&&!m[k].length))m[k]=val;}}
+    SYN.m=f;changed=true;}
+  function applyCat(ck,v){const k=dec(ck),d=remD(v),q=remQ(v),f=hsh(d+'|'+q);if(f===SYN.c[ck])return;const L=locCat(k);
+    if(L.f===f){SYN.c[ck]=f;return;}
+    if(L.f===SYN.c[ck]||(!L.d&&!L.q)){if(d)D.draws[k]=JSON.parse(d);else delete D.draws[k];if(q)QZ()[k]=JSON.parse(q);else delete QZ()[k];SYN.c[ck]=f;changed=true;
+      if(v&&v.mat&&v.by!==cfg().uid)note(k+' · updated from '+v.mat);return;}
+    const rep=rep0();rep.src=v&&v.mat?v.mat:'another laptop';mergeCat(k,d?JSON.parse(d):null,q?JSON.parse(q):null,rep);SYN.c[ck]=f;changed=true;
+    note(k+' · changed here and on '+rep.src+' → merged'+(rep.cf.length?' (⚠ '+rep.cf.join('; ')+')':''));}
+  function applyTouched(tch){changed=false;const all=tch.includes('*');if(all)firstJoinRemap();
+    const ath=new Set(),cat=new Set();let meta=false;
+    for(const p of tch){if(p==='*')continue;const s=p.split('/');if(s[0]==='a'&&s[1])ath.add(s[1]);else if(s[0]==='c'&&s[1])cat.add(s[1]);else if(s[0]==='m')meta=true;}
+    if(all){Object.keys(R.a||{}).forEach(x=>ath.add(x));Object.keys(R.c||{}).forEach(x=>cat.add(x));meta=true;}
+    for(const x of ath)if(R.a&&R.a[x]!=null)applyAth(x,R.a[x]);
+    if(ath.size)D.ath.dqv=(D.ath.dqv||0)+1;
+    if(meta&&R.m)applyMeta(R.m);
+    for(const x of cat)if(R.c&&R.c[x]!=null)applyCat(x,R.c[x]);
+    saveSyn();if(changed){save(false);syncRender();}}
+  let rPend=false;function syncRender(){const a=document.activeElement,typing=a&&/^(INPUT|TEXTAREA|SELECT)$/.test(a.tagName)&&!a.closest('#pgSync');
+    if(typing){if(!rPend){rPend=true;a.addEventListener('blur',()=>{rPend=false;setTimeout(syncRender,50);},{once:true});}return;}
+    renderAll();if(window.SB&&SB.refreshRun)try{SB.refreshRun();}catch(e){}}
+  // ---- push local changes (diff against what the room is known to hold)
+  function queue(ms){if(!cfg().on)return;clearTimeout(deb);deb=setTimeout(push,ms==null?400:ms);}
+  async function push(){if(!can()||!cfg().on||!ready)return;if(busy){pend=true;return;}busy=true;
+    try{const c=cfg(),uid=c.uid,mat=MATCFG().mat||'',up=[];
+      // deletions are never sent: something the room has but this laptop lost (Clear all, a wiped browser) comes back from the room
+      {let back=0;for(const ek of Object.keys(R.a||{})){const id=dec(ek);if(!byId(id)&&typeof R.a[ek]==='string'&&SYN.a[id]){try{D.ath.push(JSON.parse(R.a[ek]));back++;}catch(e){}}}
+       for(const ck of Object.keys(R.c||{})){const k=dec(ck),v=R.c[ck];if(!D.draws[k]&&!QZ()[k]&&SYN.c[ck]&&v){if(v.d)D.draws[k]=JSON.parse(v.d);if(v.q)QZ()[k]=JSON.parse(v.q);back++;}}
+       if(back){D.ath.dqv=(D.ath.dqv||0)+1;note(back+' items restored from the room');save();syncRender();}}
+      for(const a of D.ath){const s=JSON.stringify(a),f=hsh(s);if(f!==SYN.a[a.id])up.push(['a/'+enc(a.id),s,()=>{SYN.a[a.id]=f;R.a[enc(a.id)]=s;}]);}
+      for(const k of new Set([...Object.keys(D.draws),...Object.keys(QZ())])){const ck=enc(k),L=locCat(k);if(L.f!==SYN.c[ck]){const v={d:L.d,q:L.q,ts:{'.sv':'timestamp'},by:uid,mat};up.push(['c/'+ck,v,()=>{SYN.c[ck]=L.f;R.c[ck]={d:L.d,q:L.q,by:uid,mat};}]);}}
+      {const s=JSON.stringify(D.meta||{}),f=hsh(s);if(f!==SYN.m)up.push(['m',{d:s,ts:{'.sv':'timestamp'},by:uid},()=>{SYN.m=f;R.m={d:s};}]);}
+      let i=0;while(i<up.length){const body={},done=[];let size=0;while(i<up.length&&(size<250000||!done.length)){const [p,v,ok]=up[i++];body[p]=v;done.push(ok);size+=JSON.stringify(v).length;}
+        await rq('PATCH','rooms/'+c.room,body);done.forEach(f=>f());saveSyn();}
+      if(up.length){lastPush=Date.now();lastOk=Date.now();}
+      await pushLive();await pushRes();show('ok');}
+    catch(e){show(navigator.onLine?'err':'offline',e.message);}
+    finally{busy=false;if(pend){pend=false;queue(200);}}}
+  // ---- public live results page data (read-only for everybody with the link)
+  const pubFull=(p)=>{const P=S.p[p]||{},full=((P.f?P.f+' ':'')+(P.n||'')).trim();return {n:full?pubName(full):'',c:pubClub(P.club||P.c||''),i:P.i||0,wa:P.wa||0,y:P.y||0,s:P.s||0,h:!!P.h};};
+  async function pushLive(){if(typeof S==='undefined'||!S||!S.p)return;const c=cfg(),mat=MATCFG().mat||'Mat';
+    if(c.live===false){if(liveLast!=='off'){await rq('PUT','pub/'+c.pk+'/live/'+enc(mat),null);liveLast='off';}return;}
+    const lv={mat,cat:S.cat||'',match:S.match||'',w:pubFull('w'),b:pubFull('b'),ms:S.ms,gs:!!S.gs,run:!!S.run,osa:S.osa||'',oms:S.oms||0,win:S.win||'',why:S.why||'',yuko:!!S.yuko},s=JSON.stringify(lv);
+    if(s===liveLast&&Date.now()-liveAt<20000)return;await rq('PUT','pub/'+c.pk+'/live/'+enc(mat),Object.assign(lv,{t:{'.sv':'timestamp'}}));liveLast=s;liveAt=Date.now();}
+  function summary(){const m=M(),P=id=>{const a=id&&byId(id);return a?[pubName(a.name),pubClub(a.club)]:null;};
+    const cs=cats().map(c=>{const s=evStat(c.k),e={k:c.k,st:s};if(s==='fin'){const md=medals(c.k);if(md){e.g=P(md.gold);e.s=P(md.silver);e.b=(md.bronze||[]).map(P).filter(Boolean);}}return e;});
+    const ty=Object.entries(rankRows().tally).filter(([k,v])=>v.g+v.s+v.b).map(([k,v])=>[pubClub(k)||k,v.g,v.s,v.b]).sort((a,b)=>b[1]-a[1]||b[2]-a[2]||b[3]-a[3]);
+    return {ev:evName(),d:dateRange(),org:m.org||'',v:[m.venue,m.city].filter(Boolean).join(', '),cats:cs,tally:ty,champ:champ(null).slice(0,40).map(r=>[r.rank,pubClub(r.club)||r.club,r.p,r.g,r.s,r.b]),tp:TPTS()};}
+  async function pushRes(){const c=cfg();if(!c.pub)return;if(Date.now()-resAt<6000&&resLast)return;const s=JSON.stringify(summary());
+    if(s===resLast){resAt=Date.now();return;}await rq('PATCH','pub/'+c.pk,{res:s,v:hsh(s)});resLast=s;resAt=Date.now();}
+  // ---- room
+  async function enter(isNew){const c=cfg();loadSyn();R={c:{},a:{},uids:{}};show('wait');await auth(!c.rt);
+    await rq('PUT','rooms/'+c.room+'/uids/'+cfg().uid,{mat:MATCFG().mat||'',t:{'.sv':'timestamp'}});
+    if(isNew)await rq('PUT','pubmap/'+c.pk,c.room);
+    stream();}
+  async function create(url,key){url=normUrl(url);key=String(key||'').trim();if(!/^https:\/\//.test(url)&&!cfg().authBase)throw new Error('the Database URL must start with https://');if(!key)throw new Error('enter the Web API key');
+    backup('Before live sync');cfg({url,key,room:rnd(24),pk:rnd(12),on:true,pub:true,host:true,rt:'',uid:''});tok='';localStorage.removeItem(FK);try{await enter(true);}catch(e){cfg({on:false});show('off');throw e;}note('Room created');}
+  async function join(code){let o;try{o=b64d(code);}catch(e){throw new Error('this join code is not complete: copy it again');}if(!o||!o.u||!o.r||!o.k)throw new Error('this join code is not complete');
+    backup('Before joining live sync');const keep=cfg().authBase;cfg({url:normUrl(o.u),key:o.k,room:o.r,pk:o.p,on:true,pub:false,host:false,rt:'',uid:'',authBase:o.ab||keep});tok='';localStorage.removeItem(FK);try{await enter(false);}catch(e){cfg({on:false});show('off');throw e;}note('Joined the room');}
+  function leave(){const c=cfg();cfg({on:false});try{if(es)es.close();}catch(e){}es=null;ready=false;show('off');}
+  async function resume(){const c=cfg();if(!can()||!c.on||!c.url||!c.room)return;loadSyn();try{await enter(false);}catch(e){show(navigator.onLine?'err':'offline',e.message);setTimeout(resume,navigator.onLine?20000:6000);}}
+  const joinCode=()=>{const c=cfg();return 'TP1.'+b64e({u:c.url,k:c.key,r:c.room,p:c.pk,ab:c.authBase||undefined});};
+  const liveLink=()=>{const c=cfg();return location.href.split('#')[0]+'#live='+b64e({u:c.url,p:c.pk});};
+  setInterval(()=>{if(cfg().on&&ready&&Date.now()-lastPush>1500)push();},2000);
+  window.addEventListener('online',()=>{if(cfg().on&&!es)stream();});window.addEventListener('offline',()=>{if(cfg().on)show('offline');});
+  return {cfg,create,join,leave,resume,push,queue,status:()=>({st,err,ready,log,members:R.uids||{},lastOk,uid:cfg().uid}),joinCode,liveLink,b64d,enc,dec,hsh};})();
+window.SYNC=SYNC;window.SYNCQ=()=>{try{if(SYNC.cfg().on)SYNC.queue();}catch(e){}};
+
+// ---------- Settings → Live sync between mats ----------
+const FB_RULES=`{
+  "rules": {
+    ".read": false,
+    ".write": false,
+    "rooms": {
+      "$room": {
+        ".read": "auth != null && data.child('uids').child(auth.uid).exists()",
+        ".write": "auth != null && data.child('uids').child(auth.uid).exists()",
+        "uids": {
+          "$uid": {
+            ".write": "auth != null && auth.uid === $uid && $room.length >= 16"
+          }
+        }
+      }
+    },
+    "pubmap": {
+      "$pk": {
+        ".write": "auth != null && !data.exists() && root.child('rooms').child(newData.val()).child('uids').child(auth.uid).exists()"
+      }
+    },
+    "pub": {
+      "$pk": {
+        ".read": true,
+        ".write": "auth != null && root.child('pubmap').child($pk).exists() && root.child('rooms').child(root.child('pubmap').child($pk).val()).child('uids').child(auth.uid).exists()"
+      }
+    }
+  }
+}`;
+let syncForm='';
+async function copyTxt(t,okMsg){let ok=false;try{await navigator.clipboard.writeText(t);ok=true;}catch(e){}if(!ok){try{const ta=document.createElement('textarea');ta.value=t;document.body.appendChild(ta);ta.select();ok=document.execCommand('copy');ta.remove();}catch(e){}}msg(ok?okMsg:'Select the text and copy it (Ctrl+C).');}
+function renderSync(){const el=$('pgSync');if(!el)return;const c=SYNC.cfg(),x=SYNC.status(),on=!!c.on;
+  const chip=`<span class="obsst ${x.st==='ok'?'live':x.st==='err'||x.st==='offline'?'err':''}" id="syStat">${x.st==='ok'?'● Live · synced':x.st==='wait'?'Connecting…':x.st==='offline'?'Offline · will sync':x.st==='err'?'⚠ '+esc(x.err):'○ Off'}</span>`;
+  if(!on){el.innerHTML=`<div class="obsh"><h3>☁ Live sync between mats <span class="hint">(internet · free Firebase)</span></h3>${chip}</div>
+    <div class="hint">All mat laptops and the main desk share draws, results, weigh-ins and officials live; a public live results page shows every mat. Without internet each laptop keeps working and catches up when the connection is back. (No internet at all? Use 📤 / 📥 results files on the Results page.)</div>
+    <div class="sygrid"><div class="sycol"><b>Mat laptop</b><div class="hint">Paste the join code from the main desk (or just open the join link it sent).</div><div class="syrow"><input id="syCode" placeholder="TP1.…" value="${esc(syncForm)}"><button class="pri" id="syJoin">Join</button></div></div>
+     <div class="sycol"><b>Main desk (once per tournament)</b><div class="hint">Needs your own free Firebase project: see the steps below.</div><div class="syrow"><input id="syUrl" placeholder="Database URL · https://….firebasedatabase.app" value="${esc(c.url||'')}"></div><div class="syrow"><input id="syKey" placeholder="Web API key · AIza…" value="${esc(c.key||'')}"><button class="pri" id="syNew">Create live room</button></div></div></div>
+    <details class="systeps"><summary>Set up Firebase (10 minutes, free, once)</summary><ol>
+     <li>Open <b>console.firebase.google.com</b> with a Google account → <b>Create a project</b> (Google Analytics not needed).</li>
+     <li>Build → <b>Realtime Database</b> → Create database → location <b>Singapore (asia-southeast1)</b> → Start in <b>locked mode</b>.</li>
+     <li>Realtime Database → <b>Rules</b> tab → delete everything → paste these rules → <b>Publish</b>. <button class="sm" id="syRules">Copy rules</button></li>
+     <li>Build → <b>Authentication</b> → Get started → Sign-in method → <b>Anonymous</b> → Enable → Save.</li>
+     <li>Copy the <b>Database URL</b> (top of the Realtime Database page, https://…firebasedatabase.app) and the <b>Web API key</b> (⚙ Project settings → General) into the boxes above → Create live room.</li></ol>
+     <div class="hint">Free plan: 100 laptops/phones connected at the same time and 10 GB download a month: plenty for a tournament (the public page does not keep a connection open). Your data stays in your own Firebase project.</div></details>`;}
+  else{const mem=Object.values(x.members||{}).map(m=>m&&m.mat).filter(Boolean),code=SYNC.joinCode(),ll=SYNC.liveLink();
+    el.innerHTML=`<div class="obsh"><h3>☁ Live sync between mats</h3>${chip}</div>
+    <div class="hint">This laptop: <b>${esc(MATCFG().mat||'')}</b>${c.host?' · main desk (room created here)':''} · laptops in the room: <b>${mem.length?esc(mem.join(', ')):'—'}</b>${x.lastOk?' · last contact '+new Date(x.lastOk).toLocaleTimeString():''}</div>
+    <div class="sygrid"><div class="sycol"><b>Add a mat laptop</b><div class="hint">On the mat laptop open the join link (WhatsApp it) or paste the code in Settings → Live sync. Set its mat name first (Draw page → Mat).</div>
+      <div class="syrow"><input readonly value="${esc(code)}" id="syCodeOut"><button class="sm" id="syCopyCode">Copy code</button></div><div class="tools"><button class="sm" id="syCopyLink">Copy join link</button><button class="sm" id="syWaLink">📤 WhatsApp join link</button></div></div>
+     <div class="sycol"><b>Public live results page</b><div class="hint">Anyone with this link sees every mat live, medal winners, the district medal tally and the overall championship (read only).</div>
+      <div class="syrow"><input readonly value="${esc(ll)}"><button class="sm" id="syCopyLive">Copy</button></div><div class="tools"><button class="sm" id="syOpenLive">Open</button><button class="sm" id="syWaLive">📤 WhatsApp</button><button class="sm" id="syQrLive">QR to print / show</button></div><div id="syQr"></div></div></div>
+    <div class="tools"><label class="chk"><input type="checkbox" id="syPub"${c.pub?' checked':''}> This laptop updates the public results page (one laptop is enough: the main desk)</label><label class="chk"><input type="checkbox" id="syLive"${c.live!==false?' checked':''}> Show this laptop's scoreboard on the live page (untick if this laptop does not run a mat)</label><button id="syNow">Sync now</button><button class="warn" id="syLeave">Leave the room</button></div>
+    ${x.log&&x.log.length?`<div class="sylog"><b>Recent</b>${x.log.map(l=>`<div><span class="hint">${new Date(l.t).toLocaleTimeString()}</span> ${esc(l.a)}</div>`).join('')}</div>`:''}
+    <div class="hint">Draws, results, weigh-ins, officials and event settings are shared. Deleting is never shared (a cleared laptop gets everything back from the room). If two laptops change the same category, results are merged contest by contest. Each laptop's scoreboard stays its own.</div>`;}
+  const go=async(fn,okm)=>{try{await fn();msg(okm);}catch(e){msg('Live sync: '+e.message);}renderSync();};
+  if($('syJoin'))$('syJoin').onclick=()=>{syncForm=$('syCode').value;go(()=>SYNC.join($('syCode').value),'Joined the live room: other mats\' results arrive in a few seconds.');};
+  if($('syNew'))$('syNew').onclick=()=>go(()=>SYNC.create($('syUrl').value,$('syKey').value),'Live room created. Send the join link to every mat laptop.');
+  if($('syRules'))$('syRules').onclick=()=>copyTxt(FB_RULES,'Rules copied: paste them in Firebase → Realtime Database → Rules → Publish.');
+  if($('syCopyCode'))$('syCopyCode').onclick=()=>copyTxt(SYNC.joinCode(),'Join code copied.');
+  if($('syCopyLink'))$('syCopyLink').onclick=()=>copyTxt(location.href.split('#')[0]+'#join='+SYNC.joinCode(),'Join link copied: open it on the mat laptop.');
+  if($('syWaLink'))$('syWaLink').onclick=()=>window.open('https://wa.me/?text='+encodeURIComponent('TatamiPro live sync · open on the mat laptop (Chrome):\n'+location.href.split('#')[0]+'#join='+SYNC.joinCode()),'_blank');
+  if($('syCopyLive'))$('syCopyLive').onclick=()=>copyTxt(SYNC.liveLink(),'Live results link copied.');
+  if($('syOpenLive'))$('syOpenLive').onclick=()=>window.open(SYNC.liveLink(),'_blank');
+  if($('syWaLive'))$('syWaLive').onclick=()=>window.open('https://wa.me/?text='+encodeURIComponent('🥋 '+evName()+' · live results (all mats):\n'+SYNC.liveLink()),'_blank');
+  if($('syQrLive'))$('syQrLive').onclick=()=>{const q=qrSvg(SYNC.liveLink());$('syQr').innerHTML=q?`<div class="syqr">${q}<small>Scan · live results</small></div>`:'<div class="hint">QR not available (qrcode.js missing).</div>';};
+  if($('syPub'))$('syPub').onchange=()=>{SYNC.cfg({pub:$('syPub').checked});SYNC.queue(100);};
+  if($('syLive'))$('syLive').onchange=()=>{SYNC.cfg({live:$('syLive').checked});SYNC.queue(100);};
+  if($('syNow'))$('syNow').onclick=()=>{SYNC.push();msg('Syncing…');};
+  if($('syLeave'))$('syLeave').onclick=e=>{const b=e.target;if(b.dataset.arm!=='1'){b.dataset.arm='1';b.textContent='Click again to leave';setTimeout(()=>{b.dataset.arm='';b.textContent='Leave the room';},4000);return;}SYNC.leave();renderSync();msg('Left the live room: this laptop works on its own again (its data stays).');};}
+window.addEventListener('syncstatus',()=>{const e=document.getElementById('syStat');if(!e)return;const x=SYNC.status();e.className='obsst '+(x.st==='ok'?'live':x.st==='err'||x.st==='offline'?'err':'');e.textContent=x.st==='ok'?'● Live · synced':x.st==='wait'?'Connecting…':x.st==='offline'?'Offline · will sync':x.st==='err'?'⚠ '+x.err:'○ Off';});
+// join link "#join=TP1.…" → join on this laptop
+(function(){const h=location.hash;if(!/^#join=/.test(h)||window.VIEW)return;const code=decodeURIComponent(h.slice(6));try{history.replaceState(null,'',location.pathname+location.search);}catch(e){}
+  setTimeout(async()=>{try{await SYNC.join(code);msg('Joined the live room ✓ · results of the other mats arrive in a few seconds. Set this laptop\'s mat name on the Draw page.');}catch(e){msg('Live sync: '+e.message);}try{goPage('set');}catch(e){}},900);})();
+setTimeout(()=>{try{SYNC.resume();}catch(e){}},1200);
+
+// ---------- public live results page: #live=… (read only, polls small files so the free plan is enough) ----------
+window.LIVEPG=root=>{let q;try{q=SYNC.b64d(location.hash.slice(6));}catch(e){root.innerHTML='<div class="vcard"><b>This live results link is damaged.</b></div>';return;}
+  const base=String(q.u).replace(/\/+$/,'')+'/pub/'+q.p,E=x=>String(x==null?'':x).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+  let res=null,live={},v='',fail=0,got=0,tab='now';
+  const g=async p=>{const r=await fetch(base+p+'.json',{cache:'no-store'});if(!r.ok)throw new Error('HTTP '+r.status);return r.json();};
+  const clk=(L)=>{let ms=+L.ms||0;if(L.run){const d=Date.now()-L._rx;ms=L.gs?ms+d:Math.max(0,ms-d);}const s=L.gs?Math.floor(ms/1000):Math.ceil(ms/1000);return Math.floor(s/60)+':'+String(s%60).padStart(2,'0');};
+  const sh=n=>n?'<span class="lvsh">'+'▮'.repeat(Math.min(3,n))+'</span>':'';
+  function draw(){const now=Date.now(),mats=Object.values(live||{}).filter(L=>L&&L.mat&&now-(L._rx||0)<1e9).sort((a,b)=>String(a.mat).localeCompare(String(b.mat),undefined,{numeric:true}));
+    const ev=res?res.ev:(q.n||'Live results'),cs=res?res.cats:[],fin=cs.filter(c=>c.st==='fin'),run=cs.filter(c=>c.st==='run');
+    let h=`<div class="vhead"><div class="vev">${E(ev)}</div>${res&&res.org?`<div class="vsub">${E(res.org)}</div>`:''}<div class="vsub">${E([res&&res.v,res&&res.d].filter(Boolean).join(' · '))}</div></div>
+     <div class="vcat"><div class="vk">Live results · all mats</div><span class="vbadge ${fail>2?'seed':'prog'}">${fail>2?'RECONNECTING…':'● LIVE'}</span><div class="vts">${got?'Updated '+new Date(got).toLocaleTimeString():'Loading…'} · ${fin.length} of ${cs.length} categories finished</div></div>
+     <div class="lvtabs">${[['now','Now on the mats'],['med','Medal winners'],['tally','Medal tally'],['champ','Championship']].map(([k,t])=>`<button data-lt="${k}" class="${tab===k?'on':''}">${t}</button>`).join('')}</div>`;
+    if(tab==='now'){h+=mats.length?mats.map(L=>{if(!L.cat&&!(L.w&&L.w.n)&&!(L.b&&L.b.n))return `<div class="vcard lvmat lvidle"><div class="lvmh"><b>${E(L.mat)}</b><span>waiting for the next contest</span></div></div>`;const old=L.t&&now-L._srv>15*60e3,P=(s,p)=>`<div class="lvp ${s}${L.win===s?' win':''}"><span class="lvn">${E(p.n||(s==='w'?'White':'Blue'))}<small>${E(p.c||'')}</small></span>${p.h?'<span class="lvsh r">▮</span>':sh(p.s)}<span class="lvsc"><i>${p.i}</i><i>${p.wa}</i>${L.yuko?`<i>${p.y}</i>`:''}</span></div>`;
+        return `<div class="vcard lvmat${old?' old':''}"><div class="lvmh"><b>${E(L.mat)}</b><span>${E(L.cat||'')}${L.match?' · Match '+E(L.match):''}</span></div>${P('w',L.w||{})}${P('b',L.b||{})}
+          <div class="lvft"><span class="lvclk${L.run?' run':''}">${L.gs?'GS ':''}${clk(L)}</span>${L.osa?`<span class="lvos">OSAEKOMI ${Math.floor((L.oms||0)/1000)}</span>`:''}${L.win?`<span class="lvwin">🏆 ${E((L[L.win]||{}).n||'')}${L.why?' · '+E(L.why):''}</span>`:''}${old?'<span class="hint">no update for a while</span>':''}</div></div>`;}).join(''):'<div class="vcard">No mat is sending live scores right now.</div>';
+      if(run.length)h+=`<div class="vpool">In progress</div><div class="vcard lvrun">${run.map(c=>`<div>${E(c.k)}</div>`).join('')}</div>`;}
+    else if(tab==='med'){h+=fin.length?fin.slice().reverse().map(c=>`<div class="vpool">${E(c.k)}</div><div class="vcard vres">${[['🥇',c.g],['🥈',c.s]].concat((c.b||[]).map(b=>['🥉',b])).filter(x=>x[1]).map(([m,a])=>`<div class="vrow w"><span class="vpos">${m}</span><span class="vnm">${E(a[0])}</span><span class="vcl">${E(a[1]||'')}</span></div>`).join('')}</div>`).join(''):'<div class="vcard">No category finished yet.</div>';}
+    else if(tab==='tally'){const t=res?res.tally:[];h+=t.length?`<div class="vcard"><table class="lvt"><tr><th>#</th><th>District / club</th><th>🥇</th><th>🥈</th><th>🥉</th></tr>${t.map((r,i)=>`<tr><td>${i+1}</td><td><b>${E(r[0])}</b></td><td>${r[1]}</td><td>${r[2]}</td><td>${r[3]}</td></tr>`).join('')}</table></div>`:'<div class="vcard">No medals yet.</div>';}
+    else{const t=res?res.champ:[],P=res&&res.tp||{};h+=t.length?`<div class="vcard"><table class="lvt"><tr><th>Rank</th><th>District / club</th><th>Points</th><th>🥇</th><th>🥈</th><th>🥉</th></tr>${t.map(r=>`<tr><td><b>${r[0]}</b>${r[0]===1?' 🏆':''}</td><td><b>${E(r[1])}</b></td><td><b>${r[2]}</b></td><td>${r[3]}</td><td>${r[4]}</td><td>${r[5]}</td></tr>`).join('')}</table><div class="hint">Points: gold ${P.g||7} · silver ${P.s||5} · bronze ${P.b||3}</div></div>`:'<div class="vcard">No medals yet.</div>';}
+    h+='<div class="vfoot hint">Live from the tournament desk · refreshes by itself</div>';root.innerHTML=h;
+    root.querySelectorAll('[data-lt]').forEach(b=>b.onclick=()=>{tab=b.dataset.lt;draw();});}
+  async function tick(){try{const [lv,vv]=await Promise.all([g('/live'),g('/v')]);const rx=Date.now();live={};for(const [k,L] of Object.entries(lv||{})){if(L){L._rx=rx;L._srv=+L.t||rx;live[k]=L;}}
+      if(vv&&vv!==v){const rs=await g('/res');res=typeof rs==='string'?JSON.parse(rs):rs;v=vv;if(res&&res.ev)document.title=res.ev+' · live results';}fail=0;got=Date.now();}catch(e){fail++;}draw();}
+  tick();let t0=Date.now();(function loop(){setTimeout(async()=>{await tick();loop();},document.hidden?30000:5000);})();setInterval(()=>{if(tab==='now'&&Object.values(live).some(L=>L.run))draw();},1000);};
+
 // ---------- small helpers used by the print centre ----------
 // sheet size for blank forms: knockout bracket, or a round robin pool when the organiser chose it for small categories
 function bPlanFor(k){const dr=D.draws[k];if(dr)return [dr.size,dr.fmt||fmtNow()];const n=D.ath.filter(a=>catKey(a)===k&&!a.dq&&!a.nq).length,R=RRMAX();
@@ -2336,7 +2678,7 @@ function renderHome(){const el=$('pgHome');if(!el)return;
     const c=e.target.closest('[data-cat]');if(c){cur=c.dataset.cat;editing=null;renderAll();if(window.goPage)goPage('draw');}};}
 // ---------- Results ----------
 function renderRes(){const el=$('pgRes');if(!el)return;const cs=cats().filter(c=>D.draws[c.k]);
-  if(!cs.length){el.innerHTML='<div class="panel empty">No draws yet. Upload athletes and make the draws first; medal winners appear here as soon as the finals are fought. The overall championship, certificates, ranking points and the event report are made here too.</div>';return;}
+  if(!cs.length){el.innerHTML='<div class="panel empty">No draws yet. Upload athletes and make the draws first; medal winners appear here as soon as the finals are fought. The overall championship, certificates, ranking points and the event report are made here too.</div>'+(window.READONLY?'':'<div class="panel">'+mergeBoxHTML()+'</div>');bindMergeBoxes(el);return;}
   const A=id=>{const a=id&&byId(id);return a?`<b>${esc(a.name)}</b><small>${esc(a.club||'')}</small>`:'<span class="hint">—</span>';};
   const ty=Object.entries(rankRows().tally).filter(([k,v])=>v.g+v.s+v.b).sort((a,b)=>b[1].g-a[1].g||b[1].s-a[1].s||b[1].b-a[1].b);
   el.innerHTML=`<div class="resbar"><button class="pri" id="rsXl">⬇ Download Excel</button><button id="rsCopy">Copy results</button><button id="rsWa">📤 WhatsApp</button><button id="rsPrint">🖨 Print results</button></div>
@@ -2345,6 +2687,7 @@ function renderRes(){const el=$('pgRes');if(!el)return;const cs=cats().filter(c=
   $('rsXl').onclick=()=>$('resCsv').click();$('rsWa').onclick=()=>openShare('allres');$('rsCopy').onclick=()=>copyText(resultsText(cs.map(c=>c.k)));
   $('rsPrint').onclick=()=>printNow('res','all');
   el.insertAdjacentHTML('beforeend',champHTML()+rankHTML());
+  if(!window.READONLY){el.insertAdjacentHTML('afterbegin','<div class="panel" style="margin-bottom:14px">'+mergeBoxHTML()+'</div>');bindMergeBoxes(el);}
   const tp=()=>{const P=TPTS();P.g=Math.max(0,+$('tpG').value||0);P.s=Math.max(0,+$('tpS').value||0);P.b=Math.max(0,+$('tpB').value||0);save();renderRes();};
   ['tpG','tpS','tpB'].forEach(id=>$(id).onchange=tp);
   el.querySelectorAll('[data-chg]').forEach(b=>b.onclick=()=>{champSel=+b.dataset.chg;renderRes();});
@@ -2626,7 +2969,7 @@ function renderSec(){const el=$('pgSec');if(!el)return;const s=SEC(),on=!!s.h,pv
   $('wipeBk').onclick=()=>$('bkFile').click();
   let arm=0;$('wipeBtn').onclick=()=>{if(Date.now()-arm>5000){arm=Date.now();return msg('Click "Erase all data on this device" again within 5 seconds. Download the backup file first if you need the data later.');}wipeDevice();};}
 if($('ev_tvqr')){$('ev_tvqr').onchange=()=>{M().tvqr=$('ev_tvqr').checked;save();msg($('ev_tvqr').checked?'QR on the TV switched on: it follows the category being fought.':'QR on the TV switched off.');};$('ev_tvqrT').onchange=()=>{M().tvqrT=$('ev_tvqrT').value;save();};}
-window.APP={renderHome,renderRes,renderBrand,renderSched,renderSec,renderOff,bindBkFolder};
+window.APP={renderHome,renderRes,renderBrand,renderSched,renderSec,renderOff,bindBkFolder,renderSync};
 
 // ---------- Qualifier round: everybody fights once; the best X% of the winners (by score) go into a ranking-order knockout ----------
 const QZ=()=>(D.quals=D.quals||{});
@@ -3696,7 +4039,7 @@ if(TV){
 /* App shell: website-style top menu with separate pages, status bar and "install app".
    It only shows / hides parts of the screen and presses the app's own buttons: no tournament logic here. */
 (function(){
-  if(location.hash==='#display'||/[#&]v=/.test(location.hash)||!document.getElementById('mainMenu'))return;
+  if(location.hash==='#display'||/[#&]v=/.test(location.hash)||/^#live=/.test(location.hash)||!document.getElementById('mainMenu'))return;
   const B=document.body,$=id=>document.getElementById(id);
   const PAGES={home:['Dashboard','Tournament overview, live status and progress of every category'],
     ath:['Athletes & weigh-in','Upload the entry list, weigh the athletes (overweight = disqualified automatically) and set seeds'],
@@ -3709,7 +4052,7 @@ if(TV){
   // which page shows which part of the screen
   [['#pageHead','home ath draw res print set sched off'],['#drawSec header','ath draw set'],['#drawSec main>aside','draw'],['#pgHome','home'],['#pgRes','res'],['#pgSched','sched'],['#pgBrand','set'],['#pgSec','set'],
    ['#bkPanel','set'],['#evPanel','set'],['#evtPanel','print'],['#prPanel','print'],['#rep','ath draw'],['#view','draw'],['#athPanel','ath'],
-   ['#drawSec header .matcfg','draw set'],['#drawSec header .filebtn','ath draw'],['#tpl','ath'],['#demo','ath draw'],['#genAll','draw'],['#prAll','draw'],['#resCsv','draw'],['#bkOpen','set'],['#clear','ath draw set'],['#pgOff','off'],['#rkFileL','ath']]
+   ['#drawSec header .matcfg','draw set'],['#drawSec header .filebtn','ath draw'],['#tpl','ath'],['#demo','ath draw'],['#genAll','draw'],['#prAll','draw'],['#resCsv','draw'],['#bkOpen','set'],['#clear','ath draw set'],['#pgOff','off'],['#rkFileL','ath'],['#pgSync','set']]
    .forEach(([q,p])=>document.querySelectorAll(q).forEach(e=>e.setAttribute('data-pg',p)));
   const dm=$('dmsg');if(dm)B.appendChild(dm);   // messages float above every page
   {const pp=$('prPanel'),ev=$('evtPanel');if(pp&&ev&&ev.parentNode)ev.parentNode.insertBefore(pp,ev);}
@@ -3722,7 +4065,7 @@ if(TV){
     $('phT').textContent=PAGES[p][0];$('phS').textContent=PAGES[p][1];
     ({ath:['athPanel'],set:['evPanel','bkPanel'],print:['evtPanel']}[p]||[]).forEach(id=>{const d=$(id);if(d)d.open=true;});
     if(p==='print'&&getComputedStyle($('prPanel')).display==='none'&&window.openPrintPanel)openPrintPanel();
-    if(window.APP){if(p==='home')APP.renderHome();if(p==='res')APP.renderRes();if(p==='sched')APP.renderSched();if(p==='set'){APP.renderSec();if(window.renderSnd)renderSnd();if(APP.bindBkFolder)APP.bindBkFolder();}if(p==='off'&&APP.renderOff)APP.renderOff();}
+    if(window.APP){if(p==='home')APP.renderHome();if(p==='res')APP.renderRes();if(p==='sched')APP.renderSched();if(p==='set'){APP.renderSec();if(window.renderSnd)renderSnd();if(APP.bindBkFolder)APP.bindBkFolder();if(APP.renderSync)APP.renderSync();}if(p==='off'&&APP.renderOff)APP.renderOff();}
     if(p==='draw')setTimeout(()=>{if(window.fitBracket)fitBracket();},30);
     scrollTo({top:0});}finally{busy=false;}}
   window.goPage=show;
