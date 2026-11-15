@@ -29,7 +29,11 @@ Draw (seeding, ranking, qualifier, knockout up to 128), weigh-in, live scoreboar
 - **Officials page** (menu → Officials): coaches, managers, referees, judges, table and technical officials, medical, volunteers, media (add or upload Excel / CSV). **Referee assignment** by session and mat (auto-fill, print, WhatsApp).
 - **ID cards** (9 per A4 sheet, 86 × 54 mm): event, role, name, district, category, photo box, QR that shows the role and event on any phone.
 - **Gujarati / Hindi** (Settings → Branding): second language under headings, table titles, round names, roles and signatures on prints and certificates; on the TV the category line switches language every 6 s and the winner label has a second line.
-- **Streaming overlay for OBS** (Settings → Branding → Open overlay window): small live scoreboard on green / blue / magenta / black. OBS: Window Capture + Chroma Key.
+- **Live streaming overlay for OBS → YouTube / Facebook** (Settings → Branding → 🎥 Live streaming), OBS 28 or newer on the same laptop:
+  1. OBS → Tools → WebSocket Server Settings → tick "Enable WebSocket server" → Show Connect Info → copy the Server Password.
+  2. TatamiPro → enter the password → **Connect to OBS** (Chrome asks once about apps on this device / local network → Allow). It reconnects by itself whenever TatamiPro or OBS is reopened; the bottom bar shows "🎥 OBS live".
+  3. OBS → Sources → + → **Browser** → URL = the copied link (this site + `#obs`), 1920 × 1080. Transparent background, no green screen.
+  Style: score bar (lower third) or full scoreboard; position and size change live from TatamiPro. Shows names, district, scores, shido, clock, golden score, osaekomi, winner and medal winners. The old window-capture way (green / magenta / black) is still there; its running clock is now white so the colour key does not remove it.
 - **Event report** for the federation (Print → 📄 Event report): summary, how contests were won, golden score, DQs, champion, participation and medals by district, every category's result.
 - **Ranking points**: Results → download ranking points (Excel; 1st 100 · 2nd 70 · 3rd 50 · 5th 30 · 7th 20 · others 5, editable). Next tournament: Athletes → 📈 Apply ranking file → ranked athletes are kept apart in the draw (1 v last).
 

@@ -1082,6 +1082,51 @@ html body.ovl[data-ovpos=tr] #board{left:auto!important;right:2vw!important;bott
 @media (max-width:1380px){nav#topNav .menu button span{display:none}}
 @media (max-width:760px){nav#topNav .menu button span{display:inline}}
 
+/* ===== v16.1 live streaming overlay: OBS Browser Source (transparent) + compact score bar ===== */
+html:has(body.obsv),html body.ovl.obsv{background:transparent!important;background-image:none!important}
+html body.ovl.obsv.obsprev{background-color:#8a8f98!important;background-image:linear-gradient(45deg,#9aa0a8 25%,transparent 25%,transparent 75%,#9aa0a8 75%),linear-gradient(45deg,#9aa0a8 25%,transparent 25%,transparent 75%,#9aa0a8 75%)!important;background-size:32px 32px!important;background-position:0 0,16px 16px!important}
+html body.ovl.obsv.obsnodata #ovBar,html body.ovl.obsv.obsnodata #board{visibility:hidden!important}
+#obsWait{position:fixed;left:2vw;top:3vh;padding:14px 18px;border-radius:12px;background:rgba(10,14,24,.85);color:#fff;font:600 15px/1.4 system-ui,sans-serif;z-index:50}#obsWait small{opacity:.75;font-weight:500}
+html body.ovl[data-ovst=bar] #board{display:none!important}
+/* the running clock is bright green on the TV: never key it out on a green screen */
+html body.ovl[data-ovbg=green] .clock.run{color:#ffffff!important;text-shadow:0 0 1.5cqw rgba(255,255,255,.35)!important}
+#ovBar{display:none;position:fixed;z-index:20;width:36em;font:600 var(--obf,1.15vw)/1.15 'Inter','Segoe UI',system-ui,sans-serif;color:#fff;-webkit-font-smoothing:antialiased}
+body.ovl[data-ovst=bar] #ovBar{display:block}
+body.ovl[data-ovsz=s] #ovBar{--obf:.9vw}body.ovl[data-ovsz=l] #ovBar{--obf:1.45vw}
+body.ovl #ovBar{left:2.2vw;bottom:4.5vh}body.ovl[data-ovpos=br] #ovBar{left:auto;right:2.2vw}body.ovl[data-ovpos=tl] #ovBar{bottom:auto;top:4vh}
+body.ovl[data-ovpos=tr] #ovBar{left:auto;right:2.2vw;bottom:auto;top:4vh}body.ovl[data-ovpos=bc] #ovBar{left:50%;transform:translateX(-50%)}
+#ovBar .obCard{border-radius:.55em;overflow:hidden;box-shadow:0 .35em 1.2em rgba(0,0,0,.35)}
+#ovBar .obTop{display:flex;justify-content:space-between;gap:1em;background:#0b1220;padding:.32em .75em;font-size:.68em;letter-spacing:.07em;text-transform:uppercase;font-weight:700}
+#ovBar .obTop .obCat{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}#ovBar .obTop .obMat{opacity:.75;white-space:nowrap}
+#ovBar .obMain{display:flex}#ovBar .obRows{flex:1;min-width:0}
+#ovBar .obRow{display:flex;align-items:center;gap:.55em;height:2.25em;padding:0 .55em 0 .75em;position:relative}
+#ovBar .obRow.w{background:#f5f7fb;color:#0b1220}#ovBar .obRow.b{background:#1f4fd8;color:#fff}
+#ovBar .obRow.osa::before{content:'';position:absolute;left:0;top:0;bottom:0;width:.3em;background:#ffd60a}
+#ovBar .obNm{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}#ovBar .obNm b{font-size:1.06em;font-weight:800}#ovBar .obNm small{font-size:.68em;opacity:.7;margin-left:.55em;font-weight:700;letter-spacing:.04em}
+#ovBar .obTag{display:none;font-size:.58em;font-weight:900;letter-spacing:.08em;background:#ffd60a;color:#0b1220;padding:.2em .5em;border-radius:.3em}#ovBar .obRow.win .obTag{display:inline-block}
+#ovBar .obSh{display:flex;gap:.16em;min-width:1.9em;justify-content:flex-end}#ovBar .obSh span{width:.55em;height:.8em;background:#ffd60a;border-radius:.1em;box-shadow:0 0 0 .06em rgba(0,0,0,.25)}#ovBar .obSh span.r{background:#ff3b30}
+#ovBar .obSc{display:flex;gap:.12em}#ovBar .obSc i{font-style:normal;display:flex;align-items:baseline;gap:.12em;min-width:1.55em;justify-content:center}
+#ovBar .obSc u{text-decoration:none;font-size:.5em;opacity:.55;font-weight:800}#ovBar .obSc em{font-style:normal;font-size:1.42em;font-weight:900;font-variant-numeric:tabular-nums;line-height:1}
+#ovBar.noyuko .obY{display:none!important}
+#ovBar .obClock{width:5.6em;flex:none;background:#0b1220;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.1em}
+#ovBar .obT{font-size:1.75em;font-weight:900;font-variant-numeric:tabular-nums;color:#ffb340;line-height:1}#ovBar .obClock.run .obT{color:#fff}
+#ovBar .obGs{display:none;font-size:.5em;font-weight:900;letter-spacing:.08em;color:#ffd60a}#ovBar .obClock.gs .obGs{display:block}
+#ovBar .obOs{display:none;font-size:.52em;font-weight:800;letter-spacing:.05em}#ovBar .obOs.on{display:block}#ovBar .obOs b{font-size:1.5em;color:#ffd60a}
+#ovBar .obPod{display:none;background:#0b1220;padding:.45em .75em .55em}#ovBar.pod .obPod{display:block}#ovBar.pod .obMain{display:none}
+#ovBar .obPt{font-size:.66em;font-weight:900;letter-spacing:.1em;color:#ffd60a;margin-bottom:.25em}
+#ovBar .obPl{display:flex;align-items:baseline;gap:.5em;padding:.12em 0;white-space:nowrap;overflow:hidden}#ovBar .obPl b{font-weight:800}#ovBar .obPl small{opacity:.7;font-size:.72em}
+#ovBar .obWin{display:none;margin-top:.35em;padding:.38em .8em;border-radius:.45em;background:linear-gradient(90deg,#ffd60a,#ffb000);color:#0b1220;font-weight:700;box-shadow:0 .3em 1em rgba(0,0,0,.3);animation:obIn .45s ease-out;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#ovBar .obWin.on{display:block}#ovBar .obWin b{font-weight:900}
+@keyframes obIn{from{opacity:0;transform:translateY(.6em)}to{opacity:1;transform:none}}
+/* settings */
+.obsbox{margin-top:14px;padding:14px;border:1px solid rgba(127,127,127,.3);border-radius:14px}
+.obsh{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between;margin-bottom:6px}
+.obsst{font-size:13px;font-weight:800;padding:4px 10px;border-radius:99px;background:rgba(127,127,127,.18)}.obsst.live{background:rgba(48,209,88,.2);color:#30d158}.obsst.err{background:rgba(255,159,10,.18);color:#ff9f0a}
+.obsteps{margin:8px 0 8px 20px;display:grid;gap:8px;font-size:13.5px;line-height:1.45}.obsf{display:inline-flex;flex-wrap:wrap;gap:8px;align-items:center;margin:4px 0}
+.obsf label{display:flex;align-items:center;gap:6px}.obsf input{width:150px!important}#obsPort{width:90px!important}
+.obsurl{display:inline-block;padding:3px 8px;border-radius:8px;background:rgba(127,127,127,.16);font:12.5px ui-monospace,Consolas,monospace;word-break:break-all}
+.obsbox details{margin-top:10px}.obsbox summary{cursor:pointer;font-weight:700;font-size:13px}
+
 /* ===== PRINT: always black text on white paper, in dark or light mode (must stay the LAST rules) ===== */
 @media print{
  html,html body,html body:not(.tv),html body:not(.tv):not(.view),html body.light,html body.light:not(.tv),html body.light:not(.tv):not(.view),html body.view,html body.tv{background:#fff!important;background-image:none!important;background-attachment:scroll!important;color:#000!important}
@@ -1121,7 +1166,7 @@ html body.ovl[data-ovpos=tr] #board{left:auto!important;right:2vw!important;bott
 </style>
 </head>
 <body data-tab="draw" class="glass">
-<footer id="appStat"><span id="stSave">● Saved</span><span id="stCnt"></span><span id="stDone"></span><span id="stTv"></span><span id="stBk"></span><span class="sp"></span><span id="stMat"></span><span id="stClk"></span></footer>
+<footer id="appStat"><span id="stSave">● Saved</span><span id="stCnt"></span><span id="stDone"></span><span id="stTv"></span><span id="stObs" style="display:none"></span><span id="stBk"></span><span class="sp"></span><span id="stMat"></span><span id="stClk"></span></footer>
 <div id="lockOv"><div><b>⚠ Admin already open</b><p id="lockTxt"></p><button onclick="takeControl()">Take control in this tab</button><p style="font-size:13px;opacity:.7">Only one admin screen can control the tournament at a time. The TV window is separate and is fine.</p></div></div>
 <nav id="topNav"><div class="brand" id="brandBox" title="Dashboard"><span class="blogo" id="brandLogo">TP</span><span class="bname"><b><span id="brandName">TatamiPro</span> <span id="matTag" style="color:#f5c518"></span></b><small id="brandEv">Judo tournament manager</small></span></div><div class="menu" id="mainMenu"><button data-page="home"><svg viewBox="0 0 24 24"><path d="M3 11.5 12 4l9 7.5"/><path d="M5.5 10v9.5h13V10"/><path d="M10 19.5v-5h4v5"/></svg><span>Dashboard</span></button><button data-page="ath"><svg viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.2"/><path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6"/><circle cx="17.5" cy="9" r="2.4"/><path d="M16 14.2c2.8.2 5 2.6 5 5.8"/></svg><span>Athletes</span></button><button id="tabDraw" data-page="draw"><svg viewBox="0 0 24 24"><path d="M3 5h5v4H3zM3 15h5v4H3zM16 10h5v4h-5zM8 7h3v10H8M11 12h5"/></svg><span>Draw</span></button><button id="tabSb" data-page="sb"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="13" rx="2"/><path d="M8 21h8M12 17v4M7.5 10.5h3M13.5 10.5h3"/></svg><span>Scoreboard</span></button><button data-page="sched"><svg viewBox="0 0 24 24"><rect x="3.5" y="5" width="17" height="15.5" rx="2"/><path d="M3.5 10h17M8 3v4M16 3v4M7.5 13.5h3M7.5 17h3M13.5 13.5h3"/></svg><span>Schedule</span></button><button data-page="res"><svg viewBox="0 0 24 24"><path d="M8 21h8M12 17v4M7 4h10v5a5 5 0 0 1-10 0z"/><path d="M7 6H4v1a3 3 0 0 0 3 3M17 6h3v1a3 3 0 0 1-3 3"/></svg><span>Results</span></button><button data-page="off"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="9" cy="11" r="2.2"/><path d="M5.8 16.3c.6-1.6 1.8-2.4 3.2-2.4s2.6.8 3.2 2.4M14.5 10h4M14.5 13.5h3"/></svg><span>Officials</span></button><button data-page="print"><svg viewBox="0 0 24 24"><path d="M7 9V3.5h10V9"/><rect x="3.5" y="9" width="17" height="8" rx="1.5"/><path d="M7 14h10v6.5H7z"/></svg><span>Print</span></button><button data-page="set"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1A1.7 1.7 0 0 0 4.6 9a1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg><span>Settings</span></button></div><div class="acts"><button id="navInstall" style="display:none" title="Install as an app on this device">⬇ Install</button><button id="navShare" title="Share on WhatsApp: details, schedule, fixtures, results"><svg viewBox="0 0 24 24"><path d="M4 20l1.2-3.6A8 8 0 1 1 8 19.1z"/><path d="M9 8.6c0 3.2 2.9 6.4 6.3 6.6l1.1-1.4-1.9-1-0.9.8c-1-.4-2.1-1.5-2.5-2.5l.8-.9-1-1.9z"/></svg><span>Share</span></button><button id="navLock" style="display:none" title="Lock the admin now (PIN needed to open)"><svg viewBox="0 0 24 24"><rect x="5" y="10.5" width="14" height="10" rx="2"/><path d="M8 10.5V7.5a4 4 0 0 1 8 0v3"/></svg><span>Lock</span></button><button id="navTV" title="Open the TV window"><svg viewBox="0 0 24 24"><rect x="2.5" y="5" width="19" height="12.5" rx="2"/><path d="M8 21h8M9 2l3 3 3-3"/></svg><span>TV</span></button><button id="thBtn" title="Dark / Light mode">☀ Light</button></div></nav>
 <div id="shOv"><div class="shm"><div class="shh"><b>📤 Share on WhatsApp</b><button id="shX">Close</button></div>
@@ -1324,7 +1369,9 @@ function applyBrand(){const b=BRAND(),n=APPNAME(),L=b.logos||{},q=x=>String(x).r
   if(location.hash!=='#display'&&!/[#&]v=/.test(location.hash))document.title=n+' · Judo tournament manager';
   document.body.classList.toggle('glass',b.look!=='classic');
   _lang=undefined;
-  if(window.OVL){const o=b.ovl||{},B=document.body;B.classList.add('ovl');B.dataset.ovpos=o.pos||'bl';B.dataset.ovsz=o.sz||'m';B.dataset.ovbg=o.bg||'green';}
+  if(window.OVL){let q={};try{q=JSON.parse(sessionStorage.getItem('judoObsP')||'{}')||{};}catch(e){}const o=Object.assign({},q,b.ovl||{}),B=document.body;B.classList.add('ovl');
+    B.classList.toggle('obsv',!!window.OBSV);B.classList.toggle('obsprev',!!window.OBSV&&!window.obsstudio);B.dataset.ovpos=o.pos||'bl';B.dataset.ovsz=o.sz||'m';
+    B.dataset.ovbg=window.OBSV?'none':(o.bg==='magenta'||o.bg==='black'?o.bg:'green');B.dataset.ovst=o.st==='full'?'full':'bar';}
   if(window.paintLogos)window.paintLogos();}
 // ---------- Second language (Gujarati / Hindi) for the TV and printed sheets: English stays, the translation is added ----------
 var _lang;function LANG(){if(_lang===undefined){const l=BRAND().lang;_lang=l==='gu'||l==='hi'?l:'';}return _lang;}
@@ -1363,8 +1410,11 @@ function tr2(s){const l=LANG();if(!l||!s)return '';const ix=l==='gu'?0:1,G=l==='
     return String(t).trim();};
   const out=String(s).split(' · ').map(one).join(' · ');return hit?out:'';}
 // streaming overlay (OBS): the overlay window is a TV window with a small scoreboard on a plain colour
-try{if(location.hash==='#overlay'){sessionStorage.setItem('judoOvl','1');history.replaceState(null,'',location.pathname+location.search+'#display');}}catch(e){}
+try{const h=location.hash;if(h==='#overlay'||/^#obs\b/.test(h)){sessionStorage.setItem('judoOvl','1');
+  if(h==='#overlay')sessionStorage.removeItem('judoObsv');else{sessionStorage.setItem('judoObsv','1');const q={};h.slice(4).replace(/^[?&]/,'').split('&').forEach(x=>{const [k,v]=x.split('=');if(k)q[decodeURIComponent(k)]=decodeURIComponent(v||'');});sessionStorage.setItem('judoObsP',JSON.stringify(q));}
+  history.replaceState(null,'',location.pathname+location.search+'#display');}}catch(e){}
 window.OVL=(()=>{try{return location.hash==='#display'&&sessionStorage.getItem('judoOvl')==='1';}catch(e){return false;}})();
+window.OBSV=(()=>{try{return window.OVL&&sessionStorage.getItem('judoObsv')==='1';}catch(e){return false;}})();
 window.READONLY=false;
 window.VIEW=location.hash.indexOf('#v=')===0;
 if(window.VIEW){window.READONLY=true;
@@ -2306,7 +2356,7 @@ function renderRes(){const el=$('pgRes');if(!el)return;const cs=cats().filter(c=
 const LOGOS=[['app','Software logo','Top menu'],['org','Organiser logo','TV top-left · sheets'],['nat','National association','TV top-right · sheets'],['state','State association','TV top-right · sheets'],['dist','District association','TV top-right · sheets']];
 const APPNAMES=['TatamiPro','IpponDesk','ShiaiPro','Judo Arena Manager','MatMaster Judo'];
 function readLogo(file){return new Promise((ok,no)=>{const r=new FileReader();r.onload=()=>{const im=new Image();im.onload=()=>{const X=240,k=Math.min(1,X/Math.max(im.width||1,im.height||1)),c=document.createElement('canvas');c.width=Math.max(1,Math.round((im.width||X)*k));c.height=Math.max(1,Math.round((im.height||X)*k));c.getContext('2d').drawImage(im,0,0,c.width,c.height);ok(c.toDataURL('image/png'));};im.onerror=()=>no(new Error('not an image'));im.src=r.result;};r.onerror=()=>no(r.error);r.readAsDataURL(file);});}
-function renderBrand(){const el=$('pgBrand');if(!el)return;const b=BRAND(),L=b.logos||{};
+function renderBrand(){const el=$('pgBrand');if(!el)return;if(!window.OBSL)return setTimeout(renderBrand,100);const b=BRAND(),L=b.logos||{};
   el.innerHTML=`<h3 style="margin-bottom:10px">🎨 Branding &amp; logos</h3>
   <div class="brow"><label>Software name<input id="brName" value="${esc(b.name||'')}" placeholder="TatamiPro" maxlength="40"></label><div class="sugg"><span class="hint">Suggestions:</span>${APPNAMES.map(n=>`<button class="sm" data-nm="${esc(n)}">${esc(n)}</button>`).join('')}</div></div>
   <div class="lgrid">${LOGOS.map(([k,t,d])=>`<div class="lslot"><div class="lprev">${L[k]?`<img src="${esc(L[k])}" alt="">`:'<span class="hint">No logo</span>'}</div><b>${t}</b><small class="hint">${d}</small><div class="lbtn"><label class="filebtn sm">Upload<input type="file" accept="image/*" data-lg="${k}"></label>${L[k]?`<button class="sm warn" data-rm="${k}">Remove</button>`:''}</div></div>`).join('')}</div>
@@ -2314,8 +2364,16 @@ function renderBrand(){const el=$('pgBrand');if(!el)return;const b=BRAND(),L=b.l
   <div class="hint">Logos stay on this laptop (not inside the athlete data) and travel with the downloaded backup file. PNG or JPG; they are resized automatically.</div>
   <div class="brow"><label>🌐 Second language on the TV and printed sheets<select id="brLang"><option value="">English only</option><option value="gu"${b.lang==='gu'?' selected':''}>English + ગુજરાતી (Gujarati)</option><option value="hi"${b.lang==='hi'?' selected':''}>English + हिन्दी (Hindi)</option></select></label></div>
   <div class="hint">The English text stays; the translation is added under headings, table titles, round names, roles and signatures, and on the TV the category line switches language every 6 seconds. Names of athletes and districts are printed as typed. Windows shows Gujarati and Hindi with its built-in Nirmala UI font.</div>
-  <div class="brow ovrow"><b>🎥 Live streaming overlay (OBS / YouTube)</b><label>Position<select id="ovPos">${[['bl','Bottom left'],['br','Bottom right'],['tl','Top left'],['tr','Top right'],['bc','Bottom centre']].map(([v,t])=>`<option value="${v}"${(b.ovl||{}).pos===v?' selected':''}>${t}</option>`).join('')}</select></label><label>Size<select id="ovSz">${[['s','Small'],['m','Medium'],['l','Large']].map(([v,t])=>`<option value="${v}"${((b.ovl||{}).sz||'m')===v?' selected':''}>${t}</option>`).join('')}</select></label><label>Background<select id="ovBg">${[['green','Green (chroma key)'],['blue','Blue (chroma key)'],['magenta','Magenta (chroma key)'],['black','Black']].map(([v,t])=>`<option value="${v}"${((b.ovl||{}).bg||'green')===v?' selected':''}>${t}</option>`).join('')}</select></label><button id="ovOpen">Open overlay window</button></div>
-  <div class="hint">The overlay window shows the live scoreboard small, on a plain colour. In OBS: Sources → + → <b>Window Capture</b> → pick the overlay window → right-click the source → Filters → + <b>Chroma Key</b> (same colour). Keep the overlay window open (it can stay behind other windows; do not minimise it). A Browser Source in OBS cannot be used: it does not see this laptop's live data.</div>`;
+  <div class="obsbox" id="obsBox"><div class="obsh"><b>🎥 Live streaming overlay (OBS → YouTube / Facebook)</b><span class="obsst" id="obsSt"></span></div>
+   <ol class="obsteps">
+    <li><b>In OBS</b> (28 or newer, on this laptop): Tools → <b>WebSocket Server Settings</b> → tick <b>Enable WebSocket server</b> → <b>Show Connect Info</b> → copy the <b>Server Password</b>.</li>
+    <li><b>Here:</b> <span class="obsf"><label>Port<input id="obsPort" type="number" min="1" max="65535" value="${esc(String(OBSL.cfg().port||4455))}"></label><label>Password<input id="obsPw" type="password" autocomplete="off" value="${esc(OBSL.cfg().pw||'')}" placeholder="from OBS"></label><button class="pri" id="obsGo">${OBSL.cfg().on?'Reconnect':'Connect to OBS'}</button>${OBSL.cfg().on?'<button class="warn" id="obsStop">Disconnect</button>':''}</span><br>Chrome asks once to let this site reach <b>apps on this device</b> (local network): click <b>Allow</b>. After that it connects by itself every time TatamiPro opens.</li>
+    <li><b>In OBS:</b> Sources → <b>+</b> → <b>Browser</b> → URL <span class="obsurl" id="obsUrl">${esc(OBSL.link())}</span> <button class="sm" id="obsCopy">Copy link</button> → Width <b>1920</b>, Height <b>1080</b> → OK. Put it above the camera in the source list.</li></ol>
+   <div class="ovrow"><label>Style<select id="ovSt">${[['bar','Score bar (lower third)'],['full','Full scoreboard (small)']].map(([v,t])=>`<option value="${v}"${((b.ovl||{}).st||'bar')===v?' selected':''}>${t}</option>`).join('')}</select></label><label>Position<select id="ovPos">${[['bl','Bottom left'],['br','Bottom right'],['bc','Bottom centre'],['tl','Top left'],['tr','Top right']].map(([v,t])=>`<option value="${v}"${((b.ovl||{}).pos||'bl')===v?' selected':''}>${t}</option>`).join('')}</select></label><label>Size<select id="ovSz">${[['s','Small'],['m','Medium'],['l','Large']].map(([v,t])=>`<option value="${v}"${((b.ovl||{}).sz||'m')===v?' selected':''}>${t}</option>`).join('')}</select></label><button id="obsPrev">Preview here</button></div>
+   <div class="hint">Style, position and size change live in OBS: no need to touch the link again. The background is transparent (no green screen). Names, scores, shido, clock, golden score, osaekomi, the winner and the medal winners appear by themselves. Keep this TatamiPro tab open (it can stay in the background). OBS must run on this same laptop.</div>
+   <details><summary>Without the OBS WebSocket (old way): window capture + colour key</summary>
+    <div class="ovrow" style="margin-top:8px"><label>Background<select id="ovBg">${[['green','Green'],['magenta','Magenta'],['black','Black']].map(([v,t])=>`<option value="${v}"${((b.ovl||{}).bg||'green')===v?' selected':''}>${t}</option>`).join('')}</select></label><button id="ovOpen">Open overlay window</button></div>
+    <div class="hint">OBS: Sources → + → <b>Window Capture</b> → window "TatamiPro…" → Capture method <b>Windows 10 (1903 and up)</b> (a black picture means the wrong method) → right-click the source → Filters → + <b>Chroma Key</b> (same colour) → crop off the window's address bar with Alt + drag. Keep the window open, never minimised.</div></details></div>`;
   const put=f=>{const x=BRAND();f(x);if(!setBrand(x))return msg('Could not save: the browser storage is full. Use a smaller logo.');applyBrand();renderBrand();renderHome();};
   $('brName').onchange=()=>put(x=>{x.name=$('brName').value.trim();});
   el.querySelectorAll('[data-nm]').forEach(t=>t.onclick=()=>put(x=>{x.name=t.dataset.nm;}));
@@ -2323,7 +2381,14 @@ function renderBrand(){const el=$('pgBrand');if(!el)return;const b=BRAND(),L=b.l
   el.querySelectorAll('[data-rm]').forEach(t=>t.onclick=()=>put(x=>{x.logos=Object.assign({},x.logos||{});delete x.logos[t.dataset.rm];}));
   $('brGlass').onchange=()=>put(x=>{x.look=$('brGlass').checked?'glass':'classic';});
   $('brLang').onchange=()=>put(x=>{x.lang=$('brLang').value;});
-  const ov=()=>put(x=>{x.ovl={pos:$('ovPos').value,sz:$('ovSz').value,bg:$('ovBg').value};});$('ovPos').onchange=ov;$('ovSz').onchange=ov;$('ovBg').onchange=ov;
+  const ov=()=>put(x=>{x.ovl={st:$('ovSt').value,pos:$('ovPos').value,sz:$('ovSz').value,bg:$('ovBg').value};});['ovSt','ovPos','ovSz','ovBg'].forEach(id=>$(id).onchange=ov);
+  const obsSt=()=>{const e=$('obsSt');if(!e)return;const x=OBSL.status();e.className='obsst '+(x.st==='live'?'live':x.st==='err'?'err':'');e.textContent=x.st==='live'?'● Connected · live':x.st==='wait'?'Connecting…':x.st==='err'?'⚠ '+x.err:'○ Not connected';};obsSt();
+  if(!window._obsStL){window._obsStL=1;window.addEventListener('obsstatus',()=>{try{const e=document.getElementById('obsSt');if(e&&window._obsStF)window._obsStF();}catch(x){}});}window._obsStF=obsSt;
+  $('obsGo').onclick=()=>{const port=Math.round(+$('obsPort').value)||4455,pw=$('obsPw').value.trim();OBSL.start({port,pw});renderBrand();msg('Connecting to OBS… if Chrome asks about apps on this device / local network, click Allow.');};
+  if($('obsStop'))$('obsStop').onclick=()=>{OBSL.stop();renderBrand();};
+  $('obsPw').onkeydown=e=>{if(e.key==='Enter')$('obsGo').click();};
+  $('obsCopy').onclick=async()=>{const t=OBSL.link();let ok=false;try{await navigator.clipboard.writeText(t);ok=true;}catch(e){}if(!ok){try{const r=document.createRange();r.selectNodeContents($('obsUrl'));const sl=getSelection();sl.removeAllRanges();sl.addRange(r);ok=document.execCommand('copy');}catch(e){}}msg(ok?'Link copied: paste it as the URL of a Browser Source in OBS.':'Select the link and copy it (Ctrl+C).');};
+  $('obsPrev').onclick=()=>{let w=null;try{w=window.open(OBSL.link(),'judoObsPrev','width=1280,height=720,left=60,top=60');}catch(e){}if(!w)msg('Pop-up blocked: allow pop-ups for this site.');};
   $('ovOpen').onclick=()=>{let w=null;try{w=window.open(location.href.split('#')[0]+'#overlay','judoOverlay','width=1280,height=720,left=80,top=80');}catch(e){}if(!w)msg('Pop-up blocked: allow pop-ups for this site, then click Open overlay window again.');else msg('Overlay window opened: capture it in OBS with Window Capture + Chroma Key.');};$('brTv').onchange=()=>put(x=>{x.tvLogos=$('brTv').checked;});$('brPr').onchange=()=>put(x=>{x.printLogos=$('brPr').checked;});}
 // ---------- Privacy: how names appear on public outputs (QR pages, WhatsApp, TV QR) ----------
 function PRIV(){const m=M();m.priv=m.priv||{};return m.priv;}
@@ -3177,7 +3242,7 @@ window.DR={
 const $=id=>document.getElementById(id);
 const TV=location.hash==='#display';
 // second language on the TV: the category line switches between English and Gujarati / Hindi every 6 seconds
-var L2ON=false;setInterval(()=>{if(!LANG()||!(TV||document.body.classList.contains('display'))){L2ON=false;return;}L2ON=!L2ON;const e=document.getElementById('tCat');try{if(e&&S)e.textContent=(L2ON&&tr2(S.cat))||S.cat;}catch(x){}},6000);
+var L2ON=false;setInterval(()=>{if(!LANG()||!(TV||document.body.classList.contains('display'))){L2ON=false;return;}L2ON=!L2ON;const e=document.getElementById('tCat');try{if(e&&S)e.textContent=(L2ON&&tr2(S.cat))||S.cat;if(window.OVL)renderBar();}catch(x){}},6000);
 function paintLogos(){const b=BRAND(),L=b.logos||{},on=b.tvLogos!==false,l=document.getElementById('tlgL'),r=document.getElementById('tlgR');if(!l||!r)return;
   const im=x=>'<img src="'+String(x).replace(/"/g,'&quot;')+'" alt="">';l.innerHTML=on&&L.org?im(L.org):'';r.innerHTML=on?[L.nat,L.state,L.dist].filter(Boolean).map(im).join(''):'';}
 window.paintLogos=paintLogos;setTimeout(paintLogos,0);window.addEventListener('storage',e=>{if(e.key==='judoBrand')applyBrand();});
@@ -3259,7 +3324,74 @@ let S=fresh(),H=[];
 function load(){try{const s=JSON.parse(localStorage.getItem('judoSB2'));if(s&&s.p){S=s;}}catch(e){}}
 load(); if(!TV){S.run=false;S.oRun=false;}
 let bc=null; try{bc=new BroadcastChannel('judoSB2');}catch(e){}
-function publish(){if(window.READONLY&&!TV)return;const j=JSON.stringify(S);try{localStorage.setItem('judoSB2',j);}catch(e){} try{bc&&bc.postMessage(j);}catch(e){}}
+function publish(){if(window.READONLY&&!TV)return;const j=JSON.stringify(S);try{localStorage.setItem('judoSB2',j);}catch(e){} try{bc&&bc.postMessage(j);}catch(e){} try{if(!TV&&window.OBSL)OBSL.push();}catch(e){}}
+// ---------- Live streaming: the scoreboard goes to OBS through OBS's own WebSocket server; the Browser Source "#obs" shows it ----------
+// OBS (28 or newer) has the WebSocket server built in. This tab sends obs-browser "emit_event" requests; every Browser Source in OBS receives them
+// as a "tatamipro" JavaScript event. Nothing to install, no green screen, works offline (OBS runs on this same laptop).
+function sha256b64(ascii){ // small SHA-256 (fallback where crypto.subtle is missing)
+  const rr=(v,a)=>(v>>>a)|(v<<(32-a)),K=[],H=[];let p=2;
+  for(let c=0;c<64;p++){let pr=true;for(let d=2;d*d<=p;d++)if(p%d===0){pr=false;break;}if(pr){if(c<8)H[c]=(Math.pow(p,1/2)*4294967296)|0;K[c++]=(Math.pow(p,1/3)*4294967296)|0;}}
+  const s=unescape(encodeURIComponent(ascii)),bl=s.length*8;let m=s+'\x80';while(m.length%64-56)m+='\x00';const w=[];
+  for(let i=0;i<m.length;i++)w[i>>2]|=m.charCodeAt(i)<<((3-i)%4)*8;w.push((bl/4294967296)|0,bl|0);
+  let h=H.slice();
+  for(let j=0;j<w.length;j+=16){const W=w.slice(j,j+16),o=h.slice();
+    for(let i=0;i<64;i++){const w15=W[i-15],w2=W[i-2];if(i>=16)W[i]=(W[i-16]+(rr(w15,7)^rr(w15,18)^(w15>>>3))+W[i-7]+(rr(w2,17)^rr(w2,19)^(w2>>>10)))|0;
+      const a=h[0],e=h[4],t1=h[7]+(rr(e,6)^rr(e,11)^rr(e,25))+((e&h[5])^(~e&h[6]))+K[i]+W[i],t2=(rr(a,2)^rr(a,13)^rr(a,22))+((a&h[1])^(a&h[2])^(h[1]&h[2]));
+      h=[(t1+t2)|0].concat(h);h[4]=(h[4]+t1)|0;h.length=8;}
+    h=h.map((x,i)=>(x+o[i])|0);}
+  let bin='';h.forEach(x=>{for(let i=3;i>=0;i--)bin+=String.fromCharCode((x>>>(i*8))&255);});return btoa(bin);}
+async function sha64(s){try{if(window.crypto&&crypto.subtle&&window.isSecureContext){const d=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(s));let b='';new Uint8Array(d).forEach(x=>b+=String.fromCharCode(x));return btoa(b);}}catch(e){}return sha256b64(s);}
+var OBSL=(()=>{const CK='judoObs';let ws=null,st='off',err='',timer=null,last=0,lastB='',lastBT=0,rid=0,pend=false,live=false,beat=null,sent=0;
+  const cfg=o=>{let c={};try{c=JSON.parse(localStorage.getItem(CK)||'{}')||{};}catch(e){}if(o){c=Object.assign(c,o);try{localStorage.setItem(CK,JSON.stringify(c));}catch(e){}}return Object.assign({on:false,port:4455,pw:''},c);};
+  const admin=()=>!TV&&!window.VIEW&&!window.READONLY;
+  function show(s,e){st=s;err=e||'';try{const el=document.getElementById('stObs');if(el){el.style.display=s==='off'?'none':'';el.textContent=s==='live'?'🎥 OBS live':s==='wait'?'🎥 Connecting to OBS…':'⚠ OBS: '+err;el.classList.toggle('stwarn',s==='err');}}catch(x){}
+    try{window.dispatchEvent(new Event('obsstatus'));}catch(x){}}
+  function brandLite(){try{const o=JSON.parse(localStorage.getItem('judoBrand')||'{}')||{};return JSON.stringify({name:o.name,lang:o.lang,ovl:o.ovl,look:o.look,tvLogos:o.tvLogos,logos:o.tvLogos===false?undefined:o.logos});}catch(e){return '{}';}}
+  function retry(){clearTimeout(timer);if(cfg().on&&admin())timer=setTimeout(connect,5000);}
+  function connect(){const c=cfg();clearTimeout(timer);if(!admin()||!c.on){show('off');return;}try{if(ws){ws.onclose=null;ws.close();}}catch(e){}ws=null;live=false;if(st!=='err')show('wait');
+    let sock;try{sock=new WebSocket('ws://127.0.0.1:'+(Math.round(+c.port)||4455));}catch(e){show('err','cannot open the connection');return retry();}ws=sock;
+    sock.onmessage=async e=>{let m;try{m=JSON.parse(e.data);}catch(x){return;}
+      if(m.op===0){const a=m.d&&m.d.authentication,d={rpcVersion:1,eventSubscriptions:0};
+        if(a){if(!c.pw){show('err','password needed (OBS → Tools → WebSocket Server Settings → Show Connect Info)');try{sock.onclose=null;sock.close();}catch(x){}ws=null;return;}
+          d.authentication=await sha64((await sha64(c.pw+a.salt))+a.challenge);}
+        try{sock.send(JSON.stringify({op:1,d}));}catch(x){}}
+      else if(m.op===2){live=true;show('live');lastB='';push(true);clearInterval(beat);beat=setInterval(()=>push(true),2000);}
+      else if(m.op===7){const r=m.d&&m.d.requestStatus;if(r&&!r.result)show('err',/vendor/i.test(r.comment||'')?'the Browser Source plugin of OBS is missing (use the normal OBS download)':(r.comment||'request refused ('+r.code+')'));else if(r&&r.result&&st!=='live')show('live');}};
+    sock.onclose=e=>{if(ws!==sock)return;ws=null;live=false;clearInterval(beat);
+      if(e.code===4009){show('err','wrong password · copy it again from OBS → Tools → WebSocket Server Settings');return;}
+      if(e.code===4010)show('err','this OBS is too old: use OBS 28 or newer');else show('err','OBS not found · open OBS and tick Tools → WebSocket Server Settings → Enable WebSocket server');retry();};
+    sock.onerror=()=>{};}
+  function push(force){if(!live||!ws||ws.readyState!==1)return;const now=Date.now();
+    if(!force&&now-last<100){if(!pend){pend=true;setTimeout(()=>{pend=false;push(true);},110);}return;}last=now;
+    const d={v:1,S,t:now};const b=brandLite();if(b!==lastB||now-lastBT>15000){d.b=b;lastB=b;lastBT=now;}
+    try{ws.send(JSON.stringify({op:6,d:{requestType:'CallVendorRequest',requestId:'tp'+(++rid),requestData:{vendorName:'obs-browser',requestType:'emit_event',requestData:{event_name:'tatamipro',event_data:d}}}}));sent++;}catch(e){}}
+  function start(o){cfg(Object.assign({on:true},o||{}));show('wait');connect();}
+  function stop(){cfg({on:false});clearTimeout(timer);clearInterval(beat);live=false;try{if(ws){ws.onclose=null;ws.close();}}catch(e){}ws=null;show('off');}
+  if(admin()&&cfg().on)setTimeout(connect,900);
+  return {cfg,start,stop,push,status:()=>({st,err,sent}),link:()=>location.href.split('#')[0]+'#obs'};})();
+window.OBSL=OBSL;
+
+// ---------- compact score bar for the streaming overlay (lower third) ----------
+function renderBar(){let el=document.getElementById('ovBar');
+  if(!el){el=document.createElement('div');el.id='ovBar';el.innerHTML=`<div class="obCard"><div class="obTop"><span class="obCat"></span><span class="obMat"></span></div>
+    <div class="obMain"><div class="obRows">${['w','b'].map(p=>`<div class="obRow ${p}"><span class="obNm"><b></b><small></small></span><span class="obTag">WINNER</span><span class="obSh"></span><span class="obSc"><i class="obI"><u>I</u><em></em></i><i class="obW"><u>W</u><em></em></i><i class="obY"><u>Y</u><em></em></i></span></div>`).join('')}</div>
+    <div class="obClock"><div class="obGs">GOLDEN SCORE</div><div class="obT"></div><div class="obOs"></div></div></div>
+    <div class="obPod"></div></div><div class="obWin"></div>`;document.body.appendChild(el);}
+  const q=s=>el.querySelector(s),E=v=>String(v==null?'':v).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+  {const ct=S.pod?(S.pod.cat||''):(S.cat||'');q('.obCat').textContent=(L2ON&&tr2(ct))||ct;}q('.obMat').textContent=[S.mat,S.match?'Match '+S.match:''].filter(Boolean).join(' · ');
+  el.classList.toggle('noyuko',!S.yuko);
+  for(const p of ['w','b']){const P=S.p[p],r=q('.obRow.'+p);
+    r.querySelector('.obNm b').textContent=((P.f?P.f+' ':'')+(P.n||'')).trim()||(p==='w'?'White':'Blue');r.querySelector('.obNm small').textContent=P.club||P.c||'';
+    r.querySelector('.obI em').textContent=P.i;r.querySelector('.obW em').textContent=P.wa;r.querySelector('.obY em').textContent=P.y;
+    r.querySelector('.obSh').innerHTML=P.h?'<span class="r"></span>':'<span></span>'.repeat(Math.min(3,P.s||0));
+    r.classList.toggle('win',S.win===p);r.classList.toggle('osa',!!S.osa&&S.osa===p);}
+  const c=q('.obClock');c.classList.toggle('run',!!S.run);c.classList.toggle('gs',!!S.gs);q('.obT').textContent=fmt(S.ms,S.gs);
+  const o=q('.obOs');if(S.osa){o.classList.add('on');o.className='obOs on '+S.osa;o.innerHTML=`<b>${Math.floor((S.oms||0)/1000)}</b> ${S.oRun?'OSAEKOMI':'SONO-MAMA'}`;}else o.className='obOs';
+  const w=q('.obWin');if(S.win&&!S.pod){const P=S.p[S.win];w.className='obWin on '+S.win;w.innerHTML=`🏆 <b>${E(((P.f?P.f+' ':'')+(P.n||'')).trim()||(S.win==='w'?'White':'Blue'))}</b>${S.why?' · '+E(S.why):''}`;}else w.className='obWin';
+  const pd=q('.obPod');if(S.pod){const P=S.pod,L=(m,a)=>a&&a[0]?`<div class="obPl"><span>${m}</span><b>${E(a[0])}</b><small>${E(a[1]||'')}</small></div>`:'';
+    pd.innerHTML=`<div class="obPt">MEDAL WINNERS${tr2('medal winners')?' · '+E(tr2('medal winners')):''}</div>${L('🥇',P.g)}${L('🥈',P.s)}${(P.b||[]).map(b=>L('🥉',b)).join('')}`;el.classList.add('pod');}
+  else el.classList.remove('pod');}
+
 
 function cards(P){if(P.h)return '<div class="card red"></div>';let h='';for(let i=0;i<P.s;i++)h+='<div class="card"></div>';return h;}
 function nameOf(p){return S.p[p].n||(p==='w'?'White':'Blue');}
@@ -3302,12 +3434,20 @@ function render(){
   {const kd=S.win&&S.showWin?S.win+'|'+S.match+'|'+(S.cat||'')+'|'+S.why:'';if(kd&&render._win!==kd){const big=TV||document.body.classList.contains('display');setTimeout(()=>FX.burst($('winFx'),/gold/.test(wo.className)?'gold':/bronze/.test(wo.className)?'bronze':'win',big),350);}render._win=kd;}
   $('res').textContent=S.win?(nameOf(S.win)+' wins · '+S.why):(S.why||'');
   renderClock();
+  if(window.OVL)try{renderBar();}catch(e){}
   if(!TV)publish();
   if(!TV&&window.SB&&SB.refreshRun&&document.activeElement!==document.getElementById('runCat'))try{SB.refreshRun();}catch(e){}
 }
 
 if(TV){
   document.body.classList.add('tv');if(window.OVL)applyBrand();
+  if(window.OBSV){let lastB='',got=false;const inObs=!!window.obsstudio;let wait=null;
+    if(inObs){document.body.classList.add('obsnodata');wait=document.createElement('div');wait.id='obsWait';wait.innerHTML='<b>TatamiPro overlay</b><br>Waiting for the scoreboard…<br><small>On the scoring laptop: Settings → Branding → Live streaming → Connect to OBS</small>';document.body.appendChild(wait);}
+    const take=d=>{if(typeof d==='string'){try{d=JSON.parse(d);}catch(e){return;}}if(!d||!d.S||!d.S.p)return;
+      if(!got){got=true;document.body.classList.remove('obsnodata');if(wait)wait.remove();}
+      if(d.b&&d.b!==lastB){lastB=d.b;try{localStorage.setItem('judoBrand',d.b);}catch(e){}try{applyBrand();if(window.paintLogos)paintLogos();}catch(e){}}
+      S=d.S;render();};
+    window.addEventListener('tatamipro',e=>take(e.detail));}
   if(bc)bc.onmessage=e=>{try{S=JSON.parse(e.data);render();}catch(x){}};
   window.addEventListener('storage',e=>{if(e.key==='judoSB2'&&e.newValue){try{S=JSON.parse(e.newValue);render();}catch(x){}}});
   const hint=document.createElement('div');hint.id='fsHint';
