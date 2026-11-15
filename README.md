@@ -1,4 +1,4 @@
-# TatamiPro · Judo tournament manager (v18.3)
+# TatamiPro · Judo tournament manager (v18.5)
 
 Draw (seeding, ranking, qualifier, knockout up to 128), weigh-in, live scoreboard + TV, schedule, results, prints, QR pages and WhatsApp sharing, in one web page. The name and logo can be changed in Settings.
 
@@ -21,6 +21,24 @@ Draw (seeding, ranking, qualifier, knockout up to 128), weigh-in, live scoreboar
 - Chrome / Edge (Windows, Mac, Linux, Android): the **⬇ Install** button in the top bar (or browser menu → Install).
 - iPhone / iPad: Safari → Share → Add to Home Screen.
 - Laptop and desktop get the desktop layout; phones get the phone layout (menu scrolls sideways, tables scroll).
+
+## v18.5 · audit fixes after a full 4-laptop trial (15 Nov 2026)
+Trial: main desk (also Mat 1) + Mat 2 + Mat 3 + call room laptop in one live room, a whole tournament played on three mats at once, with Mat 3 losing the internet and the main desk leaving and rejoining. Faults found and fixed:
+- **Settings overwritten on join (serious):** a laptop joining the room could overwrite the main desk's settings (for example the schedule's mats and mat per category) with its own empty defaults. Now the room's settings always win on joining.
+- **Lock left behind:** a mat that finished a category while offline left its 🔒 in the room. A lock is now removed only when the room confirms it, and the main desk clears leftover locks of finished categories.
+- **Same category on two mats:** a mat coming back online did not register its lock, and a laptop out of the room forgot the other mats' locks. Locks asked for while offline are now written as soon as the room answers. Last known locks are kept (also after a reload). While a laptop is out of touch, Load next only goes on with its own categories (a new one by hand). The app reconnects at once when the internet is back, and restarts a silent connection after 75 s.
+- Clear all / new list in the room also clears the old locks. A run category taken over by another mat is unpinned. A mat laptop locks a category as soon as it loads a contest from it.
+- The schedule only limits Load next when it really gives categories to mats. A renamed laptop tells the room at once. The draw page does not refresh while you type.
+- Tip: give every category its mat in the Schedule (number of mats + mat per category). Then no two mats can ever start the same category, even without internet.
+
+## v18.4 · no clashes between mats (15 Nov 2026)
+- **Run category stays shown** (Scoreboard): the category you pick stays selected (green frame), also after Load next, after a result and after a reload. "Load next" first continues that category. Pick "▶ Run category: automatic" to go back to the schedule.
+- **Load next goes through every waiting contest** (1 → 2 → 3 → 4 …), not back and forth between two.
+- **Category lock between mats (live room)**: the mat that starts a category (picks it in Run category, uses Load next, or presses Hajime) owns it. On the other mats it shows as 🔒 "running on Mat 1" and cannot be loaded; a contest that was loaded there but not started moves to another category by itself. Finished categories are struck through and closed on the mat laptops; only the main desk can open them. The lock is released when the category is finished, or with "✋ Hand over" in Run category. The main desk can take over a locked category by picking it twice.
+- **Mat laptops follow the schedule**: when the schedule has more than one mat, "Load next" on a mat laptop only gives the categories of its own mat (from the mat name, e.g. "Mat 2").
+- **Leave / Rejoin live room**: when the main desk leaves the room, the mat laptops stay connected and keep sharing. Settings → Live sync → **↻ Rejoin the room** brings the main desk back with every result. "Create live room" now asks first while the old room exists (a new room would not have the mats in it).
+- **Three laptop roles**: Main desk · Mat laptop (Scoreboard, Weigh-in, Mat setup) · **Call room laptop** (ID card check-in, weigh-in, Fusen-gachi for absent athletes, call room TV). Mat laptops no longer show check-in; the main desk has a "📣 Call room TV" button in the weigh-in bar.
+- **Safety**: warning in the status bar when two laptops in the room have the same mat name; the browser asks before closing the page while the clock is running; the screen does not go to sleep on the scoreboard, TV and call room pages.
 
 ## v18.3 · stricter Mat Mode, Fusen-gachi at check-in, reminder to delete online data (15 Nov 2026)
 - **Mat Mode** (Settings → Laptop role → Mat laptop): the menu shows only **Weigh-in**, **Scoreboard** and **Mat setup**. Dashboard, Draw, Schedule, Results, Officials, Print and Settings cannot be opened on a mat laptop. Mat setup keeps only what belongs to that laptop: role, live sync (join), backups (download), sound and the OBS overlay. Set the admin PIN (main desk role) before switching, so only the main desk can switch back.
