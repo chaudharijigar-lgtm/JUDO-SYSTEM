@@ -1162,8 +1162,12 @@ body.ovl[data-ovpos=tr] #ovBar{left:auto;right:2.2vw;bottom:auto;top:4vh}body.ov
 /* mat mode */
 body.matmode #genAll,body.matmode #clear,body.matmode #demo,body.matmode #tpl,body.matmode label.filebtn:has(#file),body.matmode #rkFileL,body.matmode #mk,body.matmode #ed,body.matmode #lk,
 body.matmode #drawSec header .matcfg:has(#dmSel),body.matmode #drawSec header .matcfg:has(#fmtSel),body.matmode #drawSec header .matcfg:has(#rrSel),body.matmode #athT [data-d],body.matmode #athPanel .form,
-body.matmode #pgBrand,body.matmode #pgSec,body.matmode #evPanel,body.matmode .sycol:has(#syNew),body.matmode #syLeave,body.matmode #syClose,body.matmode label.filebtn:has(#bkRestore),body.matmode #bkList [data-bk],
+body.matmode #pgSec,body.matmode .sycol:has(#syNew),body.matmode #syLeave,body.matmode #syClose,body.matmode label.filebtn:has(#bkRestore),body.matmode #bkList [data-bk],
 body.matmode #mainMenu [data-page=off],body.matmode #wipeBtn{display:none!important}
+/* mat laptop: menu = Scoreboard · Weigh-in · Mat setup; Mat setup keeps only what belongs to this laptop (role, live sync, backups, sound, OBS overlay) */
+body.matmode #mainMenu [data-page=home],body.matmode #mainMenu [data-page=draw],body.matmode #mainMenu [data-page=sched],body.matmode #mainMenu [data-page=res],body.matmode #mainMenu [data-page=print],body.matmode #navShare,
+body.matmode #pgBrand>:not(#obsBox),body.matmode #evPanel>:not(.sndbar):not(#sn_hint),body.matmode #pgPractice,body.matmode #syRules,body.matmode #rep,body.matmode #rkFileL{display:none!important}
+body.matmode #evPanel{padding-top:6px}
 #appStat .rolebadge{background:#ff9f0a;color:#111;font-weight:900;border-radius:6px;padding:1px 8px}
 .rolegrid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:10px 0}.rolebox{display:grid;grid-template-columns:auto 1fr;column-gap:10px;row-gap:4px;align-items:center;padding:12px;border:1px solid rgba(127,127,127,.3);border-radius:12px;cursor:pointer}
 .rolebox.on{border-color:#30d158;box-shadow:0 0 0 1px #30d158 inset}.rolebox input{width:18px!important;height:18px;margin:0;padding:0!important;accent-color:#30d158}.rolebox span{font-size:13px;opacity:.8;grid-column:2}@media (max-width:800px){.rolegrid{grid-template-columns:1fr}}
@@ -1171,6 +1175,7 @@ body.matmode #mainMenu [data-page=off],body.matmode #wipeBtn{display:none!import
 #logPanel{margin-top:14px;max-width:100%;min-width:0;grid-template-columns:minmax(0,1fr)}#pgCheck,#pgRole,#pgPractice{grid-template-columns:minmax(0,1fr)}#logPanel>*{max-width:100%}#logPanel .tools{flex-wrap:wrap}#logK{max-width:100%;min-width:0;text-overflow:ellipsis}
 #matTag{display:inline-block;max-width:16ch;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;vertical-align:bottom}#logPanel summary{cursor:pointer;font-weight:800}.logt td{font-size:13px;vertical-align:top}.logt tr.lgchg td{color:#ff9f0a}
 /* check-in */
+.ciabs{margin-top:10px;display:grid;gap:6px;grid-template-columns:minmax(0,1fr)}.ciabs .tblwrap{overflow-x:auto;max-width:100%}.ciabs td{font-size:13px;padding:4px 8px;vertical-align:middle}.cino{color:#ff453a}body.light .cino{color:#c81e1e}
 #pgCheck .cirow{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:8px 0}#pgCheck .cirow input{flex:1;min-width:240px}
 #ciVid{width:100%;max-width:420px;border-radius:12px;margin:6px 0;background:#000}
 .cipick{display:flex;flex-wrap:wrap;gap:6px;margin:6px 0}.cilast{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}.cilast span{background:rgba(48,209,88,.16);border-radius:99px;padding:3px 10px;font-size:13px}
@@ -1233,7 +1238,7 @@ body.practice.tv::after,body.practice.display::after{content:'PRACTICE';position
 </style>
 </head>
 <body data-tab="draw" class="glass">
-<footer id="appStat"><span id="stSave">● Saved</span><span id="stCnt"></span><span id="stDone"></span><span id="roleBadge" class="rolebadge" style="display:none"></span><span id="stClock" class="stwarn" style="display:none;cursor:pointer"></span><span id="stTv"></span><span id="stObs" style="display:none"></span><span id="stSync" style="display:none"></span><span id="stBk"></span><span class="sp"></span><span id="stMat"></span><span id="stClk"></span></footer>
+<footer id="appStat"><span id="stSave">● Saved</span><span id="stCnt"></span><span id="stDone"></span><span id="roleBadge" class="rolebadge" style="display:none"></span><span id="stClock" class="stwarn" style="display:none;cursor:pointer"></span><span id="stTv"></span><span id="stObs" style="display:none"></span><span id="stSync" style="display:none"></span><span id="stCloseNag" class="stwarn" style="display:none;cursor:pointer"></span><span id="stBk"></span><span class="sp"></span><span id="stMat"></span><span id="stClk"></span></footer>
 <div id="lockOv"><div><b>⚠ Admin already open</b><p id="lockTxt"></p><button onclick="takeControl()">Take control in this tab</button><p style="font-size:13px;opacity:.7">Only one admin screen can control the tournament at a time. The TV window is separate and is fine.</p></div></div>
 <nav id="topNav"><div class="brand" id="brandBox" title="Dashboard"><span class="blogo" id="brandLogo">TP</span><span class="bname"><b><span id="brandName">TatamiPro</span> <span id="matTag" style="color:#f5c518"></span></b><small id="brandEv">Judo tournament manager</small></span></div><div class="menu" id="mainMenu"><button data-page="home"><svg viewBox="0 0 24 24"><path d="M3 11.5 12 4l9 7.5"/><path d="M5.5 10v9.5h13V10"/><path d="M10 19.5v-5h4v5"/></svg><span>Dashboard</span></button><button data-page="ath"><svg viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.2"/><path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6"/><circle cx="17.5" cy="9" r="2.4"/><path d="M16 14.2c2.8.2 5 2.6 5 5.8"/></svg><span>Athletes</span></button><button id="tabDraw" data-page="draw"><svg viewBox="0 0 24 24"><path d="M3 5h5v4H3zM3 15h5v4H3zM16 10h5v4h-5zM8 7h3v10H8M11 12h5"/></svg><span>Draw</span></button><button id="tabSb" data-page="sb"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="13" rx="2"/><path d="M8 21h8M12 17v4M7.5 10.5h3M13.5 10.5h3"/></svg><span>Scoreboard</span></button><button data-page="sched"><svg viewBox="0 0 24 24"><rect x="3.5" y="5" width="17" height="15.5" rx="2"/><path d="M3.5 10h17M8 3v4M16 3v4M7.5 13.5h3M7.5 17h3M13.5 13.5h3"/></svg><span>Schedule</span></button><button data-page="res"><svg viewBox="0 0 24 24"><path d="M8 21h8M12 17v4M7 4h10v5a5 5 0 0 1-10 0z"/><path d="M7 6H4v1a3 3 0 0 0 3 3M17 6h3v1a3 3 0 0 1-3 3"/></svg><span>Results</span></button><button data-page="off"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="9" cy="11" r="2.2"/><path d="M5.8 16.3c.6-1.6 1.8-2.4 3.2-2.4s2.6.8 3.2 2.4M14.5 10h4M14.5 13.5h3"/></svg><span>Officials</span></button><button data-page="print"><svg viewBox="0 0 24 24"><path d="M7 9V3.5h10V9"/><rect x="3.5" y="9" width="17" height="8" rx="1.5"/><path d="M7 14h10v6.5H7z"/></svg><span>Print</span></button><button data-page="set"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1A1.7 1.7 0 0 0 4.6 9a1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg><span>Settings</span></button></div><div class="acts"><button id="navInstall" style="display:none" title="Install as an app on this device">⬇ Install</button><button id="navShare" title="Share on WhatsApp: details, schedule, fixtures, results"><svg viewBox="0 0 24 24"><path d="M4 20l1.2-3.6A8 8 0 1 1 8 19.1z"/><path d="M9 8.6c0 3.2 2.9 6.4 6.3 6.6l1.1-1.4-1.9-1-0.9.8c-1-.4-2.1-1.5-2.5-2.5l.8-.9-1-1.9z"/></svg><span>Share</span></button><button id="navLock" style="display:none" title="Lock the admin now (PIN needed to open)"><svg viewBox="0 0 24 24"><rect x="5" y="10.5" width="14" height="10" rx="2"/><path d="M8 10.5V7.5a4 4 0 0 1 8 0v3"/></svg><span>Lock</span></button><button id="navTV" title="Open the TV window"><svg viewBox="0 0 24 24"><rect x="2.5" y="5" width="19" height="12.5" rx="2"/><path d="M8 21h8M9 2l3 3 3-3"/></svg><span>TV</span></button><button id="thBtn" title="Dark / Light mode">☀ Light</button></div></nav>
 <div id="shOv"><div class="shm"><div class="shh"><b>📤 Share on WhatsApp</b><button id="shX">Close</button></div>
@@ -1253,7 +1258,7 @@ body.practice.tv::after,body.practice.display::after{content:'PRACTICE';position
     <input id="matName" placeholder="Mat 1" style="width:80px">
     <select id="matG"><option value="All">All athletes</option><option value="Male">Boys / Male only</option><option value="Female">Girls / Female only</option></select></span>
   <span class="matcfg">Draw:
-    <select id="dmSel"><option value="rank">Ranking order (1 v last) when ranked</option><option value="seed">Top-8 seeds + random</option><option value="rand">Random (no ranking, no seeds)</option></select></span>
+    <select id="dmSel"><option value="rank">Ranking order (1 v last) when ranked</option><option value="seed">Top-8 seeds + random</option><option value="rand">Random · ranked &amp; districts kept apart</option></select></span>
   <span class="matcfg">Format:
     <select id="fmtSel"><option value="ijf">IJF (repechage + 2 bronze contests)</option><option value="ko">Simple knockout (SF losers bronze)</option></select></span>
   <span class="matcfg" title="Organiser's choice: small categories as a round robin (every athlete meets every other) instead of the knockout">Small categories:
@@ -2154,7 +2159,7 @@ function renderSync(){const el=$('pgSync');if(!el)return;const c=SYNC.cfg(),x=SY
       <div class="syrow"><input readonly value="${esc(code)}" id="syCodeOut"><button class="sm" id="syCopyCode">Copy code</button></div><div class="tools"><button class="sm" id="syCopyLink">Copy join link</button><button class="sm" id="syWaLink">📤 WhatsApp join link</button></div></div>
      <div class="sycol"><b>Public live results page</b><div class="hint">Anyone with this link sees every mat live, medal winners, the district medal tally and the overall championship (read only).</div>
       <div class="syrow"><input readonly value="${esc(ll)}"><button class="sm" id="syCopyLive">Copy</button></div><div class="tools"><button class="sm" id="syOpenLive">Open</button><button class="sm" id="syWaLive">📤 WhatsApp</button><button class="sm" id="syQrLive">QR to print / show</button></div><div id="syQr"></div></div></div>
-    ${c.host?`<div class="sycl"><b>After the tournament</b><div class="hint">Deletes the online room and the public results page (all laptops keep their own data). The join link and the live link stop working. Needs the new rules (Copy rules → Publish) from version 18.</div><button class="warn" id="syClose">🗑 Close tournament &amp; delete online data</button></div>`:''}
+    ${c.host?`<div class="sycl"><b>After the tournament</b><div class="hint">Deletes the online room and the public results page (all laptops keep their own data). The join link and the live link stop working. Sub-junior and cadet athletes are minors: close the room soon after the results are final, and follow your federation's rules on children's data. Needs the new rules (Copy rules → Publish) from version 18.</div><button class="warn" id="syClose">🗑 Close tournament &amp; delete online data</button></div>`:''}
     <div class="tools"><label class="chk"><input type="checkbox" id="syPub"${c.pub?' checked':''}> This laptop updates the public results page (one laptop is enough: the main desk)</label><label class="chk"><input type="checkbox" id="syLive"${c.live!==false?' checked':''}> Show this laptop's scoreboard on the live page (untick if this laptop does not run a mat)</label><button id="syNow">Sync now</button><button class="warn" id="syLeave">Leave the room</button></div>
     ${x.log&&x.log.length?`<div class="sylog"><b>Recent</b>${x.log.map(l=>`<div><span class="hint">${new Date(l.t).toLocaleTimeString()}</span> ${esc(l.a)}</div>`).join('')}</div>`:''}
     <div class="hint">Draws, results, weigh-ins, officials and event settings are shared. Deleting is never shared (a cleared laptop gets everything back from the room). If two laptops change the same category, results are merged contest by contest. Each laptop's scoreboard stays its own.</div>`;}
@@ -2210,17 +2215,26 @@ window.LIVEPG=root=>{let q;try{q=SYNC.b64d(location.hash.slice(6));}catch(e){roo
 function NOW(){return Date.now()+(+window.SRVOFF||0);}
 // ---------- laptop role: main desk (everything) or mat laptop (scoreboard, weigh-in, results; no re-draw, uploads, clear, settings) ----------
 const MATMODE=()=>{try{return localStorage.getItem('judoRole')==='mat';}catch(e){return false;}};
-function applyRole(){const on=MATMODE();document.body.classList.toggle('matmode',on);const b=$('roleBadge');if(b){b.style.display=on?'':'none';b.textContent='MAT MODE'+(MATCFG().mat?' · '+MATCFG().mat:'');}}
+function applyRole(){const on=MATMODE();document.body.classList.toggle('matmode',on);
+  document.querySelectorAll('#mainMenu [data-page=ath] span,#mainMenu [data-page=set] span').forEach(x=>{if(!x.dataset.lbl)x.dataset.lbl=x.textContent;x.textContent=on?(x.closest('[data-page=ath]')?'Weigh-in':'Mat setup'):x.dataset.lbl;const bt=x.closest('button');if(bt)bt.title=x.textContent;});
+  if(on&&window.goPage&&!/^(sb|ath|set)$/.test(document.body.dataset.page||''))try{goPage('sb');}catch(e){}const b=$('roleBadge');if(b){b.style.display=on?'':'none';b.textContent='MAT MODE'+(MATCFG().mat?' · '+MATCFG().mat:'');}}
 const MAT_BLOCK='#genAll,#mk,#ed,#clear,#demo,#tpl,#athT [data-d],#addA,#aAdd,#bkList [data-bk],#wipeBtn,#qMk,#qBtn,#lk,#syNew,#syLeave,#syClose';
 document.addEventListener('click',e=>{if(!MATMODE())return;const t=e.target.closest&&e.target.closest(MAT_BLOCK);if(!t)return;e.stopImmediatePropagation();e.preventDefault();
   msg('Mat mode: this is done on the main desk laptop. (Settings → Laptop role to change, admin PIN needed.)');},true);
 document.addEventListener('change',e=>{if(!MATMODE())return;const t=e.target;if(!t||!t.id||!/^(file|rkFile|dmSel|fmtSel|rrSel|bkRestore)$/.test(t.id))return;e.stopImmediatePropagation();
   if(t.type==='file')t.value='';else try{t.value=t.dataset.v||t.value;}catch(x){}msg('Mat mode: this is done on the main desk laptop.');},true);
+function closeNag(){const el=$('stCloseNag');if(!el)return;let c={};try{c=window.SYNC?SYNC.cfg():{};}catch(e){}
+  const m=M(),end=m.d2||m.d1||'',d=new Date(NOW()),t=d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+  let done=false;try{const st=window.DR&&DR.status?DR.status():[];done=st.length>0&&st.every(x=>x.done);}catch(e){}
+  const on=!!(c.on&&c.host&&!window.PRACTICE&&!window.READONLY&&((end&&t>end)||done));el.style.display=on?'':'none';
+  if(on){el.textContent=done?'⚠ All contests done · close the online room':'⚠ Event over · close the online room';el.title='Athlete names (minors too) are still online. Click: Settings → Live sync → Close tournament.';}}
+setTimeout(()=>{const el=$('stCloseNag');if(el)el.onclick=()=>{try{goPage('set');}catch(e){}setTimeout(()=>{const b=$('syClose');if(b)b.scrollIntoView({block:'center',behavior:'smooth'});},300);};closeNag();},1200);
+window.addEventListener('syncstatus',()=>{try{closeNag();}catch(e){}});setInterval(()=>{try{closeNag();}catch(e){}},60000);
 function setRole(r){try{if(r==='mat')localStorage.setItem('judoRole','mat');else localStorage.removeItem('judoRole');}catch(e){}applyRole();renderRole();try{goPage(r==='mat'?'sb':'set');}catch(e){}}
 function renderRole(){const el=$('pgRole');if(!el)return;const on=MATMODE(),pin=hasPin();
   el.innerHTML=`<div class="obsh"><h3>🖥 Laptop role</h3><span class="obsst ${on?'live':''}">${on?'Mat laptop'+(MATCFG().mat?' · '+esc(MATCFG().mat):''):'Main desk'}</span></div>
    <div class="rolegrid"><label class="rolebox${on?'':' on'}"><input type="radio" name="role" value="main"${on?'':' checked'}><b>Main desk</b><span>Everything: uploads, draws, re-draw, settings, prints, live room.</span></label>
-   <label class="rolebox${on?' on':''}"><input type="radio" name="role" value="mat"${on?' checked':''}><b>Mat laptop</b><span>Scoreboard, weigh-in, draws to look at, results, prints, backups. No re-draw, no uploads, no Clear all, no settings: nothing on a mat can change the whole tournament by mistake.</span></label></div>
+   <label class="rolebox${on?' on':''}"><input type="radio" name="role" value="mat"${on?' checked':''}><b>Mat laptop</b><span>Only Scoreboard, Weigh-in &amp; check-in and Mat setup (live sync, backups, sound, OBS). No draw page, re-draw, uploads, Clear all or settings: nothing on a mat can change the whole tournament by mistake.</span></label></div>
    <div class="hint">${on?'Switching back to main desk needs the admin PIN'+(pin?'.':' (no PIN set yet: anyone can switch back · set one under Security).'):'Set the mat name first (Draw page → Mat), then choose Mat laptop. '+(pin?'The admin PIN is needed to switch back.':'Tip: set an admin PIN under Security so mat operators cannot switch back.')}</div>`;
   el.querySelectorAll('input[name=role]').forEach(i=>i.onchange=()=>{const v=i.value;if(v==='mat'){setRole('mat');msg('Mat mode on for this laptop.');}else needPin('Switch this laptop back to main desk',()=>{setRole('main');msg('This laptop is the main desk again.');});renderRole();});}
 // ---------- clock check: the web page's Date header (any laptop online) or the Firebase server time (live sync) ----------
@@ -2247,8 +2261,8 @@ function pageLog(){const L=allLog().filter(x=>(!logF.k||x.k===logF.k)&&(!logF.ch
   return chunk(L.slice().reverse(),26).map((pg,i,all)=>`<div class="ppage">${gHead('Change log','Results entered, changed and removed'+(logF.k?' · '+logF.k:'')+(all.length>1?' · sheet '+(i+1)+' of '+all.length:''))}<div class="prb"><div class="prbi"><table class="pss pls"><colgroup><col style="width:38mm"><col style="width:20mm"><col style="width:60mm"><col></colgroup><tr><th>Time</th><th>Mat</th><th>Category</th><th>What</th></tr>${pg.map(x=>`<tr><td>${esc(new Date(x.t).toLocaleString())}</td><td class="qv">${esc(x.m)}</td><td>${esc(x.k)}</td><td>${/changed|removed|cleared/i.test(x.a)?'<b>'+esc(x.a)+'</b>':esc(x.a)}</td></tr>`).join('')}</table></div></div>${gFoot()}</div>`).join('');}
 // ---------- call room: next contests on every mat (TV window "#callroom") and check-in ----------
 function upNext(k){const out=[],dr=D.draws[k],q=QZ()[k];
-  if(q&&q.stage==='q')q.m.forEach((m,i)=>{if(m.w||m.auto)return;const [a,b]=qPlayers(q,i);if(a&&b)out.push({k,no:m.no||i+1,round:'Qualifier',a,b});});
-  if(dr)eachM(dr,(m,r,i)=>{if(m.w||m.bye||m.void)return;const [a,b]=players(dr,r,i);if(a&&b)out.push({k,no:m.no||0,round:rnameD(dr,r),a,b});});
+  if(q&&q.stage==='q')q.m.forEach((m,i)=>{if(m.w||m.auto)return;const [a,b]=qPlayers(q,i);if(a&&b)out.push({k,no:m.no||i+1,round:'Qualifier',a,b,r:'q',i});});
+  if(dr)eachM(dr,(m,r,i)=>{if(m.w||m.bye||m.void)return;const [a,b]=players(dr,r,i);if(a&&b)out.push({k,no:m.no||0,round:rnameD(dr,r),a,b,r,i});});
   return out.sort((x,y)=>(x.no||999)-(y.no||999));}
 function callData(per){const rows=schedCalc().filter(r=>r.kind==='c'&&r.stat!=='fin'),mats={};
   for(const r of rows){const L=mats[r.mat]=mats[r.mat]||[];if(L.length>=per)continue;for(const x of upNext(r.k)){if(L.length>=per)break;L.push(x);}}
@@ -2288,14 +2302,22 @@ async function ciCam(on){const v=$('ciVid');if(!on){if(ciStream)ciStream.getTrac
     try{if(ciDet){const r=await ciDet.detect(v);if(r&&r[0])txt=r[0].rawValue;}else{const w=Math.min(800,v.videoWidth),h=Math.round(v.videoHeight*w/v.videoWidth);cv.width=w;cv.height=h;cx.drawImage(v,0,0,w,h);const r=jsQR(cx.getImageData(0,0,w,h).data,w,h,{inversionAttempts:'dontInvert'});if(r)txt=r.data;}}catch(e){}
     if(txt){ciBusy=Date.now()+2500;ciInput(txt);}},250);renderCheck();}
 function renderCheck(){const el=$('pgCheck');if(!el)return;const A=D.ath.filter(a=>!a.dq),n=A.filter(a=>a.ci).length,cam=!!ciStream;
-  const nxt=callData(3).flatMap(m=>m.list.slice(0,3).flatMap(x=>[x.a,x.b])).map(byId).filter(a=>a&&!a.ci);
+  const ab=callData(3).flatMap(m=>m.list.slice(0,3).map(x=>Object.assign({mat:m.mat},x))).filter(x=>{const a=byId(x.a),b=byId(x.b);return a&&b&&(!a.ci||!b.ci);});
+  const nc=a=>a.ci?'✓ '+esc(a.name):'<b class="cino">'+esc(a.name)+'</b>';
   const vid=$('ciVid');if(vid&&vid.parentNode!==el){}
   el.querySelector('.cibody').innerHTML=`<div class="cirow"><input id="ciIn" placeholder="Scan the ID card QR (USB scanner) or type a name, then Enter" autocomplete="off"><button class="pri" id="ciGo">Check in</button><button id="ciCamB">${cam?'⏹ Stop camera':'📷 Camera'}</button><button id="ciCall">📣 Call room screen</button></div>
     ${ciPick.length?`<div class="cipick">${ciPick.map(a=>`<button class="sm" data-ci="${esc(a.id)}">${esc(a.name)} · ${esc(a.club||'')} · ${esc(catKey(a))}${a.ci?' ✓':''}</button>`).join('')}</div>`:''}
-    <div class="hint">Checked in: <b>${n}</b> of ${A.length}${nxt.length?` · ⚠ not checked in for the next contests: <b>${nxt.slice(0,8).map(a=>esc(a.name)).join(', ')}</b>${nxt.length>8?' …':''}`:''}</div>
+    <div class="hint">Checked in: <b>${n}</b> of ${A.length}${n?'':' · after the first check-in, athletes missing for the next contests are listed here'}</div>
+    ${n&&ab.length?`<div class="ciabs"><b>⚠ Not checked in · next contests</b><div class="tblwrap"><table class="mtab"><tbody>${ab.map((x,j)=>{const a=byId(x.a),b=byId(x.b),one=!a.ci!==!b.ci,win=a.ci?a:b;
+      return `<tr><td>Mat ${esc(x.mat)}${x.no?' · Match '+x.no:''}</td><td>${esc(x.k)} · ${esc(x.round)}</td><td>${nc(a)} v ${nc(b)}</td><td>${one?`<button class="sm warn" data-fg="${j}">Fusen-gachi → ${esc(win.name)}</button>`:'<span class="hint">both not here</span>'}</td></tr>`;}).join('')}</tbody></table></div>
+      <div class="hint">Fusen-gachi when the athlete was called and did not come (as the referee / jury decides): click twice. It is saved like any result and shows in the change log.</div></div>`:''}
     ${ciLast.length?`<div class="cilast">${ciLast.map(x=>`<span>${x.again?'↺':'✓'} ${esc(x.n)} <small>${esc(x.c||'')}</small></span>`).join('')}</div>`:''}
     ${n?'<div class="tools"><button class="sm warn" id="ciReset">Clear all check-ins</button></div>':''}`;
   const go=()=>{const v=$('ciIn').value;$('ciIn').value='';ciPick=[];ciInput(v);};
+  el.querySelectorAll('[data-fg]').forEach(bt=>bt.onclick=()=>{if(bt.dataset.arm!=='1'){const t0=bt.textContent;bt.dataset.arm='1';bt.textContent='Click again to confirm';setTimeout(()=>{if(bt.isConnected&&bt.dataset.arm==='1'){bt.dataset.arm='';bt.textContent=t0;}},4000);return;}
+    const x=ab[+bt.dataset.fg],a=byId(x.a),b=byId(x.b);if(!a||!b)return;const miss=a.ci?b:a,win=a.ci?a:b;
+    const done=window.DR&&DR.setResult({cat:x.k,r:x.r,i:x.i},win.id,{why:'Fusen-gachi ('+miss.name+' did not come)'});
+    msg(done?'Fusen-gachi: '+win.name+' wins · '+miss.name+' did not come':'Not saved: this contest has changed. Look at the draw.');renderCheck();});
   $('ciGo').onclick=go;$('ciIn').onkeydown=e=>{if(e.key==='Enter'){e.preventDefault();go();}};$('ciCamB').onclick=()=>ciCam(!cam);
   $('ciCall').onclick=()=>{const w=window.open(location.href.split('#')[0]+'#callroom','judoCallroom','width=1280,height=720');if(!w)msg('Pop-up blocked: allow pop-ups for this site.');};
   el.querySelectorAll('[data-ci]').forEach(b=>b.onclick=()=>{const a=byId(b.dataset.ci);ciPick=[];if(a)ciMark({a},'list');});
@@ -2507,7 +2529,7 @@ function doImport(all,live){
   if(window.SB&&SB.clearHist)SB.clearHist();
   const cfg=MATCFG();const a=cfg.g==='All'?all:all.filter(x=>x.gender===cfg.g);const skipped=all.length-a.length;
     if(D.ath.length&&!confirmReplace())D.ath=D.ath.concat(a);else{D.ath=a;D.draws={};D.quals={};}
-    for(const c of cats())makeDraw(c.k);cur=cats().length?cats()[0].k:null;save();renderAll();report(D.ath);if(window.SB&&SB.autoLoad(true,true))msg(a.length+' athletes · '+cats().length+' draws made · Match 1 is ready in the Scoreboard tab');msg(a.length+' athletes loaded · '+cats().length+' category draws made ('+(drawMode()==='rand'?'random draw':'seeded, clubs kept apart')+')'+(live?' · sent to all laptops in the live room':'')+' · first match is ready in the Scoreboard tab'+(skipped?' · '+skipped+' athletes of other mat skipped':''));
+    for(const c of cats())makeDraw(c.k);cur=cats().length?cats()[0].k:null;save();renderAll();report(D.ath);if(window.SB&&SB.autoLoad(true,true))msg(a.length+' athletes · '+cats().length+' draws made · Match 1 is ready in the Scoreboard tab');msg(a.length+' athletes loaded · '+cats().length+' category draws made ('+(drawMode()==='rand'?'random draw, ranked and districts kept apart':'seeded, clubs kept apart')+')'+(live?' · sent to all laptops in the live room':'')+' · first match is ready in the Scoreboard tab'+(skipped?' · '+skipped+' athletes of other mat skipped':''));
   return true;}
 // small yes / no question inside the page (works in an installed app and on every browser)
 function askBox(title,text,okLabel,fn){let ov=document.getElementById('askOv');if(ov)ov.remove();ov=document.createElement('div');ov.id='askOv';
@@ -2521,7 +2543,7 @@ $('rkFile').onchange=e=>{const f=e.target.files[0];e.target.value='';if(!f)retur
 
 $('dmSel').onchange=()=>{if(window.READONLY)return;M().drawMode=$('dmSel').value;let n=0;
   for(const c of cats()){const dr=D.draws[c.k];if(dr&&!dr.locked&&!hasResults(dr)&&!c.list.some(a=>a.qrk>0)){makeDraw(c.k);n++;}}
-  save();renderAll();msg(({rank:'Ranked athletes are now placed in ranking order (1 v last).',seed:'Top-8 seeds + random draw.',rand:'Random draw: ranking and seed numbers are ignored, every place is drawn by lot.'}[$('dmSel').value]||'')+(n?' '+n+' draws without results were made again.':' Locked draws and draws with results were kept.'));};
+  save();renderAll();msg(({rank:'Ranked athletes are now placed in ranking order (1 v last).',seed:'Top-8 seeds + random draw.',rand:'Random draw by lot: rank and seed numbers are not used for the order. Athletes with a rank or seed go to different pools (they can meet from the semi-final) and athletes of the same district are kept apart.'}[$('dmSel').value]||'')+(n?' '+n+' draws without results were made again.':' Locked draws and draws with results were kept.'));};
 $('fmtSel').onchange=()=>{try{localStorage.setItem('judoFmt',$('fmtSel').value);}catch(e){}
   const any=Object.values(D.draws).some(dr=>{let x=false;eachM(dr,m=>{if(m.w&&!m.bye)x=true;});return x;});
   if(!any&&D.ath.length){for(const c of cats())makeDraw(c.k);save();renderAll();window.SB&&SB.autoLoad(true,true);msg('Format changed · all draws made again');}
@@ -2540,21 +2562,42 @@ function order(size){let o=[1,2];while(o.length<size){const n=o.length*2,r=[];fo
 function meetRound(i,j){return Math.floor(Math.log2(i^j));}
 const drawMode=()=>(D.meta&&D.meta.drawMode)||'rank';
 const rkCmp=(a,b)=>((a.rk>0)&&(b.rk>0)?a.rk-b.rk:a.rk>0?-1:b.rk>0?1:0)||(b.pts||0)-(a.pts||0)||String(a.name).localeCompare(b.name);
+// Random draw: every place is drawn by lot (rank and seed numbers are not used for the order).
+// Athletes with a rank or seed go to different pools, so they can meet from the semi-final (quarter-final only when there are more than 4);
+// athletes of the same club / district are kept as far apart as possible (different pools, never in the first round when it can be avoided).
+const isProt=a=>a.rk>0||a.seed>0;
+function randPlace(list,occ,R,start){const n=list.length,base=start?start.slice():occ.slice();if(n<2)return base;
+  const cl=list.map(a=>(a.club||'').trim().toLowerCase()),pr=list.map(isProt),adj=list.map(()=>[]);
+  for(let x=0;x<n;x++)for(let y=x+1;y<n;y++){let w=0;if(pr[x]&&pr[y])w+=1000;if(cl[x]&&cl[x]===cl[y])w+=1;if(w){adj[x].push([y,w]);adj[y].push([x,w]);}}
+  const pen=(i,j)=>Math.pow(4,R-1-meetRound(i,j));
+  const cost=p=>{let c=0;for(let x=0;x<n;x++)for(const [y,w] of adj[x])if(y>x)c+=w*pen(p[x],p[y]);return c;};
+  const part=(p,x,at,skip)=>{let c=0;for(const [y,w] of adj[x])if(y!==skip)c+=w*pen(at,p[y]);return c;};
+  let best=base,bc=Infinity;const tries=start?1:6,iters=Math.max(300,n*60);
+  for(let t=0;t<tries;t++){const p=base.slice();if(!start)for(let i=n-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[p[i],p[j]]=[p[j],p[i]];}
+    let c=cost(p);
+    for(let it=0;it<iters;it++){const x=Math.floor(Math.random()*n),y=Math.floor(Math.random()*n);if(x===y)continue;
+      const d=part(p,x,p[y],y)+part(p,y,p[x],x)-part(p,x,p[x],y)-part(p,y,p[y],x);
+      if(d<0||(d===0&&!start)){const z=p[x];p[x]=p[y];p[y]=z;c+=d;}}
+    if(c<bc){bc=c;best=p;}}
+  return best;}
 function makeDraw(k){
   if(QZ()[k]&&QZ()[k].stage==='q')return;   // qualifier round still running: the knockout is made by "Apply cut"
   const list=D.ath.filter(a=>catKey(a)===k&&!a.dq&&!a.nq);const n=list.length;if(!n)return;
   {const R=RRMAX();if(R&&n>=3&&n<=R){D.draws[k]=rrMake(list);resolve(k);save();return;}}
   const size=Math.max(2,1<<Math.ceil(Math.log2(Math.max(n,1))));
   const ord=order(size),slotOf={};ord.forEach((r,i)=>slotOf[r]=i);
+  if(drawMode()==='rand'&&!list.some(a=>a.qrk>0)){const occ=[];for(let i=1;i<=n;i++)occ.push(slotOf[i]);   // byes spread over the pools as usual
+    const pos=randPlace(list,occ,Math.log2(size)),slots=Array(size).fill(null);list.forEach((a,x)=>slots[pos[x]]=a.id);
+    const rounds=[];for(let s=size/2;s>=1;s/=2)rounds.push(Array.from({length:s},()=>({w:null})));
+    D.draws[k]={slots,rounds,size,fmt:fmtNow(),rnd:1};resolve(k);save();return;}
   // order of placement: qualifier rank → ranking column (full order, 1 v last) → seeds; the rest are drawn with clubs kept apart
   const isR=a=>a.rk>0||a.pts>0,expl=list.some(a=>a.seed>0&&!a.sr);let seeded,un;
   if(list.some(a=>a.qrk>0)){seeded=list.filter(a=>a.qrk>0).sort((a,b)=>a.qrk-b.qrk);un=list.filter(a=>!(a.qrk>0));}
-  else if(drawMode()==='rand'){seeded=[];un=list.slice();}
   else if(drawMode()==='rank'&&!expl&&list.some(isR)){seeded=list.filter(isR).sort(rkCmp);un=list.filter(a=>!isR(a));}
   else{seeded=list.filter(a=>a.seed>0).sort((a,b)=>a.seed-b.seed);un=list.filter(a=>!(a.seed>0));}
   let best=null,bestCost=Infinity;
   const clubOf={};for(const a of list)clubOf[a.id]=(a.club||'').trim().toLowerCase();
-  const R=Math.log2(size),tries=drawMode()==='rand'&&!list.some(a=>a.qrk>0)?1:size>=32?150:400;   // random: one plain shuffle, nothing else
+  const R=Math.log2(size),tries=size>=32?150:400;
   for(let t=0;t<tries;t++){
     const sh=un.slice();for(let i=sh.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[sh[i],sh[j]]=[sh[j],sh[i]];}
     const slots=Array(size).fill(null);
@@ -2685,6 +2728,11 @@ function poolOf(dr,p){const q=dr.size>=8?dr.size/4:0;return q?'ABCD'[Math.floor(
 function drawChecks(dr){
   const out=[],S=dr.slots,size=dr.size,A=i=>S[i]&&byId(S[i]);
   for(let i=0;i<size;i+=2){const a=A(i),b=A(i+1);if(a&&b&&a.club&&a.club.toLowerCase()===b.club.toLowerCase())out.push({lv:'warn',t:`Same club in first round: ${a.name} v ${b.name} (${a.club})`,p:[i,i+1]});}
+  if(dr.rnd){const L=Math.log2(size),Pr=[];S.forEach((id,i)=>{const a=id&&byId(id);if(a&&isProt(a))Pr.push([i,a]);});
+    for(let x=0;x<Pr.length;x++)for(let y=x+1;y<Pr.length;y++){const m=meetRound(Pr[x][0],Pr[y][0]);
+      if(m===0&&Pr.length<=size/2)out.push({lv:'err',t:`Ranked athletes meet in the first round: ${Pr[x][1].name} v ${Pr[y][1].name}`,p:[Pr[x][0],Pr[y][0]]});
+      else if(m>0&&size>=8&&m<L-2&&Pr.length<=4)out.push({lv:'warn',t:`Ranked athletes in the same pool: ${Pr[x][1].name} and ${Pr[y][1].name} (could meet before the semi-final)`,p:[Pr[x][0],Pr[y][0]]});}
+    return out;}
   const pos={};S.forEach((id,i)=>{const a=id&&byId(id);if(a&&a.seed>0)pos[a.seed]=i;});
   const half=i=>Math.floor(i/(size/2)),qt=i=>Math.floor(i/(size/4));
   if(pos[1]!=null&&pos[2]!=null&&half(pos[1])===half(pos[2]))out.push({lv:'err',t:'Seed 1 and Seed 2 are in the same half (IJF: opposite halves)'});
@@ -2733,6 +2781,11 @@ function giveBye(k,p,quiet){const dr=D.draws[k],S=dr.slots,me=S[p],opp=p^1;if(!m
   const pick=c[0],t=S.slice();[t[opp],t[pick.bye]]=[t[pick.bye],t[opp]];
   return applySlots(k,t,`BYE given to ${nmOf(me)} · ${nmOf(S[pick.holder])} now meets ${nmOf(S[opp])}`,[p,opp,pick.holder,pick.bye]);}
 function autoFix(k){const dr=D.draws[k],size=dr.size,before=dr.slots.slice();let t=dr.slots.slice(),steps=[];
+  if(dr.rnd){const at=[];before.forEach((id,i)=>{if(id&&byId(id))at.push(i);});const list=at.map(i=>byId(before[i]));
+    let occ=at,st=at;if(dblBye(before)){const so={};order(size).forEach((r,i)=>so[r]=i);occ=[];for(let i=1;i<=list.length;i++)occ.push(so[i]);st=null;}   // byes broken by hand: spread them again
+    const pos=randPlace(list,occ,Math.log2(size),st),z=Array(size).fill(null);list.forEach((a,x)=>z[pos[x]]=a.id);
+    if(z.join('|')===before.join('|'))return msg('✔ Nothing to fix: ranked athletes and districts are already as far apart as this draw allows');
+    const moved=[];z.forEach((x,i)=>{if(x!==before[i])moved.push(i);});return applySlots(k,z,'Auto-fix: ranked athletes and districts moved further apart',moved);}
   const ord=order(size),slotOf={};ord.forEach((r,i)=>slotOf[r]=i);
   const list=t.filter(Boolean).map(byId).filter(Boolean),seeded=list.filter(a=>a.seed>0).sort((a,b)=>a.seed-b.seed);
   seeded.forEach((a,i)=>{const tg=slotOf[i+1],cu=t.indexOf(a.id);if(cu!==tg){const x=t.slice();[x[tg],x[cu]]=[x[cu],x[tg]];if(!dblBye(x)){t=x;steps.push('S'+a.seed+' → IJF pool place');}}});
@@ -3487,7 +3540,8 @@ function pBox(dr,r,i,sub){const m=getM(dr,r,i),[a,b]=players(dr,r,i);
 function pHead(k,title,qt){const n=D.ath.filter(a=>catKey(a)===k).length,m=M();
   return `<div class="phd"><div class="pqr" data-qr="${qt||'s'}" data-k="${esc(k)}"></div><div class="pevb">${pLogos()}<div class="pev">${esc(evName())}</div>${m.org?`<div class="pmt">${esc(m.org)}</div>`:''}<div class="pmt">${esc(evLine())}</div><div class="pmt">${esc(MATCFG().mat||'')} · ${n} athletes${m.level?' · '+esc(m.level):''}</div></div><div class="pti"><div class="pcat">${esc(k)}</div><div class="pst">${esc(title)}</div></div><div class="pdt">${(()=>{const dr=D.draws[k];if(!dr)return '';return dr.locked?'<b>DRAW LOCKED</b><br>'+new Date(dr.locked).toLocaleString()+'<br>Draw ID '+drawId(dr):'<b style="color:#b45309">DRAFT · not locked</b><br>Draw ID '+drawId(dr);})()}<br>Printed ${new Date().toLocaleString()}</div></div>`;}
 const pNote='<div class="pnote">Seeding per IJF placement: Seed 1 → Pool A, Seed 2 → Pool C, Seed 3 → Pool D, Seed 4 → Pool B, Seeds 5–8 one per pool · byes to top seeds first · athletes of the same club/district separated as far as possible. Format: IJF repechage (QF losers) with two bronze medal contests, or simple knockout where selected.</div>';
-function pFootF(){const m=M();return pNote+`<div class="pft"><span>Chief referee: ${m.chief?esc(m.chief)+' ':''}________________</span><span>Technical delegate: ${m.td?esc(m.td)+' ':''}________________</span><span>Tournament director: ${m.dir?esc(m.dir)+' ':''}________________</span></div>`;}
+const pNoteR='<div class="pnote">Random draw by lot: rank and seed numbers are not used for the order · athletes with a rank or seed are placed in different pools (A–D), so they can meet from the semi-final · athletes of the same club/district separated as far as possible · byes spread over the pools. Format: IJF repechage (QF losers) with two bronze medal contests, or simple knockout where selected.</div>';
+function pFootF(k){const m=M();return (k&&D.draws[k]&&D.draws[k].rnd?pNoteR:pNote)+`<div class="pft"><span>Chief referee: ${m.chief?esc(m.chief)+' ':''}________________</span><span>Technical delegate: ${m.td?esc(m.td)+' ':''}________________</span><span>Tournament director: ${m.dir?esc(m.dir)+' ':''}________________</span></div>`;}
 function pMedal(k){const md=medals(k),A=id=>{const a=id&&byId(id);return a?esc(a.name)+' <span class="pc">'+esc(a.club)+'</span>':'';},one=D.draws[k]&&D.draws[k].fmt==='rr';
   return `<table class="pmd"><tr><th>Gold</th><th>Silver</th><th>Bronze</th>${one?'':'<th>Bronze</th>'}</tr><tr><td>${A(md&&md.gold)}</td><td>${A(md&&md.silver)}</td><td>${A(md&&md.bronze[0])}</td>${one?'':`<td>${A(md&&md.bronze[1])}</td>`}</tr></table>`;}
 function pageElim(k){const dr=D.draws[k];const L=dr.rounds.length;if(L<3)return '';const E=L-3,first=dr.rounds[0].length,parts=Math.max(1,first/8);
@@ -3496,20 +3550,20 @@ function pageElim(k){const dr=D.draws[k];const L=dr.rounds.length;if(L<3)return 
   for(let h=0;h<parts;h++){let cols='';
     for(let r=0;r<=E;r++){const len=dr.rounds[r].length;if(len<parts)continue;const per=len/parts,idx=[];for(let i=h*per;i<(h+1)*per;i++)idx.push(i);
       cols+=`<div class="pcol"><div class="prn">${rname(r,L)}</div><div class="pcb">${idx.map(i=>pBox(dr,r,i)).join('')}</div></div>`;}
-    out+=`<div class="ppage">${pHead(k,'Stage 1 · Elimination up to Quarter-final'+(parts>1?' · '+names[h]:''))}<div class="pbr">${cols}</div>${pFootF()}</div>`;}
+    out+=`<div class="ppage">${pHead(k,'Stage 1 · Elimination up to Quarter-final'+(parts>1?' · '+names[h]:''))}<div class="pbr">${cols}</div>${pFootF(k)}</div>`;}
   return out;}
 function pageFinal(k){const dr=D.draws[k];if(dr.fmt==='rr')return pagePool(k);const L=dr.rounds.length;let grid='',t;
   const col=(title,boxes)=>`<div class="pcol"><div class="prn">${title}</div><div class="pcb">${boxes}</div></div>`;
   if(dr.x){t='Stage 2 · Final block: Repechage · Semi-finals · Bronze medal contests · Final';
     grid=col('Repechage',pBox(dr,-1,0,'QF1 loser v QF2 loser')+pBox(dr,-1,1,'QF3 loser v QF4 loser'))+col('Semi-final',pBox(dr,L-2,0)+pBox(dr,L-2,1))+col('Bronze medal contests',pBox(dr,-2,0,'Rep. A/B winner v SF2 loser')+pBox(dr,-2,1,'Rep. C/D winner v SF1 loser'))+col('Final',pBox(dr,L-1,0));}
   else{t=L>=3?'Stage 2 · Semi-finals · Final':'Pool draw · all contests';for(let r=Math.max(0,L-2);r<L;r++)grid+=col(rname(r,L),dr.rounds[r].map((m,i)=>pBox(dr,r,i)).join(''));}
-  return `<div class="ppage">${pHead(k,t)}<div class="pfb">${grid}</div>${pMedal(k)}${pFootF()}</div>`;}
+  return `<div class="ppage">${pHead(k,t)}<div class="pfb">${grid}</div>${pMedal(k)}${pFootF(k)}</div>`;}
 function pageRes(k){const rows=rankRows().out.filter(x=>x.cat===k).sort((a,b)=>(a.rank||99)-(b.rank||99)||a.name.localeCompare(b.name));
   const nc=rows.length<=18?1:rows.length<=40?2:3,per=Math.ceil(rows.length/nc)||1;
   const th=`<tr><th>Rank</th><th>Name</th><th>District / Club</th><th>${nc>2?'Won':'Matches won'}</th></tr>`,tr=x=>`<tr><td>${x.rank||(x.dq?'DQ':x.nq?'NQ':'–')}</td><td>${esc(x.name)}</td><td>${esc(x.club)}</td><td>${x.won}</td></tr>`;
   const tb=Array.from({length:nc},(_,c)=>`<table class="pmd prk">${th}${rows.slice(c*per,(c+1)*per).map(tr).join('')}</table>`).join('');
   const list=nc>1?`<div class="prk2${nc>2?' c3':''}">${tb}</div>`:tb;
-  return `<div class="ppage">${pHead(k,'Results · Medals and rank list','r')}${pMedal(k)}<div class="prb"><div class="prbi">${list}</div></div>${pFootF()}</div>`;}
+  return `<div class="ppage">${pHead(k,'Results · Medals and rank list','r')}${pMedal(k)}<div class="prb"><div class="prbi">${list}</div></div>${pFootF(k)}</div>`;}
 // shrink any bracket column / rank list that would run into the footer, so every page fits on its A4 sheet
 function fitPrint(pa){
   pa.classList.add('pmeasure');
@@ -4293,11 +4347,12 @@ if(TV){
   {const pp=$('prPanel'),ev=$('evtPanel');if(pp&&ev&&ev.parentNode)ev.parentNode.insertBefore(pp,ev);}
   {const br=$('pgBrand'),evp=$('evPanel'),sc=$('pgSec'),bp=$('bkPanel');if(br&&evp&&sc&&bp){br.parentNode.insertBefore(evp,br);sc.after(bp);}}   // Settings: details → branding → security → backups   // Print centre: print panel first, saved events below
   let page='',busy=false;
+  const MM=()=>{try{return localStorage.getItem('judoRole')==='mat';}catch(e){return false;}};
   function show(p){if(busy)return;busy=true;try{
-    if(!PAGES[p])p='home';page=p;B.dataset.page=p;try{localStorage.setItem('judoPage',p);}catch(e){}
+    if(!PAGES[p])p='home';if(MM()){B.classList.add('matmode');if(!/^(sb|ath|set)$/.test(p))p='sb';}page=p;B.dataset.page=p;try{localStorage.setItem('judoPage',p);}catch(e){}
     if(window.tab&&B.dataset.tab!==(p==='sb'?'sb':'draw'))window.tab(p==='sb'?'sb':'draw');
     document.querySelectorAll('#mainMenu [data-page]').forEach(b=>b.classList.toggle('on',b.dataset.page===p));
-    $('phT').textContent=PAGES[p][0];$('phS').textContent=PAGES[p][1];
+    const TT=(MM()&&{ath:['Weigh-in & check-in','Mat laptop: weigh the athletes and check them in · uploads, draws and settings are on the main desk'],set:['Mat setup','Mat laptop: role, live sync, backups, sound and the OBS overlay of this laptop · everything else is on the main desk']}[p])||PAGES[p];$('phT').textContent=TT[0];$('phS').textContent=TT[1];
     ({ath:['athPanel'],set:['evPanel','bkPanel'],print:['evtPanel']}[p]||[]).forEach(id=>{const d=$(id);if(d)d.open=true;});
     if(p==='print'&&getComputedStyle($('prPanel')).display==='none'&&window.openPrintPanel)openPrintPanel();
     if(window.APP){if(p==='home')APP.renderHome();if(p==='res')APP.renderRes();if(p==='sched')APP.renderSched();if(p==='set'){APP.renderSec();if(window.renderSnd)renderSnd();if(APP.bindBkFolder)APP.bindBkFolder();if(APP.renderSync)APP.renderSync();if(APP.renderRole)APP.renderRole();if(APP.renderPractice)APP.renderPractice();}if(p==='ath'&&APP.renderCheck)APP.renderCheck();if(p==='off'&&APP.renderOff)APP.renderOff();}

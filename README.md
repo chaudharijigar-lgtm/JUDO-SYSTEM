@@ -1,4 +1,4 @@
-# TatamiPro · Judo tournament manager (v18.1)
+# TatamiPro · Judo tournament manager (v18.3)
 
 Draw (seeding, ranking, qualifier, knockout up to 128), weigh-in, live scoreboard + TV, schedule, results, prints, QR pages and WhatsApp sharing, in one web page. The name and logo can be changed in Settings.
 
@@ -22,13 +22,25 @@ Draw (seeding, ranking, qualifier, knockout up to 128), weigh-in, live scoreboar
 - iPhone / iPad: Safari → Share → Add to Home Screen.
 - Laptop and desktop get the desktop layout; phones get the phone layout (menu scrolls sideways, tables scroll).
 
+## v18.3 · stricter Mat Mode, Fusen-gachi at check-in, reminder to delete online data (15 Nov 2026)
+- **Mat Mode** (Settings → Laptop role → Mat laptop): the menu shows only **Weigh-in**, **Scoreboard** and **Mat setup**. Dashboard, Draw, Schedule, Results, Officials, Print and Settings cannot be opened on a mat laptop. Mat setup keeps only what belongs to that laptop: role, live sync (join), backups (download), sound and the OBS overlay. Set the admin PIN (main desk role) before switching, so only the main desk can switch back.
+- **Check-in → Fusen-gachi**: after the first check-in, the Weigh-in page lists the next contests on every mat where an athlete has not checked in. One button (click twice) gives Fusen-gachi to the athlete who is present. It is saved like any result and appears in the change log.
+- **Delete online data after the event**: on the main desk that created the live room, a red reminder appears in the status bar once the event dates are over or every contest is done ("close the online room"). Clicking it opens Close tournament. Sub-junior and cadet athletes are minors: close the room soon after the results are final, and confirm the rules on children's data with your federation.
+- Already in v18: Call room screen (Weigh-in → 📣 Call room screen), QR check-in (camera / USB scanner / name), change log (Results page + Print → 📜 Change log), Practice mode (Settings → Practice), Close tournament (Settings → Live sync).
+
+## v18.2 · random draw with ranked athletes and districts kept apart (15 Nov 2026)
+- Draw page → Draw: **Random · ranked & districts kept apart** (third option, next to "Ranking order" and "Top-8 seeds + random").
+- Every place is drawn by lot. The rank and seed numbers are **not** used for the order.
+- Athletes who have a rank or a seed in the Excel file go to **different pools (A–D)**, so they can meet only from the **semi-final**. With more than 4 such athletes in a category, the extra ones meet at the quarter-final at the earliest, and as few of those meetings as possible.
+- Athletes of the **same district** go to different pools and never meet in the first round, whenever the numbers allow it.
+- Byes are spread over the pools as usual. Draws with results or locked draws are kept. Draw editor → Auto-fix tidies a hand-edited random draw by the same rules. The printed sheet says which rule was used.
+
 ## v18.1 · live room fixes + random draw (15 Nov 2026)
 - **Clear all and Upload Excel now work in a live sync room.** Before, they were blocked while the laptop was in a room (to stop athletes doubling). Now Clear all (click twice) empties the athletes, draws and results on **every laptop in the room**. Uploading a new list over an existing one first asks "Replace the athlete list on ALL laptops?" and then replaces it everywhere, once (no doubling). Every laptop keeps a backup first. A laptop that was offline follows when it comes back. Without internet nothing is deleted.
-- **Random draw**: Draw → Draw: **Random (no ranking, no seeds)**. Every place is drawn by lot. Ranking, points and seed numbers are ignored, and clubs are not kept apart. Draws that already have results or are locked are kept.
 - Mat laptops in Mat Mode still cannot clear or upload (main desk only).
 
 ## New in v18 · tournament-day safety (15 Nov 2026)
-- **Laptop role** (Settings → Laptop role): *Mat laptop* keeps the scoreboard, weigh-in, results, prints and backups, and hides/blocks Make all draws, Re-draw, Edit, Lock, Clear all, Excel upload, demo data, branding and the live-room create/leave/close buttons. An orange badge in the status bar shows the role. With an admin PIN set (Settings → Security), switching back to Main desk needs the PIN.
+- **Laptop role** (Settings → Laptop role): *Mat laptop* hides/blocks Make all draws, Re-draw, Edit, Lock, Clear all, Excel upload, demo data, branding and the live-room create/leave/close buttons (from v18.3 the menu shows only Weigh-in, Scoreboard and Mat setup). An orange badge in the status bar shows the role. With an admin PIN set (Settings → Security), switching back to Main desk needs the PIN.
 - **Clock check**: when the laptop clock is more than 1 minute off the internet time (live sync server or the website's own clock), a red warning shows in the status bar. New results are stamped with the corrected time, so the change log and merges stay in order.
 - **Close tournament** (Settings → Live sync, main desk that created the room): deletes the online room and the public live results page. Every laptop keeps its own data; the join and live links stop working. Needs the **new Firebase rules** (Copy rules → Firebase → Realtime Database → Rules → Publish).
 - **Call room screen** (Athletes → Check-in → 📣 Call room screen, or `#callroom`): a TV page with the next 5 contests on every mat (on the mat · get ready · warm up), with check-in marks. Updates by itself.
