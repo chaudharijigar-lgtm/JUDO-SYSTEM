@@ -876,6 +876,10 @@ body.tv #tvQr.on,body.display #tvQr.on{display:flex}
 #op #decBox .decg button{padding:9px 6px!important;font-size:13px!important}
 #op #decBox .decg button:nth-child(odd){background:#f3f4f6!important;color:#111!important;border-color:#fff!important}
 #op #decBox .decg button:nth-child(even){background:#1f5fd6!important;color:#fff!important;border-color:#1f5fd6!important}
+#op #hskBox{border:1px solid rgba(255,69,58,.55);border-radius:12px;padding:8px;background:rgba(255,69,58,.08)}
+#op #hskBox .dech{font-size:13px;font-weight:800;color:#ff6b61;margin-bottom:6px}
+#op #hskBox .decg{display:grid;grid-template-columns:1fr 1fr auto;gap:6px}
+#op #hskBox .decg button{padding:9px 8px!important;font-size:13px!important;white-space:normal}
 /* v15 · print menus */
 .prsplit{display:inline-flex;gap:0}
 body:not(.tv):not(.view) .prsplit #pr{border-top-right-radius:0!important;border-bottom-right-radius:0!important}
@@ -1177,6 +1181,8 @@ body.matmode:not(.callrole) #pgCheck,body.matmode #ciCall2,body.callrole #mainMe
 body.lockedmat .sycol:has(#syJoin){display:none!important}
 #printArea .poff{justify-content:flex-start;gap:5mm;flex-wrap:wrap;border-top-style:dashed}#printArea .poff b{font-weight:700}#printArea .poff .pofs{font-weight:700}
 #printArea .pev2{font-size:7.5pt}.rfev{font-size:12px;opacity:.8;max-width:260px}.scses{margin-top:4px;font-size:12px!important;padding:3px 6px!important}
+.wdt{display:inline-block;margin-left:5px;padding:0 5px;border-radius:4px;background:#ff453a;color:#fff;font-size:10px;font-weight:900;vertical-align:middle;line-height:1.5}
+#printArea .wdt{background:none;color:#000;border:.25mm solid #000;font-size:7pt}#athT tr.wdrow td{opacity:.75}body.matmode #athT [data-wd]{display:none!important}
 #cats .runtag{font-size:10.5px;font-weight:800;color:#ff9f0a;margin-left:6px;white-space:nowrap}
 #runCat.pinned{border-color:#30d158!important;box-shadow:0 0 0 1px #30d158 inset}
 .syrej{border:1px solid rgba(48,209,88,.5);border-radius:12px;padding:10px 12px;margin:8px 0}
@@ -1211,6 +1217,148 @@ body.practice.tv::after,body.practice.display::after{content:'PRACTICE';position
 #printArea .pguide h4{margin:2mm 0 1.5mm;font-size:11pt}#printArea .pguide ol{margin:0 0 0 5mm;line-height:1.45}
 #printArea .pguide .gt{width:100%;border-collapse:collapse}#printArea .pguide .gt td{border:.2mm solid #999;padding:1.2mm 2mm;vertical-align:top}#printArea .pguide .gk{width:36mm;font-weight:800;white-space:nowrap}
 
+/* ===== v19 · tournament flow menu, next step, command palette, polish ===== */
+#mainMenu .ngrp{width:1px;align-self:stretch;margin:14px 4px;background:rgba(148,163,184,.28);flex:none}
+#mainMenu button{position:relative}
+#mainMenu button[data-step]>svg{display:none!important}
+#mainMenu .nst{display:inline-grid;place-items:center;width:20px;height:20px;flex:none;border-radius:50%;font:800 11px/1 system-ui,sans-serif;font-style:normal;background:rgba(148,163,184,.22);color:#cbd5e1;border:1px solid rgba(148,163,184,.35);pointer-events:none}
+#mainMenu button.on .nst{background:#fff;color:#1d4ed8;border-color:#fff}
+#topNav .brand{margin-right:6px}#topNav .bname small{max-width:180px}
+#mainMenu button.stdone .nst{background:#30d158;color:#04260f;border-color:#30d158}
+#mainMenu button.stwork .nst{background:#ff9f0a;color:#2b1700;border-color:#ff9f0a}
+#mainMenu .nbd{font-style:normal;font-size:10.5px;font-weight:700;padding:1px 6px;border-radius:99px;background:rgba(148,163,184,.18);color:#cbd5e1;margin-left:2px;white-space:nowrap}
+#mainMenu .nbd:empty{display:none}
+#mainMenu button.on .nbd{background:rgba(255,255,255,.22);color:#fff}
+body.light #mainMenu .nst{background:#e2e8f0;color:#334155}body.light #mainMenu .nbd{background:#eef2f7;color:#334155}
+body.light #mainMenu button.stdone .nst{background:#22c55e;color:#fff}body.light #mainMenu button.stwork .nst{background:#f59e0b;color:#fff}
+@media (max-width:1800px){#mainMenu .nbd{display:none}#navCmd kbd{display:none}#topNav .bname small{display:none}#mainMenu .ngrp{margin:14px 2px}html body.glass:not(.tv):not(.view) nav#topNav .menu button,body:not(.tv):not(.view) nav#topNav .menu button{padding-left:10px!important;padding-right:10px!important}}
+body.matmode #mainMenu .ngrp,body.matmode #mainMenu .nst,body.matmode #mainMenu .nbd,body.matmode #phA{display:none!important}
+#navCmd{display:inline-flex;align-items:center;gap:6px}#navCmd kbd{font:700 10px system-ui;padding:1px 5px;border-radius:5px;border:1px solid rgba(148,163,184,.4);opacity:.85}
+
+/* page head: stage caption + next step */
+#pageHead{align-items:center}
+#phK{font-size:11px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:#7aa2ff;margin-bottom:2px}#phK:empty{display:none}
+body.light #phK{color:#2563eb}
+#phA{display:flex;gap:8px;align-items:center;flex-wrap:wrap;justify-content:flex-end}
+.nxs{display:inline-flex!important;align-items:center;gap:10px;padding:6px 6px 6px 14px!important;border-radius:999px!important;border:1px solid rgba(122,162,255,.45)!important;background:rgba(59,124,255,.10)!important;color:inherit!important;font-size:13px!important;cursor:pointer;max-width:100%}
+.nxs .nxt{opacity:.85;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.nxs b{background:#3b7cff;color:#fff;border-radius:999px;padding:5px 12px;font-weight:700;white-space:nowrap}
+.nxs.info{cursor:default;padding-right:14px!important}.nxs:hover b{background:#2f6bea}
+body.light .nxs{background:#eef4ff!important;border-color:#bcd0ff!important}
+/* command palette */
+#cpOv{position:fixed;inset:0;z-index:200;background:rgba(5,8,16,.55);backdrop-filter:blur(4px);display:flex;justify-content:center;align-items:flex-start;padding:10vh 16px 16px}
+#cpOv .cpb{width:min(680px,100%);max-height:72vh;display:flex;flex-direction:column;background:#141a2a;color:#e8ecf4;border:1px solid rgba(148,163,184,.3);border-radius:16px;box-shadow:0 30px 80px rgba(0,0,0,.55);overflow:hidden}
+#cpOv .cph{display:flex;align-items:center;gap:10px;padding:12px 14px;border-bottom:1px solid rgba(148,163,184,.2)}#cpOv .cph span{font-size:20px;opacity:.7}
+#cpOv .cph input{flex:1;border:0!important;background:transparent!important;box-shadow:none!important;font-size:17px!important;padding:6px 2px!important;color:inherit!important;outline:none}
+#cpOv kbd{font:700 10.5px system-ui;padding:2px 6px;border-radius:5px;border:1px solid rgba(148,163,184,.4);color:#cbd5e1;background:rgba(255,255,255,.05)}
+#cpOv .cpl{overflow:auto;padding:6px}#cpOv .cpg{font-size:10.5px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;opacity:.55;padding:10px 10px 4px}
+#cpOv .cpi{display:flex;align-items:center;gap:12px;padding:9px 10px;border-radius:10px;cursor:pointer}#cpOv .cpi kbd{visibility:hidden}
+#cpOv .cpi.on{background:#2b4ea8}#cpOv .cpi.on kbd{visibility:visible}#cpOv .cpi:hover:not(.on){background:rgba(255,255,255,.06)}
+#cpOv .cpic{width:24px;text-align:center;font-size:16px}#cpOv .cpt{flex:1;min-width:0;font-size:14.5px}#cpOv .cpt small{display:block;font-size:12px;opacity:.65}
+#cpOv .cpe{padding:24px;text-align:center;opacity:.7}#cpOv .cpf{display:flex;gap:16px;padding:8px 14px;border-top:1px solid rgba(148,163,184,.2);font-size:12px;opacity:.75}
+body.light #cpOv .cpb{background:#fff;color:#0f172a;border-color:#dbe3ef}body.light #cpOv .cpi.on{background:#dbe7ff}body.light #cpOv kbd{color:#334155;background:#f1f5f9}
+.tpflash{animation:tpflash 1.6s ease-out}@keyframes tpflash{0%,40%{box-shadow:0 0 0 3px #ffd60a}100%{box-shadow:0 0 0 0 rgba(255,214,10,0)}}
+/* one place for each setting: draw settings live on the Draw page */
+body[data-page=set] #drawSec header .matcfg:has(#dmSel),body[data-page=set] #drawSec header .matcfg:has(#fmtSel),body[data-page=set] #drawSec header .matcfg:has(#rrSel){display:none!important}
+/* polish */
+:focus-visible{outline:2px solid #7aa2ff!important;outline-offset:2px}
+#athT thead th,.offt thead th,.mtab thead th{position:sticky;top:0;z-index:1;background:var(--sf,#151b2b)}
+body.light #athT thead th,body.light .offt thead th,body.light .mtab thead th{background:#f8fafc}
+#athT tbody tr:hover td,.offt tbody tr:hover td{background:rgba(122,162,255,.06)}
+
+/* ===================== v19.1 · motion: one calm, quick motion language for the whole app =====================
+   Rules: only opacity and transform (smooth on old laptops and TVs), 150–450 ms for the app, a bit more on the TV.
+   Settings → Branding → "Animations" switches it off on one laptop; the system "reduce motion" setting is respected. */
+:root{--fx-out:cubic-bezier(.2,.8,.2,1);--fx-spring:cubic-bezier(.3,1.35,.5,1)}
+@keyframes fxIn{from{opacity:0;transform:translateY(12px)}}
+@keyframes fxFade{from{opacity:0}}
+@keyframes fxPop{0%{transform:scale(1)}35%{transform:scale(1.45)}100%{transform:scale(1)}}
+@keyframes fxBar{from{transform:scaleX(0)}}
+@keyframes fxNx{from{opacity:0;transform:translateX(16px)}}
+@keyframes fxDrop{from{opacity:0;transform:translateY(-6px) scale(.98)}}
+@keyframes fxBox{from{opacity:0;transform:translateY(14px) scale(.965)}}
+@keyframes fxToast{from{opacity:0;transform:translateY(16px)}}
+/* page change: header, toolbar and the cards come in one after another */
+.fx-in{animation:fxIn .42s var(--fx-out) backwards}
+#op.fx-fade{animation:fxFade .25s ease-out}
+#drawSec.fx-bars .prog i{transform-origin:left center;animation:fxBar .9s .12s var(--fx-out) backwards}
+/* sliding highlight under the active menu item */
+nav#topNav #mainMenu{position:relative}
+#mainMenu>button,#mainMenu>.ngrp{position:relative;z-index:1}
+#navInk{position:absolute;left:0;top:0;width:0;height:0;z-index:0;pointer-events:none;opacity:0;border-radius:9px;background:rgba(59,124,255,.18);box-shadow:inset 0 -2px 0 #5a91ff;
+  transition:transform .45s var(--fx-spring),width .45s var(--fx-spring),height .3s var(--fx-out),opacity .2s}
+#navInk.now{transition:none}
+body.inkon #navInk{opacity:1}
+body.light #navInk{background:rgba(36,87,214,.09);box-shadow:inset 0 -2px 0 #2457d6}
+body.glass #navInk{border-radius:999px;background:linear-gradient(180deg,rgba(255,255,255,.22),rgba(255,255,255,.08));box-shadow:inset 0 1px 0 rgba(255,255,255,.4),inset 0 -1px 0 rgba(255,255,255,.08),0 4px 14px rgba(0,0,0,.25)}
+body.glass.light #navInk{background:linear-gradient(180deg,#fff,rgba(255,255,255,.7));box-shadow:inset 0 1px 0 #fff,0 4px 14px rgba(31,45,90,.16),0 0 0 1px rgba(30,41,74,.06)}
+html body.inkon:not(.tv):not(.view) nav#topNav .menu button.on,html body.inkon:not(.tv):not(.view) nav#topNav .menu button.on:hover:not(:disabled),
+html body.inkon.glass:not(.tv):not(.view) nav#topNav .menu button.on,html body.inkon.glass:not(.tv):not(.view) nav#topNav .menu button.on:hover:not(:disabled),
+html body.inkon.glass.light:not(.tv):not(.view) nav#topNav .menu button.on,html body.inkon.glass.light:not(.tv):not(.view) nav#topNav .menu button.on:hover:not(:disabled){background:transparent!important;box-shadow:none!important}
+#mainMenu .nst{transition:background .35s,border-color .35s,color .35s}
+#mainMenu .nst.fx-pop{animation:fxPop .6s var(--fx-spring)}
+#phA .nxs.fx-nx{animation:fxNx .45s var(--fx-out)}
+/* overlays, menus, messages */
+#shOv,#qrOv,#askOv,#cpOv,#pinOv,#lockOv{animation:fxFade .2s ease-out}
+#shOv .shm,#askOv .shm,#qrOv .qrm,#cpOv .cpb,#pinOv .pinm{animation:fxBox .3s var(--fx-out)}
+#prMenu{animation:fxDrop .18s var(--fx-out);transform-origin:top center}
+body:not(.tv):not(.view)>#dmsg:not(:empty){animation:fxToast .35s var(--fx-out)}
+body:not(.tv):not(.view)>#dmsg.fx-msg{animation:fxToast .35s var(--fx-out)}
+#view.fx-bk>*{animation:fxFade .3s ease-out backwards}
+#view.fx-bk .bracket>.round{animation:fxIn .45s var(--fx-out) backwards}
+#view.fx-bk .bracket>.round:nth-child(2){animation-delay:.06s}#view.fx-bk .bracket>.round:nth-child(3){animation-delay:.12s}#view.fx-bk .bracket>.round:nth-child(4){animation-delay:.18s}
+#view.fx-bk .bracket>.round:nth-child(5){animation-delay:.24s}#view.fx-bk .bracket>.round:nth-child(n+6){animation-delay:.3s}
+#drawSec .cat{transition:background .2s,border-color .2s,color .2s,box-shadow .2s}
+/* ---------- scoreboard, TV and big screen ---------- */
+@keyframes fxBump{0%{transform:scale(1)}30%{transform:scale(1.34);text-shadow:0 0 2.4cqw rgba(255,214,10,.95)}100%{transform:scale(1)}}
+@keyframes fxIpp{0%{transform:scale(1)}25%{transform:scale(1.7);text-shadow:0 0 3.5cqw rgba(255,214,10,1)}55%{transform:scale(.94)}100%{transform:scale(1)}}
+@keyframes fxDown{from{opacity:.15;transform:translateY(-18%)}}
+@keyframes fxRow{0%{opacity:0}14%{opacity:1}100%{opacity:0}}
+@keyframes fxCard{from{opacity:0;transform:translateY(-70%) rotate(-20deg) scale(1.6)}}
+@keyframes fxShake{0%,100%{transform:translateX(0)}20%{transform:translateX(-1.1%)}40%{transform:translateX(1%)}60%{transform:translateX(-.6%)}80%{transform:translateX(.4%)}}
+@keyframes fxSlide{from{opacity:0;transform:translateX(-7%)}}
+@keyframes fxGo{0%{transform:scale(1)}40%{transform:scale(1.07)}100%{transform:scale(1)}}
+@keyframes fxGsIn{from{opacity:0;transform:scale(2.4)}}
+@keyframes fxGold{0%{text-shadow:0 0 0 rgba(255,200,0,0)}30%{text-shadow:0 0 4cqw rgba(255,200,0,.95)}100%{text-shadow:0 0 0 rgba(255,200,0,0)}}
+@keyframes fxUp{from{opacity:0;transform:translateY(45%)}}
+@keyframes fxRing{0%{box-shadow:0 0 0 0 rgba(255,214,10,.95)}100%{box-shadow:0 0 0 1.6cqw rgba(255,214,10,0)}}
+.sc>span{display:inline-block;will-change:auto}
+.sc>span.fx-bump{animation:fxBump .55s var(--fx-out)}
+.sc>span.fx-ipp{animation:fxIpp .9s var(--fx-out)}
+.sc>span.fx-down{animation:fxDown .3s ease-out}
+.row{isolation:isolate}.row::after{content:'';position:absolute;inset:0;pointer-events:none;opacity:0;z-index:-1;background:radial-gradient(90% 160% at 82% 50%,rgba(255,214,10,.5),rgba(255,214,10,0) 62%)}
+.row.fx-row::after{animation:fxRow .9s ease-out}
+.row.fx-rowi::after{background:radial-gradient(120% 200% at 78% 50%,rgba(255,236,140,.85),rgba(255,214,10,0) 70%);animation:fxRow 1.3s ease-out}
+.row.fx-shake{animation:fxShake .5s ease-in-out}
+.card.fx-card{animation:fxCard .5s var(--fx-spring) both}
+.card.red.fx-card{animation:fxCard .6s var(--fx-spring) both}
+.row.fx-new .who,.row.fx-new .code{animation:fxSlide .6s var(--fx-out) both}
+.row.b.fx-new .who,.row.b.fx-new .code{animation-delay:.09s}
+.row .side{transition:background .4s,box-shadow .4s}
+.clock{transition:color .25s,text-shadow .25s}
+.clock.fx-go #time{display:inline-block;animation:fxGo .45s ease-out}
+.clock.gsm .gs{display:inline-block}
+.clock.fx-gs .gs{animation:fxGsIn .7s var(--fx-spring) both}
+.clock.fx-gs #time{animation:fxGold 1.4s ease-out}
+.osae.on .olab,.osae.on .orow{animation:fxUp .35s var(--fx-out) both}
+.ofill{transition:width .12s linear}
+.osae.fx-ost .obar{animation:fxRing .7s ease-out}
+@keyframes fxPopS{0%{transform:scale(1)}35%{transform:scale(1.16)}100%{transform:scale(1)}}
+.osae.fx-ost #otime{display:inline-block;transform-origin:right center;animation:fxPopS .5s var(--fx-spring)}
+/* OBS lower third */
+@keyframes fxObIn{from{opacity:0;clip-path:inset(0 100% 0 0)}to{opacity:1;clip-path:inset(0 0 0 0)}}
+@keyframes fxObRow{from{opacity:0;transform:translateX(-5%)}}
+body.ovl[data-ovst=bar]:not(.obsnodata) #ovBar .obCard{animation:fxObIn .6s var(--fx-out)}
+#ovBar .obSc em.fx-bump{animation:fxBump .55s var(--fx-out)}
+#ovBar .obSc em.fx-ipp{animation:fxIpp .9s var(--fx-out)}
+#ovBar .obRow.fx-new{animation:fxObRow .5s var(--fx-out) both}#ovBar .obRow.b.fx-new{animation-delay:.08s}
+#ovBar .obSh span.fx-card{animation:fxCard .45s var(--fx-spring) both}
+#ovBar .obRow.osa::before{animation:fxFade .25s ease-out}
+/* off switch: one laptop (Settings → Branding) or the system "reduce motion" */
+body.nofx *,body.nofx *::before,body.nofx *::after{animation:none!important;transition:none!important}
+@media (prefers-reduced-motion:reduce){[class*="fx-"],[class*="fx-"] *,#navInk,.row::after{animation:none!important;transition:none!important}}
+@media print{.fx-in,[class*="fx-"]{animation:none!important}}
+
+.fx-in.tpflash{animation:tpflash 1.6s ease-out}
 /* ===== PRINT: always black text on white paper, in dark or light mode (must stay the LAST rules) ===== */
 @media print{
  html,html body,html body:not(.tv),html body:not(.tv):not(.view),html body.light,html body.light:not(.tv),html body.light:not(.tv):not(.view),html body.view,html body.tv{background:#fff!important;background-image:none!important;background-attachment:scroll!important;color:#000!important}
@@ -1264,7 +1412,7 @@ body.practice.tv::after,body.practice.display::after{content:'PRACTICE';position
   <button class="pinfg" id="pinFg">Forgot the PIN?</button><div id="pinFgBox" style="display:none"><p>Without the PIN the only way back is to erase everything stored in this browser (athletes, draws, scores, backups, logos, PIN). Use a backup file to restore afterwards.</p><button class="warn" id="pinWipe">Erase this device and start fresh</button></div>
   <div class="pinft">TV screens and QR pages keep working while the admin is locked.</div></div></div>
 
-<section id="drawSec"><div id="pageHead"><div><h1 id="phT">Dashboard</h1><p id="phS"></p></div><div id="phA"></div></div><header>
+<section id="drawSec"><div id="pageHead"><div><div id="phK"></div><h1 id="phT">Dashboard</h1><p id="phS"></p></div><div id="phA"></div></div><header>
   <h1>Judo Draw System</h1>
   <span class="matcfg">This laptop:
     <input id="matName" placeholder="Mat 1" style="width:80px">
@@ -1407,7 +1555,8 @@ body.practice.tv::after,body.practice.display::after{content:'PRACTICE';position
       <button id="bNext">Blank match (manual)<kbd>N</kbd></button>
       <button id="bReset">Reset clock</button>
       <button id="bDec" style="grid-column:1/-1">⚖ Decision · Hantei / Kiken-gachi / Fusen-gachi</button>
-      <div id="decBox" style="display:none;grid-column:1/-1"><div class="dech" id="decH">Win without a score: pick how and who</div><div class="decg"><button data-dec="w|Hantei (referees' decision)">Hantei → White</button><button data-dec="b|Hantei (referees' decision)">Hantei → Blue</button><button data-dec="w|Kiken-gachi (Blue withdrew / injured)">Kiken-gachi → White</button><button data-dec="b|Kiken-gachi (White withdrew / injured)">Kiken-gachi → Blue</button><button data-dec="w|Fusen-gachi (Blue did not come)">Fusen-gachi → White</button><button data-dec="b|Fusen-gachi (White did not come)">Fusen-gachi → Blue</button></div></div>
+      <div id="decBox" style="display:none;grid-column:1/-1"><div class="dech" id="decH">Win without a score: pick how and who</div><div class="decg"><button data-dec="w|Hantei (referees' decision)">Hantei → White</button><button data-dec="b|Hantei (referees' decision)">Hantei → Blue</button><button data-dec="w|Kiken-gachi (Blue withdrew / injured)">Kiken-gachi → White</button><button data-dec="b|Kiken-gachi (White withdrew / injured)">Kiken-gachi → Blue</button><button data-dec="w|Fusen-gachi (Blue did not come)">Fusen-gachi → White</button><button data-dec="b|Fusen-gachi (White did not come)">Fusen-gachi → Blue</button><button data-dec="w|Kiken-gachi (Blue injured · withdrawn from the category)" data-wd="inj">🚑 Kiken-gachi + withdraw Blue → White</button><button data-dec="b|Kiken-gachi (White injured · withdrawn from the category)" data-wd="inj">🚑 Kiken-gachi + withdraw White → Blue</button></div></div>
+      <div id="hskBox" style="display:none;grid-column:1/-1"><div class="dech" id="hskH">Hansoku-make: which kind?</div><div class="decg"><button data-hk="t">Technical / dangerous action · may go on (repechage, bronze)</button><button class="warn" data-hk="x">Against the spirit of judo · out of the whole tournament</button><button data-hk="c">Cancel</button></div></div>
       <button id="bCloseWin" style="background:#16a34a;border-color:#16a34a">Close winner / podium<kbd>Esc</kbd></button>
       <label class="chk" style="grid-column:1/-1"><input type="checkbox" id="fAuto"> Auto-load next match 5 sec after closing winner view (Esc)</label>
       <div id="tvStat" style="grid-column:1/-1;font-size:13px;font-weight:700"></div>
@@ -1444,6 +1593,16 @@ body.practice.tv::after,body.practice.display::after{content:'PRACTICE';position
 <button id="exitDisp" aria-label="Exit board-only mode"></button>
 
 <script>
+// ---------- v19.1 motion helpers: one switch for the app pages, scoreboard, TV and OBS ----------
+(function(){
+  const off=()=>{try{if(document.body&&document.body.classList.contains('nofx'))return true;return matchMedia('(prefers-reduced-motion: reduce)').matches;}catch(e){return false;}};
+  // restart a CSS animation class on an element and take it away again afterwards
+  function re(el,c,ms){if(!el||off())return;el.classList.remove(c);void el.offsetWidth;el.classList.add(c);const k='_fx'+c;clearTimeout(el[k]);el[k]=setTimeout(()=>{el.classList.remove(c);if(c==='fx-in')el.style.animationDelay='';},ms||900);}
+  function apply(){let v='';try{v=localStorage.getItem('judoMotion')||'';}catch(e){}if(document.body){document.body.classList.toggle('nofx',v==='off');if(v==='off')document.querySelectorAll('[class*="fx-"]').forEach(e=>[...e.classList].forEach(c=>{if(c.startsWith('fx-'))e.classList.remove(c);}));}}
+  window.FXR={off,re,apply};
+  if(document.body)apply();else document.addEventListener('DOMContentLoaded',apply);
+  window.addEventListener('storage',e=>{if(e.key==='judoMotion'){apply();if(window.TP_INK)TP_INK(true);}});
+})();
 // ---------- Branding: software name + logos. Kept apart from the tournament data so the rolling backups stay small ----------
 function BRAND(){try{return JSON.parse(localStorage.getItem('judoBrand')||'{}')||{};}catch(e){return {};}}
 function setBrand(b){try{localStorage.setItem('judoBrand',JSON.stringify(b));return true;}catch(e){return false;}}
@@ -1574,10 +1733,10 @@ let t0='draw';try{t0=localStorage.getItem('judoTab')||'draw';}catch(e){} tab(t0)
 
 (function(){
 const $=id=>document.getElementById(id);
-let D={ath:[],draws:{},meta:{}},cur=null;
+let D={ath:[],draws:{},meta:{}},cur=null,curAuto=false;   // curAuto: opened automatically (the Athletes list still shows everybody)
 try{const s=JSON.parse(localStorage.getItem('judoDraw'));if(s&&s.ath)D=s;}catch(e){}
-const save=()=>{if(window.READONLY)return;const j=JSON.stringify(D);try{localStorage.setItem('judoDraw',j);}catch(e){try{const L=JSON.parse(localStorage.getItem('judoBackups')||'[]');localStorage.setItem('judoBackups',JSON.stringify(L.slice(0,2)));localStorage.setItem('judoDraw',j);}catch(x){try{localStorage.removeItem('judoBackups');localStorage.setItem('judoDraw',j);}catch(y){msg('Browser storage full: click Backup / Restore → Download backup file now');}}}try{window.SYNCQ&&SYNCQ();}catch(e){}};
-let mt;const msg=t=>{$('dmsg').textContent=t;clearTimeout(mt);mt=setTimeout(()=>$('dmsg').textContent='',6000);};
+let SV=0;const save=()=>{SV++;if(window.READONLY)return;const j=JSON.stringify(D);try{localStorage.setItem('judoDraw',j);}catch(e){try{const L=JSON.parse(localStorage.getItem('judoBackups')||'[]');localStorage.setItem('judoBackups',JSON.stringify(L.slice(0,2)));localStorage.setItem('judoDraw',j);}catch(x){try{localStorage.removeItem('judoBackups');localStorage.setItem('judoDraw',j);}catch(y){msg('Browser storage full: click Backup / Restore → Download backup file now');}}}try{window.SYNCQ&&SYNCQ();}catch(e){}};
+let mt;const msg=t=>{const d=$('dmsg'),was=d.textContent;d.textContent=t;if(was&&t&&was!==t&&window.FXR)FXR.re(d,'fx-msg',500);clearTimeout(mt);mt=setTimeout(()=>$('dmsg').textContent='',6000);};
 const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const catKey=a=>[a.gender,a.age,a.cat].map(x=>String(x||'').trim()).filter(Boolean).join(' · ')||'No category';
 const byId=id=>D.ath.find(a=>a.id===id);
@@ -1754,9 +1913,10 @@ function pageIdc(items){if(!items.length){msg('Nobody to print: add athletes or 
   return chunk(items,9).map(pg=>`<div class="ppage pidc"><div class="idgrid">${pg.map(card).join('')}</div><div class="idcut">Cut along the dotted lines · 86 × 54 mm, fits a standard ID card holder · stick a passport photo in the box</div></div>`).join('');}
 // referee assignment
 function refName(id){const p=PEO().find(x=>x.id===id);return p?p.name:'';}
+let SCC=null,SCCv=-1,SCCd=null,SCCt=0;function schedCached(){const t=Date.now();if(!SCC||SCCv!==SV||SCCd!==D||t-SCCt>1500){SCC=schedCalc();SCCv=SV;SCCd=D;SCCt=t;}return SCC;}   // one schedule calculation per screen / print, not one per event
 function catMat(k){const s=M().sched||{},it=(s.it||{})[k];return Math.min(Math.max(1,+s.mats||1),+(it&&it.mat)||1);}
 function autoSes(k,rows){const ses=[...new Set(rows.map(r=>r.ses||''))];if(ses.length===1)return rows[0];
-  let sr=null;try{sr=schedCalc().find(x=>x.kind==='c'&&x.k===k);}catch(e){}if(!sr)return null;
+  let sr=null;try{sr=schedCached().find(x=>x.kind==='c'&&x.k===k);}catch(e){}if(!sr)return null;
   const tw=sr.st<12*60+30?/morn|first|1st|\bam\b/i:sr.st<17*60?/after|noon|second|2nd|\bpm\b/i:/even|night|third|3rd/i,dayRe=new RegExp('day\\s*'+sr.day+'(?!\\d)','i');
   const cand=rows.filter(r=>dayRe.test(r.ses||'')),pool=cand.length?cand:(sr.day===1?rows.filter(r=>!/day\s*\d/i.test(r.ses||'')):[]);
   return pool.find(r=>tw.test(r.ses||''))||([...new Set(pool.map(r=>r.ses||''))].length===1?pool[0]:null);}
@@ -2108,7 +2268,9 @@ const SYNC=(()=>{const CK='judoSync',FK='judoSyncFp';
       let i=0;while(i<up.length){const body={},done=[];let size=0;while(i<up.length&&(size<250000||!done.length)){const [p,v,ok]=up[i++];body[p]=v;done.push(ok);size+=JSON.stringify(v).length;}
         await rq('PATCH','rooms/'+c.room,body);done.forEach(f=>f());saveSyn();}
       if(up.length){lastPush=Date.now();lastOk=Date.now();}
-      await pushLive();await pushRes();show('ok');}
+      await pushLive();await pushRes();
+      // nothing sent and the live stream is down (or the computer is offline): do not claim "synced"
+      if(navigator.onLine===false)show('offline');else if(up.length||link)show('ok');}
     catch(e){show(navigator.onLine?'err':'offline',e.message);}
     finally{busy=false;if(pend){pend=false;queue(200);}}}
   // ---- public live results page data (read-only for everybody with the link)
@@ -2466,6 +2628,97 @@ function pageGuide(){const m=M(),K=(k,t)=>`<tr><td class="gk">${k}</td><td>${t}<
     <h4>Main desk</h4><table class="gt">${K('Director',esc(m.dir||'')+' ______________')}${K('Tech. delegate',esc(m.td||'')+' ______________')}${K('Chief referee',esc(m.chief||'')+' ______________')}${K('Phone','______________________')}</table></div></div>
    <div class="pnote">TatamiPro · ${esc(evName())} · mat laptops can run in Mat mode (no re-draw, uploads or settings) · backups are saved after every result.</div></div>`;}
 
+// ================= v19 · tournament flow: step status, next step, command palette =================
+window.TP_STATS=()=>{const A=D.ath,n=A.length,w=A.filter(a=>+a.wt>0||a.dq).length,cs=cats(),st=window.DR?DR.status():[];
+  const drawn=cs.filter(c=>D.draws[c.k]||QZ()[c.k]).length,locked=cs.filter(c=>D.draws[c.k]&&D.draws[c.k].locked).length;
+  let tot=0,left=0;st.forEach(x=>{tot+=x.tot;left+=x.left;});const fin=st.filter(x=>x.done).length,sc=M().sched||{};
+  return {n,w,cats:cs.length,drawn,locked,tot,done:tot-left,fin,mats:Math.max(1,+sc.mats||1),assigned:Object.values(sc.it||{}).some(v=>v&&v.mat),refs:REFS().length,people:PEO().length,name:!!(M().name||'').trim()};};
+function tpFlash(sel,page){if(page)goPage(page);setTimeout(()=>{const e=typeof sel==='string'?document.querySelector(sel):sel;if(!e)return;if(e.tagName==='DETAILS')e.open=true;
+  try{e.scrollIntoView({block:'center',behavior:'smooth'});}catch(x){}e.classList.add('tpflash');setTimeout(()=>e.classList.remove('tpflash'),1800);if(/^(INPUT|SELECT|TEXTAREA)$/.test(e.tagName))try{e.focus();}catch(x){}},90);}
+function tpPrint(st){goPage('print');setTimeout(()=>{try{$('prStage').value=st;fillScope();syncPr();tpFlash('#prPanel');}catch(e){}},60);}
+window.TP_NEXT=p=>{if(MATMODE()||!window.TP_STATS)return null;const s=TP_STATS(),G=(t,b,f)=>({t,b,f});
+  const flow=()=>!s.name?G('The tournament has no name yet','Tournament details →',()=>tpFlash('#evPanel','set')):!s.n?G('No athletes yet','Upload the list →',()=>goPage('ath'))
+    :s.w<s.n?G('Weigh-in '+s.w+' / '+s.n,'Weigh-in →',()=>goPage('ath')):s.drawn<s.cats?G('Draws '+s.drawn+' / '+s.cats,'Make the draws →',()=>goPage('draw'))
+    :(s.mats>1&&!s.assigned)?G(s.mats+' mats · events not split yet','Schedule →',()=>goPage('sched')):!s.refs?G('No referee assignment yet','Officials →',()=>goPage('off'))
+    :s.done<s.tot?G('Contests '+s.done+' / '+s.tot,'Scoreboard →',()=>goPage('sb')):G('Every contest is done','Print results →',()=>tpPrint('res'));
+  switch(p){
+    case 'home':return flow();
+    case 'ath':return !s.n?G('Start here','Upload Excel / CSV',()=>$('file').click()):s.w<s.n?G('Weighed '+s.w+' / '+s.n,'Search an athlete',()=>tpFlash('#athQ')):G('Weigh-in complete','Next: Draw →',()=>goPage('draw'));
+    case 'draw':return !s.n?null:s.drawn<s.cats?G('Draws '+s.drawn+' / '+s.cats,'Make all draws',()=>$('genAll').click()):G('All '+s.cats+' draws made · '+s.locked+' locked','Next: Schedule →',()=>goPage('sched'));
+    case 'sched':return !s.n?null:G(s.mats+' mat'+(s.mats>1?'s':'')+(s.mats>1&&!s.assigned?' · give each event its mat':''),'Next: Officials →',()=>goPage('off'));
+    case 'off':return G(s.refs?s.refs+' referee places assigned':'No referee assignment yet',s.refs?'Next: Scoreboard →':'Referee assignment',s.refs?()=>goPage('sb'):()=>tpFlash('#rfSes'));
+    case 'res':return !s.cats?null:s.fin<s.cats?G('Finished '+s.fin+' / '+s.cats+' categories','Change log',()=>tpFlash('#logPanel')):G('All categories finished','Print certificates →',()=>tpPrint('cert'));
+    default:return null;}};
+// ---------- command palette (Ctrl + K): every page, every main action, athletes and categories ----------
+(function(){if(window.VIEW||location.hash==='#display')return;
+  const P=(t,k,f,o)=>Object.assign({t,k,f},o||{});
+  const base=()=>[
+    P('Dashboard','home overview progress',()=>goPage('home'),{g:'Pages',ic:'🏠',m:0}),
+    P('Athletes & weigh-in','athletes weigh weight list',()=>goPage('ath'),{g:'Pages',ic:'👥',m:1}),
+    P('Draw & brackets','draw bracket fixture',()=>goPage('draw'),{g:'Pages',ic:'🗂'}),
+    P('Schedule','schedule time mats',()=>goPage('sched'),{g:'Pages',ic:'🗓'}),
+    P('Officials & referees','officials referee judges id cards',()=>goPage('off'),{g:'Pages',ic:'⚖'}),
+    P('Scoreboard','scoreboard score mat match',()=>goPage('sb'),{g:'Pages',ic:'⏱',m:1}),
+    P('Results','results medals tally championship',()=>goPage('res'),{g:'Pages',ic:'🏆'}),
+    P('Print centre','print sheets',()=>goPage('print'),{g:'Pages',ic:'🖨'}),
+    P('Settings','settings setup',()=>goPage('set'),{g:'Pages',ic:'⚙',m:1}),
+    P('Upload the athlete list (Excel / CSV)','upload import excel csv entries',()=>{goPage('ath');setTimeout(()=>$('file').click(),80);},{g:'Athletes',ic:'⬆'}),
+    P('Download the Excel template','template sample excel',()=>$('tpl').click(),{g:'Athletes',ic:'⬇'}),
+    P('Add an athlete','add new late entry athlete',()=>tpFlash('#aN','ath'),{g:'Athletes',ic:'➕'}),
+    P('Weigh-in · find an athlete','weigh in weight kg search',()=>tpFlash('#athQ','ath'),{g:'Athletes',ic:'⚖',m:1}),
+    P('Check-in · scan an ID card','check in qr scan id card present',()=>tpFlash('#ciIn','ath'),{g:'Athletes',ic:'📷',call:1}),
+    P('Call room TV','call room tv next contests',()=>$('ciCall').click(),{g:'Athletes',ic:'📣',call:1}),
+    P('Make all draws','draw generate make',()=>{goPage('draw');setTimeout(()=>$('genAll').click(),60);},{g:'Draw',ic:'🎲'}),
+    P('Draw method · ranking / seeds / random','random seeds ranking draw mode',()=>tpFlash('#dmSel','draw'),{g:'Draw',ic:'🔀'}),
+    P('Format · IJF repechage / knockout','format ijf repechage knockout',()=>tpFlash('#fmtSel','draw'),{g:'Draw',ic:'🧩'}),
+    P('Load the next match','next match load scoreboard',()=>{goPage('sb');setTimeout(()=>$('bFromDraw').click(),60);},{g:'Scoreboard',ic:'▶',m:1}),
+    P('Run a category on this mat','run category mat',()=>tpFlash('#runCat','sb'),{g:'Scoreboard',ic:'🎯',m:1}),
+    P('Open the TV window','tv display screen window',()=>$('bTV').click(),{g:'Scoreboard',ic:'📺',m:1}),
+    P('Auto-arrange the schedule over the mats','auto arrange schedule mats',()=>{goPage('sched');setTimeout(()=>$('scAuto').click(),60);},{g:'Schedule',ic:'⚡'}),
+    P('Add a competition day','day add second day',()=>{goPage('sched');setTimeout(()=>$('scAddD').click(),60);},{g:'Schedule',ic:'📅'}),
+    P('Add officials','officials add referee coach',()=>tpFlash('#pfN','off'),{g:'Officials',ic:'➕'}),
+    P('Referee assignment','referee judges session mat assignment',()=>tpFlash('#rfSes','off'),{g:'Officials',ic:'⚖'}),
+    P('Results to Excel','results excel download',()=>{goPage('res');setTimeout(()=>{const b=$('rsXl');if(b)b.click();},120);},{g:'Results',ic:'⬇'}),
+    P('Results on WhatsApp','whatsapp share results',()=>{goPage('res');setTimeout(()=>{const b=$('rsWa');if(b)b.click();},120);},{g:'Results',ic:'📤'}),
+    P('Change log (jury / appeals)','change log jury appeal history',()=>tpFlash('#logPanel','res'),{g:'Results',ic:'📜'}),
+    ...[['full','Fixtures (full draw)'],['sfill','Score sheets · filled'],['sblank','Score sheets · blank'],['res','Results & medals'],['cert','Certificates'],['idc','ID cards'],['alist','Athlete list'],['wsheet','Weigh-in sheet'],['sched','Schedule'],['refs','Referee assignment'],['report','Event report'],['log','Change log'],['guide','Mat operator guide']]
+      .map(([st,t])=>P('Print · '+t,'print '+t.toLowerCase(),()=>tpPrint(st),{g:'Print',ic:'🖨'})),
+    P('Tournament details (name, dates, venue)','tournament name details venue date',()=>tpFlash('#evPanel','set'),{g:'Settings',ic:'🏆'}),
+    P('Live sync · create / join / mat links','live sync firebase room join mat link',()=>tpFlash('#pgSync','set'),{g:'Settings',ic:'☁',m:1}),
+    P('Laptop role (main desk / mat / call room)','role mat mode main desk call room',()=>tpFlash('#pgRole','set'),{g:'Settings',ic:'🖥',m:1}),
+    P('Backup & restore','backup restore download',()=>tpFlash('#bkPanel','set'),{g:'Settings',ic:'💾',m:1}),
+    P('Practice mode (training)','practice training demo',()=>tpFlash('#pgPractice','set'),{g:'Settings',ic:'🎓'}),
+    P('Admin PIN & privacy','pin security privacy lock',()=>tpFlash('#pgSec','set'),{g:'Settings',ic:'🔒'}),
+    P('Logo, name and language','branding logo language gujarati hindi',()=>tpFlash('#pgBrand','set'),{g:'Settings',ic:'🎨'}),
+    P('OBS live stream overlay','obs youtube stream overlay',()=>tpFlash('#obsBox','set'),{g:'Settings',ic:'🎥',m:1}),
+    P('Sound','sound gong buzzer voice',()=>tpFlash('#sn_mode','set'),{g:'Settings',ic:'🔊',m:1})];
+  const allowed=c=>{const r=ROLE();if(r==='mat')return !!c.m;if(r==='call')return !!c.call||/^(Athletes & weigh-in|Settings)$/.test(c.t)||c.g==='Settings'&&c.m;return true;};
+  const score=(c,q)=>{if(!q)return 1;const h=(c.t+' '+c.k+' '+(c.g||'')).toLowerCase();let s=0;for(const w of q.split(/\s+/).filter(Boolean)){const i=h.indexOf(w);if(i<0)return 0;s+=i===0?3:h.indexOf(' '+w)>=0?2:1;}return s;};
+  function dyn(q){if(q.length<2)return [];const out=[],nq=nrm(q);
+    if(!MATMODE()||ROLE()==='call')D.ath.filter(a=>nrm(a.name).includes(nq)).slice(0,6).forEach(a=>out.push(P(a.name+(a.wd?' · '+(a.wd.k==='hsk'?'DSQ':'WD'):''),'',()=>{goPage('ath');setTimeout(()=>{try{const f=$('athF');f.value='all';f.dispatchEvent(new Event('change'));const s=$('athQ');s.value=a.name;s.dispatchEvent(new Event('input'));tpFlash(s);}catch(e){}},80);},{g:'Athlete',ic:'👤',sub:(a.club||'')+' · '+catKey(a)})));
+    if(!MATMODE())cats().filter(c=>nrm(c.k).includes(nq)).slice(0,5).forEach(c=>{out.push(P(c.k,'',()=>{goPage('draw');setTimeout(()=>{const e=[...document.querySelectorAll('#cats .cat')].find(x=>x.dataset.k===c.k);if(e)e.click();},80);},{g:'Category · draw',ic:'🗂',sub:c.list.length+' athletes'}));
+      out.push(P('Print '+c.k,'',()=>{goPage('print');setTimeout(()=>{try{$('prStage').value='full';fillScope('k:'+c.k);syncPr();tpFlash('#prPanel');}catch(e){}},60);},{g:'Category · print',ic:'🖨',sub:'fixture'}));});
+    return out;}
+  let ov=null,list=[],sel=0;
+  function render(){const q=$('cpIn').value.trim().toLowerCase();list=dyn(q).concat(base().filter(allowed).map(c=>[c,score(c,q)]).filter(x=>x[1]>0).sort((a,b)=>b[1]-a[1]).map(x=>x[0])).slice(0,40);
+    if(sel>=list.length)sel=Math.max(0,list.length-1);let g='';
+    $('cpL').innerHTML=list.length?list.map((c,i)=>{const hd=c.g!==g?`<div class="cpg">${esc(c.g)}</div>`:'';g=c.g;return hd+`<div class="cpi${i===sel?' on':''}" data-i="${i}"><span class="cpic">${c.ic||'•'}</span><span class="cpt">${esc(c.t)}${c.sub?`<small>${esc(c.sub)}</small>`:''}</span><kbd>↵</kbd></div>`;}).join(''):'<div class="cpe">Nothing found. Try "print", "weigh", "draw", a name or a weight.</div>';
+    const on=$('cpL').querySelector('.cpi.on');if(on)on.scrollIntoView({block:'nearest'});}
+  function close(){if(ov){ov.remove();ov=null;}}
+  window.TP_PALCLOSE=close;
+  function run(i){const c=list[i];close();if(c)try{c.f();}catch(e){msg('Could not do that here: '+e.message);}}
+  window.TP_PALETTE=function open(){if(window.READONLY)return;if(ov){close();return;}ov=document.createElement('div');ov.id='cpOv';
+    ov.innerHTML=`<div class="cpb" role="dialog" aria-label="Command palette"><div class="cph"><span>⌕</span><input id="cpIn" placeholder="Type what you want to do: print certificates, weigh-in, a name, -60 kg…" autocomplete="off" spellcheck="false"><kbd>Esc</kbd></div><div class="cpl" id="cpL"></div><div class="cpf"><span><kbd>↑</kbd><kbd>↓</kbd> move</span><span><kbd>↵</kbd> open</span><span><kbd>Ctrl</kbd>+<kbd>K</kbd> anywhere</span></div></div>`;
+    document.body.appendChild(ov);sel=0;const inp=$('cpIn');
+    inp.addEventListener('input',()=>{sel=0;render();});
+    inp.addEventListener('keydown',e=>{e.stopPropagation();if(e.key==='ArrowDown'){e.preventDefault();sel=Math.min(list.length-1,sel+1);render();}else if(e.key==='ArrowUp'){e.preventDefault();sel=Math.max(0,sel-1);render();}else if(e.key==='Enter'){e.preventDefault();run(sel);}else if(e.key==='Escape'){e.preventDefault();close();}});
+    ov.addEventListener('mousedown',e=>{if(e.target===ov)close();});
+    $('cpL').addEventListener('click',e=>{const it=e.target.closest('.cpi');if(it)run(+it.dataset.i);});
+    render();try{inp.focus();}catch(e){}setTimeout(()=>inp.focus(),0);};
+  document.addEventListener('keydown',e=>{if(ov&&e.key==='Escape'){e.preventDefault();e.stopPropagation();close();return;}if((e.ctrlKey||e.metaKey)&&!e.shiftKey&&!e.altKey&&(e.key==='k'||e.key==='K')){e.preventDefault();e.stopPropagation();TP_PALETTE();}},true);
+})();
+window.TP_ENSURECUR=()=>{if(!cur&&cats().length){cur=cats()[0].k;curAuto=true;try{renderAll();}catch(e){}}};
+
 // ---------- small helpers used by the print centre ----------
 // sheet size for blank forms: knockout bracket, or a round robin pool when the organiser chose it for small categories
 function bPlanFor(k){const dr=D.draws[k];if(dr)return [dr.size,dr.fmt||fmtNow()];const n=D.ath.filter(a=>catKey(a)===k&&!a.dq&&!a.nq).length,R=RRMAX();
@@ -2744,7 +2997,22 @@ function players(dr,r,i){
   if(!dr.x)return [null,null];
   return extraSt(dr,r,i).map(t=>t.k==='id'?t.id:null);
 }
-function resolve(k){
+// withdrawal (injury / medical) or exclusion (direct hansoku-make against the spirit of judo): every remaining contest of that athlete is won by the opponent
+const WDK={inj:'withdrew (injury / medical)',hsk:'excluded · direct hansoku-make',dns:'did not come'};
+function wdWord(a){return a&&a.wd?(WDK[a.wd.k]||'withdrew'):'';}
+function wdTag(a){return a&&a.wd?` <span class="wdt" title="${esc(wdWord(a))}">${a.wd.k==='hsk'?'DSQ':'WD'}</span>`:'';}
+function samePerson(a){return D.ath.filter(x=>nrm(x.name)===nrm(a.name)&&nrm(x.club||'')===nrm(a.club||''));}
+function applyWd(k){const dr=D.draws[k];if(!dr)return 0;let n=0;
+  for(let pass=0;pass<24;pass++){let any=false;
+    const one=(m,r,i)=>{if(m.w||m.bye||m.void)return;const [a,b]=players(dr,r,i);if(!a||!b)return;const A=byId(a),B=byId(b),wa=!!(A&&A.wd),wb=!!(B&&B.wd);if(wa===wb)return;
+      const out=wa?A:B,win=wa?b:a;m.w=win;m.auto=false;m.res={why:'Fusen-gachi ('+out.name+' '+wdWord(out)+')',t:NOW(),wd:1};
+      try{rlog(dr,'Match '+(m.no||'?')+': '+athNm(win)+' won · Fusen-gachi ('+out.name+' '+wdWord(out)+')');}catch(e){}any=true;n++;};
+    if(dr.fmt==='rr')dr.rounds[0].forEach((m,i)=>one(m,0,i));else eachM(dr,one);
+    if(!any)break;resolve0(k);}
+  return n;}
+let wdBusy=false;
+function resolve(k){resolve0(k);if(wdBusy)return;wdBusy=true;try{applyWd(k);}finally{wdBusy=false;}}
+function resolve0(k){
   const dr=D.draws[k];if(!dr)return;if(dr.fmt==='rr')return rrResolve(dr);const L=dr.rounds.length;
   if(dr.fmt==='ijf'&&L>=3&&!dr.x)dr.x={rep:[{w:null},{w:null}],br:[{w:null},{w:null}]};
   if(dr.x&&L<3)dr.x=null;
@@ -2812,7 +3080,7 @@ function renderCats(){
     const dr=D.draws[c.k],md=dr&&medals(c.k);
     const qq=QZ()[c.k];h+=`<div class="cat ${c.k===cur?'on':''}" data-k="${esc(c.k)}"><span class="dot ${md&&md.gold?'f':dr?'d':qq?'q':''}"></span><span style="flex:1">${esc(c.c||c.k)}${qq&&qq.stage==='q'?' <small class="qtag">Q</small>':''}</span><span class="n">${c.list.length}${c.list.length===1?' · walkover':''}</span>${(()=>{const lk=window.SYNC&&SYNC.claimOf&&SYNC.claimOf(c.k);return lk&&!(md&&md.gold)?'<small class="runtag">▶ '+esc(lk.mat||'')+'</small>':'';})()}</div>`;}
   $('cats').innerHTML=all.length?h:'<div class="hint">Upload the athlete list to see categories.</div>';
-  $('cats').querySelectorAll('.cat').forEach(el=>el.onclick=()=>{if(cur!==el.dataset.k){selSlot=null;edStack=[];}cur=el.dataset.k;renderAll();});
+  $('cats').querySelectorAll('.cat').forEach(el=>el.onclick=()=>{const ch=cur!==el.dataset.k;if(ch){selSlot=null;edStack=[];}cur=el.dataset.k;curAuto=false;renderAll();if(ch&&window.FXR)FXR.re($('view'),'fx-bk',900);});
   $('cats').querySelectorAll('[data-g]').forEach(b=>b.onclick=()=>{gFilter=b.dataset.g;renderCats();});
 }
 function report(list){
@@ -2835,7 +3103,7 @@ function report(list){
 function pHTML(id,cls,seedOK){
   const a=id&&byId(id);
   if(!a)return `<div class="p ${cls}"><span class="c"></span>${cls.includes('bye')?'BYE':'—'}</div>`;
-  return `<div class="p ${cls}" data-id="${a.id}"><span class="c"></span><div><div class="nm">${esc(a.name)}</div><div class="cl">${esc(a.club)}</div></div>${a.seed>0?`<span class="sd">S${a.seed}</span>`:a.qrk>0?`<span class="sd rk">Q${a.qrk}</span>`:a.rk>0?`<span class="sd rk">#${a.rk}</span>`:''}</div>`;
+  return `<div class="p ${cls}" data-id="${a.id}"><span class="c"></span><div><div class="nm">${esc(a.name)}${wdTag(a)}</div><div class="cl">${esc(a.club)}</div></div>${a.seed>0?`<span class="sd">S${a.seed}</span>`:a.qrk>0?`<span class="sd rk">Q${a.qrk}</span>`:a.rk>0?`<span class="sd rk">#${a.rk}</span>`:''}</div>`;
 }
 let editing=null,selSlot=null,edArm=0,lkArm=0,addArm=0;
 function hasResults(dr){let x=false;eachM(dr,m=>{if(m.w&&!m.bye)x=true;});return x;}
@@ -3039,12 +3307,12 @@ function renderAth(){
      +'<optgroup label="Weigh-in &amp; age">'+o('nw','No weight yet ('+n(a=>!(+a.wt>0))+')')+o('dq','Overweight / DQ ('+n(a=>a.dq||wStatus(a).k==='decl')+')')+o('age','Age not eligible ('+n(a=>{const k=ageStat(a).k;return k==='over'||k==='under';})+')'+(ag?'':' · check off'))+o('nodob','No date of birth ('+n(a=>!a.dob)+')')+'</optgroup>';
    if(![...$('athF').options].some(x=>x.value===athF))athF='all';$('athF').value=athF;}
   let rows=D.ath.slice();const q=athQ.trim().toLowerCase();
-  if(athF==='cur'&&cur)rows=rows.filter(a=>catKey(a)===cur);else if(athF==='nw')rows=rows.filter(a=>!(+a.wt>0));else if(athF==='dq')rows=rows.filter(a=>a.dq||wStatus(a).k==='decl');
+  if(athF==='cur'&&cur&&!curAuto)rows=rows.filter(a=>catKey(a)===cur);else if(athF==='nw')rows=rows.filter(a=>!(+a.wt>0));else if(athF==='dq')rows=rows.filter(a=>a.dq||wStatus(a).k==='decl');
   else if(athF==='Male'||athF==='Female')rows=rows.filter(a=>a.gender===athF);else if(athF.startsWith('k:'))rows=rows.filter(a=>catKey(a)===athF.slice(2));
   else if(athF==='age')rows=rows.filter(a=>{const k=ageStat(a).k;return k==='over'||k==='under';});else if(athF==='nodob')rows=rows.filter(a=>!a.dob);
   if(q)rows=rows.filter(a=>(a.name+' '+(a.club||'')).toLowerCase().includes(q));
   rows.sort((a,b)=>catKey(a).localeCompare(catKey(b),undefined,{numeric:true})||a.name.localeCompare(b.name));
-  $('athT').innerHTML=rows.map(a=>{const k=wStatus(a).k;return `<tr class="${a.dq?'wdq':k==='decl'?'wdecl':''}"><td>${esc(a.name)}</td><td>${esc(a.club)}</td><td>${esc(catKey(a))}</td><td>${ageCell(a)}</td><td><input class="wt" type="number" step="0.01" min="0" inputmode="decimal" placeholder="kg" value="${+a.wt>0?+a.wt:''}" data-w="${a.id}"></td><td>${wBadge(a)}</td><td><input type="number" min="0" value="${a.seed||''}" data-s="${a.id}"${a.rk>0?` title="Ranking #${a.rk}"`:''}>${a.rk>0?` <small>#${a.rk}</small>`:''}</td><td><button class="sm warn" data-d="${a.id}">Remove</button></td></tr>`;}).join('')
+  $('athT').innerHTML=rows.map(a=>{const k=wStatus(a).k;return `<tr class="${a.dq?'wdq':k==='decl'?'wdecl':''}${a.wd?' wdrow':''}"><td>${esc(a.name)}${wdTag(a)}</td><td>${esc(a.club)}</td><td>${esc(catKey(a))}</td><td>${ageCell(a)}</td><td><input class="wt" type="number" step="0.01" min="0" inputmode="decimal" placeholder="kg" value="${+a.wt>0?+a.wt:''}" data-w="${a.id}"></td><td>${wBadge(a)}</td><td><input type="number" min="0" value="${a.seed||''}" data-s="${a.id}"${a.rk>0?` title="Ranking #${a.rk}"`:''}>${a.rk>0?` <small>#${a.rk}</small>`:''}</td><td><button class="sm" data-wd="${a.id}" title="${a.wd?esc(wdWord(a)):'Injured / medical: the opponent wins every remaining contest by Fusen-gachi'}">${a.wd?'↺ Undo '+(a.wd.k==='hsk'?'DSQ':'WD'):'🚑 Withdraw'}</button> <button class="sm warn" data-d="${a.id}">Remove</button></td></tr>`;}).join('')
     ||`<tr><td colspan="8" class="wthelp">${D.ath.length?'No athlete matches this filter.':'No athletes yet.'}</td></tr>`;
   $('athT').querySelectorAll('[data-w]').forEach(inp=>{inp.onchange=()=>setWeight(inp.dataset.w,inp.value);
     inp.onkeydown=e=>{if(e.key!=='Enter')return;e.preventDefault();const all=[...$('athT').querySelectorAll('[data-w]')],nx=all[all.indexOf(inp)+1];athFocus=nx?nx.dataset.w:null;
@@ -3052,6 +3320,10 @@ function renderAth(){
   if(athFocus){const f=$('athT').querySelector('[data-w="'+athFocus+'"]');athFocus=null;if(f){f.focus();f.select();}}
   $('athT').querySelectorAll('[data-dob]').forEach(i=>i.onchange=()=>setDOB(i.dataset.dob,i.value));
   $('athT').querySelectorAll('[data-s]').forEach(i=>i.onchange=()=>{byId(i.dataset.s).seed=parseInt(i.value)||0;save();msg('Seed saved. Click Make draw / Re-draw to use it.');});
+  $('athT').querySelectorAll('[data-wd]').forEach(b=>b.onclick=()=>{const a=byId(b.dataset.wd);if(!a)return;
+    if(a.wd){const r=DR.unwithdraw(a.id);msg(r===true?a.name+' is back in '+catKey(a)+'.':r);return;}
+    if(b.dataset.arm!=='1'){b.dataset.arm='1';b.textContent='Click again: withdraw';setTimeout(()=>{if(b.isConnected){b.dataset.arm='';b.textContent='🚑 Withdraw';}},4000);return;}
+    DR.withdraw(a.id,'inj');msg(a.name+' withdrawn (injury / medical): the opponents win the remaining contests by Fusen-gachi.');});
   $('athT').querySelectorAll('[data-d]').forEach(b=>b.onclick=()=>{const a=byId(b.dataset.d);{const dd=D.draws[catKey(a)];if(dd&&dd.locked)return msg('The draw for '+catKey(a)+' is locked. Unlock it first.');if(b.dataset.arm!=='1'){b.dataset.arm='1';b.textContent='Confirm?';setTimeout(()=>{b.dataset.arm='';b.textContent='Remove';},4000);return msg('Click Confirm? to remove '+a.name+(dd&&hasResults(dd)?' · ⚠ its category draw will be made again and results cleared':''));}}if(D.draws[catKey(a)]&&hasResults(D.draws[catKey(a)]))backup('Before removing '+a.name);D.ath=D.ath.filter(x=>x.id!==a.id);const ck=catKey(a);if(D.ath.some(x=>catKey(x)===ck))makeDraw(ck);else delete D.draws[ck];try{if(window.SYNC&&SYNC.cfg().on)SYNC.del(a.id,D.draws[ck]||QZ()[ck]?null:ck);}catch(e){}save();renderAll();window.SB&&SB.autoLoad(false,true);msg(a.name+' removed. New draw made for '+catKey(a)+'.');});
 }
 // ---------- printed logos ----------
@@ -3100,7 +3372,7 @@ function renderBrand(){const el=$('pgBrand');if(!el)return;if(!window.OBSL)retur
   el.innerHTML=`<h3 style="margin-bottom:10px">🎨 Branding &amp; logos</h3>
   <div class="brow"><label>Software name<input id="brName" value="${esc(b.name||'')}" placeholder="TatamiPro" maxlength="40"></label><div class="sugg"><span class="hint">Suggestions:</span>${APPNAMES.map(n=>`<button class="sm" data-nm="${esc(n)}">${esc(n)}</button>`).join('')}</div></div>
   <div class="lgrid">${LOGOS.map(([k,t,d])=>`<div class="lslot"><div class="lprev">${L[k]?`<img src="${esc(L[k])}" alt="">`:'<span class="hint">No logo</span>'}</div><b>${t}</b><small class="hint">${d}</small><div class="lbtn"><label class="filebtn sm">Upload<input type="file" accept="image/*" data-lg="${k}"></label>${L[k]?`<button class="sm warn" data-rm="${k}">Remove</button>`:''}</div></div>`).join('')}</div>
-  <div class="brow"><label class="chk"><input type="checkbox" id="brGlass"${b.look!=='classic'?' checked':''}> Liquid glass look (untick for the classic flat look on a slow laptop)</label><label class="chk"><input type="checkbox" id="brTv"${b.tvLogos!==false?' checked':''}> Show logos on the TV scoreboard (organiser top-left, associations top-right)</label><label class="chk"><input type="checkbox" id="brPr"${b.printLogos!==false?' checked':''}> Show logos on printed sheets and score sheets (printed in grey)</label></div>
+  <div class="brow"><label class="chk"><input type="checkbox" id="brGlass"${b.look!=='classic'?' checked':''}> Liquid glass look (untick for the classic flat look on a slow laptop)</label><label class="chk"><input type="checkbox" id="brFx"${(()=>{try{return localStorage.getItem('judoMotion')!=='off';}catch(e){return true;}})()?' checked':''}> Animations (this laptop and its TV window · untick on a slow laptop)</label><label class="chk"><input type="checkbox" id="brTv"${b.tvLogos!==false?' checked':''}> Show logos on the TV scoreboard (organiser top-left, associations top-right)</label><label class="chk"><input type="checkbox" id="brPr"${b.printLogos!==false?' checked':''}> Show logos on printed sheets and score sheets (printed in grey)</label></div>
   <div class="hint">Logos stay on this laptop (not inside the athlete data) and travel with the downloaded backup file. PNG or JPG; they are resized automatically.</div>
   <div class="brow"><label>🌐 Second language on the TV and printed sheets<select id="brLang"><option value="">English only</option><option value="gu"${b.lang==='gu'?' selected':''}>English + ગુજરાતી (Gujarati)</option><option value="hi"${b.lang==='hi'?' selected':''}>English + हिन्दी (Hindi)</option></select></label></div>
   <div class="hint">The English text stays; the translation is added under headings, table titles, round names, roles and signatures, and on the TV the category line switches language every 6 seconds. Names of athletes and districts are printed as typed. Windows shows Gujarati and Hindi with its built-in Nirmala UI font.</div>
@@ -3120,6 +3392,7 @@ function renderBrand(){const el=$('pgBrand');if(!el)return;if(!window.OBSL)retur
   el.querySelectorAll('[data-lg]').forEach(inp=>inp.onchange=async()=>{const f=inp.files[0];if(!f)return;try{const u=await readLogo(f);put(x=>{x.logos=Object.assign({},x.logos||{},{[inp.dataset.lg]:u});});msg('Logo saved');}catch(e){msg('That file is not a picture. Use PNG or JPG.');}});
   el.querySelectorAll('[data-rm]').forEach(t=>t.onclick=()=>put(x=>{x.logos=Object.assign({},x.logos||{});delete x.logos[t.dataset.rm];}));
   $('brGlass').onchange=()=>put(x=>{x.look=$('brGlass').checked?'glass':'classic';});
+  $('brFx').onchange=()=>{try{localStorage.setItem('judoMotion',$('brFx').checked?'on':'off');}catch(e){}if(window.FXR)FXR.apply();if(window.TP_INK)TP_INK(true);msg($('brFx').checked?'Animations on for this laptop.':'Animations off for this laptop.');};
   $('brLang').onchange=()=>put(x=>{x.lang=$('brLang').value;});
   const ov=()=>put(x=>{x.ovl={st:$('ovSt').value,pos:$('ovPos').value,sz:$('ovSz').value,bg:$('ovBg').value};});['ovSt','ovPos','ovSz','ovBg'].forEach(id=>$(id).onchange=ov);
   const obsSt=()=>{const e=$('obsSt');if(!e)return;const x=OBSL.status();e.className='obsst '+(x.st==='live'?'live':x.st==='err'?'err':'');e.textContent=x.st==='live'?'● Connected · live':x.st==='wait'?'Connecting…':x.st==='err'?'⚠ '+x.err:'○ Not connected';};obsSt();
@@ -3648,7 +3921,7 @@ async function fillQRs(root){const cache={};
   for(const el of root.querySelectorAll('[data-qr]')){const key=el.dataset.qr+'|'+el.dataset.k;cache[key]=cache[key]||await qrFor(el.dataset.k,el.dataset.qr);
     el.innerHTML=cache[key].svg?cache[key].svg+'<div class="qrl">'+(el.dataset.qr==='r'?'Scan: results':el.dataset.qr==='h'?'Scan: schedule':el.dataset.qr==='c'?'Scan to verify':'Scan: draw & seeding')+'</div>':'<div class="qrl">'+(window.qrcode?'QR too large':'QR not loaded')+'</div>';}
   if(!/^https?:/.test(location.protocol))msg('Note: QR codes open correctly only when the system runs from its website link (GitHub Pages).');}
-function pAth(id){const a=id&&byId(id);return a?`<div class="pn">${esc(a.name)}${a.seed>0?' <sup>S'+a.seed+'</sup>':''}</div><div class="pc">${esc(a.club)}</div>`:'';}
+function pAth(id){const a=id&&byId(id);return a?`<div class="pn">${esc(a.name)}${a.seed>0?' <sup>S'+a.seed+'</sup>':''}${wdTag(a)}</div><div class="pc">${esc(a.club)}</div>`:'';}
 function pBox(dr,r,i,sub){const m=getM(dr,r,i),[a,b]=players(dr,r,i);
   const side=(id,c)=>{const st=m.w&&id&&!m.bye?(m.w===id?' won':' lost'):'';
     const q=!id&&r===0&&dr.slots[2*i+(c==='sb'?1:0)],z=q&&isOut(q)&&byId(q);
@@ -3757,7 +4030,7 @@ function scLog(log){return (log||[]).filter(e=>e.k!=='win').map(e=>{const who=e.
   if(e.k==='gs')return e.c+' golden score';if(e.k==='dec')return e.c+' '+(e.x||'decision');const rm=e.k[0]==='-',k=rm?e.k.slice(1):e.k;
   return e.c+' '+who+' '+(SCK[k]||k)+(rm?' removed':'')+(e.x?' ('+e.x+')':'');}).join(' · ');}
 function scTable(rows,fill){const pen=q=>q?(q.h?'H':q.s):'';
-  const nm=(id,h,won)=>{const a=id&&byId(id);return `<td class="snm${won?' swon':''}">${a?`<div class="sn">${esc(a.name)}${a.seed>0?' <sup>S'+a.seed+'</sup>':''}</div><div class="scl">${esc(a.club||'')}</div>`:`<div class="shn">${esc(h||'')}</div>`}</td>`;};
+  const nm=(id,h,won)=>{const a=id&&byId(id);return `<td class="snm${won?' swon':''}">${a?`<div class="sn">${esc(a.name)}${a.seed>0?' <sup>S'+a.seed+'</sup>':''}${wdTag(a)}</div><div class="scl">${esc(a.club||'')}</div>`:`<div class="shn">${esc(h||'')}</div>`}</td>`;};
   const body=rows.map(x=>{const m=x.m||{};let p=fill?scParse(m,x.a,x.b):null;const W=p?p.white:x.a,B=p?p.blue:x.b;
     let sc='<td></td><td></td><td></td><td></td>',sc2=sc,gs='',tm='',wn='',rs='',log='';
     if(fill){
@@ -3998,6 +4271,17 @@ window.DR={
     let b=pool[0];const a=o.after;
     if(a){const ix=pool.findIndex(x=>x.c===a.cat&&x.r===a.r&&x.i===a.i);if(ix>=0){if(pool.length===1)return null;b=pool[(ix+1)%pool.length];}}   // step through every waiting contest (not back and forth between two)
     return info(b.c,b.r,b.i);},
+  withdraw(id,kind,mat){const a=byId(id);if(!a)return false;kind=WDK[kind]?kind:'inj';const L=kind==='hsk'?samePerson(a):[a],t=NOW(),ks=new Set();
+    L.forEach(x=>{x.wd={k:kind,t,mat:mat||MATCFG().mat||''};ks.add(catKey(x));});
+    ks.forEach(k=>{const dr=D.draws[k];if(dr)rlog(dr,'⚠ '+a.name+' '+WDK[kind]+(kind==='hsk'?' · out of the whole tournament':' · out of the rest of this category'));resolve(k);});
+    save();renderAll();return true;},
+  unwithdraw(id){const a=byId(id);if(!a||!a.wd)return 'This athlete is not withdrawn.';const L=a.wd.k==='hsk'?samePerson(a).filter(x=>x.wd&&x.wd.k==='hsk'):[a],ks=new Set(L.map(catKey)),snap=JSON.stringify(D.draws);
+    const real=()=>{let c=0;ks.forEach(k=>{const dr=D.draws[k];if(dr)eachM(dr,m=>{if(m.w&&!m.auto&&!(m.res&&m.res.wd))c++;});});return c;},before=real(),old=L.map(x=>x.wd);
+    L.forEach(x=>{delete x.wd;});
+    ks.forEach(k=>{const dr=D.draws[k];if(!dr)return;const clr=(m,r,i)=>{if(m.res&&m.res.wd){const [p,q]=players(dr,r,i);if(L.some(x=>x.id===p||x.id===q)){m.w=null;m.res=null;}}};
+      if(dr.fmt==='rr')dr.rounds[0].forEach((m,i)=>clr(m,0,i));else eachM(dr,clr);resolve(k);});
+    if(real()<before){D.draws=JSON.parse(snap);L.forEach((x,j)=>{x.wd=old[j];});return 'Not undone: contests after the Fusen-gachi were already fought. Change them in the draw editor first.';}
+    ks.forEach(k=>{const dr=D.draws[k];if(dr)rlog(dr,'Withdrawal of '+a.name+' undone');});save();renderAll();return true;},
   podium(k){const dr=D.draws[k];if(!dr)return null;const md=medals(k);if(!md||!md.gold)return null;
     if(dr.x&&dr.x.br.some(m=>!m.w&&!m.void))return null;
     const A=id=>{const a=id&&byId(id);return a?[a.name,a.club||'']:null;};
@@ -4070,7 +4354,7 @@ const SFX=(()=>{let ac=null,prev=null;
 window.SFX=SFX;
 // ---------- confetti for the winner / podium (canvas, ~4.5 s) ----------
 const FX=(()=>{const runs=new Map();
-  function burst(cv,kind,big){if(!cv||matchMedia('(prefers-reduced-motion: reduce)').matches)return;const old=runs.get(cv);if(old)cancelAnimationFrame(old.raf);
+  function burst(cv,kind,big){if(!cv||matchMedia('(prefers-reduced-motion: reduce)').matches||document.body.classList.contains('nofx'))return;const old=runs.get(cv);if(old)cancelAnimationFrame(old.raf);
     const r=cv.getBoundingClientRect();if(r.width<40)return;const dpr=Math.min(2,window.devicePixelRatio||1);cv.width=r.width*dpr;cv.height=r.height*dpr;const g=cv.getContext('2d');g.setTransform(dpr,0,0,dpr,0,0);
     const C=kind==='gold'?['#f7d774','#ffd400','#fff4c2','#c9971c','#ffffff']:kind==='bronze'?['#e2a26b','#9a5a2a','#ffd9b3','#ffffff']:['#22c55e','#ffd400','#3b82f6','#ffffff','#ef4444','#a855f7','#f7d774'];
     const W=r.width,H=r.height,N=Math.round((big?170:80)*Math.min(1.4,W/1200)+30),P=[];
@@ -4152,8 +4436,9 @@ function renderBar(){let el=document.getElementById('ovBar');
   el.classList.toggle('noyuko',!S.yuko);
   for(const p of ['w','b']){const P=S.p[p],r=q('.obRow.'+p);
     r.querySelector('.obNm b').textContent=((P.f?P.f+' ':'')+(P.n||'')).trim()||(p==='w'?'White':'Blue');r.querySelector('.obNm small').textContent=P.club||P.c||'';
-    r.querySelector('.obI em').textContent=P.i;r.querySelector('.obW em').textContent=P.wa;r.querySelector('.obY em').textContent=P.y;
-    r.querySelector('.obSh').innerHTML=P.h?'<span class="r"></span>':'<span></span>'.repeat(Math.min(3,P.s||0));
+    odig(r.querySelector('.obI em'),P.i,1);odig(r.querySelector('.obW em'),P.wa);odig(r.querySelector('.obY em'),P.y);
+    {const sh=r.querySelector('.obSh'),k=P.h?'h':String(Math.min(3,P.s||0));if(sh.dataset.k!==k){const was=sh.dataset.k;sh.dataset.k=k;sh.innerHTML=P.h?'<span class="r"></span>':'<span></span>'.repeat(+k);if(!fxQuiet&&was!==undefined&&window.FXR&&(k==='h'||(was!=='h'&&+k>+was))&&sh.lastElementChild)FXR.re(sh.lastElementChild,'fx-card',800);}}
+    if(fxNewM&&window.FXR)FXR.re(r,'fx-new',800);
     r.classList.toggle('win',S.win===p);r.classList.toggle('osa',!!S.osa&&S.osa===p);}
   const c=q('.obClock');c.classList.toggle('run',!!S.run);c.classList.toggle('gs',!!S.gs);q('.obT').textContent=fmt(S.ms,S.gs);
   const o=q('.obOs');if(S.osa){o.classList.add('on');o.className='obOs on '+S.osa;o.innerHTML=`<b>${Math.floor((S.oms||0)/1000)}</b> ${S.oRun?'OSAEKOMI':'SONO-MAMA'}`;}else o.className='obOs';
@@ -4164,24 +4449,36 @@ function renderBar(){let el=document.getElementById('ovBar');
 
 
 function cards(P){if(P.h)return '<div class="card red"></div>';let h='';for(let i=0;i<P.s;i++)h+='<div class="card"></div>';return h;}
+// v19.1 motion: a score that goes up pops and the row lights up, a new shido drops in, hansoku-make shakes the row.
+// No animation on the first paint and when a new match is loaded (scores go back to 0).
+let fxQuiet=true,fxNewM=false;
+function sdig(id,v,ipp,p){const e=$(id),s=String(v);if(e.textContent===s)return;const up=+v>(+e.textContent||0);e.textContent=s;if(fxQuiet||!window.FXR)return;
+  if(up){FXR.re(e,ipp?'fx-ipp':'fx-bump',1000);FXR.re($('r'+p),ipp?'fx-rowi':'fx-row',1400);}else FXR.re(e,'fx-down',400);}
+function scards(p,P){const el=$('s'+p),k=P.h?'h':String(P.s||0);if(el.dataset.k===k)return;const was=el.dataset.k;el.dataset.k=k;el.innerHTML=cards(P);
+  if(fxQuiet||!window.FXR||was===undefined)return;if(!(k==='h'||(was!=='h'&&+k>+was)))return;const last=el.lastElementChild;if(last)FXR.re(last,'fx-card',800);if(k==='h')FXR.re($('r'+p),'fx-shake',700);}
+function odig(e,v,ipp){const s=String(v);if(e.textContent===s)return;const up=+v>(+e.textContent||0);e.textContent=s;if(!fxQuiet&&up&&window.FXR)FXR.re(e,ipp?'fx-ipp':'fx-bump',1000);}
 function nameOf(p){return S.p[p].n||(p==='w'?'White':'Blue');}
 function fmt(ms,up){const s=up?Math.floor(ms/1000):Math.ceil(ms/1000);return Math.floor(s/60)+':'+String(s%60).padStart(2,'0');}
 function renderClock(){
   $('time').textContent=fmt(S.ms,S.gs);
   const c=$('clock');c.classList.toggle('run',S.run);c.classList.toggle('gsm',S.gs);
+  {const st=(S.run?1:0)+(S.gs?2:0),pv=renderClock._st;renderClock._st=st;if(pv!==undefined&&window.FXR){if(S.run&&!(pv&1))FXR.re(c,'fx-go',600);if(S.gs&&!(pv&2))FXR.re(c,'fx-gs',1500);}}
   const o=$('osae');
+  if(S.osa&&window.FXR){const t=S.oms/1000,sg=t>=20?3:t>=10?2:(S.yuko&&t>=5)?1:0;if(sg>(renderClock._os||0))FXR.re(o,'fx-ost',800);renderClock._os=sg;}else renderClock._os=0;
   if(S.osa){o.classList.add('on');const t=S.oms/1000,col=S.osa==='w'?'#ffffff':'#3d7bff';
     $('otime').textContent=Math.floor(t);$('otime').style.color=col;
     $('ofill').style.width=Math.min(t/20,1)*100+'%';$('ofill').style.background=col;
     $('olab').textContent=(S.oRun?'OSAEKOMI':'SONO-MAMA')+' · '+nameOf(S.osa).toUpperCase();
-  }else o.classList.remove('on');
+  }else if(o.classList.contains('on')){o.classList.remove('on');$('ofill').style.width='0';}
 }
 function render(){
+  {const mk=(S.cat||'')+'|'+(S.match||''),first=render._mk===undefined;fxNewM=!first&&render._mk!==mk;fxQuiet=first||fxNewM;render._mk=mk;}
   for(const p of ['w','b']){const P=S.p[p];
     $('n'+p).textContent=nameOf(p);$('f'+p).textContent=P.f||'';$('c'+p).textContent=P.c||'';
-    $('i'+p).textContent=P.i;$('w'+p).textContent=P.wa;$('y'+p).textContent=P.y;$('s'+p).innerHTML=cards(P);
+    sdig('i'+p,P.i,1,p);sdig('w'+p,P.wa,0,p);sdig('y'+p,P.y,0,p);scards(p,P);
     $('r'+p).classList.toggle('winner',S.win===p);$('r'+p).classList.toggle('hasipp',!!P.i);}
   $('board').classList.toggle('noyuko',!S.yuko);
+  if(fxNewM&&window.FXR){FXR.re($('rw'),'fx-new',900);FXR.re($('rb'),'fx-new',1000);}
   $('tEvent').textContent=S.ev;$('tCat').textContent=(L2ON&&tr2(S.cat))||S.cat;$('tMat').textContent=S.mat+(S.match?' · Match '+S.match:'');
   const po=$('podOv');
   if(S.pod){po.className='on';const P=S.pod,t=(id,v)=>{$(id).textContent=v||'';};
@@ -4242,12 +4539,16 @@ if(TV){
   let osaNote='';
   const clk=()=>S.gs?'GS '+fmt(S.ms,true):fmt(Math.max(0,S.dur*1000-S.ms),true);
   const lg=(p,k,x)=>{(S.log=S.log||[]).push({c:clk(),p,k,x:x||''});if(S.log.length>80)S.log.shift();};
-  const undo=()=>{if(!H.length)return msg('Nothing to undo');S=JSON.parse(H.pop());S.run=false;S.oRun=false;if(S.link&&!S.win&&window.DR)DR.clearResult(S.link);fill();render();};
+  let wdNext='',hkKind='',lastWd=null;
+  const undo=()=>{if(!H.length)return msg('Nothing to undo');S=JSON.parse(H.pop());S.run=false;S.oRun=false;
+    if(lastWd&&S.link&&JSON.stringify(S.link)===lastWd.link&&window.DR&&DR.unwithdraw){const r=DR.unwithdraw(lastWd.id);lastWd=null;if(r!==true)msg(r);}if(S.link&&!S.win&&window.DR)DR.clearResult(S.link);fill();render();};
   const finish=(p,why)=>{S.win=p;S.why=why;S.showWin=true;S.run=false;S.osa=null;S.oRun=false;buzz();render();
     if(S.link&&window.DR){const sc=q=>q.i+'-'+q.wa+'-'+q.y+(q.s?' ('+q.s+'S)':'');const pt=q=>[q.i,q.wa,q.y,q.s,q.h?1:0];lg(p,'win',why);
       const ok=DR.setResult(S.link,p==='w'?S.link.w:S.link.b,{why:S.why,score:'W '+sc(S.p.w)+' / B '+sc(S.p.b),gs:S.gs,time:S.gs?'GS '+fmt(S.ms,true):fmt(S.dur*1000-S.ms,true),
         wid:S.link.w,bid:S.link.b,sw:pt(S.p.w),sb:pt(S.p.b),log:(S.log||[]).map(e=>[e.c,e.p,e.k,e.x].join('|').replace(/\|+$/,'')),mat:S.mat||''});msg(ok?'Result saved to the draw':'Could not save to draw (draw was changed)');
-      if(ok)msg('Result saved · Winner is on the TV · press Esc to return to the scoreboard');}};
+      if(ok)msg('Result saved · Winner is on the TV · press Esc to return to the scoreboard');
+      if(ok&&wdNext&&DR.withdraw){const lid=p==='w'?S.link.b:S.link.w;DR.withdraw(lid,wdNext,S.mat);lastWd={id:lid,link:JSON.stringify(S.link)};msg(wdNext==='hsk'?'Result saved · the loser is out of the whole tournament (direct hansoku-make): opponents win the rest by Fusen-gachi':'Result saved · the injured athlete is withdrawn: opponents win the rest by Fusen-gachi');}}
+    wdNext='';};
   function scheduleNext(){
     if(S.link&&$('fAuto').checked){const lk=JSON.stringify(S.link);
       setTimeout(()=>{if(!S.win||S.showWin||S.pod||JSON.stringify(S.link)!==lk)return;const pr=(()=>{try{return localStorage.getItem('judoRun')||'';}catch(e){return '';}})();const x=DR.pick?DR.pick({pref:pr||S.link.cat}):DR.next(S.link.cat);if(x){x.auto=true;SB.load(x);}else msg('All matches in the draw are finished');},5000);
@@ -4266,13 +4567,14 @@ if(TV){
 
   function add(p,t,noSnap){
     if(S.win)return msg('Match is over. Undo (Z) or Next match (N).');
+    if(t==='h'&&!hkKind){const box=$('hskBox');if(box){box.dataset.p=p;$('hskH').textContent='Hansoku-make to '+nameOf(p)+': which kind?';box.style.display='';return;}}
     if(!noSnap)snap();const P=S.p[p];
     if(!(t==='y'&&!S.yuko))lg(p,t,osaNote);osaNote='';
     if(t==='i'){P.i=1;return finish(p,'Ippon');}
     if(t==='w'){P.wa++;if(P.wa>=2)return finish(p,'Waza-ari awasete ippon');if(S.gs)return finish(p,'Waza-ari (golden score)');}
     if(t==='y'){if(!S.yuko)return msg('Yuko is switched off');P.y++;if(S.gs)return finish(p,'Yuko (golden score)');}
     if(t==='s'){P.s++;if(P.s>=3){P.h=true;return finish(opp(p),'Hansoku-make to '+nameOf(p)+' (3 shido)');}}
-    if(t==='h'){P.h=true;return finish(opp(p),'Hansoku-make to '+nameOf(p));}
+    if(t==='h'){P.h=true;const x=hkKind==='x';hkKind='';if(x)wdNext='hsk';return finish(opp(p),'Hansoku-make to '+nameOf(p)+(x?' (direct · out of the tournament)':' (direct)'));}
     render();
   }
   function sub(p,t){snap();const P=S.p[p];lg(p,'-'+t);
@@ -4313,7 +4615,7 @@ if(TV){
   }
   // golden score time limit (optional, young age groups): clock stops, referees decide
   function gsOver(){S.run=false;S.hantei=true;S.why='Golden score time over · HANTEI: referees decide';$('decBox').style.display='';$('decH').textContent='Golden score time is over: referees\' decision (Hantei) · pick the winner';msg('Golden score time over: click Hantei → White or Blue');render();}
-  function decide(p,why){if(S.win)return msg('Match is over. Undo (Z) first to change it.');snap();lg(p,'dec',why);S.hantei=false;$('decBox').style.display='none';finish(p,why);}
+  function decide(p,why,wd){if(S.win)return msg('Match is over. Undo (Z) first to change it.');wdNext=wd||'';snap();lg(p,'dec',why);S.hantei=false;$('decBox').style.display='none';finish(p,why);}
   let last=performance.now(),pubT=0;
   function tick(){
     const now=performance.now(),dt=Math.max(0,now-last);last=now;
@@ -4376,7 +4678,8 @@ if(TV){
   $('bNext').onclick=blurThen(next);
   $('bReset').onclick=blurThen(()=>{snap();S.ms=S.dur*1000;S.gs=false;S.hantei=false;S.run=false;S.osa=null;S.oRun=false;if(!S.win)S.why='';render();});
   $('bDec').onclick=()=>{audio();const b=$('decBox');b.style.display=b.style.display==='none'?'':'none';$('decH').textContent=S.hantei?'Golden score time is over: referees\' decision (Hantei) · pick the winner':'Win without a score: pick how and who';};
-  $('decBox').addEventListener('click',e=>{const b=e.target.closest('[data-dec]');if(!b)return;audio();const [p,why]=b.dataset.dec.split('|');decide(p,why);});
+  $('decBox').addEventListener('click',e=>{const b=e.target.closest('[data-dec]');if(!b)return;audio();const [p,why]=b.dataset.dec.split('|');decide(p,why,b.dataset.wd);});
+  $('hskBox').addEventListener('click',e=>{const b=e.target.closest('[data-hk]');if(!b)return;const box=$('hskBox'),p=box.dataset.p;box.style.display='none';if(b.dataset.hk==='c'||!p)return;hkKind=b.dataset.hk;add(p,'h');hkKind='';});
   const disp=on=>document.body.classList.toggle('display',on);
   $('bDisp').onclick=blurThen(()=>{disp(true);try{const r=document.documentElement.requestFullscreen();if(r&&r.catch)r.catch(()=>{});}catch(e){}});
   $('exitDisp').onclick=()=>{disp(false);try{document.exitFullscreen&&document.fullscreenElement&&document.exitFullscreen();}catch(e){}};
@@ -4513,11 +4816,49 @@ if(TV){
    ['#bkPanel','set'],['#evPanel','set'],['#evtPanel','print'],['#prPanel','print'],['#rep','ath draw'],['#view','draw'],['#athPanel','ath'],
    ['#drawSec header .matcfg','draw set'],['#drawSec header .filebtn','ath draw'],['#tpl','ath'],['#demo','ath draw'],['#genAll','draw'],['#prAll','draw'],['#resCsv','draw'],['#bkOpen','set'],['#clear','ath draw set'],['#pgOff','off'],['#rkFileL','ath'],['#pgSync','set'],['#pgRole','set'],['#pgPractice','set'],['#pgCheck','ath']]
    .forEach(([q,p])=>document.querySelectorAll(q).forEach(e=>e.setAttribute('data-pg',p)));
-  const dm=$('dmsg');if(dm)B.appendChild(dm);   // messages float above every page
+  const dm=$('dmsg');if(dm)B.appendChild(dm);
+  {const mm=$('mainMenu');if(mm){const btn=p=>mm.querySelector('[data-page="'+p+'"]'),G=[['home'],['ath','draw','sched','off','Prepare'],['sb','Compete'],['res','print','Finish'],['set']];let step=0;
+    G.forEach((g,gi)=>{const lab=btn(g[g.length-1])?'':g[g.length-1],ps=lab?g.slice(0,-1):g;
+      if(gi>0){const sp=document.createElement('span');sp.className='ngrp';if(lab)sp.title=lab;mm.appendChild(sp);}
+      ps.forEach(p=>{const b=btn(p);if(!b)return;if(lab){step++;const em=document.createElement('em');em.className='nst';em.textContent=step;b.insertBefore(em,b.firstChild);b.dataset.step=step;b.dataset.stage=lab;}
+        if(!b.querySelector('.nbd')){const i=document.createElement('i');i.className='nbd';b.appendChild(i);}mm.appendChild(b);});});}
+   const acts=document.querySelector('#topNav .acts');if(acts&&!$('navCmd')){const c=document.createElement('button');c.id='navCmd';c.title='Find any action, page, athlete or category (Ctrl + K)';c.innerHTML='⌕ <span>Search</span><kbd>Ctrl K</kbd>';c.onclick=()=>window.TP_PALETTE&&TP_PALETTE();acts.insertBefore(c,acts.firstChild);}}
+  const STAGE={home:'Overview',ath:'Prepare · step 1',draw:'Prepare · step 2',sched:'Prepare · step 3',off:'Prepare · step 4',sb:'Compete · step 5',res:'Finish · step 6',print:'Finish · step 7',set:'Setup'};
+  function navStat(){const st=window.TP_STATS&&window.TP_STATS();if(!st)return;const set=(p,badge,cls,tip)=>{const b=document.querySelector('#mainMenu [data-page="'+p+'"]');if(!b)return;const i=b.querySelector('.nbd');if(i)i.textContent=badge||'';const was=b.classList.contains('stdone')?'d':b.classList.contains('stwork')?'w':'';b.classList.toggle('stdone',cls==='d');b.classList.toggle('stwork',cls==='w');if(tip)b.title=tip;if(navStat.on&&cls&&cls!==was&&window.FXR)FXR.re(b.querySelector('.nst'),'fx-pop',700);};
+    set('ath',st.n?(st.w<st.n?st.w+'/'+st.n:String(st.n)):'',st.n&&st.w>=st.n?'d':st.n?'w':'',st.n?'Athletes '+st.n+' · weighed '+st.w:'No athletes yet');
+    set('draw',st.cats?st.drawn+'/'+st.cats:'',st.cats&&st.drawn>=st.cats?'d':st.drawn?'w':'',st.cats?'Draws '+st.drawn+' of '+st.cats+' · locked '+st.locked:'');
+    set('sched',st.mats>1?st.mats+' mats':'',st.cats&&(st.mats===1||st.assigned)?'d':st.mats>1?'w':'',st.mats+' mat(s)');
+    set('off',st.refs?String(st.refs):'',st.refs?'d':st.people?'w':'',st.people+' officials · '+st.refs+' referee places');
+    set('sb',st.tot?st.done+'/'+st.tot:'',st.tot&&st.done>=st.tot?'d':st.done?'w':'','Contests '+st.done+' of '+st.tot);
+    set('res',st.cats?st.fin+'/'+st.cats:'',st.cats&&st.fin>=st.cats?'d':st.fin?'w':'','Finished categories '+st.fin+' of '+st.cats);navStat.on=true;ink();}
+  function nextStep(p){const a=$('phA');if(!a)return;const n=window.TP_NEXT&&window.TP_NEXT(p);if(!n){a.innerHTML='';a.dataset.k='';return;}
+    const nk=p+'|'+n.t+'|'+(n.b||'');if(a.dataset.k===nk&&a.firstChild)return;a.dataset.k=nk;
+    a.innerHTML=n.f?`<button class="nxs" type="button"><span class="nxt"></span><b></b></button>`:`<span class="nxs info"><span class="nxt"></span></span>`;a.querySelector('.nxt').textContent=n.t;if(n.f){a.querySelector('b').textContent=n.b;a.querySelector('button').onclick=()=>{n.f();setTimeout(()=>{navStat();nextStep(page);},400);};}if(window.FXR)FXR.re(a.querySelector('.nxs'),'fx-nx',600);}
+  setInterval(()=>{if(document.visibilityState==='visible'){navStat();if(!document.activeElement||!/^(INPUT|SELECT|TEXTAREA)$/.test(document.activeElement.tagName))nextStep(page);}},3000);   // messages float above every page
   {const pp=$('prPanel'),ev=$('evtPanel');if(pp&&ev&&ev.parentNode)ev.parentNode.insertBefore(pp,ev);}
   {const br=$('pgBrand'),evp=$('evPanel'),sc=$('pgSec'),bp=$('bkPanel');if(br&&evp&&sc&&bp){br.parentNode.insertBefore(evp,br);sc.after(bp);}}   // Settings: details → branding → security → backups   // Print centre: print panel first, saved events below
   let page='',busy=false;
   const RL=()=>{try{return localStorage.getItem('judoRole')||'';}catch(e){return '';}},MM=()=>/^(mat|call)$/.test(RL());
+  // v19.1 motion: page enter (header, toolbar, cards one after another), sliding menu highlight, dashboard counters
+  const FX=()=>window.FXR||{off:()=>true,re:()=>{}};
+  function ink(now){const m=$('mainMenu');if(!m)return;let k=$('navInk');if(!k){k=document.createElement('span');k.id='navInk';m.prepend(k);}
+    const b=m.querySelector('button.on');if(b&&b.offsetParent!==null&&m.scrollWidth>m.clientWidth+2&&FX().off())m.scrollLeft=Math.max(0,b.offsetLeft-(m.clientWidth-b.offsetWidth)/2);
+    if(!b||b.offsetParent===null||FX().off()){B.classList.remove('inkon');return;}
+    const jump=now===true||!B.classList.contains('inkon');if(jump)k.classList.add('now');
+    k.style.width=b.offsetWidth+'px';k.style.height=b.offsetHeight+'px';k.style.transform='translate('+b.offsetLeft+'px,'+b.offsetTop+'px)';
+    B.classList.add('inkon');if(jump){void k.offsetWidth;k.classList.remove('now');}
+    if(m.scrollWidth>m.clientWidth+2){const x=Math.max(0,b.offsetLeft-(m.clientWidth-b.offsetWidth)/2);if(Math.abs(m.scrollLeft-x)>4)try{m.scrollTo({left:x,behavior:jump?'auto':'smooth'});}catch(e){m.scrollLeft=x;}}}
+  window.TP_INK=ink;
+  window.addEventListener('resize',()=>ink(true));if(document.fonts&&document.fonts.ready)document.fonts.ready.then(()=>ink(true));
+  function countUp(root){root.querySelectorAll('.kv').forEach(el=>{const t=el.firstChild;if(!t||t.nodeType!==3||!/^\s*\d+\s*$/.test(t.nodeValue))return;const v=+t.nodeValue;if(!(v>1))return;
+    const t0=performance.now(),d=Math.min(900,380+v*2),step=n=>{const k=Math.min(1,(n-t0)/d);t.nodeValue=String(Math.round(v*(1-Math.pow(1-k,3))));if(k<1&&t.isConnected)requestAnimationFrame(step);else t.nodeValue=String(v);};
+    t.nodeValue='0';requestAnimationFrame(step);});}
+  function enter(p){const F=FX();if(F.off())return;if(p==='sb'){F.re($('op'),'fx-fade',400);return;}
+    const root=$('drawSec');if(!root)return;const vis=e=>e&&e.offsetParent!==null&&e.offsetHeight>4;
+    const L=[$('pageHead'),root.querySelector(':scope>header')].filter(vis);
+    const m=root.querySelector(':scope>main');if(m)for(const s of m.children){if(!vis(s))continue;const ks=[...s.children].filter(vis);if(ks.length>1&&ks.length<=14)L.push(...ks);else L.push(s);}
+    L.slice(0,12).forEach((e,i)=>{const d=Math.min(i,9)*32;e.style.animationDelay=d+'ms';F.re(e,'fx-in',d+520);});
+    if(p==='home'){F.re(root,'fx-bars',1200);countUp(root);}}
   function show(p){if(busy)return;busy=true;try{
     if(!PAGES[p])p='home';if(MM()){const call=RL()==='call';B.classList.add('matmode');B.classList.toggle('callrole',call);if(!(call?/^(ath|set)$/:/^(sb|ath|set)$/).test(p))p=call?'ath':'sb';}page=p;B.dataset.page=p;try{localStorage.setItem('judoPage',p);}catch(e){}
     if(window.tab&&B.dataset.tab!==(p==='sb'?'sb':'draw'))window.tab(p==='sb'?'sb':'draw');
@@ -4526,9 +4867,11 @@ if(TV){
     ({ath:['athPanel'],set:['evPanel','bkPanel'],print:['evtPanel']}[p]||[]).forEach(id=>{const d=$(id);if(d)d.open=true;});
     if(p==='print'&&getComputedStyle($('prPanel')).display==='none'&&window.openPrintPanel)openPrintPanel();
     if(window.APP){if(p==='home')APP.renderHome();if(p==='res')APP.renderRes();if(p==='sched')APP.renderSched();if(p==='set'){APP.renderSec();if(window.renderSnd)renderSnd();if(APP.bindBkFolder)APP.bindBkFolder();if(APP.renderSync)APP.renderSync();if(APP.renderRole)APP.renderRole();if(APP.renderPractice)APP.renderPractice();}if(p==='ath'&&APP.renderCheck)APP.renderCheck();if(p==='off'&&APP.renderOff)APP.renderOff();}
-    if(p==='draw')setTimeout(()=>{if(window.fitBracket)fitBracket();},30);
-    scrollTo({top:0});}finally{busy=false;}}
+    if(window.TP_PALCLOSE)TP_PALCLOSE();if(p==='draw'){if(window.TP_ENSURECUR)TP_ENSURECUR();setTimeout(()=>{if(window.fitBracket)fitBracket();},30);}
+    {const k=$('phK');if(k)k.textContent=MM()?'':(STAGE[p]||'');}try{navStat();nextStep(p);}catch(e){}
+    scrollTo({top:0});try{ink();enter(p);}catch(e){}}finally{busy=false;}}
   window.goPage=show;
+  document.addEventListener('click',e=>{const su=e.target.closest&&e.target.closest('#drawSec summary,#op summary');if(!su)return;const d=su.parentElement;setTimeout(()=>{if(!d.open||!window.FXR)return;[...d.children].filter(c=>c.tagName!=='SUMMARY'&&c.offsetParent!==null).slice(0,8).forEach((c,i)=>{c.style.animationDelay=i*28+'ms';FXR.re(c,'fx-in',i*28+520);});},0);});
   document.querySelectorAll('#mainMenu [data-page]').forEach(b=>{if(!b.title)b.title=b.textContent.trim();b.addEventListener('click',()=>show(b.dataset.page));});
   $('brandBox').addEventListener('click',()=>show('home'));
   $('bkOpen').addEventListener('click',()=>{if(page!=='set')show('set');later(()=>$('bkPanel').scrollIntoView({behavior:'smooth',block:'start'}));});

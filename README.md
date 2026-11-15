@@ -1,4 +1,4 @@
-# TatamiPro · Judo tournament manager (v18.7)
+# TatamiPro · Judo tournament manager (v19.1)
 
 Draw (seeding, ranking, qualifier, knockout up to 128), weigh-in, live scoreboard + TV, schedule, results, prints, QR pages and WhatsApp sharing, in one web page. The name and logo can be changed in Settings.
 
@@ -21,6 +21,47 @@ Draw (seeding, ranking, qualifier, knockout up to 128), weigh-in, live scoreboar
 - Chrome / Edge (Windows, Mac, Linux, Android): the **⬇ Install** button in the top bar (or browser menu → Install).
 - iPhone / iPad: Safari → Share → Add to Home Screen.
 - Laptop and desktop get the desktop layout; phones get the phone layout (menu scrolls sideways, tables scroll).
+
+## v19.1 · animations (16 Nov 2026)
+- **Scoreboard, TV window and OBS overlay:**
+  - A score that goes up pops (ippon pops bigger) and the athlete's row lights up behind it. Undo just drops the number back, without an effect.
+  - A new shido card drops in. Hansoku-make shakes the row.
+  - Hajime gives the clock a small pulse; golden score brings in the **GS** sign with a gold glow.
+  - The osaekomi box slides up, its bar runs smoothly and it gives a ring at 5 s / 10 s / 20 s.
+  - A newly loaded match slides in. The reset scores do not pop.
+- **App pages:**
+  - When a page opens, the title, toolbar and cards come in one after another.
+  - A highlight slides along the menu to the page you open. The step number pops when a step turns orange or green.
+  - Dashboard numbers count up and the progress bars fill.
+  - The "Next step" chip slides in when it changes (it no longer redraws every 3 seconds).
+  - The rounds of the bracket come in from left to right when you open another category.
+  - Dialogs, the print menu and messages fade or slide in; a section's content slides in when you open it.
+- Only fade and move effects, short (0.2–0.9 s), so they stay smooth on old laptops and TVs.
+- **Settings → Branding → Animations:** untick it to switch everything off on one laptop (also on its TV window). The computer's own "reduce motion" setting is respected too.
+- **Sync status fix:** a laptop that went offline could still show "● Live · synced" (the 2-second check said "ok" even though nothing was sent). It now shows "Offline · will sync" until the room answers again.
+
+## v19 · professional look, tournament flow menu, command palette (16 Nov 2026)
+- **The menu follows the tournament day:** Dashboard │ ① Athletes ② Draw ③ Schedule ④ Officials │ ⑤ Scoreboard │ ⑥ Results ⑦ Print │ Settings. The number circle shows where you are: **green** = done, **orange** = in progress, grey = not started. On very wide screens a small count is shown next to each step.
+- **Stage caption** above every page title (*Prepare · step 2*, *Compete · step 5*, *Finish · step 7*).
+- **"Next step" chip** at the top right of each page: what is done so far and one button for the next job (for example *Weighed 120 / 349 → Search an athlete*, *All 14 draws made → Next: Schedule*, *Every contest is done → Print results*). On the Dashboard it always points to the most important missing step.
+- **Command palette: Ctrl + K** (Cmd + K on Mac) or the ⌕ button at the top right. Type what you want: "print certificates", "weigh-in", "lock", an athlete's name, "-60 kg" … then ↑ ↓ and Enter. On a mat laptop and the call room laptop it only offers what that laptop may do. Esc, a click outside, or opening another page closes it.
+- The Draw page opens on the first category instead of an empty bracket (the Athletes list still shows everybody until you pick a category yourself).
+- The draw settings (Draw / Format / Small categories) are only on the Draw page now, no second copy on Settings.
+- Keyboard focus is clearly outlined; table headings stay visible while scrolling long lists.
+- Mat Mode is unchanged: mat laptops still see only Scoreboard and Weigh-in, without the step numbers.
+
+## v18.9 · withdrawal and direct hansoku-make (15 Nov 2026)
+- **🚑 Kiken-gachi + withdraw** (Scoreboard → ⚖ Decision): the injured athlete loses this contest and is withdrawn from the rest of the category. Every remaining contest (repechage, bronze, final, round robin) is won by the opponent by **Fusen-gachi** automatically, as soon as that contest is ready. Each one is written in the change log.
+- **Hansoku-make button asks which kind:**
+  - *Technical / dangerous action*: the athlete may go on (repechage, bronze).
+  - *Against the spirit of judo*: the athlete is **out of the whole tournament**, in every category the same person is entered (same name and district, spelling and capitals ignored).
+  - 3 shido stays as before (may go on).
+- **Athletes page (main desk): 🚑 Withdraw / ↻ Undo** for injuries noticed outside a contest. Undo works as long as no later contest has been fought; otherwise change those contests in the draw editor first. Undo (Z) on the scoreboard right after the decision takes the withdrawal back too.
+- Tags **WD** (withdrawn) and **DSQ** (direct hansoku-make) on the draw, fixtures and score sheets. Medals follow the bracket; whether a DSQ athlete keeps a place is the jury's decision.
+
+## v18.8 · full audit and speed (15 Nov 2026)
+- Officials page about 3.5× faster with many events (the schedule is worked out once per screen or print, not once per event).
+- Full audit passed: 435+ automatic checks, three 4-laptop trials (with schedule, without schedule, joined by mat links), every button clicked (159), XSS 0, no memory growth, 431 athletes and 509 contests played, every print type fits the page.
 
 ## v18.7 · referee names on fixtures and score sheets (15 Nov 2026)
 - **The Schedule and the referee assignment are linked.** Each event's mat comes from the Schedule. Its session is chosen on the Schedule page (new "⚖" picker next to the mat), or found from the day and start time when sessions are named like "Day 1 · Morning" / "Day 1 · Afternoon". A mat with only one session always uses it.
@@ -132,7 +173,7 @@ Trial: main desk (also Mat 1) + Mat 2 + Mat 3 + call room laptop in one live roo
 Frosted-glass menu bar, cards, buttons and dialogs floating on a soft colour background, in dark and light mode (Apple-style liquid glass look). On a slow laptop untick Settings → Branding & logos → "Liquid glass look" for the classic flat look. The TV scoreboard and all prints stay the same (solid colours / black & white).
 
 ## Menu
-Dashboard · Athletes · Draw · Scoreboard · Schedule · Results · Officials · Print · Settings, with Share (WhatsApp), Lock, TV and Light/Dark at the top right. Bottom bar: last save, athletes, contests done, TV connection, last backup, mat, clock.
+Dashboard │ ① Athletes ② Draw ③ Schedule ④ Officials │ ⑤ Scoreboard │ ⑥ Results ⑦ Print │ Settings (in the order of the tournament day), with ⌕ Command palette (Ctrl + K), Share (WhatsApp), Lock (when an admin PIN is set), TV and Light/Dark at the top right. Bottom bar: last save, athletes, contests done, TV connection, last backup, mat, clock.
 
 ## Athletes & weigh-in
 - Upload Excel / CSV. Columns are found by name: Name, District/Club, Gender, Age Group, Weight Category, Seed, Ranking, Weight.
