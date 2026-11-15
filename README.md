@@ -1,4 +1,4 @@
-# TatamiPro · Judo tournament manager (v18.6)
+# TatamiPro · Judo tournament manager (v18.7)
 
 Draw (seeding, ranking, qualifier, knockout up to 128), weigh-in, live scoreboard + TV, schedule, results, prints, QR pages and WhatsApp sharing, in one web page. The name and logo can be changed in Settings.
 
@@ -21,6 +21,12 @@ Draw (seeding, ranking, qualifier, knockout up to 128), weigh-in, live scoreboar
 - Chrome / Edge (Windows, Mac, Linux, Android): the **⬇ Install** button in the top bar (or browser menu → Install).
 - iPhone / iPad: Safari → Share → Add to Home Screen.
 - Laptop and desktop get the desktop layout; phones get the phone layout (menu scrolls sideways, tables scroll).
+
+## v18.7 · referee names on fixtures and score sheets (15 Nov 2026)
+- **The Schedule and the referee assignment are linked.** Each event's mat comes from the Schedule. Its session is chosen on the Schedule page (new "⚖" picker next to the mat), or found from the day and start time when sessions are named like "Day 1 · Morning" / "Day 1 · Afternoon". A mat with only one session always uses it.
+- **Names are printed on the sheets:** elimination sheet, final block, round robin pool, results, blank fixtures, filled and blank score sheets. The line reads "Mat 2 · Day 1 · Morning · Referee: name ____ · Judge 1: name ____ · Judge 2: name ____ · Table official: name ____", so after printing only the signatures are needed. The heading shows the event's own mat and session.
+- The Officials page and the referee assignment print show which events each mat and session runs.
+- Without a referee assignment the sheets print as before.
 
 ## v18.6 · one link per mat, locked mat laptops, strict schedule (15 Nov 2026)
 - **Mat laptop links** (main desk · Settings → Live sync, after Create live room): one link per mat. The number of mats comes from the Schedule and can be changed right there. There is also a **Call room laptop** link. Each link has Copy, 📤 WhatsApp and QR.
