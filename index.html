@@ -1359,6 +1359,137 @@ body.nofx *,body.nofx *::before,body.nofx *::after{animation:none!important;tran
 @media print{.fx-in,[class*="fx-"]{animation:none!important}}
 
 .fx-in.tpflash{animation:tpflash 1.6s ease-out}
+/* ===================== v19.2 · creative touches: flow direction, smooth sections, section rail, cursor, theme reveal ===================== */
+/* page change follows the flow: step forward slides in from the right, step back from the left */
+@keyframes fxIn{from{opacity:0;transform:translate(var(--fx-dx,0px),var(--fx-dy,12px))}}
+#drawSec.fxclip{overflow-x:clip}   /* the slide-in never makes a sideways scrollbar flash */
+/* smooth sections: chevron on panel sections that open and close */
+#drawSec details.panel>summary,#op details.panel>summary{list-style:none;position:relative;padding-right:34px!important}
+#drawSec details.panel>summary::-webkit-details-marker,#op details.panel>summary::-webkit-details-marker{display:none}
+#drawSec details.panel>summary::after,#op details.panel>summary::after{content:'';position:absolute;right:12px;top:50%;width:8px;height:8px;margin-top:-6px;border-right:2px solid currentColor;border-bottom:2px solid currentColor;transform:rotate(45deg);opacity:.55;transition:transform .3s var(--fx-out),margin .3s var(--fx-out),opacity .2s}
+#drawSec details.panel[open]>summary::after,#op details.panel[open]>summary::after{transform:rotate(-135deg);margin-top:-2px}
+#drawSec details.panel>summary:hover::after{opacity:1}
+/* panels that can be folded (Settings, Results, Officials …): chevron button at the end of the heading */
+.fxh{cursor:pointer}
+.fxh h3,.fxh h2,h3.fxh,h2.fxh{user-select:none}
+.fxfold{all:unset;box-sizing:border-box;display:inline-grid;place-items:center;width:28px;height:28px;margin-left:auto;border-radius:9px;cursor:pointer;flex:none;vertical-align:middle;color:inherit;opacity:.55;transition:opacity .2s,background .2s}
+h3>.fxfold,h2>.fxfold{float:right;margin-top:-3px}
+.fxfold:hover{opacity:1;background:rgba(127,140,170,.16)}
+.fxfold::before{content:'';width:8px;height:8px;margin-top:4px;border-right:2px solid currentColor;border-bottom:2px solid currentColor;transform:rotate(-135deg);transition:transform .3s var(--fx-out),margin .3s var(--fx-out)}
+.panel.fold .fxfold::before{transform:rotate(45deg);margin-top:-4px}
+.fxfold:focus-visible{outline:2px solid #5a91ff;outline-offset:2px}
+#drawSec .panel.fold>:not(.fxh){display:none!important}
+#drawSec .panel.fold{padding-bottom:12px!important}
+#drawSec .panel.fold>.fxh{margin-bottom:0!important;border-bottom:0!important;padding-bottom:0!important}
+/* section rail: jump to a section, the one in view is lit, fold all / open all */
+#secRail{position:sticky;top:var(--navH,64px);z-index:12;display:flex;gap:6px;align-items:center;overflow-x:auto;scrollbar-width:none;margin:0 0 12px;padding:8px 10px;border-radius:14px;background:var(--sf);border:1px solid var(--bd);box-shadow:0 6px 18px rgba(0,0,0,.12)}
+#secRail::-webkit-scrollbar{display:none}
+body.glass #secRail{background:rgba(18,24,48,.72);-webkit-backdrop-filter:blur(18px) saturate(160%);backdrop-filter:blur(18px) saturate(160%);border-color:rgba(255,255,255,.12)}
+body.glass.light #secRail{background:rgba(255,255,255,.78);border-color:rgba(30,41,74,.1)}
+#secRail .srl{font-size:11px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;opacity:.55;padding:0 6px 0 2px;white-space:nowrap}
+#secRail button{all:unset;cursor:pointer;white-space:nowrap;font-size:13px;font-weight:600;padding:6px 12px;border-radius:999px;color:inherit;opacity:.75;transition:background .25s,opacity .2s,color .25s,box-shadow .25s}
+#secRail button:hover{opacity:1;background:rgba(127,140,170,.14)}
+#secRail button.on{opacity:1;background:rgba(59,124,255,.2);box-shadow:inset 0 0 0 1px rgba(90,145,255,.55)}
+body.light #secRail button.on{background:rgba(36,87,214,.1);box-shadow:inset 0 0 0 1px rgba(36,87,214,.35);color:#1d4ed8}
+#secRail button.fo{opacity:.45}
+#secRail .srx{margin-left:auto;display:flex;gap:4px;padding-left:8px;border-left:1px solid var(--bd)}
+#secRail .srx button{font-size:12px;padding:6px 10px}
+#secRail button:focus-visible{outline:2px solid #5a91ff;outline-offset:1px}
+.fxhit{animation:fxHit 1.1s ease-out}
+@keyframes fxHit{0%{box-shadow:0 0 0 0 rgba(90,145,255,.0)}20%{box-shadow:0 0 0 4px rgba(90,145,255,.55)}100%{box-shadow:0 0 0 14px rgba(90,145,255,0)}}
+/* scroll progress under the menu + back to top */
+#scrollBar{position:absolute;left:0;right:0;bottom:0;height:2px;pointer-events:none;opacity:0;transition:opacity .3s}
+#scrollBar.on{opacity:1}
+#scrollBar i{display:block;height:100%;transform-origin:left center;transform:scaleX(0);background:linear-gradient(90deg,#3b7cff,#22c55e)}
+#toTop{all:unset;position:fixed;right:18px;bottom:44px;z-index:60;width:42px;height:42px;display:grid;place-items:center;border-radius:50%;cursor:pointer;font-size:18px;font-weight:800;color:#fff;background:linear-gradient(180deg,#4b8bff,#2f6cf0);box-shadow:0 8px 22px rgba(30,70,200,.35);opacity:0;transform:translateY(16px) scale(.8);pointer-events:none;transition:opacity .25s,transform .3s var(--fx-spring),bottom .3s var(--fx-out)}
+#toTop.on{opacity:1;transform:none;pointer-events:auto}
+#toTop:hover{filter:brightness(1.1)}
+#toTop.up{bottom:104px}
+body.tv #toTop,body.view #toTop,body.ovl #toTop,body.matmode #toTop,body[data-tab=sb] #toTop{display:none}
+/* keyboard shortcut sheet ( ? ) */
+#kbOv{position:fixed;inset:0;z-index:95;display:flex;align-items:center;justify-content:center;background:rgba(5,9,20,.55);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);animation:fxFade .2s ease-out;padding:16px}
+#kbOv .kbm{width:min(860px,100%);max-height:calc(100vh - 32px);overflow:auto;background:var(--sf);color:var(--tx);border:1px solid var(--bd);border-radius:18px;padding:20px 22px;box-shadow:0 24px 60px rgba(0,0,0,.45);animation:fxBox .3s var(--fx-out)}
+#kbOv h3{margin:0 0 2px;font-size:18px}
+#kbOv .kbg{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:6px 28px;margin-top:14px}
+#kbOv .kbg h4{grid-column:1/-1;margin:10px 0 2px;font-size:11px;letter-spacing:.09em;text-transform:uppercase;opacity:.6}
+#kbOv .kr{display:flex;align-items:center;gap:10px;font-size:13.5px;padding:3px 0}
+#kbOv .kr span{flex:1}
+#kbOv kbd{display:inline-grid;place-items:center;min-width:26px;height:26px;padding:0 7px;border-radius:7px;font:700 12px/1 ui-monospace,Menlo,Consolas,monospace;background:rgba(127,140,170,.16);border:1px solid rgba(127,140,170,.35);border-bottom-width:2px}
+#kbOv .kw{color:#9aa4b8}
+html body #kbOv .kbw kbd{background:#fff!important;color:#111!important;border-color:#bbb!important}
+html body #kbOv .kbb kbd{background:#2563eb!important;color:#fff!important;border-color:#1d4ed8!important}
+#kbOv h3{text-transform:none!important;letter-spacing:0!important}
+/* cursor: soft ring that follows the mouse, light on the card under it, ripple where you click */
+#cRing{position:fixed;left:0;top:0;width:34px;height:34px;margin:-17px 0 0 -17px;border-radius:50%;pointer-events:none;z-index:2147483000;border:1.5px solid rgba(120,160,255,.75);background:rgba(120,160,255,.07);opacity:0;transition:opacity .2s,background .2s,border-color .2s;will-change:transform}
+#cRing.on{opacity:1}
+#cRing.hov{background:rgba(120,160,255,.14);border-color:rgba(140,175,255,1)}
+#cRing.dn{background:rgba(120,160,255,.3)}
+body.light #cRing{border-color:rgba(36,87,214,.55);background:rgba(36,87,214,.05)}
+body.light #cRing.hov{background:rgba(36,87,214,.1);border-color:rgba(36,87,214,.85)}
+@media (hover:hover) and (pointer:fine){
+  body.cfx #drawSec .panel.fxlit,body.cfx #drawSec .kpi.fxlit{background-image:radial-gradient(560px circle at var(--mx,50%) var(--my,50%),rgba(130,165,255,.10),rgba(130,165,255,0) 55%)!important}
+  body.cfx.light #drawSec .panel.fxlit,body.cfx.light #drawSec .kpi.fxlit{background-image:radial-gradient(560px circle at var(--mx,50%) var(--my,50%),rgba(36,87,214,.07),rgba(36,87,214,0) 55%)!important}
+}
+.fxrip{position:fixed;pointer-events:none;overflow:hidden;z-index:2147482000}
+.fxrip i{position:absolute;border-radius:50%;background:currentColor;opacity:.28;transform:scale(0);animation:fxRip .55s ease-out forwards}
+@keyframes fxRip{to{transform:scale(1);opacity:0}}
+/* TV, big screen and OBS: the mouse pointer hides after 2.5 s without moving */
+body.curhide,body.curhide *{cursor:none!important}
+/* theme switch: the new look grows as a circle from the button */
+::view-transition-old(root),::view-transition-new(root){animation:none;mix-blend-mode:normal}
+/* everything done: the next-step chip shines gold */
+#phA .nxs.done{box-shadow:0 0 0 1px rgba(247,215,116,.6),0 8px 24px rgba(201,151,28,.25)}
+#phA .nxs.done b{background:linear-gradient(90deg,#f7d774,#fff4c2,#f7d774);background-size:200% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:fxShine 2.6s linear infinite}
+@keyframes fxShine{to{background-position:-200% 0}}
+#fxDone{position:fixed;inset:0;width:100vw;height:100vh;pointer-events:none;z-index:90}
+body.nofx #cRing,body.nofx .fxrip{display:none!important}
+@media (prefers-reduced-motion:reduce){#cRing,.fxrip,#fxDone{display:none!important}#secRail button,.fxfold::before,#toTop{transition:none!important}}
+
+/* v19.2: the app's button look must not restyle these small controls */
+html body #drawSec .fxfold,html body #drawSec .fxfold:hover:not(:disabled),html body.glass #drawSec .fxfold{background:transparent!important;border:0!important;box-shadow:none!important;padding:0!important;min-height:0!important;width:28px!important;height:28px!important;border-radius:9px!important;-webkit-backdrop-filter:none!important;backdrop-filter:none!important;color:inherit!important;transform:none!important}
+html body #drawSec .fxfold:hover:not(:disabled){background:rgba(127,140,170,.16)!important}
+html body #drawSec .fxfold::before,html body.glass #drawSec .fxfold::before{content:''!important;display:block!important;position:static!important;inset:auto!important;width:8px!important;height:8px!important;border:0!important;border-right:2px solid currentColor!important;border-bottom:2px solid currentColor!important;border-radius:0!important;background:none!important;box-shadow:none!important;opacity:1!important;transform:rotate(-135deg)!important;margin:4px 0 0!important;transition:transform .3s var(--fx-out),margin .3s var(--fx-out)!important}
+html body #drawSec .panel.fold .fxfold::before{transform:rotate(45deg)!important;margin:-4px 0 0!important}
+html body #secRail button,html body.glass #secRail button{background:transparent!important;border:1px solid transparent!important;box-shadow:none!important;min-height:0!important;padding:6px 12px!important;border-radius:999px!important;-webkit-backdrop-filter:none!important;backdrop-filter:none!important;color:inherit!important;font-size:13px!important;transform:none!important}
+html body #secRail button:hover:not(:disabled){background:rgba(127,140,170,.16)!important}
+html body #secRail button.on,html body.glass #secRail button.on{background:rgba(59,124,255,.24)!important;border-color:rgba(90,145,255,.65)!important;opacity:1!important}
+html body.light #secRail button.on,html body.glass.light #secRail button.on{background:rgba(36,87,214,.1)!important;border-color:rgba(36,87,214,.4)!important;color:#1d4ed8!important}
+html body #secRail .srx button{font-size:12px!important;padding:6px 10px!important;border-color:rgba(127,140,170,.3)!important}
+html body #toTop,html body.glass #toTop,html body #toTop:hover:not(:disabled){background:linear-gradient(180deg,#4b8bff,#2f6cf0)!important;color:#fff!important;border:0!important;border-radius:50%!important;padding:0!important;min-height:0!important;width:42px!important;height:42px!important;box-shadow:0 8px 22px rgba(30,70,200,.35)!important}
+/* ===================== v20 · theme rocker (Glow Rocker) + first-launch welcome (Neon Hello) ===================== */
+/* theme switch in the menu bar: a small 3D rocker, LIGHT pressed = light theme, DARK pressed and glowing = dark theme */
+nav#topNav #thBtn.thRock{width:44px;height:56px;flex:none;border-radius:14px;margin-left:2px;box-shadow:inset 0 0 0 1px rgba(255,255,255,.09),0 6px 16px rgba(0,0,0,.32);transition:box-shadow .3s}
+body.light nav#topNav #thBtn.thRock{box-shadow:inset 0 0 0 1px rgba(16,24,40,.10),0 4px 12px rgba(31,45,90,.16)}
+nav#topNav #thBtn.thRock:hover{box-shadow:inset 0 0 0 1px rgba(166,77,255,.55),0 6px 20px rgba(166,77,255,.28)}
+nav#topNav #thBtn.thRock:focus-visible{outline:2px solid #a64dff;outline-offset:3px}
+@media (max-width:760px){nav#topNav #thBtn.thRock{width:40px;height:52px;border-radius:12px}}
+/* welcome screen: black stage, the neon hello, the name and one button */
+#welcome{position:fixed;inset:0;z-index:2147480000;background:#000;color:#fff;font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","Segoe UI Variable","Segoe UI",Inter,Roboto,Arial,sans-serif;animation:wlIn .5s ease-out both}
+#welcome .wlStage{position:absolute;inset:0}
+html.wlOpen,html.wlOpen body{overflow:hidden!important}
+@keyframes wlIn{from{opacity:0}}
+@keyframes wlUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+#welcome .wlc{display:flex;flex-direction:column;align-items:center;gap:8px;text-align:center;padding:0 16px}
+#welcome .wlBrand{display:flex;align-items:center;gap:12px;font-size:clamp(22px,2.4vw,32px);font-weight:800;letter-spacing:-.01em;opacity:0;animation:wlUp .7s calc(var(--wlT,4s) - .7s) cubic-bezier(.2,.8,.2,1) forwards}
+#welcome .wlBrand b{background:linear-gradient(90deg,#fff,#d9c6ff 55%,#9fd1ff);-webkit-background-clip:text;background-clip:text;color:transparent}
+#welcome .wlLogo{width:42px;height:42px;display:grid;place-items:center;flex:none;overflow:hidden;font-size:15px;font-weight:800;color:#fff;border-radius:13px;background:linear-gradient(135deg,#3b7cff,#8a4dff);box-shadow:inset 0 1px 0 rgba(255,255,255,.45),0 6px 22px rgba(120,90,255,.55)}
+#welcome .wlLogo img{width:100%;height:100%;object-fit:contain}
+#welcome .wlSub{font-size:15px;color:rgba(255,255,255,.78);opacity:0;animation:wlUp .7s calc(var(--wlT,4s) - .5s) cubic-bezier(.2,.8,.2,1) forwards}
+#welcome .wlLine{font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.5);opacity:0;animation:wlUp .7s calc(var(--wlT,4s) - .35s) cubic-bezier(.2,.8,.2,1) forwards}
+html body #welcome .wlGo,html body #welcome .wlGo:hover:not(:disabled){all:unset;box-sizing:border-box;margin-top:10px;display:inline-flex;align-items:center;gap:10px;padding:13px 30px!important;border-radius:999px!important;cursor:pointer;font:700 16px/1 inherit;color:#0b0b12!important;background:linear-gradient(180deg,#fff,#e9e4ff)!important;border:0!important;box-shadow:0 0 0 1px rgba(255,255,255,.5),0 10px 34px rgba(166,77,255,.45),0 0 60px rgba(80,160,255,.25)!important;opacity:0;animation:wlUp .7s calc(var(--wlT,4s) - .15s) cubic-bezier(.2,.8,.2,1) forwards;transition:transform .2s,box-shadow .25s}
+html body #welcome .wlGo:hover:not(:disabled){transform:translateY(-1px);box-shadow:0 0 0 1px #fff,0 14px 40px rgba(166,77,255,.6),0 0 80px rgba(80,160,255,.35)!important}
+html body #welcome .wlGo:focus-visible{outline:2px solid #b98cff!important;outline-offset:4px}
+#welcome .wlGo span{transition:transform .25s}
+#welcome .wlGo:hover span{transform:translateX(3px)}
+#welcome .wlHint{font-size:12px;color:rgba(255,255,255,.4);opacity:0;animation:wlUp .7s calc(var(--wlT,4s) + .1s) cubic-bezier(.2,.8,.2,1) forwards}
+/* leaving: the stage opens up and the app comes in under it */
+#welcome.out{animation:wlOut .7s cubic-bezier(.4,0,.2,1) forwards;pointer-events:none}
+@keyframes wlOut{to{opacity:0;transform:scale(1.07)}}
+html.wlEnter nav#topNav,html.wlEnter #drawSec,html.wlEnter #op{animation:wlApp .8s .1s cubic-bezier(.2,.8,.2,1) backwards}
+@keyframes wlApp{from{opacity:0;transform:scale(.975)}}
+@media (prefers-reduced-motion:reduce){#welcome,#welcome *{animation:none!important;opacity:1!important}#welcome.out{opacity:0!important}}
+@media print{#welcome{display:none!important}}
+
 /* ===== PRINT: always black text on white paper, in dark or light mode (must stay the LAST rules) ===== */
 @media print{
  html,html body,html body:not(.tv),html body:not(.tv):not(.view),html body.light,html body.light:not(.tv),html body.light:not(.tv):not(.view),html body.view,html body.tv{background:#fff!important;background-image:none!important;background-attachment:scroll!important;color:#000!important}
@@ -1398,6 +1529,2470 @@ body.nofx *,body.nofx *::before,body.nofx *::after{animation:none!important;tran
 </style>
 </head>
 <body data-tab="draw" class="glass">
+<script>
+// ---------- v20 · theme before the first paint: no flash of the dark theme on a light-theme laptop ----------
+(function(){var h=location.hash;window.TP_LAUNCH_HASH=h;if(h==='#display'||h.indexOf('#v=')===0||h.indexOf('#live=')===0||h==='#callroom')return;
+  var t='dark';try{t=localStorage.getItem('judoTheme')||'dark';}catch(e){}if(t==='light')document.body.classList.add('light');})();
+</script>
+<script>
+// ---------- Glow Rocker by Louis Studios (studios.lou15.com) ----------
+// Ported from the React component to plain JavaScript for TatamiPro: the scene, the shader, the timing
+// and the 2D fallback are unchanged; only the React wrapper became create(root, options).
+const GlowRocker=(()=>{
+/* ------------------------------------------------------------------ */
+/* Measured from the reference film (277 frames at 25 fps).            */
+/* World unit is the pill radius. +y is the OFF end, +z is up.         */
+/* ------------------------------------------------------------------ */
+const HALF = 1.53; // half length of the straight part of the pill
+const LEN = 2.53; // hinge to tip
+const TILT = 0.276; // how far a half swings up about the hinge, in radians
+const PLATE = 0.032; // thickness of the grey top plate
+const DOT_X = 1.374; // dotted line, to the right of the pill
+const DOT_Y0 = -1.9425;
+const DOT_Y1 = 1.9788;
+const DOT_R = 0.042;
+const SIDE_X = 1.374; // the side labels sit on the dotted line
+const OFF_Y = 1.86; // label centres on the plate
+const ON_Y = -1.86;
+const TOP_Y = 2.33; // label centres beside the dotted line
+const BOT_Y = -2.45;
+const CAP_PLATE = 0.32; // cap height of the plate labels
+const CAP_SIDE = 0.26; // cap height of the side labels
+/* The rock is an exponential ease in that snaps home at the cut. */
+const ON_FRAMES = 26;
+const ON_A = 0.01466;
+const ON_K = 0.157 * ON_FRAMES;
+const OFF_FRAMES = 30;
+const OFF_A = 0.00264;
+const OFF_K = 0.19 * OFF_FRAMES;
+/* Frames before the flip at which each dot switches (19 dots in the film). */
+const DOTS_ON = [18, 15, 12, 10, 9, 8, 6, 5, 4, 4, 3, 2, 2, 1, 1, 1, 0, 0, 0];
+const DOTS_OFF = [14, 12, 11, 9, 8, 7, 6, 5, 4, 4, 3, 2, 2, 1, 1, 0, 0, 0, 0];
+/* The film's edit: [first frame, length, dark scene, view, local frame it starts on]. */
+const FPS = 25;
+const CUTS = [
+    [0, 25, 0, "iso", 1],
+    [25, 30, 1, "iso", 0],
+    [55, 26, 0, "iso", 0],
+    [81, 30, 1, "iso", 0],
+    [111, 25, 0, "close", 1],
+    [136, 30, 1, "close", 0],
+    [166, 25, 0, "top", 1],
+    [191, 30, 1, "top", 0],
+    [221, 26, 0, "top", 0],
+    [247, 30, 1, "top", 0],
+];
+const LOOP_FRAMES = 277;
+const VIEWS = {
+    iso: { az: 48.4, el: 31, dist: 30, zoom: 120, tx: -0.01, ty: 0.33, need: 760, roll: 0.4, gain: 1, dim: 1 },
+    close: { az: 102.3, el: 38.6, dist: 30, zoom: 297, tx: 0.42, ty: 1.66, need: 760, roll: -9.6, gain: 1.2, dim: 0.2 },
+    top: { az: 0, el: 89.9, dist: 40, zoom: 170, tx: 0.245, ty: 0.043, need: 1010, roll: 0, gain: 1, dim: 0.48 },
+};
+const clamp01 = (x) => (x < 0 ? 0 : x > 1 ? 1 : x);
+const mix = (a, b, t) => a + (b - a) * t;
+const ease = (t) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2);
+const rockOn = (u) => (u >= 1 ? 1 : ON_A * (Math.exp(ON_K * u) - 1));
+const rockOff = (u) => (u >= 1 ? 1 : OFF_A * (Math.exp(OFF_K * u) - 1));
+const unrockOn = (p) => clamp01(Math.log(Math.max(p, 0) / ON_A + 1) / ON_K);
+const unrockOff = (p) => clamp01(Math.log(Math.max(p, 0) / OFF_A + 1) / OFF_K);
+/** How many of `n` dots have switched when `rem` frames are left before the flip. */
+function switched(table, rem, n) {
+    let c = 0;
+    for (let i = 0; i < n; i++) {
+        const f = n > 1 ? (i * (table.length - 1)) / (n - 1) : 0;
+        const a = Math.floor(f);
+        const b = Math.min(table.length - 1, a + 1);
+        if (mix(table[a], table[b], f - a) >= rem - 1e-3)
+            c++;
+    }
+    return c;
+}
+const litOn = (u, n) => (u >= 1 ? n : switched(DOTS_ON, ON_FRAMES * (1 - u), n));
+const litOff = (u, n) => (u >= 1 ? 0 : n - switched(DOTS_OFF, OFF_FRAMES * (1 - u), n));
+function mixCam(a, b, t) {
+    return {
+        az: mix(a.az, b.az, t),
+        el: mix(a.el, b.el, t),
+        dist: mix(a.dist, b.dist, t),
+        zoom: Math.exp(mix(Math.log(a.zoom), Math.log(b.zoom), t)),
+        tx: mix(a.tx, b.tx, t),
+        ty: mix(a.ty, b.ty, t),
+        need: mix(a.need, b.need, t),
+        roll: mix(a.roll, b.roll, t),
+        gain: mix(a.gain, b.gain, t),
+        dim: mix(a.dim, b.dim, t),
+    };
+}
+/** Any CSS colour to 0..1 rgb, read back from a canvas so every syntax works. */
+function parseColor(c, fallback) {
+    try {
+        const cv = document.createElement("canvas");
+        cv.width = cv.height = 1;
+        const x = cv.getContext("2d");
+        if (!x)
+            return fallback;
+        x.fillStyle = "#000000"; // ls:keep
+        x.fillStyle = c;
+        x.fillRect(0, 0, 1, 1);
+        const d = x.getImageData(0, 0, 1, 1).data;
+        return [d[0] / 255, d[1] / 255, d[2] / 255];
+    }
+    catch {
+        return fallback;
+    }
+}
+/* ------------------------------------------------------------------ */
+/* Label atlas: four rows, regular weight in red, heavy weight in green */
+/* ------------------------------------------------------------------ */
+const ATLAS = 1024;
+const ROW = ATLAS / 4;
+const CAP_FRAC = 0.45; // cap height as a share of the row
+function drawAtlas(labels, font) {
+    const cv = document.createElement("canvas");
+    cv.width = cv.height = ATLAS;
+    const x = cv.getContext("2d");
+    if (!x)
+        return cv;
+    x.fillStyle = "#000000"; // ls:keep
+    x.fillRect(0, 0, ATLAS, ATLAS);
+    x.globalCompositeOperation = "lighter";
+    x.textAlign = "center";
+    x.textBaseline = "alphabetic";
+    const cap = ROW * CAP_FRAC;
+    for (let r = 0; r < 4; r++) {
+        const text = labels[r];
+        if (!text)
+            continue;
+        for (let w = 0; w < 2; w++) {
+            const weight = w ? 600 : 400;
+            x.font = `${weight} 100px ${font}`;
+            const m = x.measureText("H");
+            const capPx = m.actualBoundingBoxAscent || 71;
+            const size = (100 * cap) / capPx;
+            x.font = `${weight} ${size.toFixed(2)}px ${font}`;
+            x.fillStyle = w ? "#00ff00" : "#ff0000"; // ls:keep
+            // the plate labels must stay inside the pill, the side labels inside their row
+            const maxW = r < 2 ? ATLAS * 0.6 : ATLAS * 0.92;
+            x.fillText(text, ATLAS / 2, r * ROW + ROW / 2 + cap / 2, maxW);
+        }
+    }
+    return cv;
+}
+/* ------------------------------------------------------------------ */
+/* Shader: one full screen pass that raymarches the rocker             */
+/* ------------------------------------------------------------------ */
+const VERT = `attribute vec2 aPos; void main(){ gl_Position = vec4(aPos, 0.0, 1.0); }`;
+const FRAG = `
+#ifdef GL_FRAGMENT_PRECISION_HIGH
+precision highp float;
+#else
+precision mediump float;
+#endif
+uniform vec2 uRes;
+uniform float uScale;
+uniform vec4 uCam;
+uniform vec4 uTgt;
+uniform float uDim;
+uniform float uPose;
+uniform float uDark;
+uniform float uBloom;
+uniform float uLit;
+uniform float uDots;
+uniform vec3 uGlow;
+uniform vec3 uLight;
+uniform vec3 uShade;
+uniform vec3 uInk;
+uniform sampler2D uText;
+
+const float A = ${HALF.toFixed(3)};
+const float L = ${LEN.toFixed(3)};
+const float TH = ${TILT.toFixed(4)};
+const float TP = ${PLATE.toFixed(3)};
+const float RB = 0.014;
+const float DX = ${DOT_X.toFixed(4)};
+const float DY0 = ${DOT_Y0.toFixed(4)};
+const float DY1 = ${DOT_Y1.toFixed(4)};
+const float DR = ${DOT_R.toFixed(3)};
+const float AMB = 0.06;
+const vec2 SUN2 = vec2(-0.788, -0.616);
+const vec3 SUN = vec3(-0.711, -0.556, 0.431);
+const vec3 KEYA = vec3(-0.719, -0.000, 0.695);
+const vec3 KEYB = vec3(-0.439, -0.369, 0.819);
+const float SOFTA = 0.45;
+const float SOFTB = 0.8;
+
+vec3 kOff;
+vec3 kOn;
+vec3 gView;
+float gTop;
+float pw;
+vec3 gGlow;
+vec3 gLight;
+vec3 gShade;
+vec3 gInk;
+
+vec3 toLin(vec3 c){ return pow(c, vec3(2.2)); }
+
+/* sin, cos and half angle tangent of the tilt of the half a point belongs to */
+vec3 hv(float y){ return y > 0.0 ? kOff : kOn; }
+float sd2(vec2 p){ return length(vec2(p.x, max(abs(p.y) - A, 0.0))) - 1.0; }
+vec2 grad2(vec2 p){
+  vec2 q = vec2(p.x, sign(p.y) * max(abs(p.y) - A, 0.0));
+  return q / max(length(q), 1e-4);
+}
+/* height of the rocker above the floor: the tilted plate, or the wall that leans in under its rim */
+float hgt(vec2 q){
+  vec3 k = hv(q.y);
+  float ay = abs(q.y);
+  float yb = A + sqrt(max(1.0 - q.x * q.x, 0.0));
+  float h = min(ay * k.x / k.y, (yb - ay) / max(k.z, 0.002));
+  return abs(q.x) < 1.0 ? max(h, 0.0) : 0.0;
+}
+/* xy: where on the plate a point sits, z: its height above the top face */
+vec3 plateCo(vec3 p){
+  vec3 k = hv(p.y);
+  float ay = abs(p.y);
+  return vec3(p.x, (p.y > 0.0 ? 1.0 : -1.0) * (ay * k.y + p.z * k.x), p.z * k.y - ay * k.x);
+}
+float body(vec3 p){
+  vec3 k = hv(p.y);
+  float ay = abs(p.y);
+  vec2 w = vec2(sd2(vec2(p.x, ay + p.z * k.z)) * 0.87, p.z * k.y - ay * k.x) + RB;
+  return min(max(w.x, w.y), 0.0) + length(max(w, 0.0)) - RB;
+}
+vec3 bodyNormal(vec3 p){
+  vec2 e = vec2(1.0, -1.0) * 0.004;
+  return normalize(e.xyy * body(p + e.xyy) + e.yyx * body(p + e.yyx) + e.yxy * body(p + e.yxy) + e.xxx * body(p + e.xxx));
+}
+/* distance to the glowing wall of one half; the wall only counts where it has some height */
+float lampHalf(vec3 p, float yy, vec3 k){
+  float y0 = yy + p.z * k.z;
+  float ymin = 0.02 / max(k.x, 0.001);
+  float s = length(vec2(p.x, max(y0 - A, 0.0))) - 1.0;
+  float ht = max(min(max(y0, ymin), L) * k.x - TP, 0.0);
+  return length(vec3(abs(s), max(p.z - ht, 0.0), max(ymin - y0, 0.0)));
+}
+float lamp(vec3 p){ return min(lampHalf(p, p.y, kOff), lampHalf(p, -p.y, kOn)); }
+
+/* soft shadow of the rocker on the floor toward one part of the large light: the closer
+   the ray passes the body, the less of that part is seen */
+float shadow1(vec2 xy, vec3 key, float soft){
+  float res = 1.0;
+  float t = 0.03;
+  float ph = 1000.0;
+  for (int i = 0; i < 20; i++) {
+    float h = body(vec3(xy, 0.004) + key * t);
+    if (h < 0.0015) { res = 0.0; break; }
+    float y = h * h / (2.0 * ph);
+    float d = sqrt(max(h * h - y * y, 0.0));
+    res = min(res, d / max(t - y, 0.0001));
+    ph = h;
+    t += clamp(h, 0.03, 0.22);
+    if (t > 3.2) break;
+  }
+  res = clamp(res / soft, 0.0, 1.0);
+  return res * res * (3.0 - 2.0 * res);
+}
+/* the light is wide, so two parts of it are sampled and averaged */
+float shadow(vec2 xy){ return 0.5 * (shadow1(xy, KEYA, SOFTA) + shadow1(xy, KEYB, SOFTB)); }
+
+/* light a vertical glowing strip of height h throws on the floor at distance d */
+float strip(float d, float h){
+  d = max(d, 0.0);
+  return 0.5 * (1.0 - d / sqrt(d * d + h * h + 1e-5));
+}
+
+/* x: regular weight, y: heavy weight, z: soft halo of the heavy weight, w: 1 on the far (+y) half */
+vec4 labels(vec2 xy, float plate){
+  float up = step(0.0, xy.y);
+  vec2 c = plate > 0.5 ? vec2(0.0, mix(${ON_Y.toFixed(3)}, ${OFF_Y.toFixed(3)}, up)) : vec2(${SIDE_X.toFixed(3)}, mix(${BOT_Y.toFixed(3)}, ${TOP_Y.toFixed(3)}, up));
+  float cap = plate > 0.5 ? ${CAP_PLATE.toFixed(3)} : ${CAP_SIDE.toFixed(3)};
+  float row = plate > 0.5 ? mix(2.0, 3.0, up) : mix(0.0, 1.0, up);
+  vec2 cell = vec2(4.0, 1.0) * cap / ${CAP_FRAC.toFixed(3)};
+  vec2 uv = (xy - c) / cell + 0.5;
+  float inside = step(0.0, uv.x) * step(uv.x, 1.0) * step(0.0, uv.y) * step(uv.y, 1.0);
+  uv = clamp(uv, 0.003, 0.997);
+  vec2 st = vec2(uv.x, (row + uv.y) * 0.25);
+  vec3 a = texture2D(uText, st).rgb;
+  vec3 b = texture2D(uText, st, 1.6).rgb;
+  vec2 ed = smoothstep(vec2(0.0), vec2(0.06, 0.2), uv) * smoothstep(vec2(1.0), vec2(0.94, 0.8), uv);
+  return vec4(a.r * inside, a.g * inside, b.g * inside * ed.x * ed.y, up);
+}
+
+/* the top face of the plate, lifted or lying flush in the floor */
+vec3 plateColor(vec2 xy, float lam, float sh, float tilt){
+  vec4 t = labels(xy, 1.0);
+  // light scene: OFF is the bright label, ON is ink
+  vec3 lightCol = gLight * (AMB + (1.0 - AMB) * lam * sh);
+  vec3 inkLightCol = toLin(vec3(0.31, 0.31, 0.31));
+  lightCol = mix(lightCol, inkLightCol, t.x * (1.0 - t.w));
+  lightCol = mix(lightCol, gInk, mix(t.x, t.y, 0.2) * t.w) + gInk * t.z * t.w * 0.1;
+  // dark scene: ON is the bright label, OFF is dim; a faint key light still models the tilt
+  vec3 darkCol = gShade * uDim * clamp(1.0 + 4.8 * tilt, 0.3, 3.0);
+  vec3 inkDarkCol = toLin(vec3(0.65, 0.65, 0.65));
+  darkCol = mix(darkCol, inkDarkCol, mix(t.x, t.y, 0.35) * t.w);
+  darkCol = mix(darkCol, gInk, t.y * (1.0 - t.w)) + gInk * t.z * (1.0 - t.w) * 0.1;
+  return mix(lightCol, darkCol, uDark);
+}
+
+/* how much light the top face of one half catches at its tilt, 1 when it lies flat */
+float topLam(float sg, vec3 k){
+  float lam = max(dot(vec3(0.0, -sg * k.x, k.y), SUN), 0.0) / SUN.z;
+  return min(lam, 1.0) + max(lam - 1.0, 0.0) * 0.47;
+}
+vec3 shadeBody(vec3 p){
+  vec3 n = bodyNormal(p);
+  vec3 k = hv(p.y);
+  float sg = p.y > 0.0 ? 1.0 : -1.0;
+  vec3 pc = plateCo(p);
+  vec3 nTop = vec3(0.0, -sg * k.x, k.y);
+  float lam = max(dot(n, SUN), 0.0);
+  float top = smoothstep(0.6, 0.92, dot(n, nTop));
+  float wall = 1.0 - smoothstep(-TP - pw, -TP + pw, pc.z);
+  wall *= smoothstep(-0.2, -0.14, sd2(p.xy));
+  float ht = min(abs(p.y) + p.z * k.z, L) * k.x;
+  float tall = smoothstep(0.0, 0.5, ht);
+  // plate: top face and its thin grey edge
+  vec3 topCol = plateColor(pc.xy, topLam(sg, k), 1.0, sg * k.x);
+  vec3 rimLightCol = gLight * (AMB + (1.0 - AMB) * (0.4 + lam) * 1.1);
+  rimLightCol = mix(rimLightCol, gGlow + vec3(0.55, 0.45, 0.6), 0.05);
+  // by night the edge that faces the lens sits in the plate's own shade
+  vec3 rimDarkCol = gShade * uDim * 0.4 + gGlow * 0.05;
+  vec3 plate = mix(mix(rimLightCol, rimDarkCol, uDark), topCol, top);
+  // wall: violet body in the light scene, a lamp in the dark scene
+  float lam2 = dot(normalize(n.xy + vec2(0.0001, 0.0)), SUN2);
+  float lit = clamp((lam2 - 0.1) / 0.9, 0.0, 1.0);
+  float base = mix(0.14, 0.63, smoothstep(-0.95, 0.2, lam2)) - 0.27 * smoothstep(0.5, 1.0, lam2);
+  float warm = 0.11 * smoothstep(-0.3, 0.3, lam2) * (1.0 - smoothstep(0.7, 1.0, lam2));
+  vec3 sunlitCol = vec3(0.8, 0.5, 0.62);
+  vec3 warmCol = vec3(1.0, 0.0, 0.0);
+  vec3 wallLightCol = gGlow * base + sunlitCol * 0.8 * lit * sqrt(lit) + warmCol * warm;
+  // the side turned away from the light falls off toward its foot
+  float rise = max(smoothstep(0.0, 0.9, p.z / max(ht, 0.04)), 1.0 - smoothstep(0.02, 0.12, ht));
+  wallLightCol *= mix(1.0, mix(0.12, 1.25, rise), 1.0 - smoothstep(-0.7, -0.2, lam2));
+  // the rounded end catches a little fill light, the side straight across from the sun gets the least
+  float endOn = max(n.y * sg, 0.0);
+  wallLightCol *= (1.0 + 0.5 * endOn * endOn * (1.0 - smoothstep(-0.3, 0.2, lam2))) * mix(0.7, 1.0, smoothstep(-1.0, -0.8, lam2));
+  float limb = smoothstep(-0.05, 0.3, dot(n, gView));
+  vec3 wallDarkCol = mix(gGlow * 1.6, gGlow * 0.6 + vec3(1.2, 0.75, 0.5), limb);
+  vec3 side = mix(wallLightCol, wallDarkCol, uDark);
+  gTop = top * (1.0 - wall);
+  return mix(plate, side, wall * (1.0 - top));
+}
+
+vec3 shadeGround(vec2 xy){
+  float s = sd2(xy);
+  vec2 g = grad2(xy);
+  vec2 q = xy - g * s;
+  vec3 kq = hv(q.y);
+  float lift = max(min(abs(q.y), L) * kq.x - TP, 0.0);
+  float lifted = smoothstep(0.0, 0.03, lift);
+  float gs = dot(g, SUN2);
+  float sh = uDark < 0.999 && s < 2.4 ? shadow(xy) : 1.0;
+  // the light is wide: only the floor right at the plate goes fully dark
+  sh = mix(sh, 1.0, 0.36 * smoothstep(0.0, 0.3, s) * (1.0 - 0.75 * smoothstep(0.12, 0.36, lift) * step(0.0, q.y)));
+  // the seam where the plate lies in the floor: a fine groove with one lit ledge
+  float sa = s + 0.004;
+  float sb = sa + 0.03 * gs;
+  float flush = 1.0 - lifted;
+  float groove = exp(-sa * sa / 0.00008) * flush;
+  float ledge = exp(-sb * sb / 0.00014) * flush;
+  vec3 col;
+  if (s < 0.0) {
+    vec3 kx = hv(xy.y);
+    float sx = xy.y > 0.0 ? 1.0 : -1.0;
+    col = plateColor(xy, topLam(sx, kx), 1.0, sx * kx.x);
+  } else {
+    float f = strip(s, lift + 0.012);
+    float facing = max(gs, 0.0);
+    // light scene: soft shadow and a violet bounce off the wall
+    vec3 lightCol = gLight * (AMB + (1.0 - AMB) * sh);
+    vec3 bounceCol = (gGlow + vec3(0.25, 0.25, 0.25)) * gLight * 0.55;
+    lightCol += bounceCol * f * lifted * (0.1 + facing);
+    // dark scene: the wall lights the floor
+    float tip = clamp(abs(q.y) - A, 0.0, 1.0);
+    float raw = max(min(abs(q.y), L) * kq.x - 0.6 * TP, 0.0);
+    float open = smoothstep(0.0, 0.02, raw);
+    float sr = s / (0.34 + 0.95 * raw);
+    float pool = 1.7 * strip(s, raw * mix(1.65, 1.0, tip) + 0.012) / (1.0 + sr * sr * sr) * open;
+    vec3 deepCol = pow(gGlow, vec3(1.25));
+    vec3 warmCol = vec3(0.25, 0.01, 0.0);
+    vec3 darkCol = gShade * uDim + deepCol * pool + warmCol * pool * pool;
+    vec3 hotCol = vec3(1.0, 0.5, 0.6);
+    darkCol += hotCol * 0.9 * exp(-s * 30.0) * smoothstep(0.01, 0.07, raw);
+    col = mix(lightCol, darkCol, uDark);
+
+    // side labels
+    vec4 t = labels(xy, 0.0);
+    vec3 inkCol = toLin(vec3(0.47, 0.47, 0.47));
+    col = mix(mix(col, inkCol * (0.3 + 0.7 * sh), t.x), mix(col, gInk, t.y) + gInk * t.z * 0.22, uDark);
+
+    // dotted line: small pits in the floor that fill with light
+    float sp = (DY1 - DY0) / max(uDots - 1.0, 1.0);
+    float di = clamp(floor((xy.y - DY0) / sp + 0.5), 0.0, uDots - 1.0);
+    vec2 dv = xy - vec2(DX, DY0 + di * sp);
+    float dd = length(dv);
+    float disc = smoothstep(DR + pw, DR - pw, dd);
+    float on = step(di + 0.5, uLit);
+    float side = dot(dv, SUN2) / DR;
+    vec3 pitLightCol = mix(gLight, toLin(vec3(0.56, 0.58, 0.72)), 0.5) * (0.9 - 0.42 * side) * (0.55 + 0.45 * sh);
+    pitLightCol += gInk * 0.5 * sh * sh * smoothstep(0.55, 0.0, length(dv + SUN2 * DR * 0.4) / DR);
+    vec3 pitDarkCol = gShade * uDim + gGlow * 0.14;
+    vec3 offCol = mix(pitLightCol, pitDarkCol, uDark);
+    vec3 onCol = gInk * 0.87;
+    float ring = smoothstep(DR * 1.5, DR, dd) * (1.0 - disc) * (1.0 - uDark) * (1.0 - on);
+    col *= 1.0 - 0.1 * ring * side;
+    col = mix(col, mix(offCol, onCol, on), disc);
+    col += gInk * on * 0.14 * exp(-max(dd - DR, 0.0) * 26.0) * (1.0 - disc) * (0.35 - 0.25 * uDark);
+  }
+  vec3 seamLightCol = col * (1.0 - 0.5 * groove) * (1.0 + 0.3 * ledge * abs(gs));
+  // by night light leaks out all round the plate, lifted or not
+  float sl = s - 0.008;
+  vec3 seamDarkCol = col + gGlow * (0.42 * exp(-sl * sl / 0.0003) * (0.6 + 0.4 * abs(gs)) + 0.06 * exp(-abs(sl) / 0.04));
+  return mix(seamLightCol, seamDarkCol, uDark);
+}
+
+void main(){
+  gGlow = toLin(uGlow);
+  gLight = toLin(uLight);
+  gShade = toLin(uShade);
+  gInk = toLin(uInk);
+  float aOff = clamp(uPose, -0.08, 1.08) * TH;
+  float aOn = clamp(1.0 - uPose, -0.08, 1.08) * TH;
+  aOff = max(aOff, 0.0);
+  aOn = max(aOn, 0.0);
+  kOff = vec3(sin(aOff), cos(aOff), tan(aOff * 0.5));
+  kOn = vec3(sin(aOn), cos(aOn), tan(aOn * 0.5));
+  pw = 1.0 / (uCam.w * uScale);
+
+  vec2 fc = (gl_FragCoord.xy - 0.5 * uRes) / uScale;
+  float az = radians(uCam.x);
+  float el = radians(uCam.y);
+  float ro2 = radians(uTgt.z);
+  vec3 rgt = vec3(cos(az), sin(az), 0.0);
+  vec2 fwd = vec2(-sin(az), cos(az));
+  vec3 back = vec3(-fwd * cos(el), sin(el));
+  vec3 up = vec3(fwd * sin(el), cos(el));
+  vec3 rr = rgt * cos(ro2) + up * sin(ro2);
+  vec3 uu = up * cos(ro2) - rgt * sin(ro2);
+  vec3 tgt = vec3(uTgt.xy, 0.0);
+  vec3 ro = tgt + back * uCam.z;
+  vec3 rd = normalize(tgt + (fc.x * rr + fc.y * uu) / uCam.w - ro);
+
+  float tG = -ro.z / min(rd.z, -1e-4);
+  float M = 0.8;
+  vec3 bmin = vec3(-1.0 - M, -L - M, 0.0);
+  vec3 bmax = vec3(1.0 + M, L + M, L * sin(TH) * 1.1 + M);
+  vec3 inv = 1.0 / (abs(rd) + 1e-6) * sign(rd + 1e-9);
+  vec3 t0 = (bmin - ro) * inv;
+  vec3 t1 = (bmax - ro) * inv;
+  vec3 ta = min(t0, t1);
+  vec3 tb = max(t0, t1);
+  float tN = max(max(ta.x, ta.y), max(ta.z, 0.0));
+  float tF = min(min(tb.x, tb.y), min(tb.z, tG));
+
+  gView = -rd;
+  gTop = 0.0;
+  float t = tN;
+  bool hit = false;
+  vec3 pL = ro;
+  float dLamp = 1e3;
+  float dBody = 1e3;
+  float tBody = tN;
+  if (tN < tF) {
+    for (int i = 0; i < 72; i++) {
+      vec3 p = ro + rd * t;
+      float d = body(p);
+      float dl = lamp(p);
+      if (dl < dLamp) { dLamp = dl; pL = p; }
+      if (d < dBody) { dBody = d; tBody = t; }
+      if (d < 0.0006) { hit = true; break; }
+      t += max(d, pw * 0.35);
+      if (t > tF) break;
+    }
+  }
+
+  vec3 pg = ro + rd * tG;
+  vec3 ph = ro + rd * t;
+  vec3 col;
+  if (hit && ph.z > 0.003) {
+    col = shadeBody(ph);
+  } else {
+    vec3 pq = hv(pg.y);
+    bool under = sd2(pg.xy) < 0.0 && min(abs(pg.y), L) * pq.x > TP + 0.004;
+    if (under) {
+      // a grazing ray that slipped past the foot of the wall
+      col = shadeBody(vec3(pg.xy, 0.002));
+    } else {
+      col = shadeGround(pg.xy);
+      vec3 pb = ro + rd * tBody;
+      float cov = clamp(1.0 - dBody / pw, 0.0, 1.0) * step(0.003, pb.z);
+      if (cov > 0.0) col = mix(col, shadeBody(pb), cov);
+    }
+    if (!under) gTop = step(sd2(pg.xy), 0.0);
+    float dl = lamp(vec3(pg.xy, 0.0));
+    if (dl < dLamp) { dLamp = dl; pL = vec3(pg.xy, 0.0); }
+  }
+
+  // bloom: a tight one everywhere, a wide lens glare where the bare wall faces the lens, stronger up close
+  float faces = max(dot(grad2(pL.xy), gView.xy), 0.0);
+  float near = clamp((uCam.w - 120.0) / 180.0, 0.0, 1.0);
+  // a slit of light throws no glare: it grows with the height of the wall nearest the ray
+  vec3 kL = hv(pL.y);
+  float tallL = smoothstep(0.0, 0.12, min(abs(pL.y) + pL.z * kL.z, L) * kL.x - TP);
+  float wide = (0.04 * exp(-dLamp * 6.0) + (0.2 + 0.2 * near) * faces * faces * exp(-dLamp * 1.5)) * (1.0 - 0.97 * gTop) * tallL;
+  float tight = 0.5 * (1.0 - 0.6 * near) * exp(-dLamp * mix(45.0, 150.0, gTop));
+  col += pow(gGlow, vec3(1.25)) * uBloom * (tight + wide);
+
+  // the close shot is exposed a little brighter in the light scene
+  col *= mix(uTgt.w, 1.0, uDark);
+  // soft shoulder so the lamp burns out to white while mid tones stay exact
+  vec3 over = max(col - 0.8, 0.0);
+  col = min(col, 0.8) + 0.2 * (1.0 - exp(-over / 0.2));
+  col = pow(max(col, 0.0), vec3(1.0 / 2.2));
+  float n = fract(sin(dot(gl_FragCoord.xy, vec2(12.9898, 78.233))) * 43758.5453);
+  col += (n - 0.5) / 255.0;
+  gl_FragColor = vec4(col, 1.0);
+}
+`;
+const SUN_2D = [-0.711, -0.556, 0.431]; // the same sun as the shader
+const lin3 = (c) => [Math.pow(c[0], 2.2), Math.pow(c[1], 2.2), Math.pow(c[2], 2.2)];
+const mix3 = (a, b, t) => [mix(a[0], b[0], t), mix(a[1], b[1], t), mix(a[2], b[2], t)];
+const mul3 = (a, k) => [a[0] * k, a[1] * k, a[2] * k];
+const add3 = (a, b) => [a[0] + b[0], a[1] + b[1], a[2] + b[2]];
+const step01 = (a, b, v) => {
+    const t = clamp01((v - a) / (b - a));
+    return t * t * (3 - 2 * t);
+};
+/** Linear rgb to a CSS colour. */
+function css(c, alpha = 1) {
+    const g = (v) => Math.round(255 * Math.pow(clamp01(v), 1 / 2.2));
+    return `rgba(${g(c[0])}, ${g(c[1])}, ${g(c[2])}, ${clamp01(alpha).toFixed(3)})`;
+}
+/**
+ * The same scene without WebGL: the rocker is built from projected polygons
+ * (leaning wall quads, two tilting plates), canvas blur stands in for the soft
+ * shadow and the halo, and the labels are drawn as text in perspective.
+ */
+function paint2d(x, w, h, scale, cam, pose, dark, bloom, lit, dots, labels, font, glow, light, shade, ink) {
+    const gGlow = lin3(glow);
+    const gInk = lin3(ink);
+    const gLight = mul3(lin3(light), mix(cam.gain, 1, dark));
+    const gShade = mul3(lin3(shade), cam.dim);
+    const px = cam.zoom * scale;
+    const amb = 0.06;
+    // camera: the picture plane passes through the target
+    const rad = Math.PI / 180;
+    const az = cam.az * rad;
+    const el = cam.el * rad;
+    const ro = cam.roll * rad;
+    const fx = -Math.sin(az);
+    const fy = Math.cos(az);
+    const bk = [-fx * Math.cos(el), -fy * Math.cos(el), Math.sin(el)];
+    const r0 = [Math.cos(az), Math.sin(az), 0];
+    const u0 = [fx * Math.sin(el), fy * Math.sin(el), Math.cos(el)];
+    const rr = [0, 1, 2].map((i) => r0[i] * Math.cos(ro) + u0[i] * Math.sin(ro));
+    const uu = [0, 1, 2].map((i) => u0[i] * Math.cos(ro) - r0[i] * Math.sin(ro));
+    const proj = (X, Y, Z) => {
+        const dx = X - cam.tx;
+        const dy = Y - cam.ty;
+        const k = (cam.dist / Math.max(cam.dist - (dx * bk[0] + dy * bk[1] + Z * bk[2]), 0.01)) * px;
+        return [w / 2 + (dx * rr[0] + dy * rr[1] + Z * rr[2]) * k, h / 2 - (dx * uu[0] + dy * uu[1] + Z * uu[2]) * k];
+    };
+    const path = (pts, shift = 0) => {
+        x.moveTo(pts[0][0] + shift, pts[0][1]);
+        for (let i = 1; i < pts.length; i++)
+            x.lineTo(pts[i][0] + shift, pts[i][1]);
+        x.closePath();
+    };
+    // floor
+    x.setTransform(1, 0, 0, 1, 0, 0);
+    x.globalCompositeOperation = "source-over";
+    x.globalAlpha = 1;
+    x.shadowColor = "transparent";
+    x.shadowBlur = 0;
+    x.fillStyle = css(mix3(gLight, gShade, dark));
+    x.fillRect(0, 0, w, h);
+    // one half of the pill outline, from the hinge round the tip and back: [x, y]
+    const N = 28;
+    const out = [[1, 0]];
+    for (let i = 0; i <= N; i++) {
+        const f = (Math.PI * i) / N;
+        out.push([Math.cos(f), HALF + Math.sin(f)]);
+    }
+    out.push([-1, 0]);
+    const halves = [1, -1].map((sg) => {
+        const a = Math.min(Math.max(sg > 0 ? pose : 1 - pose, 0), 1.08) * TILT;
+        const ca = Math.cos(a);
+        const sa = Math.sin(a);
+        const foot = out.map(([X, Y]) => proj(X, sg * Y, 0));
+        const top = out.map(([X, Y]) => proj(X, sg * Y * ca, Y * sa));
+        return { sg, a, ca, sa, foot, top, open: clamp01(a / TILT), ajar: clamp01(a / 0.02) };
+    });
+    // light scene: the lifted half throws a soft shadow away from the sun
+    const far = Math.max(w, h) * 3;
+    if (dark < 0.999) {
+        x.beginPath();
+        let any = false;
+        for (const hf of halves) {
+            if (hf.a < 0.004)
+                continue;
+            any = true;
+            for (let s = 0; s <= 4; s++) {
+                const t = s / 4;
+                const pts = out.map(([X, Y]) => {
+                    const z = Y * hf.sa * t;
+                    return proj(X + 0.95 * z, hf.sg * Y * mix(1, hf.ca, t) + 0.5 * z, 0);
+                });
+                path(pts, -far);
+            }
+        }
+        if (any) {
+            x.shadowOffsetX = far;
+            x.shadowBlur = 0.3 * px;
+            x.shadowColor = css(mul3(gLight, 0.07), 0.8 * (1 - dark));
+            x.fillStyle = "#000000"; // ls:keep
+            x.fill();
+            x.shadowBlur = 0.8 * px;
+            x.shadowColor = css(mul3(gLight, 0.07), 0.4 * (1 - dark));
+            x.fill();
+        }
+    }
+    // dark scene: the open half pours light on the floor
+    if (dark * bloom > 0.004) {
+        const deepCol = [Math.pow(gGlow[0], 1.25), Math.pow(gGlow[1], 1.25), Math.pow(gGlow[2], 1.25)];
+        const hotCol = [1.0, 0.5, 0.6];
+        for (const hf of halves) {
+            if (hf.ajar <= 0)
+                continue;
+            const k = dark * bloom * Math.max(hf.open, 0.15 * hf.ajar);
+            x.beginPath();
+            path(hf.foot, -far);
+            x.shadowOffsetX = far;
+            x.fillStyle = "#000000"; // ls:keep
+            x.shadowBlur = (0.3 + 0.9 * hf.open) * px;
+            x.shadowColor = css(deepCol, 0.85 * k);
+            x.fill();
+            x.shadowBlur = (0.15 + 0.3 * hf.open) * px;
+            x.shadowColor = css(mix3(deepCol, gGlow, 0.5), 0.95 * k);
+            x.fill();
+            x.fill();
+            x.shadowBlur = 0.08 * px;
+            x.shadowColor = css(mix3(gGlow, hotCol, 0.6), 0.9 * k);
+            x.fill();
+        }
+    }
+    x.shadowOffsetX = 0;
+    x.shadowBlur = 0;
+    x.shadowColor = "transparent";
+    // text laid on a plane through (cx, cy, cz) with the given up vector
+    const write = (text, c, up, cap, heavy, col, maxW) => {
+        if (!text)
+            return;
+        const p0 = proj(c[0], c[1], c[2]);
+        const pu = proj(c[0] + 0.1, c[1], c[2]);
+        const pv = proj(c[0] + up[0] * 0.1, c[1] + up[1] * 0.1, c[2] + up[2] * 0.1);
+        x.font = `${heavy ? 600 : 400} 100px ${font}`;
+        const capPx = x.measureText("H").actualBoundingBoxAscent || 71;
+        const m = (cap / capPx) * 10;
+        x.setTransform((pu[0] - p0[0]) * m, (pu[1] - p0[1]) * m, -(pv[0] - p0[0]) * m, -(pv[1] - p0[1]) * m, p0[0], p0[1]);
+        x.textAlign = "center";
+        x.textBaseline = "alphabetic";
+        x.fillStyle = col;
+        x.fillText(text, 0, capPx / 2, (maxW * capPx) / cap);
+        x.setTransform(1, 0, 0, 1, 0, 0);
+    };
+    // dotted line and side labels on the floor
+    const sp = (DOT_Y1 - DOT_Y0) / Math.max(dots - 1, 1);
+    const pitLightCol = mul3(mix3(gLight, lin3([0.56, 0.58, 0.72]), 0.5), 0.8);
+    const pitDarkCol = add3(gShade, mul3(gGlow, 0.14));
+    const offCol = mix3(pitLightCol, pitDarkCol, dark);
+    const onCol = mul3(gInk, 0.87);
+    for (let i = 0; i < dots; i++) {
+        const cy = DOT_Y0 + i * sp;
+        const p0 = proj(DOT_X, cy, 0);
+        const pu = proj(DOT_X + 0.1, cy, 0);
+        const pv = proj(DOT_X, cy + 0.1, 0);
+        const on = i + 0.5 < lit;
+        x.setTransform((pu[0] - p0[0]) * 10, (pu[1] - p0[1]) * 10, (pv[0] - p0[0]) * 10, (pv[1] - p0[1]) * 10, p0[0], p0[1]);
+        x.beginPath();
+        x.arc(0, 0, DOT_R, 0, Math.PI * 2);
+        if (on) {
+            x.shadowBlur = 0.12 * px;
+            x.shadowColor = css(gInk, 0.55 - 0.25 * dark);
+        }
+        x.fillStyle = css(on ? onCol : offCol);
+        x.fill();
+        x.shadowBlur = 0;
+        x.shadowColor = "transparent";
+    }
+    x.setTransform(1, 0, 0, 1, 0, 0);
+    const sideInkCol = css(mix3(lin3([0.47, 0.47, 0.47]), gInk, dark));
+    write(labels[2], [SIDE_X, TOP_Y, 0], [0, 1, 0], CAP_SIDE, dark >= 0.5, sideInkCol, 2.1);
+    write(labels[3], [SIDE_X, BOT_Y, 0], [0, 1, 0], CAP_SIDE, dark >= 0.5, sideInkCol, 2.1);
+    // walls: violet body in the light scene, a lamp in the dark scene
+    const quads = [];
+    for (const hf of halves) {
+        if (hf.a < 0.004)
+            continue;
+        for (let i = 0; i < out.length - 1; i++) {
+            const mx = (out[i][0] + out[i + 1][0]) / 2;
+            const my = (out[i][1] + out[i + 1][1]) / 2;
+            let nx = mx;
+            let ny = Math.max(my - HALF, 0);
+            if (i === 0)
+                (nx = 1), (ny = 0);
+            if (i === out.length - 2)
+                (nx = -1), (ny = 0);
+            const nl = Math.hypot(nx, ny) || 1;
+            const lam2 = (nx / nl) * -0.788 + ((hf.sg * ny) / nl) * -0.616;
+            const lt = clamp01((lam2 - 0.1) / 0.9);
+            const base = mix(0.14, 0.63, step01(-0.95, 0.2, lam2)) - 0.27 * step01(0.5, 1, lam2);
+            const warm = 0.11 * step01(-0.3, 0.3, lam2) * (1 - step01(0.7, 1, lam2));
+            const sunlitCol = [0.8, 0.5, 0.62];
+            const warmCol = [1.0, 0.0, 0.0];
+            const wallLightCol = add3(add3(mul3(gGlow, base), mul3(sunlitCol, 0.8 * lt * Math.sqrt(lt))), mul3(warmCol, warm));
+            const away = 1 - step01(-0.7, -0.2, lam2);
+            const lampCol = [1.0, 0.82, 0.9];
+            const wallDarkCol = mix3(mul3(gGlow, 1.6), lampCol, 0.25 + 0.75 * bloom);
+            const depth = mx * bk[0] + hf.sg * my * bk[1];
+            quads.push({
+                z: depth,
+                a: hf.foot[i],
+                b: hf.foot[i + 1],
+                c: hf.top[i + 1],
+                d: hf.top[i],
+                lo: css(mix3(mul3(wallLightCol, mix(1, 0.12, away)), wallDarkCol, dark)),
+                hi: css(mix3(mul3(wallLightCol, mix(1, 1.25, away)), wallDarkCol, dark)),
+            });
+        }
+    }
+    quads.sort((p, q) => p.z - q.z);
+    x.lineWidth = 1;
+    x.lineJoin = "round";
+    for (const q of quads) {
+        const g = x.createLinearGradient((q.a[0] + q.b[0]) / 2, (q.a[1] + q.b[1]) / 2, (q.c[0] + q.d[0]) / 2, (q.c[1] + q.d[1]) / 2);
+        g.addColorStop(0, q.lo);
+        g.addColorStop(0.9, q.hi);
+        x.beginPath();
+        path([q.a, q.b, q.c, q.d]);
+        x.fillStyle = g;
+        x.strokeStyle = g;
+        x.fill();
+        x.stroke();
+    }
+    // plates, their edges and their labels
+    const inkLightCol = lin3([0.31, 0.31, 0.31]);
+    const inkDarkCol = lin3([0.65, 0.65, 0.65]);
+    for (const hf of halves) {
+        const lam = Math.max(-hf.sg * hf.sa * SUN_2D[1] + hf.ca * SUN_2D[2], 0) / SUN_2D[2];
+        const topLam = Math.min(lam, 1) + Math.max(lam - 1, 0) * 0.47;
+        const topLightCol = mul3(gLight, amb + (1 - amb) * topLam);
+        const topDarkCol = mul3(gShade, Math.min(Math.max(1 + 4.8 * hf.sg * hf.sa, 0.3), 3));
+        x.beginPath();
+        path(hf.top);
+        x.fillStyle = css(mix3(topLightCol, topDarkCol, dark));
+        x.fill();
+        // edge: a grey lip by day, a lit rim by night; a fine seam where the half lies flush
+        const rimLightCol = mul3(gLight, 1.12);
+        const rimDarkCol = add3(add3(gShade, mul3(gGlow, 0.3 + 1.3 * hf.ajar)), mul3([0.6, 0.4, 0.55], hf.ajar));
+        const seamLightCol = mul3(gLight, 0.55);
+        const seamDarkCol = add3(gShade, mul3(gGlow, 0.34));
+        const edgeCol = mix3(mix3(seamLightCol, rimLightCol, hf.ajar), mix3(seamDarkCol, rimDarkCol, hf.ajar), dark);
+        x.beginPath();
+        for (let i = 0; i < hf.top.length; i++) {
+            if (i)
+                x.lineTo(hf.top[i][0], hf.top[i][1]);
+            else
+                x.moveTo(hf.top[i][0], hf.top[i][1]);
+        }
+        x.lineWidth = Math.max(1, mix(0.012, 0.02, hf.ajar) * px);
+        x.strokeStyle = css(edgeCol, mix(0.6, 1, hf.ajar));
+        if (dark * bloom * hf.ajar > 0.01) {
+            x.shadowBlur = 0.16 * px;
+            x.shadowColor = css(gGlow, dark * bloom * hf.ajar);
+        }
+        x.stroke();
+        x.shadowBlur = 0;
+        x.shadowColor = "transparent";
+        const off = hf.sg > 0;
+        const y0 = off ? OFF_Y : -ON_Y;
+        const brightCol = off ? mix3(gInk, inkDarkCol, dark) : mix3(inkLightCol, gInk, dark);
+        write(labels[off ? 0 : 1], [0, hf.sg * y0 * hf.ca, y0 * hf.sa], [0, hf.ca, hf.sg * hf.sa], CAP_PLATE, off ? dark < 0.5 : dark >= 0.5, css(brightCol), 1.7);
+    }
+    // bloom over everything
+    if (dark * bloom > 0.004) {
+        x.globalCompositeOperation = "lighter";
+        for (const hf of halves) {
+            if (hf.open < 0.02)
+                continue;
+            const c = proj(0, hf.sg * LEN * 0.8, 0);
+            const g = x.createRadialGradient(c[0], c[1], 0, c[0], c[1], 2.6 * px);
+            const bloomCol = [Math.pow(gGlow[0], 1.25), Math.pow(gGlow[1], 1.25), Math.pow(gGlow[2], 1.25)];
+            g.addColorStop(0, css(bloomCol, 0.3 * dark * bloom * hf.open));
+            g.addColorStop(0.45, css(bloomCol, 0.1 * dark * bloom * hf.open));
+            g.addColorStop(1, css(bloomCol, 0));
+            x.fillStyle = g;
+            x.fillRect(0, 0, w, h);
+        }
+        x.globalCompositeOperation = "source-over";
+    }
+}
+/** create(root, options): turns `root` into the switch. options: checked, onChange(checked), view, autoplay,
+ *  glowColor, lightColor, darkColor, labelColor, onLabel, offLabel, topLabel, bottomLabel, font, dots,
+ *  duration, orbit, ariaLabel. Returns { checked, set(checked), toggle(), update(options), destroy() }. */
+function create(root, options) {
+    const P = Object.assign({ checked: false, onChange: null, view: "iso", autoplay: false, glowColor: "#a64dff", lightColor: "#c1c1c1", darkColor: "#151515", labelColor: "#ffffff", onLabel: "ON", offLabel: "OFF", topLabel: "ER", bottomLabel: "SU", font: '"SF Pro Display", -apple-system, BlinkMacSystemFont, "Helvetica Neue", "Segoe UI", sans-serif', dots: 19, duration: 720, orbit: 4, ariaLabel: "Glow rocker" }, options || {});
+    let on = !!P.checked;
+    let mode = "gl";
+    let canvas = null, cleanup = null, dead = false;
+    const live = { current: null };
+    const onRef = { current: on };
+    const engineRef = { current: null };
+    const labelKey = () => [P.offLabel, P.onLabel, P.topLabel, P.bottomLabel, P.font].join("\u0001");
+    const sync = () => {
+        live.current = { view: P.view, autoplay: P.autoplay, glowColor: P.glowColor, lightColor: P.lightColor, darkColor: P.darkColor, labelColor: P.labelColor,
+            labels: [P.offLabel, P.onLabel, P.topLabel, P.bottomLabel], font: P.font, dots: Math.max(2, Math.min(60, Math.round(P.dots))), duration: Math.max(60, P.duration), orbit: P.orbit };
+        onRef.current = on;
+    };
+    sync();
+    root.setAttribute("role", "switch");
+    root.setAttribute("tabindex", "0");
+    Object.assign(root.style, { position: "relative", overflow: "hidden", cursor: "pointer", userSelect: "none", webkitTapHighlightColor: "transparent", touchAction: "manipulation" });
+    const paint = () => { root.setAttribute("aria-checked", String(on)); root.setAttribute("aria-label", P.ariaLabel); root.style.background = on ? P.darkColor : P.lightColor; };
+    paint();
+    // a fresh canvas for every renderer: the React component re-keys its canvas the same way
+    const mount = () => {
+        if (dead) return;
+        if (cleanup) { try { cleanup(); } catch (e) { } cleanup = null; }
+        if (canvas) canvas.remove();
+        canvas = document.createElement("canvas");
+        canvas.setAttribute("aria-hidden", "true");
+        canvas.style.cssText = "position:absolute;inset:0;width:100%;height:100%;display:block";
+        root.appendChild(canvas);
+        cleanup = setup(canvas) || null;
+    };
+    const setMode = (m) => { mode = m; Promise.resolve().then(mount); };
+    const setEpoch = () => { Promise.resolve().then(mount); };
+    function setup(canvas) {
+        const reduce = typeof matchMedia === "function" && matchMedia("(prefers-reduced-motion: reduce)").matches;
+        /* ---------- renderer ---------- */
+        let gl = null;
+        let ctx = null;
+        let prog = null;
+        let tex = null;
+        let buf = null;
+        const U = {};
+        if (mode === "gl") {
+            try {
+                gl = canvas.getContext("webgl", { antialias: false, alpha: false, powerPreference: "high-performance" });
+            }
+            catch {
+                gl = null;
+            }
+            if (gl) {
+                const make = (type, src) => {
+                    const s = gl.createShader(type);
+                    gl.shaderSource(s, src);
+                    gl.compileShader(s);
+                    return gl.getShaderParameter(s, gl.COMPILE_STATUS) ? s : null;
+                };
+                const vs = make(gl.VERTEX_SHADER, VERT);
+                const fs = make(gl.FRAGMENT_SHADER, FRAG);
+                prog = gl.createProgram();
+                if (vs && fs && prog) {
+                    gl.attachShader(prog, vs);
+                    gl.attachShader(prog, fs);
+                    gl.linkProgram(prog);
+                }
+                if (!vs || !fs || !prog || !gl.getProgramParameter(prog, gl.LINK_STATUS)) {
+                    // the context is taken, so a fresh canvas has to carry the 2D fallback
+                    setMode("2d");
+                    return;
+                }
+                gl.useProgram(prog);
+                buf = gl.createBuffer();
+                gl.bindBuffer(gl.ARRAY_BUFFER, buf);
+                gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 3, -1, -1, 3]), gl.STATIC_DRAW);
+                const loc = gl.getAttribLocation(prog, "aPos");
+                gl.enableVertexAttribArray(loc);
+                gl.vertexAttribPointer(loc, 2, gl.FLOAT, false, 0, 0);
+                for (const n of ["uRes", "uScale", "uCam", "uTgt", "uDim", "uPose", "uDark", "uBloom", "uLit", "uDots", "uGlow", "uLight", "uShade", "uInk", "uText"]) {
+                    U[n] = gl.getUniformLocation(prog, n);
+                }
+                tex = gl.createTexture();
+            }
+        }
+        if (!gl)
+            ctx = canvas.getContext("2d");
+        if (!gl && !ctx)
+            return;
+        /* ---------- colours and text ---------- */
+        let cGlow = [0.65, 0.3, 1];
+        let cLight = [0.757, 0.757, 0.757];
+        let cDark = [0.075, 0.075, 0.075];
+        let cInk = [1, 1, 1];
+        const readColors = () => {
+            const p = live.current;
+            cGlow = parseColor(p.glowColor, [0.65, 0.3, 1]);
+            cLight = parseColor(p.lightColor, [0.757, 0.757, 0.757]);
+            cDark = parseColor(p.darkColor, [0.075, 0.075, 0.075]);
+            cInk = parseColor(p.labelColor, [1, 1, 1]);
+        };
+        const readText = () => {
+            const p = live.current;
+            if (gl && tex) {
+                const atlas = drawAtlas(p.labels, p.font);
+                gl.bindTexture(gl.TEXTURE_2D, tex);
+                gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, 1);
+                gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, atlas);
+                gl.generateMipmap(gl.TEXTURE_2D);
+                gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR_MIPMAP_LINEAR);
+                gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+                gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+                gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+            }
+        };
+        readColors();
+        readText();
+        /* ---------- state ---------- */
+        let W = 1;
+        let H = 1;
+        let dpr = 1;
+        let raf = 0;
+        let alive = true;
+        let seen = true;
+        let clock = 0; // runs only while the scene is on screen
+        let last = -1;
+        let auto = live.current.autoplay && !reduce;
+        let autoT0 = 0;
+        let target = onRef.current;
+        let pose = target ? 1 : 0;
+        let dark = target ? 1 : 0;
+        let bloom = dark;
+        let lit = target ? live.current.dots : 0;
+        // a rock in progress: `to` is where it lands, `u0` where on the curve it started
+        let rock = null;
+        // the snap home after the flip, or a quiet return when a rock is called off
+        let settle = null;
+        let cam = { ...VIEWS[live.current.view] };
+        let camFrom = cam;
+        let camTo = live.current.view;
+        let camT0 = -1e9;
+        const CAM_MS = 900;
+        let ox = 0;
+        let oy = 0;
+        let oxT = 0;
+        let oyT = 0;
+        const shown = () => dark >= 0.5;
+        const aim = (to) => {
+            target = to;
+            const dur = live.current.duration;
+            if (reduce) {
+                rock = null;
+                settle = null;
+                pose = to ? 1 : 0;
+                dark = bloom = to ? 1 : 0;
+                lit = to ? live.current.dots : 0;
+                kick();
+                return;
+            }
+            if (shown() === to && !(rock && rock.to === to)) {
+                // the scene already shows this state: let the plate fall back
+                if (rock || Math.abs(pose - (to ? 1 : 0)) > 1e-3) {
+                    rock = null;
+                    settle = { to, t0: clock, from: pose, lit0: lit, flip: false };
+                }
+            }
+            else if (!rock || rock.to !== to) {
+                settle = null;
+                const u0 = to ? unrockOn(pose) : unrockOff(1 - pose);
+                rock = { to, t0: clock, u0: Math.min(u0, 0.92), dur };
+            }
+            kick();
+        };
+        /** the film, as a pure function of time */
+        const film = (ms) => {
+            const f = ((ms / 1000) * FPS) % LOOP_FRAMES;
+            let cut = CUTS[0];
+            for (const c of CUTS)
+                if (f >= c[0])
+                    cut = c;
+            const j = f - cut[0] + cut[4];
+            const n = live.current.dots;
+            if (cut[2]) {
+                const u = Math.min(j / OFF_FRAMES, 0.9999);
+                return { pose: 1 - rockOff(u), dark: 1, lit: litOff(u, n), view: cut[3] };
+            }
+            const u = Math.min(j / ON_FRAMES, 0.9999);
+            return { pose: rockOn(u), dark: 0, lit: litOn(u, n), view: cut[3] };
+        };
+        /** advance everything to `clock`; returns true while something is still moving */
+        const step = (dt) => {
+            const p = live.current;
+            let moving = false;
+            if (auto) {
+                const s = film(clock - autoT0);
+                pose = s.pose;
+                dark = bloom = s.dark;
+                lit = s.lit;
+                cam = { ...VIEWS[s.view] };
+                camTo = s.view;
+                camT0 = -1e9;
+                moving = true;
+            }
+            else {
+                if (rock) {
+                    const u = rock.u0 + (clock - rock.t0) / rock.dur;
+                    if (u >= 1) {
+                        settle = { to: rock.to, t0: rock.t0 + (1 - rock.u0) * rock.dur, from: rock.to ? rockOn(0.9999) : 1 - rockOff(0.9999), lit0: lit, flip: true };
+                        rock = null;
+                    }
+                    else {
+                        pose = rock.to ? rockOn(u) : 1 - rockOff(u);
+                        lit = rock.to ? litOn(u, p.dots) : litOff(u, p.dots);
+                    }
+                    moving = true;
+                }
+                if (settle) {
+                    const e = clock - settle.t0;
+                    const home = settle.to ? 1 : 0;
+                    const sign = settle.to ? 1 : -1;
+                    if (settle.flip) {
+                        // snap, a small overshoot, then rest; the scene and the glow come up behind it
+                        pose = home + (settle.from - home) * Math.exp(-e / 24) + sign * 0.03 * Math.exp(-e / 95) * Math.sin(e / 34);
+                        const k = clamp01(e / 130);
+                        const fade = k * k * (3 - 2 * k);
+                        dark = settle.to ? fade : 1 - fade;
+                        bloom = settle.to ? fade * (1 + 0.45 * Math.exp(-e / 190) * Math.sin(Math.min(e / 120, 1) * Math.PI)) : 1 - fade;
+                        lit = settle.to ? p.dots : 0;
+                        if (e > 620) {
+                            pose = home;
+                            dark = bloom = home;
+                            settle = null;
+                        }
+                    }
+                    else {
+                        const k = 1 - Math.exp(-e / 70);
+                        pose = mix(settle.from, home, k);
+                        lit = Math.round(mix(settle.lit0, settle.to ? p.dots : 0, k));
+                        if (e > 420) {
+                            pose = home;
+                            lit = settle.to ? p.dots : 0;
+                            settle = null;
+                        }
+                    }
+                    moving = true;
+                }
+                if (!rock && !settle)
+                    lit = shown() ? p.dots : 0;
+                // camera glide between presets
+                if (p.view !== camTo) {
+                    camFrom = cam;
+                    camTo = p.view;
+                    camT0 = reduce ? -1e9 : clock;
+                }
+                const ck = clamp01((clock - camT0) / CAM_MS);
+                cam = ck >= 1 ? { ...VIEWS[camTo] } : mixCam(camFrom, VIEWS[camTo], ease(ck));
+                if (ck < 1)
+                    moving = true;
+            }
+            // pointer orbit, eased
+            const a = reduce ? 1 : 1 - Math.exp(-dt / 140);
+            ox += (oxT - ox) * a;
+            oy += (oyT - oy) * a;
+            if (Math.abs(oxT - ox) + Math.abs(oyT - oy) > 0.002)
+                moving = true;
+            else {
+                ox = oxT;
+                oy = oyT;
+            }
+            return moving;
+        };
+        const draw = () => {
+            const p = live.current;
+            const scale = Math.min(W / 720, H / cam.need);
+            const c = { ...cam, az: cam.az + ox * p.orbit, el: cam.el - oy * p.orbit * 0.7 };
+            if (gl && prog) {
+                gl.viewport(0, 0, canvas.width, canvas.height);
+                gl.uniform2f(U.uRes, canvas.width, canvas.height);
+                gl.uniform1f(U.uScale, scale * dpr);
+                gl.uniform4f(U.uCam, c.az, c.el, c.dist, c.zoom);
+                gl.uniform4f(U.uTgt, c.tx, c.ty, c.roll, c.gain);
+                gl.uniform1f(U.uDim, c.dim);
+                gl.uniform1f(U.uPose, pose);
+                gl.uniform1f(U.uDark, dark);
+                gl.uniform1f(U.uBloom, bloom);
+                gl.uniform1f(U.uLit, lit);
+                gl.uniform1f(U.uDots, p.dots);
+                gl.uniform3f(U.uGlow, cGlow[0], cGlow[1], cGlow[2]);
+                gl.uniform3f(U.uLight, cLight[0], cLight[1], cLight[2]);
+                gl.uniform3f(U.uShade, cDark[0], cDark[1], cDark[2]);
+                gl.uniform3f(U.uInk, cInk[0], cInk[1], cInk[2]);
+                gl.activeTexture(gl.TEXTURE0);
+                gl.bindTexture(gl.TEXTURE_2D, tex);
+                gl.uniform1i(U.uText, 0);
+                gl.drawArrays(gl.TRIANGLES, 0, 3);
+            }
+            else if (ctx) {
+                paint2d(ctx, canvas.width, canvas.height, scale * dpr, c, pose, dark, bloom, lit, p.dots, p.labels, p.font, cGlow, cLight, cDark, cInk);
+            }
+        };
+        const tick = (now) => {
+            raf = 0;
+            if (!alive)
+                return;
+            const dt = last < 0 ? 0 : Math.min(now - last, 100000);
+            last = now;
+            clock += dt;
+            const moving = step(dt);
+            draw();
+            if (moving && seen && !document.hidden)
+                raf = requestAnimationFrame(tick);
+            else
+                last = -1;
+        };
+        const kick = () => {
+            if (!raf && alive && seen && !document.hidden)
+                raf = requestAnimationFrame(tick);
+        };
+        const resize = () => {
+            const r = root.getBoundingClientRect();
+            W = Math.max(1, r.width);
+            H = Math.max(1, r.height);
+            dpr = Math.min(Math.max(window.devicePixelRatio || 1, 1), 2);
+            const w = Math.round(W * dpr);
+            const h = Math.round(H * dpr);
+            if (canvas.width !== w || canvas.height !== h) {
+                canvas.width = w;
+                canvas.height = h;
+            }
+            kick();
+        };
+        let autoWas = live.current.autoplay && !reduce;
+        engineRef.current = {
+            aim,
+            shown,
+            takeOver() {
+                if (!auto)
+                    return;
+                auto = false;
+                const s = film(clock - autoT0);
+                pose = s.pose;
+                dark = bloom = s.dark;
+                lit = s.lit;
+                target = s.dark >= 0.5;
+                // hold the film's camera, then glide to the chosen view
+                cam = { ...VIEWS[s.view] };
+                camTo = s.view;
+            },
+            refresh(textChanged) {
+                readColors();
+                if (textChanged)
+                    readText();
+                const wantAuto = live.current.autoplay && !reduce;
+                if (wantAuto && !auto && !rock && !settle && wantAuto !== autoWas) {
+                    auto = true;
+                    autoT0 = clock;
+                }
+                if (!wantAuto && auto)
+                    this.takeOver();
+                autoWas = wantAuto;
+                kick();
+            },
+            orbitTo(x, y) {
+                oxT = x;
+                oyT = y;
+                kick();
+            },
+        };
+        const ro = typeof ResizeObserver === "function" ? new ResizeObserver(resize) : null;
+        ro?.observe(root);
+        const io = typeof IntersectionObserver === "function"
+            ? new IntersectionObserver((es) => {
+                seen = es[es.length - 1].isIntersecting;
+                if (seen)
+                    kick();
+            })
+            : null;
+        io?.observe(root);
+        const onVis = () => {
+            if (!document.hidden)
+                kick();
+        };
+        document.addEventListener("visibilitychange", onVis);
+        window.addEventListener("resize", resize);
+        const onLost = (e) => e.preventDefault();
+        const onBack = () => setEpoch((n) => n + 1);
+        canvas.addEventListener("webglcontextlost", onLost);
+        canvas.addEventListener("webglcontextrestored", onBack);
+        let fontsLive = true;
+        const fonts = document.fonts;
+        fonts?.ready.then(() => {
+            if (fontsLive && alive) {
+                readText();
+                kick();
+            }
+        });
+        resize();
+        return () => {
+            alive = false;
+            fontsLive = false;
+            if (raf)
+                cancelAnimationFrame(raf);
+            ro?.disconnect();
+            io?.disconnect();
+            document.removeEventListener("visibilitychange", onVis);
+            window.removeEventListener("resize", resize);
+            canvas.removeEventListener("webglcontextlost", onLost);
+            canvas.removeEventListener("webglcontextrestored", onBack);
+            if (gl) {
+                if (tex)
+                    gl.deleteTexture(tex);
+                if (buf)
+                    gl.deleteBuffer(buf);
+                if (prog)
+                    gl.deleteProgram(prog);
+            }
+            engineRef.current = null;
+        };
+    }
+    mount();
+    const toggle = () => {
+        const e = engineRef.current;
+        let next = !on;
+        if (e && live.current.autoplay) {
+            // the first press takes over from the film, starting from what is on screen
+            next = !e.shown();
+            e.takeOver();
+        }
+        on = next; onRef.current = on; paint();
+        if (P.onChange) P.onChange(next);
+        e?.aim(next);
+    };
+    const onKeyDown = (ev) => { if (ev.key === " " || ev.key === "Enter") { ev.preventDefault(); toggle(); } };
+    const onPointerMove = (ev) => {
+        if (ev.pointerType === "touch") return;
+        const r = root.getBoundingClientRect();
+        engineRef.current?.orbitTo(((ev.clientX - r.left) / r.width) * 2 - 1, ((ev.clientY - r.top) / r.height) * 2 - 1);
+    };
+    const onPointerLeave = () => engineRef.current?.orbitTo(0, 0);
+    root.addEventListener("click", toggle);
+    root.addEventListener("keydown", onKeyDown);
+    root.addEventListener("pointermove", onPointerMove);
+    root.addEventListener("pointerleave", onPointerLeave);
+    return {
+        get checked() { return on; },
+        /** set the state from outside (another tab, the command palette …): the rocker rocks there */
+        set(v) { v = !!v; if (v === on) return; on = v; onRef.current = on; paint(); const e = engineRef.current; if (e && !live.current.autoplay) e.aim(on); },
+        toggle,
+        update(o) { const k = labelKey(); Object.assign(P, o || {}); sync(); paint(); engineRef.current?.refresh(k !== labelKey()); },
+        destroy() { dead = true; if (cleanup) try { cleanup(); } catch (e) { } root.removeEventListener("click", toggle); root.removeEventListener("keydown", onKeyDown); root.removeEventListener("pointermove", onPointerMove); root.removeEventListener("pointerleave", onPointerLeave); if (canvas) canvas.remove(); },
+    };
+}
+return { create, VIEWS };
+})();
+
+// ---------- Neon Hello by Louis Studios (studios.lou15.com) ----------
+// Ported from the React component to plain JavaScript for TatamiPro: the tube, the shaders, the timing and
+// the SVG fallback are unchanged; only the React wrapper became create(root, options).
+const NeonHello=(()=>{
+// ---------------------------------------------------------------------------------------------
+// Geometry. Word units are reference pixels of the 1200 x 675 "hello" image: the baseline at
+// y 0, the x-height at y -88, ascenders at y -172, descenders at y 82 (y down). The tube is
+// RADIUS units thick from its centre line.
+// ---------------------------------------------------------------------------------------------
+const RADIUS = 15.5;
+// "hello", traced over the reference and fitted to its edges: lead-in tail, h loop, the foot of the
+// stem where the tube shows its open end (marked 1 here), the arch, e, two l loops, a doubled o
+// and the lifted tail. Reference px with the baseline at 410.
+// prettier-ignore
+const HELLO = [[318, 396], [340, 386], [362, 373], [385, 353], [404, 330], [416, 305], [425, 278], [429, 254], [422, 239], [405, 234], [392, 243], [386, 262], [381, 290], [378, 320], [375, 350], [371, 380], [368, 404, 1], [378, 384], [393, 355], [403, 335], [409.6, 328.2], [417.9, 326], [424, 326], [432.2, 328.2], [438.3, 334.2], [440.5, 342.5], [440, 355], [438, 380], [442, 402], [455, 412], [472, 413], [490, 404], [512, 390], [533, 372], [544, 350], [540, 330], [522, 318], [502, 322], [490, 342], [489, 370], [498, 397], [514, 412], [535, 414], [557, 406], [578, 392], [599, 370], [623, 337], [639, 305], [650, 272], [651, 248], [641, 237], [626, 236], [610, 248], [602, 275], [598, 310], [596, 350], [598, 385], [607, 406], [625, 411], [650, 407], [669, 401], [684, 387], [704, 347], [725, 300], [739, 265], [739, 247], [730, 237], [714, 236], [699, 248], [691, 272], [687, 310], [685, 350], [688, 385], [698, 408], [718, 412], [739, 403], [755, 389], [767, 363], [777, 337], [795, 323], [815, 322], [835, 333], [845, 355], [843, 383], [830, 402], [808, 407], [786, 400], [772, 382], [768, 360], [774, 338], [790, 325], [812, 320], [838, 324], [857, 331], [873, 326], [888, 317]].map(([x, y, c]) => (c ? [x - 300, y - 410, 2] : [x - 300, y - 410]));
+// prettier-ignore
+const GLYPHS = {
+    a: { p: "0 0,22 -42,50 -80,72 -88!,50 -94,28 -86,14 -60,14 -28,28 -4,50 -6,66 -36,74 -88!,72 -40,74 -12,86 0,104 -4", w: 104 },
+    b: { p: "0 0,19 -13,39 -60,59 -103,72 -140,74 -162,64 -173,47 -174,28 -162,19 -135,17 -100,17 -60,20 -22,34 0,56 -6,70 -36,66 -70,50 -88,38 -76!,58 -80,78 -84,96 -82", w: 96, hi: true },
+    c: { p: "0 0,22 -46,50 -82,68 -80,60 -92,40 -92,22 -74,14 -42,22 -12,42 2,64 0,84 -4", w: 84 },
+    d: { p: "0 0,22 -42,50 -80,72 -88!,50 -94,28 -86,14 -60,14 -28,28 -4,50 -6,66 -36,74 -110,78 -172!,76 -110,74 -40,76 -12,86 0,104 -4", w: 104 },
+    e: { p: "0 0,20 -10,44 -30,62 -55,64 -76,50 -88,30 -84,17 -62,14 -34,22 -10,40 2,62 2,84 -4", w: 84 },
+    f: { p: "0 0,19 -13,39 -60,59 -103,72 -140,74 -162,64 -173,47 -174,30 -162,22 -130,20 -80,20 -10,20 40,22 80!,34 46,48 16,64 0,84 -4", w: 84 },
+    g: { p: "0 0,22 -42,50 -80,72 -88!,50 -94,28 -86,14 -60,14 -28,28 -4,50 -6,66 -36,74 -88!,72 -20,66 40,50 76,30 82,18 64,36 30,66 6,94 -4", w: 94 },
+    h: { p: "0 0,19 -13,39 -60,59 -103,72 -140,74 -162,64 -173,47 -174,28 -162,19 -135,17 -100,17 -60,17 -22,18 2!,28 -42,42 -74,60 -88,76 -78,80 -50,78 -20,86 0,104 0,120 -4", w: 120 },
+    i: { p: "0 0,16 -30,28 -66,32 -88!,28 -50,28 -14,38 0,58 -4", w: 58, extra: ["30 -136,33 -139"] },
+    j: { p: "0 0,16 -30,28 -66,32 -88!,30 -40,28 20,20 66,2 80,-12 64,2 30,26 6,50 -4", w: 50, extra: ["30 -136,33 -139"] },
+    k: { p: "0 0,19 -13,39 -60,59 -103,72 -140,74 -162,64 -173,47 -174,28 -162,19 -135,17 -100,17 -60,17 -22,18 2!,28 -44,48 -80,70 -80,68 -56,42 -44!,60 -36,70 -14,82 0,104 -4", w: 104 },
+    l: { p: "0 0,19 -13,39 -60,59 -103,72 -140,74 -162,64 -173,47 -174,28 -162,19 -135,17 -100,17 -60,20 -25,29 -3,47 3,72 0,92 -5", w: 92 },
+    m: { p: "0 0,16 -50,30 -86,42 -72,40 -30,38 0!,46 -46,62 -84,78 -82,84 -52,82 0!,90 -46,106 -84,122 -82,128 -52,126 -16,134 0,152 -4", w: 152 },
+    n: { p: "0 0,18 -50,32 -86,44 -72,42 -30,40 0!,48 -46,66 -84,84 -82,92 -52,90 -16,98 0,118 -4", w: 118 },
+    o: { p: "0 0,16 -20,26 -56,44 -84,66 -86,80 -62,78 -28,60 -4,40 -2,26 -24,28 -62,46 -86,70 -90,96 -84", w: 96, hi: true },
+    p: { p: "0 0,18 -46,32 -90!,28 -40,26 20,24 84!,30 20,40 -40,56 -82,76 -84,86 -60,80 -24,60 -2,40 -4!,62 0,80 0,96 -4", w: 96 },
+    q: { p: "0 0,22 -42,50 -80,72 -88!,50 -94,28 -86,14 -60,14 -28,28 -4,50 -6,66 -36,74 -88!,72 -20,72 40,74 82!,84 40,96 6,112 -4", w: 112 },
+    r: { p: "0 0,18 -50,32 -92!,46 -78,62 -82!,60 -40,62 -10,74 0,92 -4", w: 92 },
+    s: { p: "0 0,22 -46,40 -92!,54 -62,62 -32,54 -8,34 0,20 -8!,40 0,62 0,80 -4", w: 80 },
+    t: { p: "0 0,16 -40,30 -100,36 -140!,30 -90,28 -40,30 -10,42 2,64 -4", w: 64, extra: ["8 -92,58 -96"] },
+    u: { p: "0 0,14 -30,24 -70,26 -88!,22 -50,24 -14,38 2,56 -6,70 -40,76 -88!,74 -40,76 -10,86 0,104 -4", w: 104 },
+    v: { p: "0 0,18 -40,30 -88!,34 -50,44 -12,56 0,68 -30,76 -70,78 -88,84 -80,100 -84", w: 100, hi: true },
+    w: { p: "0 0,16 -40,26 -88!,28 -50,38 -10,50 0,62 -30,66 -70!,70 -30,82 -4,96 -20,106 -60,108 -88,114 -80,130 -84", w: 130, hi: true },
+    x: { p: "0 0,22 -50,40 -84,58 -84,64 -50,70 -16,84 0,104 -4", w: 104, extra: ["26 -2,52 -44,80 -88"] },
+    y: { p: "0 0,14 -30,24 -70,26 -88!,22 -50,24 -14,38 2,56 -6,70 -40,76 -88!,74 -20,68 40,52 76,32 82,20 64,38 30,68 6,94 -4", w: 94 },
+    z: { p: "0 0,22 -50,44 -86,66 -86,70 -66,52 -40,36 -30!,60 -26,70 -6,66 30,50 70,34 76,30 58,48 30,74 6,94 -4", w: 94 },
+};
+function parseGlyph(s, dx) {
+    return s.split(",").map((t) => {
+        const cusp = t.endsWith("!");
+        const [x, y] = t.replace("!", "").trim().split(/\s+/).map(Number);
+        return cusp ? [x + dx, y, 1] : [x + dx, y];
+    });
+}
+// The word as strokes of control points: one joined stroke per run of letters, then the dots
+// and crossbars.
+function wordStrokes(word) {
+    const clean = word.trim().toLowerCase();
+    if (clean === "hello")
+        return [HELLO];
+    const strokes = [];
+    const extras = [];
+    let x = 0;
+    let cur = [];
+    let hi = false;
+    const flush = () => {
+        if (cur.length > 1) {
+            // A lead-in from below left and a lifted tail, like the reference.
+            const a = cur[0], z = cur[cur.length - 1];
+            cur.unshift([a[0] - 34, a[1] + 10]);
+            cur.push([z[0] + 26, z[1] - 18]);
+            strokes.push(cur);
+        }
+        cur = [];
+        hi = false;
+    };
+    for (const ch of clean) {
+        if (ch === " ") {
+            flush();
+            x += 70;
+            continue;
+        }
+        const g = GLYPHS[ch];
+        if (!g)
+            continue;
+        let pts = parseGlyph(g.p, x);
+        if (hi) {
+            // After a letter that leaves from the x-height, the joining stroke starts up there.
+            pts = [[x, -84], ...pts.slice(1)];
+        }
+        // Joining letters share the exit and entry point.
+        if (cur.length)
+            pts = pts.slice(1);
+        cur.push(...pts);
+        for (const e of g.extra || [])
+            extras.push(parseGlyph(e, x));
+        hi = !!g.hi;
+        x += g.w;
+    }
+    flush();
+    return [...strokes, ...extras];
+}
+/**
+ * Samples the strokes as centripetal Catmull-Rom splines, split at cusps, every 2.5 units or so.
+ * Arc length runs on across pen lifts (with a gap) so one clock writes the whole word, and the
+ * writing time slows in tight curves and pauses at cusps like a hand does.
+ */
+function buildPath(strokes) {
+    const lines = [];
+    let s = 0;
+    let t = 0;
+    let last = null;
+    for (const ctrl of strokes) {
+        // Pieces between cusps.
+        const pieces = [];
+        const kinds = [];
+        let piece = [];
+        for (const c of ctrl) {
+            piece.push([c[0], c[1]]);
+            if (c[2] && piece.length > 1) {
+                pieces.push(piece);
+                kinds.push(c[2]);
+                piece = [[c[0], c[1]]];
+            }
+        }
+        if (piece.length > 1)
+            pieces.push(piece);
+        if (!pieces.length)
+            continue;
+        const line = [];
+        if (last) {
+            const jump = Math.hypot(pieces[0][0][0] - last.x, pieces[0][0][1] - last.y);
+            s += 3 * RADIUS;
+            t += 4 * RADIUS + jump * 0.35;
+        }
+        pieces.forEach((P, pi) => {
+            const n = P.length;
+            const at = (i) => i < 0 ? [2 * P[0][0] - P[1][0], 2 * P[0][1] - P[1][1]] : i >= n ? [2 * P[n - 1][0] - P[n - 2][0], 2 * P[n - 1][1] - P[n - 2][1]] : P[i];
+            for (let i = 0; i < n - 1; i++) {
+                const p0 = at(i - 1), p1 = at(i), p2 = at(i + 1), p3 = at(i + 2);
+                const kt = (a, b) => Math.sqrt(Math.max(Math.hypot(b[0] - a[0], b[1] - a[1]), 1e-3));
+                const t1 = kt(p0, p1), t2 = t1 + kt(p1, p2), t3 = t2 + kt(p2, p3);
+                const steps = Math.max(2, Math.ceil(Math.hypot(p2[0] - p1[0], p2[1] - p1[1]) / 2.5));
+                for (let j = i === 0 && pi === 0 ? 0 : 1; j <= steps; j++) {
+                    if (j === 0 && i === 0 && pi > 0)
+                        continue;
+                    const u = t1 + ((t2 - t1) * j) / steps;
+                    const L = (a, b, ta, tb) => {
+                        const f = (u - ta) / (tb - ta);
+                        return [a[0] + (b[0] - a[0]) * f, a[1] + (b[1] - a[1]) * f];
+                    };
+                    const A1 = L(p0, p1, 0, t1), A2 = L(p1, p2, t1, t2), A3 = L(p2, p3, t2, t3);
+                    const B1 = L(A1, A2, 0, t2), B2 = L(A2, A3, t1, t3);
+                    const q = L(B1, B2, t1, t2);
+                    line.push({ x: q[0], y: q[1], s: 0, t: 0, k: 0, kr: 0, brk: j === steps && i === n - 2 && pi < pieces.length - 1 ? kinds[pi] : 0 });
+                }
+            }
+        });
+        // A light smoothing pass evens out the curvature jumps a Catmull-Rom spline leaves at its
+        // control points (ends and cusps stay put), so no turn is tighter than it looks.
+        for (let it = 0; it < 6; it++) {
+            const px = line.map((v) => v.x), py = line.map((v) => v.y);
+            for (let i = 1; i < line.length - 1; i++) {
+                if (line[i].brk)
+                    continue;
+                line[i].x = px[i] * 0.5 + (px[i - 1] + px[i + 1]) * 0.25;
+                line[i].y = py[i] * 0.5 + (py[i - 1] + py[i + 1]) * 0.25;
+            }
+        }
+        // Curvature: the turn of the tangent over about two tube radii, so it stays smooth.
+        const span = Math.max(2, Math.round((1.2 * RADIUS) / 2.5));
+        for (let i = 0; i < line.length; i++) {
+            // Stay on this side of a cusp.
+            let a = i, c = i;
+            while (a > 0 && i - a < span && !line[a - 1].brk)
+                a--;
+            while (c < line.length - 1 && c - i < span && !line[c].brk)
+                c++;
+            if (c - a < 2)
+                continue;
+            const p = line[a], q = line[Math.min(a + 1, c)], r = line[Math.max(c - 1, a)], w = line[c];
+            const ux = q.x - p.x, uy = q.y - p.y, vx = w.x - r.x, vy = w.y - r.y;
+            let len = 0;
+            for (let j = a; j < c; j++)
+                len += Math.hypot(line[j + 1].x - line[j].x, line[j + 1].y - line[j].y);
+            if (len < 1e-6)
+                continue;
+            line[i].k = Math.atan2(ux * vy - uy * vx, ux * vx + uy * vy) / len;
+        }
+        // Local curvature from the neighbours, which keeps the peaks the smoothed value hides.
+        for (let i = 1; i < line.length - 1; i++) {
+            const a = line[i - 1], b = line[i], c = line[i + 1];
+            if (b.brk)
+                continue;
+            const ux = b.x - a.x, uy = b.y - a.y, vx = c.x - b.x, vy = c.y - b.y;
+            const len = (Math.hypot(ux, uy) + Math.hypot(vx, vy)) / 2;
+            if (len > 1e-6)
+                b.kr = Math.atan2(ux * vy - uy * vx, ux * vx + uy * vy) / len;
+        }
+        // Turns tighter than the tube itself become soft cusps (the tube doubles back with round
+        // ends), where a single bent tube would fold through itself. Sharp corners between samples
+        // count too.
+        for (let i = 1; i < line.length - 1; i++) {
+            const a = line[i - 1], b = line[i], c = line[i + 1];
+            const ux = b.x - a.x, uy = b.y - a.y, vx = c.x - b.x, vy = c.y - b.y;
+            const corner = Math.abs(Math.atan2(ux * vy - uy * vx, ux * vx + uy * vy));
+            const tight = Math.abs(b.k) * RADIUS > 0.95 && Math.abs(b.k) >= Math.abs(a.k) && Math.abs(b.k) >= Math.abs(c.k);
+            if (!b.brk && !a.brk && (corner > 0.6 || tight))
+                b.brk = 1;
+        }
+        for (let i = 0; i < line.length; i++) {
+            if (i > 0) {
+                const ds = Math.hypot(line[i].x - line[i - 1].x, line[i].y - line[i - 1].y);
+                s += ds;
+                t += ds * (1 + 1.1 * Math.min(Math.abs(line[i].k) * RADIUS, 1.5));
+                if (line[i - 1].brk)
+                    t += 1.4 * RADIUS;
+            }
+            line[i].s = s;
+            line[i].t = t;
+        }
+        lines.push(line);
+        last = line[line.length - 1];
+    }
+    // An empty word still gets a box, the size of "o", so the layout never divides by zero.
+    let x0 = Infinity, y0 = Infinity, x1 = -Infinity, y1 = -Infinity;
+    for (const l of lines)
+        for (const v of l) {
+            x0 = Math.min(x0, v.x);
+            y0 = Math.min(y0, v.y);
+            x1 = Math.max(x1, v.x);
+            y1 = Math.max(y1, v.y);
+        }
+    if (!lines.length)
+        [x0, y0, x1, y1] = [0, -88, 96, 0];
+    return { lines, length: s, time: t, box: [x0 - RADIUS, y0 - RADIUS, x1 + RADIUS, y1 + RADIUS] };
+}
+// Per segment: A, B, the points before A and after B (the bisectors at the joints), arc length at
+// A and B, flags (1 = round cap at A, 2 = round cap at B, 4 = that cap is a plain cusp) and the
+// smoothed curvature; then the run of tube it belongs to (between cusps): arc length and position
+// of its start and end and what each end shows; and the sharpest local curvature at its ends.
+const SEG_FLOATS = 24;
+function segmentData(path) {
+    const out = [];
+    for (const l of path.lines) {
+        // Dots and other tiny strokes stay solid blobs.
+        const open = l[l.length - 1].s - l[0].s > 2.5 * RADIUS ? 1 : 0;
+        let r0 = 0;
+        for (let i = 0; i < l.length - 1; i++) {
+            if (i > 0 && l[i].brk)
+                r0 = i;
+            let r1 = i + 1;
+            while (r1 < l.length - 1 && !l[r1].brk)
+                r1++;
+            const a = l[i], b = l[i + 1];
+            // At a plain cusp (brk 1) the tube doubles back: both sides end in round caps that add up
+            // like the two arms beside them, with no rim inside the turn. At an open-end cusp (brk 2)
+            // the tube going out restarts with a flat cut out of the open end.
+            const capA = i === 0 || a.brk === 1;
+            const capB = i + 1 === l.length - 1 || b.brk > 0;
+            const p = capA ? a : a.brk ? { x: 2 * a.x - b.x, y: 2 * a.y - b.y } : l[i - 1];
+            const n = capB ? b : l[i + 2];
+            const s0 = l[r0], s1 = l[r1];
+            // Start: 1 = open end, 2 = restart out of an open end (fades in), 3 = after a plain cusp.
+            const f0 = r0 === 0 ? open : s0.brk === 2 ? 2 : 3;
+            // End: 1 = open end, 2 = open-end cusp, 3 = plain cusp, 0 = none.
+            const f1 = r1 === l.length - 1 ? open : s1.brk === 2 ? 2 : 3;
+            const flags = (capA ? 1 : 0) + (capB ? 2 : 0) + (b.brk === 1 ? 4 : 0);
+            out.push(a.x, a.y, b.x, b.y, p.x, p.y, n.x, n.y, a.s, b.s, flags, (a.k + b.k) / 2);
+            out.push(s0.s, s1.s, f0, f1, s0.x, s0.y, s1.x, s1.y);
+            out.push(Math.abs(a.kr) > Math.abs(b.kr) ? a.kr : b.kr, 0, 0, 0);
+        }
+    }
+    return new Float32Array(out);
+}
+// Arc length reached at writing time t (0..path.time).
+function arcAt(path, t) {
+    if (t <= 0)
+        return 0;
+    if (t >= path.time)
+        return path.length;
+    let prev = null;
+    for (const l of path.lines) {
+        if (prev && t < l[0].t)
+            return prev.s;
+        let lo = 0, hi = l.length - 1;
+        if (t > l[hi].t) {
+            prev = l[hi];
+            continue;
+        }
+        while (hi - lo > 1) {
+            const m = (lo + hi) >> 1;
+            if (l[m].t < t)
+                lo = m;
+            else
+                hi = m;
+        }
+        const a = l[lo], b = l[hi];
+        return a.s + ((b.s - a.s) * (t - a.t)) / Math.max(b.t - a.t, 1e-6);
+    }
+    return path.length;
+}
+// Point on the centre line at arc length s.
+function pointAt(path, s) {
+    for (const l of path.lines) {
+        if (s > l[l.length - 1].s)
+            continue;
+        let lo = 0, hi = l.length - 1;
+        while (hi - lo > 1) {
+            const m = (lo + hi) >> 1;
+            if (l[m].s < s)
+                lo = m;
+            else
+                hi = m;
+        }
+        const a = l[lo], b = l[hi];
+        const f = Math.min(1, Math.max(0, (s - a.s) / Math.max(b.s - a.s, 1e-6)));
+        return [a.x + (b.x - a.x) * f, a.y + (b.y - a.y) * f];
+    }
+    const l = path.lines[path.lines.length - 1];
+    return [l[l.length - 1].x, l[l.length - 1].y];
+}
+// ---------------------------------------------------------------------------------------------
+// Light. Everything adds up as light (each channel 0..inf) and is mapped to the screen with
+// 1 - exp(-light), so overlapping tube and glow saturate toward white like the reference.
+// ---------------------------------------------------------------------------------------------
+/** The reference tube colours, sampled along the stroke from the lead-in tail to the end tail. */
+// prettier-ignore
+const NEON_HELLO_COLORS = ["#009dee", "#0084e5", "#4e3af6", "#b63aee", "#6c1d44", "#af4a2d", "#af1200", "#f37100", "#fb8f17", "#b25a30", "#ca4e76", "#cf489d", "#b237c3", "#a338e4", "#185ccd", "#0097f5", "#00b7fb", "#008eee", "#0778ee", "#7e2bb5", "#996579", "#992a46", "#ed5f2d", "#e36d1b", "#e97d07", "#fa8f23", "#df6400", "#ba4baf", "#a13ab1", "#b93efb", "#202aee", "#005ff2"];
+// Frame fitted to the reference: per perimeter stop (clockwise from the top left corner, 16 stops)
+// the light of the bright inner edge and of the wide falloff, plus the falloff itself in
+// reference px (736 x 414): edge gain, edge decay, falloff gain, decay, wash gain, decay.
+// prettier-ignore
+const FRAME_NEAR = [[0.258, 0.071, 1.701], [0.376, 0.343, 1.939], [0.241, 0.847, 1.322], [0.373, 1.388, 2.261], [0.32, 0.848, 1.213], [0.372, 1.192, 1.557], [0.223, 0.909, 1.847], [0.353, 0.3, 2.404], [0.496, 0.172, 1.566], [1.198, 0.305, 0.463], [1.073, 0.968, 0.174], [1.354, 1.019, 0.291], [0.785, 0.586, 0.096], [1.285, 1.079, 0.231], [1.212, 0.433, 0.642], [0.722, 0.151, 1.718]];
+// prettier-ignore
+const FRAME_FAR = [[0.61, 0.242, 1.219], [0.246, 0.279, 1.033], [0.155, 0.503, 1.166], [0.257, 1.041, 1.446], [0.284, 0.949, 1.3], [0.166, 0.304, 0.828], [0.133, 0.289, 0.87], [0.2, 0.202, 0.986], [0.453, 0.166, 1.063], [0.649, 0.21, 0.29], [0.931, 0.304, 0.113], [1.476, 0.533, 0.126], [1.217, 0.456, 0.14], [0.974, 0.189, 0.256], [0.989, 0.303, 0.53], [0.713, 0.23, 0.645]];
+const FRAME_PROFILE = [3.3614, 5.07, 1.3328, 24.0, 0.1, 63.0];
+const FRAME_REF_AREA = 736 * 414;
+/** Frame colours for the CSS fallback and as a starting point for custom frames. */
+// prettier-ignore
+const NEON_HELLO_FRAME = ["#8e42e9", "#6769e8", "#47abe1", "#68def3", "#67cae3", "#59aeda", "#419be2", "#5d57ee", "#8e41e3", "#c75976", "#d1a036", "#eab748", "#d59531", "#d99c59", "#d875a1", "#b64ad7"];
+// Bloom: gains of the tight halo, the wide halo and the faint haze around the whole word.
+const GLOW = [0.18, 0.2, 0.11];
+// Loop at speed 1 for "hello", in seconds: lead, write, hold, erase, rest. Other words stretch
+// the write with their length.
+const LEAD = 0.4;
+const WRITE = 3.6;
+const HOLD = 4.3;
+const ERASE = 1.4;
+const REST = 0.3;
+// Where in the hold the still frame sits (matches both references).
+const STILL = 0.55;
+// Colour flow along the stroke, in colour cycles per second.
+const FLOW = 0.045;
+function timeline(path, hello) {
+    const write = WRITE * Math.min(2.6, Math.max(0.45, Math.pow(path.time / hello.time, 0.75)));
+    const loop = LEAD + write + HOLD + ERASE + REST;
+    return { write, loop, still: LEAD + write + HOLD * STILL };
+}
+const QUAD_VERT = `#version 300 es
+layout(location = 0) in vec2 aPos;
+void main() { gl_Position = vec4(aPos, 0.0, 1.0); }
+`;
+// The tube body, one instanced quad per segment. Each pixel belongs to exactly one segment of
+// a pass (split along the bisectors at the joints), so a single pass of the tube is drawn once
+// and every crossing adds: that is the translucency.
+const SEG_VERT = `#version 300 es
+precision highp float;
+layout(location = 0) in vec2 aCorner;
+layout(location = 1) in vec4 aAB;
+layout(location = 2) in vec4 aPN;
+layout(location = 3) in vec4 aS;
+layout(location = 4) in vec4 aRun;   // run start and end arc length, open end at start, at end
+layout(location = 5) in vec4 aRunP;  // run start and end position
+layout(location = 6) in vec4 aKr;    // sharpest local curvature at A or B
+uniform vec2 uRes;      // device px
+uniform vec3 uMap;      // word unit -> device px: scale, offset x, offset y (y down)
+uniform vec2 uWin;      // visible arc length: tail, head
+uniform float uR;       // radius, word units
+uniform float uPx;      // one device px in word units
+uniform vec3 uStops[32];
+uniform float uNStops;
+uniform vec2 uGrad;     // cycles per unit of arc length, flow offset
+uniform vec4 uEnds;     // tail and head positions (word units)
+flat out vec4 vAB;
+flat out vec4 vE;       // the open tube ends near this segment
+flat out vec2 vF;       // whether each is shown
+flat out vec3 vRun;     // arc length at A and B, start of a restart after a cusp (or -1)
+flat out float vSoftA;  // the cap at A is a plain cusp
+flat out float vSoftB;  // the cap at B is a plain cusp
+flat out float vKr;
+flat out vec4 vN;
+flat out vec2 vCap;
+flat out vec3 vColA;
+flat out vec3 vColB;
+flat out float vK;
+
+vec3 stop(float i) { return uStops[int(mod(i, uNStops))]; }
+// Cyclic Catmull-Rom through the colour stops.
+vec3 grad(float s) {
+  float f = fract(s * uGrad.x - uGrad.y) * uNStops;
+  float i = floor(f), u = f - i;
+  vec3 a = stop(i - 1.0 + uNStops), b = stop(i), c = stop(i + 1.0), d = stop(i + 2.0);
+  vec3 col = b + 0.5 * u * (c - a + u * (2.0 * a - 5.0 * b + 4.0 * c - d + u * (3.0 * (b - c) + d - a)));
+  return max(col, 0.0);
+}
+
+void main() {
+  vec2 A = aAB.xy, B = aAB.zw;
+  float sA = aS.x, sB = aS.y;
+  float capA = mod(aS.z, 2.0), capB = mod(floor(aS.z / 2.0 + 0.01), 2.0);
+  vSoftB = floor(aS.z / 4.0 + 0.01);
+  if (sB <= uWin.x || sA >= uWin.y || uWin.y <= uWin.x) {
+    gl_Position = vec4(2.0, 2.0, 2.0, 1.0);
+    return;
+  }
+  vec2 d0 = aAB.zw - aAB.xy;
+  if (sA < uWin.x) { A = aAB.xy + d0 * (uWin.x - aS.x) / (aS.y - aS.x); sA = uWin.x; capA = 1.0; }
+  if (sB > uWin.y) { B = aAB.xy + d0 * (uWin.y - aS.x) / (aS.y - aS.x); sB = uWin.y; capB = 1.0; vSoftB = 0.0; }
+  vec2 t = normalize(d0);
+  vec2 tp = capA > 0.5 ? t : normalize(aAB.xy - aPN.xy);
+  vec2 tn = capB > 0.5 ? t : normalize(aPN.zw - aAB.zw);
+  vec2 nA = normalize(tp + t), nB = normalize(t + tn);
+  float m = uR + 2.0 * uPx;
+  // Reach past the ends far enough to cover the wedge up to the bisector, or the round cap.
+  float eA = capA > 0.5 ? m : min(m, m * abs(tp.x * t.y - tp.y * t.x) / max(1.0 + dot(tp, t), 0.05) + uPx);
+  float eB = capB > 0.5 ? m : min(m, m * abs(t.x * tn.y - t.y * tn.x) / max(1.0 + dot(t, tn), 0.05) + uPx);
+  vec2 n = vec2(-t.y, t.x);
+  vec2 P = (aCorner.x < 0.0 ? A - t * eA : B + t * eB) + n * aCorner.y * m;
+  vAB = vec4(A, B);
+  vN = vec4(nA, nB);
+  vCap = vec2(capA, capB);
+  vColA = grad(sA);
+  vColB = grad(sB);
+  // Open ends: the run's own, or the pen and the tail while they move along it.
+  vec2 E0 = aRunP.xy, E1 = aRunP.zw;
+  float f0 = aRun.z > 1.5 ? 0.0 : aRun.z, f1 = aRun.w > 2.5 ? 0.0 : min(aRun.w, 1.0), s0 = aRun.x, s1 = aRun.y;
+  // No glint right beside a cusp, where the curvature is one-sided.
+  float cusp = (aRun.z > 1.5 && sA - aRun.x < 2.0 * uR) || (aRun.w > 1.5 && aRun.y - sB < 2.0 * uR) ? 1.0 : 0.0;
+  vK = aS.w * (1.0 - cusp);
+  vRun = vec3(sA, sB, aRun.z > 1.5 && aRun.z < 2.5 && uWin.x <= aRun.x ? aRun.x : -1.0);
+  vSoftA = aRun.z > 2.5 && uWin.x <= aRun.x && sA - aRun.x < 0.5 ? 1.0 : 0.0;
+  if (uWin.x > s0) { E0 = uEnds.xy; f0 = 1.0; s0 = uWin.x; }
+  if (uWin.y < s1) { E1 = uEnds.zw; f1 = 1.0; s1 = uWin.y; }
+  vE = vec4(E0, E1);
+  vKr = aKr.x;
+  vF = vec2(f0 * step(sA - s0, 2.5 * uR), f1 * step(s1 - sB, 2.5 * uR));
+  vec2 dev = P * uMap.x + uMap.yz;
+  gl_Position = vec4(dev.x / uRes.x * 2.0 - 1.0, 1.0 - dev.y / uRes.y * 2.0, 0.0, 1.0);
+}
+`;
+const SEG_FRAG = `#version 300 es
+precision highp float;
+flat in vec4 vAB;
+flat in vec4 vN;
+flat in vec2 vCap;
+flat in vec3 vColA;
+flat in vec3 vColB;
+flat in float vK;
+flat in vec4 vE;
+flat in vec2 vF;
+flat in vec3 vRun;
+flat in float vSoftA;
+flat in float vSoftB;
+flat in float vKr;
+uniform float uR;
+uniform float uPx;
+uniform vec2 uRes;
+uniform vec3 uMap;
+uniform vec4 uShade;    // body gain, limb brightening, rim gain, highlight gain
+out vec4 o;
+void main() {
+  // The pixel in word units, from the pixel itself, so neighbouring segments agree exactly on
+  // which side of their shared bisector it lies.
+  vec2 p = (vec2(gl_FragCoord.x, uRes.y - gl_FragCoord.y) - uMap.yz) / uMap.x;
+  vec2 A = vAB.xy, B = vAB.zw;
+  if (vCap.x < 0.5 && dot(p - A, vN.xy) < 0.0) discard;
+  if (vCap.y < 0.5 && dot(p - B, vN.zw) >= 0.0) discard;
+  vec2 ab = B - A;
+  float l2 = dot(ab, ab);
+  float u = l2 > 1e-8 ? clamp(dot(p - A, ab) / l2, 0.0, 1.0) : 0.0;
+  vec2 q = A + ab * u;
+  float d = length(p - q);
+  float cov = clamp((uR - d) / uPx + 0.5, 0.0, 1.0);
+  // Inside a bend tighter than the tube, pixels past the centre of the bend are claimed by
+  // several segments at once; they fade out instead of stacking up into a bright sliver.
+  float inner = (ab.x * (p.y - A.y) - ab.y * (p.x - A.x)) * vKr;
+  if (inner > 0.0 && abs(vKr) * uR > 1.05) cov *= 1.0 - smoothstep(0.8, 1.0, d * abs(vKr));
+  if (cov <= 0.0) discard;
+  float r = min(d / uR, 1.0);
+  vec3 C = mix(vColA, vColB, u);
+  // A glass tube full of light: the body, a little brighter toward its edges where the light
+  // runs through more glass, and a thin bright rim.
+  float limb = 1.0 + uShade.y * r * r;
+  // The caps of a plain cusp are the inside of the bend: barely any rim of their own.
+  float bend = (vSoftB > 0.5 && dot(p - B, ab) > 0.0) || (vSoftA > 0.5 && dot(p - A, ab) < 0.0) ? 0.25 : 1.0;
+  float rim = exp(-pow((r - 0.9) / 0.085, 2.0)) * bend;
+  vec3 L = C * (uShade.x * limb) + (C * 0.6 + 0.25) * rim * uShade.z;
+  // Tight curves catch a hot glint along their inner edge.
+  float side = (ab.x * (p.y - A.y) - ab.y * (p.x - A.x)) / max(sqrt(l2), 1e-6) / uR * sign(vK);
+  float curl = smoothstep(0.03, 0.065, abs(vK));
+  float hot = curl * smoothstep(0.4, 0.85, side) * exp(-pow((r - 0.86) / 0.13, 2.0)) * (1.0 - smoothstep(0.95, 1.05, abs(vKr) * uR));
+  L += (C * 0.5 + 0.6) * hot * uShade.w;
+  // Open tube ends: a disc a shade darker inside, ringed by the lit edge of the glass.
+  float de = 1e9;
+  if (vF.x > 0.5) de = length(p - vE.xy);
+  if (vF.y > 0.5) de = min(de, length(p - vE.zw));
+  float face = clamp((uR - de) / uPx + 0.5, 0.0, 1.0);
+  if (face > 0.0) {
+    float rr = min(de / uR, 1.0);
+    vec3 F = C * uShade.x * (0.5 + 0.62 * smoothstep(0.4, 0.97, rr)) + (C * 0.6 + 0.3) * exp(-pow((rr - 0.91) / 0.07, 2.0)) * uShade.z * 1.3;
+    L = mix(L, F, face);
+  }
+  // After a cusp the tube comes back out of the open end it just made.
+  if (vRun.z >= 0.0) L *= smoothstep(0.0, 1.4 * uR, mix(vRun.x, vRun.y, u) - vRun.z);
+  // Alpha counts the passes covering the pixel, so the bloom can stay off the glass itself.
+  o = vec4(L * cov, cov);
+}
+`;
+// A soft hot spot at the pen while it writes.
+const SPARK_VERT = `#version 300 es
+precision highp float;
+layout(location = 0) in vec2 aCorner;
+uniform vec2 uRes;
+uniform vec3 uMap;
+uniform vec3 uSpark;    // centre (word units), radius
+out vec2 vQ;
+void main() {
+  vQ = aCorner;
+  vec2 dev = (uSpark.xy + aCorner * uSpark.z) * uMap.x + uMap.yz;
+  gl_Position = vec4(dev.x / uRes.x * 2.0 - 1.0, 1.0 - dev.y / uRes.y * 2.0, 0.0, 1.0);
+}
+`;
+const SPARK_FRAG = `#version 300 es
+precision highp float;
+in vec2 vQ;
+uniform vec4 uSparkCol; // colour, strength
+out vec4 o;
+void main() {
+  float r2 = dot(vQ, vQ) * 6.0;
+  o = vec4((uSparkCol.rgb * 0.7 + 0.8) * uSparkCol.a * exp(-r2), 0.0);
+}
+`;
+// Bloom: a dual filter pyramid (down by halves, then back up), each level weighted.
+const DOWN_FRAG = `#version 300 es
+precision highp float;
+uniform sampler2D uTex;
+uniform vec2 uTexel;    // source texel
+out vec4 o;
+void main() {
+  vec2 uv = gl_FragCoord.xy * 2.0 * uTexel;
+  vec2 h = uTexel;
+  vec4 s = texture(uTex, uv) * 4.0;
+  s += texture(uTex, uv - h) + texture(uTex, uv + h);
+  s += texture(uTex, uv + vec2(h.x, -h.y)) + texture(uTex, uv - vec2(h.x, -h.y));
+  o = s / 8.0;
+}
+`;
+const UP_FRAG = `#version 300 es
+precision highp float;
+uniform sampler2D uTex;   // the coarser level, already summed
+uniform sampler2D uSelf;  // this level of the down pass
+uniform vec2 uTexel;      // texel of uTex
+uniform vec2 uOut;        // size of this level
+uniform float uW;         // weight of this level
+out vec4 o;
+void main() {
+  vec2 uv = gl_FragCoord.xy / uOut;
+  vec2 h = uTexel * 0.5;
+  vec4 s = texture(uTex, uv + vec2(-h.x * 2.0, 0.0)) + texture(uTex, uv + vec2(h.x * 2.0, 0.0));
+  s += texture(uTex, uv + vec2(0.0, -h.y * 2.0)) + texture(uTex, uv + vec2(0.0, h.y * 2.0));
+  s += (texture(uTex, uv + vec2(-h.x, h.y)) + texture(uTex, uv + vec2(h.x, h.y))) * 2.0;
+  s += (texture(uTex, uv + vec2(-h.x, -h.y)) + texture(uTex, uv + vec2(h.x, -h.y))) * 2.0;
+  o = s / 12.0 + texture(uSelf, uv) * uW;
+}
+`;
+const COMP_FRAG = `#version 300 es
+precision highp float;
+uniform sampler2D uBody;
+uniform sampler2D uGlow;
+uniform vec2 uRes;        // device px
+uniform vec2 uGlowTexel;
+uniform vec4 uBox;        // css width, height, dpr, frame on
+uniform vec3 uNear[16];
+uniform vec3 uFar[16];
+uniform vec4 uProf;       // edge gain, edge decay, falloff gain, falloff decay (css px)
+uniform vec2 uProf2;      // wash gain, wash decay
+uniform float uRot;       // perimeter turn, 0..4
+uniform vec3 uGain;       // frame, glow, word
+uniform vec4 uPointer;    // css x, y, hover, reach (css px)
+uniform float uSeed;
+out vec4 o;
+const float GLOW_ON_GLASS = 0.7;
+
+float hash(vec2 p) { return fract(sin(dot(p, vec2(12.9898, 78.233))) * 43758.5453); }
+
+vec3 nearAt(float i) { return uNear[int(mod(i, 16.0))]; }
+vec3 farAt(float i) { return uFar[int(mod(i, 16.0))]; }
+// Perimeter position p (0..4, clockwise from the top left corner) to the cyclic Catmull-Rom
+// weights of its four stops.
+vec4 crw(float u) {
+  float u2 = u * u, u3 = u2 * u;
+  return vec4(-0.5 * u3 + u2 - 0.5 * u, 1.5 * u3 - 2.5 * u2 + 1.0, -1.5 * u3 + 2.0 * u2 + 0.5 * u, 0.5 * u3 - 0.5 * u2);
+}
+vec3 edge(float p, float d) {
+  float f = mod(p, 4.0) * 4.0;
+  float i = floor(f);
+  vec4 w = crw(f - i);
+  vec3 nr = nearAt(i + 15.0) * w.x + nearAt(i) * w.y + nearAt(i + 1.0) * w.z + nearAt(i + 2.0) * w.w;
+  vec3 fr = farAt(i + 15.0) * w.x + farAt(i) * w.y + farAt(i + 1.0) * w.z + farAt(i + 2.0) * w.w;
+  return nr * uProf.x * exp(-d / uProf.y) + fr * (uProf.z * exp(-d / uProf.w) + uProf2.x * exp(-d / uProf2.y));
+}
+
+void main() {
+  vec2 fc = gl_FragCoord.xy;
+  vec2 uv = fc / uRes;
+  vec4 body = texture(uBody, uv);
+  vec3 light = body.rgb * uGain.z;
+  // The last step up of the bloom, straight to full resolution.
+  vec2 h = uGlowTexel * 0.5;
+  vec3 g = texture(uGlow, uv + vec2(-h.x * 2.0, 0.0)).rgb + texture(uGlow, uv + vec2(h.x * 2.0, 0.0)).rgb;
+  g += texture(uGlow, uv + vec2(0.0, -h.y * 2.0)).rgb + texture(uGlow, uv + vec2(0.0, h.y * 2.0)).rgb;
+  g += (texture(uGlow, uv + vec2(-h.x, h.y)).rgb + texture(uGlow, uv + vec2(h.x, h.y)).rgb) * 2.0;
+  g += (texture(uGlow, uv + vec2(-h.x, -h.y)).rgb + texture(uGlow, uv + vec2(h.x, -h.y)).rgb) * 2.0;
+  // The bloom hangs around the glass; on the tube itself only a little of it shows.
+  light += g / 12.0 * uGain.y * uGain.z * (1.0 - GLOW_ON_GLASS * min(body.a, 1.0));
+
+  if (uBox.w > 0.5) {
+    float W = uBox.x, H = uBox.y;
+    float x = fc.x / uBox.z, y = (uRes.y - fc.y) / uBox.z;
+    vec3 f = edge(x / W + uRot, y) + edge(1.0 + y / H + uRot, W - x)
+           + edge(3.0 - x / W + uRot, H - y) + edge(4.0 - y / H + uRot, x);
+    // The glow gathers toward the pointer.
+    vec2 dp = vec2(x, y) - uPointer.xy;
+    float near = exp(-dot(dp, dp) / (uPointer.w * uPointer.w));
+    light += f * uGain.x * (1.0 + 1.1 * uPointer.z * near);
+  }
+  vec3 col = 1.0 - exp(-max(light, 0.0));
+  // Fine grain against banding in the long falloff.
+  col += (hash(fc + uSeed) - 0.5) * (2.0 / 255.0);
+  o = vec4(clamp(col, 0.0, 1.0), 1.0);
+}
+`;
+function compile(gl, type, src) {
+    const s = gl.createShader(type);
+    gl.shaderSource(s, src);
+    gl.compileShader(s);
+    if (!gl.getShaderParameter(s, gl.COMPILE_STATUS)) {
+        console.error(gl.getShaderInfoLog(s));
+    }
+    return s;
+}
+function program(gl, vert, frag) {
+    const prog = gl.createProgram();
+    const vs = compile(gl, gl.VERTEX_SHADER, vert);
+    const fs = compile(gl, gl.FRAGMENT_SHADER, frag);
+    gl.attachShader(prog, vs);
+    gl.attachShader(prog, fs);
+    gl.linkProgram(prog);
+    gl.deleteShader(vs);
+    gl.deleteShader(fs);
+    if (!gl.getProgramParameter(prog, gl.LINK_STATUS)) {
+        gl.deleteProgram(prog);
+        return null;
+    }
+    const cache = {};
+    return { prog, u: (n) => (n in cache ? cache[n] : (cache[n] = gl.getUniformLocation(prog, n))) };
+}
+// Resolve any CSS colour (hex, rgb, oklch, color-mix…) to RGB in 0..1.
+function readColor(css, ctx) {
+    const hex = css.trim().match(/^#([\da-f]{3}|[\da-f]{6})$/i);
+    if (hex) {
+        const h = hex[1].length === 3 ? hex[1].replace(/./g, "$&$&") : hex[1];
+        return [parseInt(h.slice(0, 2), 16) / 255, parseInt(h.slice(2, 4), 16) / 255, parseInt(h.slice(4, 6), 16) / 255];
+    }
+    if (!ctx)
+        return [1, 1, 1];
+    ctx.clearRect(0, 0, 1, 1);
+    ctx.fillStyle = "#000";
+    ctx.fillStyle = css;
+    ctx.fillRect(0, 0, 1, 1);
+    const p = ctx.getImageData(0, 0, 1, 1).data;
+    return [p[0] / 255, p[1] / 255, p[2] / 255];
+}
+// Screen colour to light: the inverse of 1 - exp(-light).
+const toLight = (c) => -Math.log(1 - Math.min(c, 0.985));
+function step(s, target, dt, omega) {
+    const f = 1 + 2 * dt * omega;
+    const oo = omega * omega;
+    const det = 1 / (f + dt * dt * oo);
+    const x = (f * s.x + dt * s.v + dt * dt * oo * target) * det;
+    s.v = (s.v + dt * oo * (target - s.x)) * det;
+    s.x = x;
+}
+const smooth = (a, b, x) => {
+    const t = Math.min(1, Math.max(0, (x - a) / (b - a)));
+    return t * t * (3 - 2 * t);
+};
+// Where the word sits in a box of w x h css px: its scale (css px per word unit) and offset.
+function placeWord(path, w, h, scale) {
+    const [x0, y0, x1, y1] = path.box;
+    const bw = x1 - x0, bh = y1 - y0;
+    const k = Math.min((scale * w) / bw, (0.6 * h) / bh);
+    return { k, ox: w / 2 - ((x0 + x1) / 2) * k, oy: 0.478 * h - ((y0 + y1) / 2) * k };
+}
+/** A neon tube that writes a word in light inside a glowing rainbow edge frame. */
+// No WebGL: the frame as four blurred colour strips that breathe, and the word as an SVG tube in
+// short coloured pieces, written one after another with stroke dashes, a blurred copy for the glow.
+function Fallback(host, { path, colors, frame, loop, speed }) {
+    const hello = buildPath([HELLO]);
+    const tl = timeline(path, hello);
+    const dur = tl.loop / Math.max(speed, 0.01);
+    const list = colors.length ? colors : NEON_HELLO_COLORS;
+    const fl = Array.isArray(frame) ? (frame.length ? frame : NEON_HELLO_FRAME) : NEON_HELLO_FRAME;
+    const [x0, y0, x1, y1] = path.box;
+    const pad = RADIUS * 2.5;
+    const pieces = [];
+    for (const l of path.lines) {
+        let i = 0;
+        while (i < l.length - 1) {
+            let j = i + 1;
+            while (j < l.length - 1 && l[j].s - l[i].s < RADIUS * 3 && !l[j].brk) j++;
+            const pts = l.slice(i, j + 1);
+            const mid = (pts[0].s + pts[pts.length - 1].s) / 2;
+            const c = list[Math.floor((mid / path.length) * list.length) % list.length];
+            pieces.push({ d: "M" + pts.map((p) => `${p.x.toFixed(1)} ${p.y.toFixed(1)}`).join("L"), len: pts[pts.length - 1].s - pts[0].s + 1, s0: pts[0].t, s1: pts[pts.length - 1].t, c });
+            i = j;
+        }
+    }
+    const pct = (sec) => ((sec / tl.loop) * 100).toFixed(2);
+    const css = pieces.map((p, i) => {
+        const a = LEAD + (p.s0 / path.time) * tl.write;
+        const b = LEAD + (p.s1 / path.time) * tl.write;
+        const e = LEAD + tl.write + HOLD;
+        return loop
+            ? `@keyframes neon-hello-w${i}{0%,${pct(a)}%{stroke-dashoffset:${p.len.toFixed(1)};opacity:1}` + `${pct(Math.max(b, a + 0.01))}%,${pct(e)}%{stroke-dashoffset:0;opacity:1}` + `${pct(e + ERASE)}%,100%{stroke-dashoffset:0;opacity:0}}`
+            : `@keyframes neon-hello-w${i}{0%,${pct(a)}%{stroke-dashoffset:${p.len.toFixed(1)}}${pct(Math.max(b, a + 0.01))}%,100%{stroke-dashoffset:0}}`;
+    }).join("");
+    const strip = (side, cols) => {
+        const along = side === "top" || side === "bottom" ? "90deg" : "180deg";
+        const inward = { top: "180deg", bottom: "0deg", left: "90deg", right: "270deg" }[side];
+        const fade = `linear-gradient(${inward}, #000 0%, rgba(0,0,0,0.7) 3%, rgba(0,0,0,0.34) 12%, rgba(0,0,0,0.13) 28%, transparent 60%)`;
+        const pos = side === "top" ? "left:0;right:0;top:0;height:60%" : side === "bottom" ? "left:0;right:0;bottom:0;height:60%" : side === "left" ? "top:0;bottom:0;left:0;width:60%" : "top:0;bottom:0;right:0;width:60%";
+        return `position:absolute;${pos};background-image:linear-gradient(${along}, ${cols.join(", ")});-webkit-mask-image:${fade};mask-image:${fade};mix-blend-mode:screen`;
+    };
+    const q = Math.floor(fl.length / 4);
+    const seq = (a, b, rev = false) => { const out = []; for (let i = a; i <= b; i++) out.push(fl[i % fl.length]); return rev ? out.reverse() : out; };
+    const pieceEls = pieces.map((p, i) => `<path d="${p.d}" stroke="${p.c}" stroke-dasharray="${p.len.toFixed(1)} ${(p.len + 999).toFixed(0)}" class="neon-hello-piece"${speed > 0 ? ` style="animation:neon-hello-w${i} ${dur}s linear ${loop ? "infinite" : "1 forwards"}"` : ""}/>`).join("");
+    host.innerHTML = (frame !== false ? `<div aria-hidden="true" class="neon-hello-frame" style="position:absolute;inset:0"><div style="${strip("top", seq(0, q))}"></div><div style="${strip("right", seq(q, 2 * q))}"></div><div style="${strip("bottom", seq(2 * q, 3 * q, true))}"></div><div style="${strip("left", seq(3 * q, 4 * q, true))}"></div><div style="position:absolute;inset:0;box-shadow:inset 0 0 3px 1px rgba(255,255,255,0.75), inset 0 0 14px 2px rgba(255,255,255,0.18)"></div></div>` : "")
+        + `<svg aria-hidden="true" viewBox="${x0 - pad} ${y0 - pad} ${x1 - x0 + 2 * pad} ${y1 - y0 + 2 * pad}" style="position:absolute;left:14%;width:72%;top:18%;height:60%;overflow:visible" fill="none" stroke-linecap="round" stroke-linejoin="round"><defs><filter id="neon-hello-glow" x="-20%" y="-40%" width="140%" height="180%"><feGaussianBlur stdDeviation="${RADIUS * 0.9}"/></filter></defs>`
+        + `<g stroke-width="${RADIUS * 2.6}" filter="url(#neon-hello-glow)" opacity="0.85">${pieceEls}</g><g stroke-width="${RADIUS * 2}" opacity="0.92" style="mix-blend-mode:screen">${pieceEls}</g></svg>`
+        + `<style>${css}@keyframes neon-hello-breathe{from{opacity:.82}to{opacity:1}}.neon-hello-frame{animation:neon-hello-breathe ${(dur / 2).toFixed(2)}s ease-in-out infinite alternate}@media (prefers-reduced-motion:reduce){.neon-hello-frame,.neon-hello-piece{animation:none!important;stroke-dashoffset:0!important;opacity:1!important}}</style>`;
+}
+/** create(root, options): a neon tube writes `word` inside a glowing frame. options: word, colors, frame,
+ *  speed, loop, interactive, scale, label, children (an element laid over the stage near the bottom).
+ *  Returns { destroy() }. */
+function create(root, options) {
+    const o = Object.assign({ word: "hello", colors: NEON_HELLO_COLORS, frame: true, speed: 1, loop: true, interactive: true, scale: 0.76, label: null, children: null, style: null }, options || {});
+    const { word, colors, frame, speed, loop, interactive, scale } = o;
+    const path = buildPath(wordStrokes(word));
+    const pointer = { current: { x: 0, y: 0, on: 0 } };
+    const kick = { current: () => { } };
+    root.classList.add("neon-hello-root");
+    root.setAttribute("role", "img");
+    root.setAttribute("aria-label", o.label ?? word);
+    // like the React component: fills its parent by default (zero specificity), and options.style wins over the defaults
+    if (!document.getElementById("neon-hello-css")) { const st = document.createElement("style"); st.id = "neon-hello-css"; st.textContent = ":where(.neon-hello-root){width:100%;height:100%}"; document.head.appendChild(st); }
+    Object.assign(root.style, { position: "relative", overflow: "hidden", background: "#000" }, o.style || {});
+    const stage = document.createElement("div");
+    stage.style.cssText = "position:absolute;inset:0";
+    root.appendChild(stage);
+    let cleanup = null, fellBack = false;
+    const setFallback = () => {
+        if (fellBack) return;
+        fellBack = true;
+        Promise.resolve().then(() => { if (cleanup) { try { cleanup(); } catch (e) { } cleanup = null; } stage.textContent = ""; Fallback(stage, { path, colors, frame, loop, speed }); });
+    };
+    const canvas = document.createElement("canvas");
+    canvas.setAttribute("aria-hidden", "true");
+    canvas.style.cssText = "position:absolute;inset:0;width:100%;height:100%;display:block;pointer-events:none";
+    stage.appendChild(canvas);
+    function setup() {
+        const gl = canvas.getContext("webgl2", { premultipliedAlpha: false, alpha: false, antialias: false });
+        if (!gl || !(gl.getExtension("EXT_color_buffer_float") || gl.getExtension("EXT_color_buffer_half_float"))) {
+            setFallback(true);
+            return;
+        }
+        const seg = program(gl, SEG_VERT, SEG_FRAG);
+        const spark = program(gl, SPARK_VERT, SPARK_FRAG);
+        const down = program(gl, QUAD_VERT, DOWN_FRAG);
+        const up = program(gl, QUAD_VERT, UP_FRAG);
+        const comp = program(gl, QUAD_VERT, COMP_FRAG);
+        if (!seg || !spark || !down || !up || !comp) {
+            setFallback(true);
+            return;
+        }
+        // Geometry: a full screen triangle, the unit quad and the segments.
+        const tri = gl.createBuffer();
+        gl.bindBuffer(gl.ARRAY_BUFFER, tri);
+        gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 3, -1, -1, 3]), gl.STATIC_DRAW);
+        const triVao = gl.createVertexArray();
+        gl.bindVertexArray(triVao);
+        gl.enableVertexAttribArray(0);
+        gl.vertexAttribPointer(0, 2, gl.FLOAT, false, 0, 0);
+        const quad = gl.createBuffer();
+        gl.bindBuffer(gl.ARRAY_BUFFER, quad);
+        gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 1, -1, -1, 1, 1, 1]), gl.STATIC_DRAW);
+        const segs = segmentData(path);
+        const nSeg = segs.length / SEG_FLOATS;
+        const inst = gl.createBuffer();
+        gl.bindBuffer(gl.ARRAY_BUFFER, inst);
+        gl.bufferData(gl.ARRAY_BUFFER, segs, gl.STATIC_DRAW);
+        const segVao = gl.createVertexArray();
+        gl.bindVertexArray(segVao);
+        gl.bindBuffer(gl.ARRAY_BUFFER, quad);
+        gl.enableVertexAttribArray(0);
+        gl.vertexAttribPointer(0, 2, gl.FLOAT, false, 0, 0);
+        gl.bindBuffer(gl.ARRAY_BUFFER, inst);
+        for (let i = 0; i < 6; i++) {
+            gl.enableVertexAttribArray(1 + i);
+            gl.vertexAttribPointer(1 + i, 4, gl.FLOAT, false, SEG_FLOATS * 4, i * 16);
+            gl.vertexAttribDivisor(1 + i, 1);
+        }
+        const sparkVao = gl.createVertexArray();
+        gl.bindVertexArray(sparkVao);
+        gl.bindBuffer(gl.ARRAY_BUFFER, quad);
+        gl.enableVertexAttribArray(0);
+        gl.vertexAttribPointer(0, 2, gl.FLOAT, false, 0, 0);
+        gl.bindVertexArray(null);
+        // Colours as light.
+        const probe = document.createElement("canvas");
+        probe.width = probe.height = 1;
+        const ctx = probe.getContext("2d", { willReadFrequently: true });
+        const list = (colors.length ? colors : NEON_HELLO_COLORS).slice(0, 32);
+        const stops = new Float32Array(96);
+        list.forEach((c, i) => readColor(c, ctx).forEach((v, k) => (stops[i * 3 + k] = toLight(v))));
+        const nStops = list.length;
+        const stopAt = (f) => {
+            // Same cyclic Catmull-Rom as the shader, for the spark.
+            const x = (((f % 1) + 1) % 1) * nStops;
+            const i = Math.floor(x), u = x - i;
+            const g = (j, k) => stops[(((i + j) % nStops) + nStops) % nStops * 3 + k];
+            return [0, 1, 2].map((k) => {
+                const a = g(-1, k), b = g(0, k), c = g(1, k), d = g(2, k);
+                return Math.max(0, b + 0.5 * u * (c - a + u * (2 * a - 5 * b + 4 * c - d + u * (3 * (b - c) + d - a))));
+            });
+        };
+        const near = new Float32Array(48);
+        const far = new Float32Array(48);
+        if (Array.isArray(frame)) {
+            const fl = frame.length ? frame : NEON_HELLO_FRAME;
+            for (let i = 0; i < 16; i++) {
+                // A custom list is spread evenly around the perimeter.
+                const f = (i / 16) * fl.length;
+                const a = readColor(fl[Math.floor(f) % fl.length], ctx), b = readColor(fl[(Math.floor(f) + 1) % fl.length], ctx);
+                for (let k = 0; k < 3; k++) {
+                    const v = toLight(a[k] + (b[k] - a[k]) * (f - Math.floor(f)));
+                    near[i * 3 + k] = v * 0.72;
+                    far[i * 3 + k] = v * 0.48;
+                }
+            }
+        }
+        else {
+            FRAME_NEAR.forEach((c, i) => near.set(c, i * 3));
+            FRAME_FAR.forEach((c, i) => far.set(c, i * 3));
+        }
+        const hello = word.trim().toLowerCase() === "hello" ? path : buildPath([HELLO]);
+        const tl = timeline(path, hello);
+        // The colours run through once along "hello"; longer words repeat them.
+        const cycles = Math.max(1, Math.round(path.length / hello.length)) / Math.max(path.length, 1);
+        const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+        const moving = !reduce && speed > 0;
+        const dpr = Math.min(window.devicePixelRatio || 1, 2);
+        const halfFloat = gl.RGBA16F;
+        const makeTarget = (w, h) => {
+            const tex = gl.createTexture();
+            gl.bindTexture(gl.TEXTURE_2D, tex);
+            gl.texImage2D(gl.TEXTURE_2D, 0, halfFloat, w, h, 0, gl.RGBA, gl.HALF_FLOAT, null);
+            gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+            gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+            gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+            gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+            const fb = gl.createFramebuffer();
+            gl.bindFramebuffer(gl.FRAMEBUFFER, fb);
+            gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D, tex, 0);
+            return { tex, fb, w, h };
+        };
+        const freeTarget = (t) => {
+            gl.deleteTexture(t.tex);
+            gl.deleteFramebuffer(t.fb);
+        };
+        let body = null;
+        let downs = [];
+        let ups = [];
+        let cw = 0, ch = 0, W = 1, H = 1;
+        const resize = () => {
+            const r = canvas.getBoundingClientRect();
+            W = Math.max(1, r.width);
+            H = Math.max(1, r.height);
+            const nw = Math.max(1, Math.round(W * dpr));
+            const nh = Math.max(1, Math.round(H * dpr));
+            if (nw !== cw || nh !== ch || !body) {
+                cw = nw;
+                ch = nh;
+                canvas.width = cw;
+                canvas.height = ch;
+                if (body)
+                    freeTarget(body);
+                downs.forEach(freeTarget);
+                ups.forEach(freeTarget);
+                body = makeTarget(cw, ch);
+                if (gl.checkFramebufferStatus(gl.FRAMEBUFFER) !== gl.FRAMEBUFFER_COMPLETE) {
+                    setFallback(true);
+                    return;
+                }
+                downs = [];
+                ups = [];
+                let w = cw, h = ch;
+                while (downs.length < 8 && (downs.length === 0 || Math.min(w, h) > 12)) {
+                    w = Math.max(1, Math.ceil(w / 2));
+                    h = Math.max(1, Math.ceil(h / 2));
+                    downs.push(makeTarget(w, h));
+                    ups.push(makeTarget(w, h));
+                }
+            }
+            kick.current();
+        };
+        const ro = new ResizeObserver(resize);
+        ro.observe(canvas);
+        resize();
+        // Bloom weight of a pyramid level whose texels are `texel` device px, by its size relative to
+        // the tube radius: a tight halo hugging the tube and a wide, faint one.
+        const levelWeight = (texel, rDev) => {
+            const x = Math.log2(texel / rDev);
+            return GLOW[0] * Math.exp(-((x + 1.2) ** 2) / 1.2) + GLOW[1] * Math.exp(-((x - 1.4) ** 2) / 1.6) + GLOW[2] * Math.exp(-((x - 3.4) ** 2) / 1.5);
+        };
+        const render = {
+            draw(t, hover, px, py) {
+                if (!body)
+                    return;
+                const place = placeWord(path, W, H, scale);
+                const k = place.k * dpr;
+                const rDev = RADIUS * k;
+                // Where the pen is: the visible stretch of the stroke [tail, head].
+                const lt = loop ? ((t % tl.loop) + tl.loop) % tl.loop : Math.min(t, tl.still + 1e6);
+                const w0 = LEAD, w1 = LEAD + tl.write, e0 = w1 + HOLD, e1 = e0 + ERASE;
+                const pace = (x) => x * 0.65 + 0.35 * x * x * (3 - 2 * x);
+                const wu = Math.min(1, Math.max(0, (lt - w0) / tl.write));
+                const eu = loop ? Math.min(1, Math.max(0, (lt - e0) / ERASE)) : 0;
+                const head = arcAt(path, pace(wu) * path.time);
+                const tail = arcAt(path, (eu * eu * (3 - 2 * eu)) * path.time);
+                // A just-started or nearly erased stroke fades in and out instead of popping.
+                const amount = smooth(0, 2.5 * RADIUS, head - tail);
+                // Colours flow along the stroke; the still frame is the reference.
+                const flow = FLOW * (t - tl.still);
+                const writing = wu > 0 && wu < 1;
+                const erasing = eu > 0 && eu < 1;
+                gl.bindFramebuffer(gl.FRAMEBUFFER, body.fb);
+                gl.viewport(0, 0, cw, ch);
+                gl.clearColor(0, 0, 0, 0);
+                gl.clear(gl.COLOR_BUFFER_BIT);
+                gl.enable(gl.BLEND);
+                gl.blendFunc(gl.ONE, gl.ONE);
+                if (head > tail && nSeg > 0) {
+                    gl.useProgram(seg.prog);
+                    gl.uniform2f(seg.u("uRes"), cw, ch);
+                    gl.uniform3f(seg.u("uMap"), k, place.ox * dpr, place.oy * dpr);
+                    gl.uniform2f(seg.u("uWin"), tail, head);
+                    gl.uniform1f(seg.u("uR"), RADIUS);
+                    gl.uniform1f(seg.u("uPx"), 1 / k);
+                    gl.uniform3fv(seg.u("uStops"), stops);
+                    gl.uniform1f(seg.u("uNStops"), nStops);
+                    gl.uniform2f(seg.u("uGrad"), cycles, flow);
+                    const tp = pointAt(path, tail), hp = pointAt(path, head);
+                    gl.uniform4f(seg.u("uEnds"), tp[0], tp[1], hp[0], hp[1]);
+                    gl.uniform4f(seg.u("uShade"), 0.82, 0.32, 0.55, 1.3);
+                    gl.bindVertexArray(segVao);
+                    gl.drawArraysInstanced(gl.TRIANGLE_STRIP, 0, 4, nSeg);
+                    // The pen glows as it writes, and as it pulls the tube away.
+                    const sp = writing ? smooth(0, 0.08, wu) * smooth(1, 0.94, wu) : erasing ? 0.6 * smooth(0, 0.1, eu) * smooth(1, 0.85, eu) : 0;
+                    if (sp > 0.001) {
+                        const at = writing ? head : tail;
+                        const [sx, sy] = pointAt(path, at);
+                        const c = stopAt(at * cycles - flow);
+                        gl.useProgram(spark.prog);
+                        gl.uniform2f(spark.u("uRes"), cw, ch);
+                        gl.uniform3f(spark.u("uMap"), k, place.ox * dpr, place.oy * dpr);
+                        gl.uniform3f(spark.u("uSpark"), sx, sy, RADIUS * 2.2);
+                        gl.uniform4f(spark.u("uSparkCol"), c[0], c[1], c[2], 1.1 * sp);
+                        gl.bindVertexArray(sparkVao);
+                        gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+                    }
+                }
+                gl.disable(gl.BLEND);
+                // Bloom pyramid.
+                gl.bindVertexArray(triVao);
+                gl.useProgram(down.prog);
+                let src = body;
+                for (const d of downs) {
+                    gl.bindFramebuffer(gl.FRAMEBUFFER, d.fb);
+                    gl.viewport(0, 0, d.w, d.h);
+                    gl.activeTexture(gl.TEXTURE0);
+                    gl.bindTexture(gl.TEXTURE_2D, src.tex);
+                    gl.uniform1i(down.u("uTex"), 0);
+                    gl.uniform2f(down.u("uTexel"), 1 / src.w, 1 / src.h);
+                    gl.drawArrays(gl.TRIANGLES, 0, 3);
+                    src = d;
+                }
+                gl.useProgram(up.prog);
+                const n = downs.length;
+                // The coarsest level starts the sum on its own; every level is weighted relative to it
+                // and the total is scaled back in the composite.
+                let acc = downs[n - 1];
+                const top = Math.max(levelWeight(2 ** n, rDev), 1e-4);
+                for (let i = n - 2; i >= 0; i--) {
+                    const d = downs[i], o = ups[i];
+                    gl.bindFramebuffer(gl.FRAMEBUFFER, o.fb);
+                    gl.viewport(0, 0, o.w, o.h);
+                    gl.activeTexture(gl.TEXTURE0);
+                    gl.bindTexture(gl.TEXTURE_2D, acc.tex);
+                    gl.activeTexture(gl.TEXTURE1);
+                    gl.bindTexture(gl.TEXTURE_2D, d.tex);
+                    gl.uniform1i(up.u("uTex"), 0);
+                    gl.uniform1i(up.u("uSelf"), 1);
+                    gl.uniform2f(up.u("uTexel"), 1 / acc.w, 1 / acc.h);
+                    gl.uniform2f(up.u("uOut"), o.w, o.h);
+                    gl.uniform1f(up.u("uW"), levelWeight(2 ** (i + 1), rDev) / top);
+                    gl.drawArrays(gl.TRIANGLES, 0, 3);
+                    acc = o;
+                }
+                // Composite with the frame.
+                const pulse0 = w1 + 0.05;
+                const pt = loop ? (((lt - pulse0) % tl.loop) + tl.loop) % tl.loop : lt - pulse0;
+                const pulse = pt > 0 ? 0.55 * (1 - Math.exp(-pt / 0.07)) * Math.exp(-pt / 0.75) : 0;
+                const ph = (2 * Math.PI * (t - tl.still)) / tl.loop;
+                const breathe = 1 + 0.12 * Math.sin(2 * ph) + pulse;
+                const bloom = 1 + 0.18 * Math.sin(3 * ph + 0.6) - 0.18 * Math.sin(0.6);
+                const fk = Math.sqrt((W * H) / FRAME_REF_AREA);
+                gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+                gl.viewport(0, 0, cw, ch);
+                gl.useProgram(comp.prog);
+                gl.activeTexture(gl.TEXTURE0);
+                gl.bindTexture(gl.TEXTURE_2D, body.tex);
+                gl.activeTexture(gl.TEXTURE1);
+                gl.bindTexture(gl.TEXTURE_2D, acc.tex);
+                gl.uniform1i(comp.u("uBody"), 0);
+                gl.uniform1i(comp.u("uGlow"), 1);
+                gl.uniform2f(comp.u("uRes"), cw, ch);
+                gl.uniform2f(comp.u("uGlowTexel"), 1 / acc.w, 1 / acc.h);
+                gl.uniform4f(comp.u("uBox"), W, H, dpr, frame === false ? 0 : 1);
+                gl.uniform3fv(comp.u("uNear"), near);
+                gl.uniform3fv(comp.u("uFar"), far);
+                const P = FRAME_PROFILE;
+                gl.uniform4f(comp.u("uProf"), P[0], P[1] * fk, P[2], P[3] * fk);
+                gl.uniform2f(comp.u("uProf2"), P[4], P[5] * fk);
+                gl.uniform1f(comp.u("uRot"), (4 * (t - tl.still)) / tl.loop);
+                gl.uniform3f(comp.u("uGain"), breathe, bloom * top, amount);
+                gl.uniform4f(comp.u("uPointer"), px, py, hover, 0.28 * Math.min(W, H));
+                gl.uniform1f(comp.u("uSeed"), moving ? Math.floor(t * 30) % 97 : 0);
+                gl.drawArrays(gl.TRIANGLES, 0, 3);
+                gl.bindVertexArray(null);
+            },
+        };
+        const hoverS = { x: 0, v: 0 };
+        const pxS = { x: 0, v: 0 };
+        const pyS = { x: 0, v: 0 };
+        let raf = 0;
+        let visible = true;
+        let last = -1;
+        let clock = moving ? 0 : tl.still;
+        const start = performance.now();
+        const io = new IntersectionObserver(([e]) => {
+            visible = e.isIntersecting;
+            if (visible && !raf)
+                raf = requestAnimationFrame(frameFn);
+        });
+        io.observe(canvas);
+        function frameFn(now) {
+            raf = 0;
+            const dt = last < 0 ? 0 : Math.min(Math.max(now - last, 0) / 1000, 1 / 20);
+            last = now;
+            // The stroke follows wall time, so a dropped frame never slows the hand down.
+            if (moving)
+                clock = ((now - start) / 1000) * speed;
+            const p = pointer.current;
+            const on = interactive ? p.on : 0;
+            if (hoverS.x < 0.01 && on) {
+                pxS.x = p.x;
+                pyS.x = p.y;
+            }
+            step(hoverS, on, dt, 5);
+            step(pxS, p.x, dt, 9);
+            step(pyS, p.y, dt, 9);
+            render.draw(clock, Math.max(hoverS.x, 0), pxS.x, pyS.x);
+            const settled = Math.abs(hoverS.x - on) + Math.abs(hoverS.v) + Math.abs(pxS.v) + Math.abs(pyS.v) < 1e-4;
+            if (visible && (moving || !settled))
+                raf = requestAnimationFrame(frameFn);
+        }
+        kick.current = () => {
+            if (visible && !raf)
+                raf = requestAnimationFrame(frameFn);
+        };
+        raf = requestAnimationFrame(frameFn);
+        const lost = (e) => {
+            e.preventDefault();
+            setFallback(true);
+        };
+        canvas.addEventListener("webglcontextlost", lost);
+        return () => {
+            cancelAnimationFrame(raf);
+            io.disconnect();
+            ro.disconnect();
+            kick.current = () => { };
+            canvas.removeEventListener("webglcontextlost", lost);
+            if (body)
+                freeTarget(body);
+            downs.forEach(freeTarget);
+            ups.forEach(freeTarget);
+            for (const p of [seg, spark, down, up, comp])
+                gl.deleteProgram(p.prog);
+            for (const b of [tri, quad, inst])
+                gl.deleteBuffer(b);
+            for (const v of [triVao, segVao, sparkVao])
+                gl.deleteVertexArray(v);
+        };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }
+    cleanup = setup() || null;
+    if (o.children) {
+        const wrap = document.createElement("div");
+        wrap.style.cssText = "position:absolute;left:0;right:0;bottom:12%;display:flex;justify-content:center;pointer-events:none";
+        const inner = document.createElement("div");
+        inner.style.pointerEvents = "auto";
+        inner.appendChild(o.children);
+        wrap.appendChild(inner);
+        root.appendChild(wrap);
+    }
+    const track = (e) => { const r = root.getBoundingClientRect(); pointer.current.x = e.clientX - r.left; pointer.current.y = e.clientY - r.top; pointer.current.on = 1; kick.current(); };
+    const pm = (e) => { if (interactive) track(e); };
+    const pl = () => { pointer.current.on = 0; kick.current(); };
+    root.addEventListener("pointermove", pm);
+    root.addEventListener("pointerleave", pl);
+    return { destroy() { if (cleanup) try { cleanup(); } catch (e) { } cleanup = null; root.removeEventListener("pointermove", pm); root.removeEventListener("pointerleave", pl); } };
+}
+/** measure(word): the word's box in path units and the second its writing ends, to lay out and time what sits under it */
+function measure(word) { const p = buildPath(wordStrokes(word)); const tl = timeline(p, buildPath([HELLO])); return { box: p.box, writeEnd: LEAD + tl.write }; }
+return { create, measure, COLORS: NEON_HELLO_COLORS, FRAME: NEON_HELLO_FRAME };
+})();
+// TatamiPro: the camera for the small rocker in the menu bar (a three-quarter view tight on the pill, so the
+// pressed half and the glow read at 46 x 60 px). The reference presets above are unchanged.
+GlowRocker.VIEWS.nav = { az: 14, el: 54, dist: 30, zoom: 160, tx: 0.24, ty: 0.12, need: 600, roll: 0, gain: 1, dim: 0.9 };
+window.GlowRocker = GlowRocker; window.NeonHello = NeonHello;
+
+// ---------- v20 · welcome screen on the first launch (Neon Hello, writing "welcome") ----------
+// Shown once on a laptop where nothing has been saved yet. Not for the TV window, OBS, the public page or a
+// join link (they open straight away), not on a laptop already set up as a mat or call room laptop, and not in
+// a browser driven by a test script (navigator.webdriver). "Get started", Enter or Esc closes it for good.
+(function(){
+  const K='judoWelcome';
+  const get=k=>{try{return localStorage.getItem(k);}catch(e){return null;}};
+  const mark=()=>{try{localStorage.setItem(K,'1');}catch(e){}};
+  const hasData=()=>{try{const d=JSON.parse(get('judoDraw')||'null');return !!(d&&((d.ath&&d.ath.length)||(d.draws&&Object.keys(d.draws).length)||(d.meta&&d.meta.name)));}catch(e){return false;}};
+  const special=()=>{const h=window.TP_LAUNCH_HASH||'';return h.length>1;};
+  const q=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+  let ov=null,neon=null,closing=false,focusT=0;
+  function build(){
+    ov=document.createElement('div');ov.id='welcome';ov.setAttribute('role','dialog');ov.setAttribute('aria-modal','true');ov.setAttribute('aria-label','Welcome');
+    ov.innerHTML='<div class="wlStage"></div>';document.body.appendChild(ov);document.documentElement.classList.add('wlOpen');}
+  function start(){
+    if(!ov)return;
+    const name=typeof APPNAME==='function'?APPNAME():'TatamiPro';
+    const lg=document.getElementById('brandLogo');
+    const kids=document.createElement('div');kids.className='wlc';
+    kids.innerHTML='<div class="wlBrand"><span class="blogo wlLogo">'+(lg?lg.innerHTML:'TP')+'</span><b>'+q(name)+'</b></div>'
+      +'<div class="wlSub">Judo tournament manager</div>'
+      +'<div class="wlLine">Athletes · Draw · Schedule · Scoreboard · Results · Print</div>'
+      +'<button type="button" class="wlGo">Get started <span aria-hidden="true">→</span></button>'
+      +'<div class="wlHint">or press Enter</div>';
+    ov.setAttribute('aria-label','Welcome to '+name);
+    // the word is sized to the screen so it stays clear of the name and the button under it (smaller on short screens),
+    // and the name and button come in as the writing ends
+    const WORD='welcome',m=NeonHello.measure(WORD),bw=m.box[2]-m.box[0],bh=m.box[3]-m.box[1];
+    const kMax=(0.402*innerHeight-191)/(bh/2),sc=Math.max(0.35,Math.min(0.8,kMax*bw/Math.max(320,innerWidth)));
+    ov.style.setProperty('--wlT',m.writeEnd.toFixed(2)+'s');
+    neon=NeonHello.create(ov.querySelector('.wlStage'),{word:WORD,loop:false,scale:sc,children:kids,label:'welcome to '+name,style:{position:'absolute',inset:'0'}});
+    const go=kids.querySelector('.wlGo');go.addEventListener('click',close);
+    clearTimeout(focusT);focusT=setTimeout(()=>{try{go.focus({preventScroll:true});}catch(e){}},Math.round(m.writeEnd*1000)+200);}
+  function close(){
+    if(closing||!ov)return;closing=true;mark();clearTimeout(focusT);
+    const el=ov,H=document.documentElement;el.classList.add('out');H.classList.remove('wlOpen');H.classList.add('wlEnter');
+    setTimeout(()=>{try{if(neon)neon.destroy();}catch(e){}el.remove();if(ov===el){ov=null;neon=null;}closing=false;H.classList.remove('wlEnter');},720);}
+  // while it is open the keys belong to it: Enter / Esc start the app, nothing reaches the scoreboard or the palette
+  addEventListener('keydown',e=>{if(!ov||closing)return;e.stopPropagation();const go=ov.querySelector('.wlGo');
+    if(e.key==='Enter'||e.key==='Escape'){e.preventDefault();close();return;}
+    if(e.key==='Tab'){e.preventDefault();if(go)go.focus();return;}
+    if(!(e.key===' '&&e.target===go))e.preventDefault();},true);
+  window.TP_WELCOME={show(){if(ov)return;build();start();},close,get open(){return !!ov;}};
+  if(get(K)==='1'||special()||navigator.webdriver)return;
+  if(hasData()||get('judoRole')){mark();return;}      // a laptop already in use: not a first launch
+  build();                                             // black stage from the very first paint
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',()=>setTimeout(start,40));else setTimeout(start,40);
+})();
+</script>
 <footer id="appStat"><span id="stSave">● Saved</span><span id="stCnt"></span><span id="stDone"></span><span id="roleBadge" class="rolebadge" style="display:none"></span><span id="stClock" class="stwarn" style="display:none;cursor:pointer"></span><span id="stTv"></span><span id="stObs" style="display:none"></span><span id="stSync" style="display:none"></span><span id="stCloseNag" class="stwarn" style="display:none;cursor:pointer"></span><span id="stBk"></span><span class="sp"></span><span id="stMat"></span><span id="stClk"></span></footer>
 <div id="lockOv"><div><b>⚠ Admin already open</b><p id="lockTxt"></p><button onclick="takeControl()">Take control in this tab</button><p style="font-size:13px;opacity:.7">Only one admin screen can control the tournament at a time. The TV window is separate and is fine.</p></div></div>
 <nav id="topNav"><div class="brand" id="brandBox" title="Dashboard"><span class="blogo" id="brandLogo">TP</span><span class="bname"><b><span id="brandName">TatamiPro</span> <span id="matTag" style="color:#f5c518"></span></b><small id="brandEv">Judo tournament manager</small></span></div><div class="menu" id="mainMenu"><button data-page="home"><svg viewBox="0 0 24 24"><path d="M3 11.5 12 4l9 7.5"/><path d="M5.5 10v9.5h13V10"/><path d="M10 19.5v-5h4v5"/></svg><span>Dashboard</span></button><button data-page="ath"><svg viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.2"/><path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6"/><circle cx="17.5" cy="9" r="2.4"/><path d="M16 14.2c2.8.2 5 2.6 5 5.8"/></svg><span>Athletes</span></button><button id="tabDraw" data-page="draw"><svg viewBox="0 0 24 24"><path d="M3 5h5v4H3zM3 15h5v4H3zM16 10h5v4h-5zM8 7h3v10H8M11 12h5"/></svg><span>Draw</span></button><button id="tabSb" data-page="sb"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="13" rx="2"/><path d="M8 21h8M12 17v4M7.5 10.5h3M13.5 10.5h3"/></svg><span>Scoreboard</span></button><button data-page="sched"><svg viewBox="0 0 24 24"><rect x="3.5" y="5" width="17" height="15.5" rx="2"/><path d="M3.5 10h17M8 3v4M16 3v4M7.5 13.5h3M7.5 17h3M13.5 13.5h3"/></svg><span>Schedule</span></button><button data-page="res"><svg viewBox="0 0 24 24"><path d="M8 21h8M12 17v4M7 4h10v5a5 5 0 0 1-10 0z"/><path d="M7 6H4v1a3 3 0 0 0 3 3M17 6h3v1a3 3 0 0 1-3 3"/></svg><span>Results</span></button><button data-page="off"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="9" cy="11" r="2.2"/><path d="M5.8 16.3c.6-1.6 1.8-2.4 3.2-2.4s2.6.8 3.2 2.4M14.5 10h4M14.5 13.5h3"/></svg><span>Officials</span></button><button data-page="print"><svg viewBox="0 0 24 24"><path d="M7 9V3.5h10V9"/><rect x="3.5" y="9" width="17" height="8" rx="1.5"/><path d="M7 14h10v6.5H7z"/></svg><span>Print</span></button><button data-page="set"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1A1.7 1.7 0 0 0 4.6 9a1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg><span>Settings</span></button></div><div class="acts"><button id="navInstall" style="display:none" title="Install as an app on this device">⬇ Install</button><button id="navShare" title="Share on WhatsApp: details, schedule, fixtures, results"><svg viewBox="0 0 24 24"><path d="M4 20l1.2-3.6A8 8 0 1 1 8 19.1z"/><path d="M9 8.6c0 3.2 2.9 6.4 6.3 6.6l1.1-1.4-1.9-1-0.9.8c-1-.4-2.1-1.5-2.5-2.5l.8-.9-1-1.9z"/></svg><span>Share</span></button><button id="navLock" style="display:none" title="Lock the admin now (PIN needed to open)"><svg viewBox="0 0 24 24"><rect x="5" y="10.5" width="14" height="10" rx="2"/><path d="M8 10.5V7.5a4 4 0 0 1 8 0v3"/></svg><span>Lock</span></button><button id="navTV" title="Open the TV window"><svg viewBox="0 0 24 24"><rect x="2.5" y="5" width="19" height="12.5" rx="2"/><path d="M8 21h8M9 2l3 3 3-3"/></svg><span>TV</span></button><button id="thBtn" title="Dark / Light mode">☀ Light</button></div></nav>
@@ -1597,11 +4192,15 @@ body.nofx *,body.nofx *::before,body.nofx *::after{animation:none!important;tran
 (function(){
   const off=()=>{try{if(document.body&&document.body.classList.contains('nofx'))return true;return matchMedia('(prefers-reduced-motion: reduce)').matches;}catch(e){return false;}};
   // restart a CSS animation class on an element and take it away again afterwards
-  function re(el,c,ms){if(!el||off())return;el.classList.remove(c);void el.offsetWidth;el.classList.add(c);const k='_fx'+c;clearTimeout(el[k]);el[k]=setTimeout(()=>{el.classList.remove(c);if(c==='fx-in')el.style.animationDelay='';},ms||900);}
+  function re(el,c,ms){if(!el||off())return;el.classList.remove(c);void el.offsetWidth;el.classList.add(c);const k='_fx'+c;clearTimeout(el[k]);el[k]=setTimeout(()=>{el.classList.remove(c);if(c==='fx-in'){el.style.animationDelay='';el.style.removeProperty('--fx-dx');el.style.removeProperty('--fx-dy');}},ms||900);}
   function apply(){let v='';try{v=localStorage.getItem('judoMotion')||'';}catch(e){}if(document.body){document.body.classList.toggle('nofx',v==='off');if(v==='off')document.querySelectorAll('[class*="fx-"]').forEach(e=>[...e.classList].forEach(c=>{if(c.startsWith('fx-'))e.classList.remove(c);}));}}
   window.FXR={off,re,apply};
   if(document.body)apply();else document.addEventListener('DOMContentLoaded',apply);
-  window.addEventListener('storage',e=>{if(e.key==='judoMotion'){apply();if(window.TP_INK)TP_INK(true);}});
+  window.addEventListener('storage',e=>{if(e.key==='judoMotion'||e.key==='judoCursor'){apply();if(window.TP_INK)TP_INK(true);if(window.TP_CURSOR)TP_CURSOR();}});
+  // TV window, big screen on a laptop and OBS: the mouse pointer hides after 2.5 s without moving
+  let ht=0;const tvLike=()=>{const b=document.body;return !!b&&(b.classList.contains('tv')||b.classList.contains('display')||b.classList.contains('ovl')||location.hash==='#display'||location.hash==='#overlay');};
+  const wake=()=>{const b=document.body;if(!b)return;b.classList.remove('curhide');clearTimeout(ht);ht=setTimeout(()=>{if(tvLike())b.classList.add('curhide');},2500);};
+  addEventListener('mousemove',wake,{passive:true});addEventListener('mousedown',wake,{passive:true});if(document.body)wake();else document.addEventListener('DOMContentLoaded',wake);
 })();
 // ---------- Branding: software name + logos. Kept apart from the tournament data so the rolling backups stay small ----------
 function BRAND(){try{return JSON.parse(localStorage.getItem('judoBrand')||'{}')||{};}catch(e){return {};}}
@@ -1724,9 +4323,22 @@ if(window.VIEW){window.READONLY=true;
   window.takeControl=()=>{set();location.reload();};
   window.addEventListener('beforeunload',()=>{const l=get();if(l&&l.id===me&&!window.READONLY){try{localStorage.removeItem('judoAdminLock');}catch(e){}}});
 })();
-function applyTheme(t){if(location.hash==='#display'||window.VIEW)return;document.body.classList.toggle('light',t==='light');const b=document.getElementById('thBtn');if(b)b.innerHTML=t==='light'?'<i>☾</i><span>Dark</span>':'<i>☀</i><span>Light</span>';}
-document.addEventListener('DOMContentLoaded',()=>{let t='dark';try{t=localStorage.getItem('judoTheme')||'dark';}catch(e){}applyTheme(t);
-  const b=document.getElementById('thBtn');if(b)b.onclick=()=>{const n=document.body.classList.contains('light')?'dark':'light';try{localStorage.setItem('judoTheme',n);}catch(e){}applyTheme(n);b.blur();};});
+function applyTheme(t){if(location.hash==='#display'||window.VIEW)return;document.body.classList.toggle('light',t==='light');if(window.TP_ROCK)TP_ROCK.set(t!=='light');}
+// switch the theme everywhere: saved on this laptop, the new look grows as a circle from the switch
+function setTheme(n,from){n=n==='light'?'light':'dark';const go=()=>{try{localStorage.setItem('judoTheme',n);}catch(e){}applyTheme(n);};
+  if(from&&document.startViewTransition&&window.FXR&&!FXR.off()){const r=from.getBoundingClientRect(),x=Math.round(r.left+r.width/2),y=Math.round(r.top+r.height/2),R=Math.ceil(Math.hypot(Math.max(x,innerWidth-x),Math.max(y,innerHeight-y)));
+    try{const t=document.startViewTransition(go);t.ready.then(()=>document.documentElement.animate({clipPath:['circle(0px at '+x+'px '+y+'px)','circle('+R+'px at '+x+'px '+y+'px)']},{duration:650,easing:'cubic-bezier(.2,.8,.2,1)',pseudoElement:'::view-transition-new(root)'})).catch(()=>{});return;}catch(e){}}
+  go();}
+window.TP_THEME=setTheme;
+document.addEventListener('DOMContentLoaded',()=>{let t='dark';try{t=localStorage.getItem('judoTheme')||'dark';}catch(e){}
+  // the Glow Rocker takes the place of the old Light / Dark button (same id, same spot in the menu bar)
+  const host=document.getElementById('thBtn');
+  if(host&&window.GlowRocker&&!(location.hash==='#display'||window.VIEW)){const r=document.createElement('div');r.id='thBtn';r.className='thRock';r.title='Light / dark theme';host.replaceWith(r);
+    window.TP_ROCK=GlowRocker.create(r,{checked:t!=='light',view:'nav',offLabel:'LIGHT',onLabel:'DARK',topLabel:'',bottomLabel:'',dots:9,lightColor:'#c6cbd6',darkColor:'#11162a',orbit:3,ariaLabel:'Dark theme',onChange:on=>setTheme(on?'dark':'light',r)});}
+  else if(host)host.onclick=()=>{setTheme(document.body.classList.contains('light')?'dark':'light',host);host.blur();};
+  applyTheme(t);
+  // another tab or window of this laptop changed the theme
+  addEventListener('storage',e=>{if(e.key==='judoTheme')applyTheme(e.newValue==='light'?'light':'dark');});});
 function tab(t){document.body.dataset.tab=t;document.getElementById('tabDraw').classList.toggle('on',t==='draw');document.getElementById('tabSb').classList.toggle('on',t==='sb');try{localStorage.setItem('judoTab',t);}catch(e){}if(t==='sb'&&window.SB&&SB.autoLoad){SB.autoLoad(false,true);SB.refreshRun&&SB.refreshRun();}}
 document.getElementById('tabDraw').onclick=()=>tab('draw');document.getElementById('tabSb').onclick=()=>tab('sb');
 let t0='draw';try{t0=localStorage.getItem('judoTab')||'draw';}catch(e){} tab(t0);
@@ -2674,6 +5286,9 @@ window.TP_NEXT=p=>{if(MATMODE()||!window.TP_STATS)return null;const s=TP_STATS()
     P('Load the next match','next match load scoreboard',()=>{goPage('sb');setTimeout(()=>$('bFromDraw').click(),60);},{g:'Scoreboard',ic:'▶',m:1}),
     P('Run a category on this mat','run category mat',()=>tpFlash('#runCat','sb'),{g:'Scoreboard',ic:'🎯',m:1}),
     P('Open the TV window','tv display screen window',()=>$('bTV').click(),{g:'Scoreboard',ic:'📺',m:1}),
+    P('Keyboard shortcuts','keys keyboard shortcuts help hotkeys ?',()=>{if(window.TP_KEYS)TP_KEYS();},{g:'Help',ic:'⌨',m:1,call:1}),
+    P('Light / dark theme','theme dark light mode night day switch',()=>{if(window.TP_ROCK)TP_ROCK.toggle();else if(window.TP_THEME)TP_THEME(document.body.classList.contains('light')?'dark':'light');},{g:'Help',ic:'◐',m:1,call:1}),
+    P('Welcome screen','welcome hello intro start screen',()=>{if(window.TP_WELCOME)TP_WELCOME.show();},{g:'Help',ic:'✨'}),
     P('Auto-arrange the schedule over the mats','auto arrange schedule mats',()=>{goPage('sched');setTimeout(()=>$('scAuto').click(),60);},{g:'Schedule',ic:'⚡'}),
     P('Add a competition day','day add second day',()=>{goPage('sched');setTimeout(()=>$('scAddD').click(),60);},{g:'Schedule',ic:'📅'}),
     P('Add officials','officials add referee coach',()=>tpFlash('#pfN','off'),{g:'Officials',ic:'➕'}),
@@ -3372,7 +5987,7 @@ function renderBrand(){const el=$('pgBrand');if(!el)return;if(!window.OBSL)retur
   el.innerHTML=`<h3 style="margin-bottom:10px">🎨 Branding &amp; logos</h3>
   <div class="brow"><label>Software name<input id="brName" value="${esc(b.name||'')}" placeholder="TatamiPro" maxlength="40"></label><div class="sugg"><span class="hint">Suggestions:</span>${APPNAMES.map(n=>`<button class="sm" data-nm="${esc(n)}">${esc(n)}</button>`).join('')}</div></div>
   <div class="lgrid">${LOGOS.map(([k,t,d])=>`<div class="lslot"><div class="lprev">${L[k]?`<img src="${esc(L[k])}" alt="">`:'<span class="hint">No logo</span>'}</div><b>${t}</b><small class="hint">${d}</small><div class="lbtn"><label class="filebtn sm">Upload<input type="file" accept="image/*" data-lg="${k}"></label>${L[k]?`<button class="sm warn" data-rm="${k}">Remove</button>`:''}</div></div>`).join('')}</div>
-  <div class="brow"><label class="chk"><input type="checkbox" id="brGlass"${b.look!=='classic'?' checked':''}> Liquid glass look (untick for the classic flat look on a slow laptop)</label><label class="chk"><input type="checkbox" id="brFx"${(()=>{try{return localStorage.getItem('judoMotion')!=='off';}catch(e){return true;}})()?' checked':''}> Animations (this laptop and its TV window · untick on a slow laptop)</label><label class="chk"><input type="checkbox" id="brTv"${b.tvLogos!==false?' checked':''}> Show logos on the TV scoreboard (organiser top-left, associations top-right)</label><label class="chk"><input type="checkbox" id="brPr"${b.printLogos!==false?' checked':''}> Show logos on printed sheets and score sheets (printed in grey)</label></div>
+  <div class="brow"><label class="chk"><input type="checkbox" id="brGlass"${b.look!=='classic'?' checked':''}> Liquid glass look (untick for the classic flat look on a slow laptop)</label><label class="chk"><input type="checkbox" id="brFx"${(()=>{try{return localStorage.getItem('judoMotion')!=='off';}catch(e){return true;}})()?' checked':''}> Animations (this laptop and its TV window · untick on a slow laptop)</label><label class="chk"><input type="checkbox" id="brCur"${(()=>{try{return localStorage.getItem('judoCursor')!=='off';}catch(e){return true;}})()?' checked':''}> Cursor effects: soft ring, light on the card under the mouse, ripple on click (this laptop)</label><label class="chk"><input type="checkbox" id="brTv"${b.tvLogos!==false?' checked':''}> Show logos on the TV scoreboard (organiser top-left, associations top-right)</label><label class="chk"><input type="checkbox" id="brPr"${b.printLogos!==false?' checked':''}> Show logos on printed sheets and score sheets (printed in grey)</label></div>
   <div class="hint">Logos stay on this laptop (not inside the athlete data) and travel with the downloaded backup file. PNG or JPG; they are resized automatically.</div>
   <div class="brow"><label>🌐 Second language on the TV and printed sheets<select id="brLang"><option value="">English only</option><option value="gu"${b.lang==='gu'?' selected':''}>English + ગુજરાતી (Gujarati)</option><option value="hi"${b.lang==='hi'?' selected':''}>English + हिन्दी (Hindi)</option></select></label></div>
   <div class="hint">The English text stays; the translation is added under headings, table titles, round names, roles and signatures, and on the TV the category line switches language every 6 seconds. Names of athletes and districts are printed as typed. Windows shows Gujarati and Hindi with its built-in Nirmala UI font.</div>
@@ -3392,7 +6007,8 @@ function renderBrand(){const el=$('pgBrand');if(!el)return;if(!window.OBSL)retur
   el.querySelectorAll('[data-lg]').forEach(inp=>inp.onchange=async()=>{const f=inp.files[0];if(!f)return;try{const u=await readLogo(f);put(x=>{x.logos=Object.assign({},x.logos||{},{[inp.dataset.lg]:u});});msg('Logo saved');}catch(e){msg('That file is not a picture. Use PNG or JPG.');}});
   el.querySelectorAll('[data-rm]').forEach(t=>t.onclick=()=>put(x=>{x.logos=Object.assign({},x.logos||{});delete x.logos[t.dataset.rm];}));
   $('brGlass').onchange=()=>put(x=>{x.look=$('brGlass').checked?'glass':'classic';});
-  $('brFx').onchange=()=>{try{localStorage.setItem('judoMotion',$('brFx').checked?'on':'off');}catch(e){}if(window.FXR)FXR.apply();if(window.TP_INK)TP_INK(true);msg($('brFx').checked?'Animations on for this laptop.':'Animations off for this laptop.');};
+  $('brFx').onchange=()=>{try{localStorage.setItem('judoMotion',$('brFx').checked?'on':'off');}catch(e){}if(window.FXR)FXR.apply();if(window.TP_INK)TP_INK(true);if(window.TP_CURSOR)TP_CURSOR();msg($('brFx').checked?'Animations on for this laptop.':'Animations off for this laptop.');};
+  $('brCur').onchange=()=>{try{localStorage.setItem('judoCursor',$('brCur').checked?'on':'off');}catch(e){}if(window.TP_CURSOR)TP_CURSOR();msg($('brCur').checked?'Cursor effects on for this laptop.':'Cursor effects off for this laptop.');};
   $('brLang').onchange=()=>put(x=>{x.lang=$('brLang').value;});
   const ov=()=>put(x=>{x.ovl={st:$('ovSt').value,pos:$('ovPos').value,sz:$('ovSz').value,bg:$('ovBg').value};});['ovSt','ovPos','ovSz','ovBg'].forEach(id=>$(id).onchange=ov);
   const obsSt=()=>{const e=$('obsSt');if(!e)return;const x=OBSL.status();e.className='obsst '+(x.st==='live'?'live':x.st==='err'?'err':'');e.textContent=x.st==='live'?'● Connected · live':x.st==='wait'?'Connecting…':x.st==='err'?'⚠ '+x.err:'○ Not connected';};obsSt();
@@ -4833,7 +7449,8 @@ if(TV){
     set('res',st.cats?st.fin+'/'+st.cats:'',st.cats&&st.fin>=st.cats?'d':st.fin?'w':'','Finished categories '+st.fin+' of '+st.cats);navStat.on=true;ink();}
   function nextStep(p){const a=$('phA');if(!a)return;const n=window.TP_NEXT&&window.TP_NEXT(p);if(!n){a.innerHTML='';a.dataset.k='';return;}
     const nk=p+'|'+n.t+'|'+(n.b||'');if(a.dataset.k===nk&&a.firstChild)return;a.dataset.k=nk;
-    a.innerHTML=n.f?`<button class="nxs" type="button"><span class="nxt"></span><b></b></button>`:`<span class="nxs info"><span class="nxt"></span></span>`;a.querySelector('.nxt').textContent=n.t;if(n.f){a.querySelector('b').textContent=n.b;a.querySelector('button').onclick=()=>{n.f();setTimeout(()=>{navStat();nextStep(page);},400);};}if(window.FXR)FXR.re(a.querySelector('.nxs'),'fx-nx',600);}
+    a.innerHTML=n.f?`<button class="nxs" type="button"><span class="nxt"></span><b></b></button>`:`<span class="nxs info"><span class="nxt"></span></span>`;a.querySelector('.nxt').textContent=n.t;if(n.f){a.querySelector('b').textContent=n.b;a.querySelector('button').onclick=()=>{n.f();setTimeout(()=>{navStat();nextStep(page);},400);};}if(window.FXR)FXR.re(a.querySelector('.nxs'),'fx-nx',600);
+    try{const st=window.TP_STATS&&TP_STATS(),all=!!(st&&st.cats&&st.fin>=st.cats),nx=a.querySelector('.nxs');if(nx)nx.classList.toggle('done',all);if(all&&p==='home')celebrate(st);}catch(e){}}
   setInterval(()=>{if(document.visibilityState==='visible'){navStat();if(!document.activeElement||!/^(INPUT|SELECT|TEXTAREA)$/.test(document.activeElement.tagName))nextStep(page);}},3000);   // messages float above every page
   {const pp=$('prPanel'),ev=$('evtPanel');if(pp&&ev&&ev.parentNode)ev.parentNode.insertBefore(pp,ev);}
   {const br=$('pgBrand'),evp=$('evPanel'),sc=$('pgSec'),bp=$('bkPanel');if(br&&evp&&sc&&bp){br.parentNode.insertBefore(evp,br);sc.after(bp);}}   // Settings: details → branding → security → backups   // Print centre: print panel first, saved events below
@@ -4853,13 +7470,14 @@ if(TV){
   function countUp(root){root.querySelectorAll('.kv').forEach(el=>{const t=el.firstChild;if(!t||t.nodeType!==3||!/^\s*\d+\s*$/.test(t.nodeValue))return;const v=+t.nodeValue;if(!(v>1))return;
     const t0=performance.now(),d=Math.min(900,380+v*2),step=n=>{const k=Math.min(1,(n-t0)/d);t.nodeValue=String(Math.round(v*(1-Math.pow(1-k,3))));if(k<1&&t.isConnected)requestAnimationFrame(step);else t.nodeValue=String(v);};
     t.nodeValue='0';requestAnimationFrame(step);});}
-  function enter(p){const F=FX();if(F.off())return;if(p==='sb'){F.re($('op'),'fx-fade',400);return;}
+  function enter(p,prev){const F=FX();if(F.off())return;if(p==='sb'){F.re($('op'),'fx-fade',400);return;}
     const root=$('drawSec');if(!root)return;const vis=e=>e&&e.offsetParent!==null&&e.offsetHeight>4;
-    const L=[$('pageHead'),root.querySelector(':scope>header')].filter(vis);
+    {const od=[...document.querySelectorAll('#mainMenu [data-page]')].map(b=>b.dataset.page),a=od.indexOf(prev),b=od.indexOf(p),dir=(a<0||b<0||a===b)?0:(b>a?1:-1);root.style.setProperty('--fx-dx',dir*22+'px');root.style.setProperty('--fx-dy',dir?'4px':'12px');root.classList.add('fxclip');clearTimeout(root._clipT);root._clipT=setTimeout(()=>root.classList.remove('fxclip'),950);}
+    const L=[$('pageHead'),$('secRail'),root.querySelector(':scope>header')].filter(vis);
     const m=root.querySelector(':scope>main');if(m)for(const s of m.children){if(!vis(s))continue;const ks=[...s.children].filter(vis);if(ks.length>1&&ks.length<=14)L.push(...ks);else L.push(s);}
     L.slice(0,12).forEach((e,i)=>{const d=Math.min(i,9)*32;e.style.animationDelay=d+'ms';F.re(e,'fx-in',d+520);});
     if(p==='home'){F.re(root,'fx-bars',1200);countUp(root);}}
-  function show(p){if(busy)return;busy=true;try{
+  function show(p){if(busy)return;busy=true;const fxPrev=B.dataset.page;try{
     if(!PAGES[p])p='home';if(MM()){const call=RL()==='call';B.classList.add('matmode');B.classList.toggle('callrole',call);if(!(call?/^(ath|set)$/:/^(sb|ath|set)$/).test(p))p=call?'ath':'sb';}page=p;B.dataset.page=p;try{localStorage.setItem('judoPage',p);}catch(e){}
     if(window.tab&&B.dataset.tab!==(p==='sb'?'sb':'draw'))window.tab(p==='sb'?'sb':'draw');
     document.querySelectorAll('#mainMenu [data-page]').forEach(b=>b.classList.toggle('on',b.dataset.page===p));
@@ -4869,9 +7487,119 @@ if(TV){
     if(window.APP){if(p==='home')APP.renderHome();if(p==='res')APP.renderRes();if(p==='sched')APP.renderSched();if(p==='set'){APP.renderSec();if(window.renderSnd)renderSnd();if(APP.bindBkFolder)APP.bindBkFolder();if(APP.renderSync)APP.renderSync();if(APP.renderRole)APP.renderRole();if(APP.renderPractice)APP.renderPractice();}if(p==='ath'&&APP.renderCheck)APP.renderCheck();if(p==='off'&&APP.renderOff)APP.renderOff();}
     if(window.TP_PALCLOSE)TP_PALCLOSE();if(p==='draw'){if(window.TP_ENSURECUR)TP_ENSURECUR();setTimeout(()=>{if(window.fitBracket)fitBracket();},30);}
     {const k=$('phK');if(k)k.textContent=MM()?'':(STAGE[p]||'');}try{navStat();nextStep(p);}catch(e){}
-    scrollTo({top:0});try{ink();enter(p);}catch(e){}}finally{busy=false;}}
+    scrollTo({top:0});try{ink();decorate();rail();enter(p,fxPrev);}catch(e){}}finally{busy=false;}}
   window.goPage=show;
-  document.addEventListener('click',e=>{const su=e.target.closest&&e.target.closest('#drawSec summary,#op summary');if(!su)return;const d=su.parentElement;setTimeout(()=>{if(!d.open||!window.FXR)return;[...d.children].filter(c=>c.tagName!=='SUMMARY'&&c.offsetParent!==null).slice(0,8).forEach((c,i)=>{c.style.animationDelay=i*28+'ms';FXR.re(c,'fx-in',i*28+520);});},0);});
+
+  // ---------- v19.2 creative touches ----------
+  // smooth sections: <details> sections open and close with a height animation, their content comes in one after another
+  function hAnim(el,h0,h1,ms,done){el.style.overflow='hidden';el.style.boxSizing='border-box';const a=el.animate({height:[h0+'px',h1+'px']},{duration:ms,easing:'cubic-bezier(.2,.8,.2,1)'});el._fxA=a;
+    const end=()=>{el.style.overflow='';el.style.boxSizing='';el._fxA=null;};a.onfinish=()=>{end();if(done)done();};a.oncancel=end;return a;}
+  function stag(list){list.slice(0,8).forEach((c,i)=>{c.style.setProperty('--fx-dx','0px');c.style.setProperty('--fx-dy','8px');c.style.animationDelay=i*28+'ms';FX().re(c,'fx-in',i*28+520);});}
+  document.addEventListener('click',e=>{const su=e.target.closest&&e.target.closest('summary');if(!su)return;const d=su.parentElement;if(!d||d.tagName!=='DETAILS'||!d.closest('#drawSec,#op'))return;
+    const ctl=e.target.closest('button,a,input,select,textarea,label');if(ctl&&ctl!==su&&su.contains(ctl))return;
+    if(e.defaultPrevented||FX().off())return;e.preventDefault();
+    const r0=d.getBoundingClientRect().height,closing=!!d._fxClosing;if(d._fxA)d._fxA.cancel();d._fxClosing=false;
+    if(!d.open||closing){d.open=true;hAnim(d,r0,d.offsetHeight,300);stag([...d.children].filter(c=>c.tagName!=='SUMMARY'&&c.offsetParent!==null));}
+    else{d.open=false;const h1=d.offsetHeight;d.open=true;d._fxClosing=true;hAnim(d,r0,h1,240,()=>{d._fxClosing=false;d.open=false;try{railSpy();}catch(e){}});}
+  });
+  // sections that fold: Settings, Results, Officials … a chevron at the end of the heading (remembered on this laptop)
+  const HSEL=':scope>h3,:scope>h2,:scope>.obsh,:scope>.offh,:scope>.chh',LSEL=':scope>summary,:scope>h3,:scope>h2,:scope>.obsh,:scope>.offh,:scope>.chh,:scope>.mgbox';
+  const foldGet=()=>{try{return JSON.parse(localStorage.getItem('judoFold')||'{}')||{};}catch(e){return {};}},foldSet=o=>{try{localStorage.setItem('judoFold',JSON.stringify(o));}catch(e){}};
+  function plabel(p){const h=p.querySelector(LSEL);if(!h)return '';const t=h.matches('h3,h2,summary')?h:(h.querySelector('h3,h2,b')||h);const c=t.cloneNode(true);
+    c.querySelectorAll('.hint,.fxfold,.obsst,.chips,.chp,.tools,input,select,button').forEach(x=>x.remove());let v=c.textContent.replace(/\s+/g,' ').trim();v=v.split(/ · | \(|:/)[0].trim();return v.length>26?v.slice(0,25)+'…':v;}
+  const pkey=p=>p.id||plabel(p);
+  function panels(){const m=document.querySelector('#drawSec>main');if(!m)return [];return [...m.querySelectorAll('.panel')].filter(p=>p.id!=='view'&&p.offsetParent!==null&&!p.parentElement.closest('.panel'));}
+  const NOFOLD=['home','draw','sb'];
+  function decorate(){const pg=B.dataset.page;if(MM()||NOFOLD.includes(pg))return;const F=foldGet();
+    panels().forEach(p=>{if(p.tagName==='DETAILS')return;const h=p.querySelector(HSEL);if(!h)return;if(!h.classList.contains('fxh'))h.classList.add('fxh');
+      let b=h.querySelector(':scope>.fxfold');if(!b){b=document.createElement('button');b.type='button';b.className='fxfold';b.title='Fold / open this section';h.appendChild(b);}
+      const k=pkey(p),on=!!(k&&F[pg+':'+k]);if(on!==p.classList.contains('fold')&&!p._fxA)p.classList.toggle('fold',on);b.setAttribute('aria-expanded',String(!p.classList.contains('fold')));});}
+  function fold(p,on,anim){const pg=B.dataset.page,k=pkey(p);if(on===undefined)on=!p.classList.contains('fold');if(on===p.classList.contains('fold'))return;
+    const r0=p.getBoundingClientRect().height;if(p._fxA)p._fxA.cancel();p.classList.toggle('fold',on);const F=foldGet();if(k){if(on)F[pg+':'+k]=1;else delete F[pg+':'+k];foldSet(F);}
+    const b=p.querySelector('.fxfold');if(b)b.setAttribute('aria-expanded',String(!on));
+    if(anim!==false&&!FX().off()){const h1=p.getBoundingClientRect().height;if(on){p.classList.remove('fold');hAnim(p,r0,h1,240,()=>{p.classList.add('fold');railSpy();});}
+      else{hAnim(p,r0,h1,300);stag([...p.children].filter(c=>!c.classList.contains('fxh')&&c.offsetParent!==null));}}
+    railSpy();}
+  window.TP_FOLD=fold;
+  document.addEventListener('click',e=>{if(!e.target.closest)return;let p=null;const fb=e.target.closest('.fxfold');
+    if(fb)p=fb.closest('.panel');else{const h=e.target.closest('.fxh');if(h&&!e.target.closest('button,a,input,select,textarea,label,.chips,.chp,.obsst,.tools')){const hh=e.target.closest('h3,h2');if(hh&&h.contains(hh))p=h.closest('.panel');}}
+    if(!p||!p.closest('#drawSec>main'))return;e.preventDefault();fold(p);});
+  // section rail: jump to a section; the one in view is lit; fold all / open all
+  const navH=()=>{const n=$('topNav');if(!n)return 0;const st=getComputedStyle(n).position;return (st==='sticky'||st==='fixed')?Math.max(0,Math.round(n.getBoundingClientRect().bottom)):0;};
+  let railSig='';
+  function railPs(){return panels().filter(p=>plabel(p));}
+  function rail(){const pg=B.dataset.page,root=$('drawSec'),main=root&&root.querySelector(':scope>main');let r=$('secRail');if(!main)return;
+    const ps=(MM()||['home','draw','sb','ath'].includes(pg))?[]:railPs();
+    if(ps.length<4){if(r)r.remove();railSig='';return;}
+    document.documentElement.style.setProperty('--navH',navH()+'px');
+    const labs=ps.map(plabel),sig=pg+'|'+labs.join('|');if(r&&r.isConnected&&sig===railSig){railSpy();return;}railSig=sig;
+    if(!r){r=document.createElement('div');r.id='secRail';r.setAttribute('role','navigation');r.setAttribute('aria-label','Sections on this page');}
+    if(r.parentElement!==root||r.nextElementSibling!==main)root.insertBefore(r,main);
+    r.textContent='';const lab=document.createElement('span');lab.className='srl';lab.textContent='Jump to';r.appendChild(lab);
+    labs.forEach((t,i)=>{const b=document.createElement('button');b.type='button';b.dataset.i=i;b.textContent=t;r.appendChild(b);});
+    const x=document.createElement('span');x.className='srx';x.innerHTML='<button type="button" data-a="fold" title="Fold every section">⊟ Fold all</button><button type="button" data-a="open" title="Open every section">⊞ Open all</button>';r.appendChild(x);
+    r.onclick=e=>{const b=e.target.closest('button');if(!b)return;const ps2=railPs();
+      if(b.dataset.a){const on=b.dataset.a==='fold';ps2.forEach(p=>{if(p.tagName==='DETAILS'){if(p.open===on)p.open=!on;}else if(p.querySelector('.fxfold'))fold(p,on,false);});railSpy();return;}
+      const p=ps2[+b.dataset.i];if(!p)return;if(p.tagName==='DETAILS'&&!p.open)p.open=true;if(p.classList.contains('fold'))fold(p,false,false);
+      const y=p.getBoundingClientRect().top+scrollY-navH()-r.offsetHeight-14;scrollTo({top:Math.max(0,y),behavior:FX().off()?'auto':'smooth'});FX().re(p,'fxhit',1200);};
+    railSpy();}
+  function railSpy(){const r=$('secRail');if(!r||!r.isConnected)return;const ps=railPs(),lim=navH()+r.offsetHeight+40;let on=0;ps.forEach((p,i)=>{if(p.getBoundingClientRect().top<=lim)on=i;});
+    if(scrollY>40&&innerHeight+scrollY>=document.documentElement.scrollHeight-4)on=ps.length-1;
+    r.querySelectorAll('button[data-i]').forEach(b=>{const i=+b.dataset.i,p=ps[i];b.classList.toggle('on',i===on);b.classList.toggle('fo',!!p&&(p.classList.contains('fold')||(p.tagName==='DETAILS'&&!p.open)));});
+    const a=r.querySelector('button.on');if(a&&r.scrollWidth>r.clientWidth+2){const x=a.offsetLeft-(r.clientWidth-a.offsetWidth)/2;if(Math.abs(r.scrollLeft-x)>30)r.scrollLeft=x;}}
+  {let q=0;const mo=new MutationObserver(()=>{if(q)return;q=requestAnimationFrame(()=>{q=0;try{decorate();rail();}catch(e){}});});const ds=$('drawSec');if(ds)mo.observe(ds,{childList:true,subtree:true});}
+  // scroll progress under the menu + back-to-top button
+  {const nav=$('topNav');if(nav&&!$('scrollBar')){const sb=document.createElement('div');sb.id='scrollBar';sb.innerHTML='<i></i>';nav.appendChild(sb);}
+   if(!$('toTop')){const t=document.createElement('button');t.id='toTop';t.type='button';t.title='Back to top';t.setAttribute('aria-label','Back to top');t.textContent='↑';t.onclick=()=>scrollTo({top:0,behavior:FX().off()?'auto':'smooth'});document.body.appendChild(t);}
+   let q=0;const onS=()=>{if(q)return;q=requestAnimationFrame(()=>{q=0;const H=document.documentElement.scrollHeight-innerHeight,y=scrollY,sb=$('scrollBar');
+     if(sb){sb.classList.toggle('on',H>innerHeight*.4&&y>8);sb.firstChild.style.transform='scaleX('+(H>0?Math.min(1,y/H):0).toFixed(4)+')';}
+     const t=$('toTop');if(t){t.classList.toggle('on',y>700);const dm=$('dmsg');t.classList.toggle('up',!!(dm&&dm.textContent));}try{railSpy();}catch(e){}});};
+   addEventListener('scroll',onS,{passive:true});addEventListener('resize',()=>{document.documentElement.style.setProperty('--navH',navH()+'px');onS();});}
+  // keyboard shortcut sheet: press ? anywhere
+  function keys(){const o0=$('kbOv');if(o0){o0.remove();return;}const o=document.createElement('div');o.id='kbOv';
+    const k=(a,t,c)=>'<div class="kr '+(c||'')+'"><span>'+t+'</span>'+a.map(x=>'<kbd>'+x+'</kbd>').join(' ')+'</div>';
+    o.innerHTML='<div class="kbm" role="dialog" aria-modal="true" aria-label="Keyboard shortcuts"><h3>⌨ Keyboard shortcuts</h3><div class="hint">Press <kbd>?</kbd> any time to open this list · <kbd>Esc</kbd> closes it</div><div class="kbg">'
+      +'<h4>Scoreboard · White</h4>'+k(['Q'],'Ippon','kbw')+k(['W'],'Waza-ari','kbw')+k(['E'],'Yuko','kbw')+k(['R'],'Shido','kbw')+k(['A'],'Osaekomi for White','kbw')
+      +'<h4>Scoreboard · Blue</h4>'+k(['U'],'Ippon','kbb')+k(['I'],'Waza-ari','kbb')+k(['O'],'Yuko','kbb')+k(['P'],'Shido','kbb')+k(['L'],'Osaekomi for Blue','kbb')
+      +'<h4>Clock and match</h4>'+k(['Space'],'Hajime / Matte')+k(['S'],'Toketa (end osaekomi)')+k(['Shift','+ score key'],'Take that score back')+k(['Z'],'Undo the last action')+k(['N'],'Next match')+k(['D'],'Big screen on this laptop')+k(['Esc'],'Close the winner screen / big screen')
+      +'<h4>Everywhere</h4>'+k(['Ctrl','K'],'Command palette: any action, athlete or category')+k(['Ctrl','P'],'Print (on the Print page: what you chose there)')+k(['?'],'This list')
+      +'</div></div>';
+    o.onclick=e=>{if(e.target===o)o.remove();};document.body.appendChild(o);}
+  window.TP_KEYS=keys;
+  document.addEventListener('keydown',e=>{const o=$('kbOv');if(o&&(e.key==='Escape'||e.key==='?')){e.preventDefault();e.stopPropagation();o.remove();return;}
+    if(e.key!=='?'||e.ctrlKey||e.metaKey||e.altKey||window.VIEW||B.classList.contains('tv')||B.classList.contains('ovl')||$('cpOv'))return;
+    const tg=e.target.tagName;if(tg==='INPUT'||tg==='TEXTAREA'||tg==='SELECT'||e.target.isContentEditable)return;e.preventDefault();e.stopPropagation();keys();},true);
+  // everything finished: one gold confetti burst on the Dashboard (once per tournament on this laptop)
+  function celebrate(st){if(MM()||FX().off()||!window.FX||!FX_OK())return;const v=(st.name||'')+'|'+st.cats;try{if(localStorage.getItem('judoDone')===v)return;localStorage.setItem('judoDone',v);}catch(e){return;}
+    const cv=document.createElement('canvas');cv.id='fxDone';document.body.appendChild(cv);setTimeout(()=>{try{window.FX.burst(cv,'gold',true);}catch(e){}},250);setTimeout(()=>cv.remove(),6000);}
+  const FX_OK=()=>typeof window.FX==='object'&&typeof window.FX.burst==='function';
+  // cursor: soft ring that follows the mouse, light on the card under it, ripple where a button is clicked
+  const curOn=()=>{let v='';try{v=localStorage.getItem('judoCursor')||'';}catch(e){}return v!=='off'&&!FX().off()&&matchMedia('(hover:hover) and (pointer:fine)').matches&&!['tv','view','ovl','display'].some(c=>B.classList.contains(c));};
+  function curApply(){B.classList.toggle('cfx',curOn());if(!B.classList.contains('cfx')){const r=$('cRing');if(r)r.classList.remove('on');document.querySelectorAll('.fxlit').forEach(e=>e.classList.remove('fxlit'));}}
+  window.TP_CURSOR=curApply;curApply();
+  {let ring=null,x=0,y=0,tx=0,ty=0,s=1,ts=1,raf=0,lit=null,ev=null,mq=0;
+    const HOV='button,a,summary,select,label,[data-page],.cat,.kpi,.nxs,[role=button],[role=switch],input[type=checkbox],input[type=radio],input[type=file],.fxfold,.chip,#athT tbody tr';
+    const TXT='input:not([type=checkbox]):not([type=radio]):not([type=file]):not([type=range]):not([type=color]):not([type=button]),textarea,[contenteditable=true]';
+    const step=()=>{x+=(tx-x)*.3;y+=(ty-y)*.3;s+=(ts-s)*.25;ring.style.transform='translate3d('+x.toFixed(1)+'px,'+y.toFixed(1)+'px,0) scale('+s.toFixed(3)+')';
+      raf=(Math.abs(tx-x)>.2||Math.abs(ty-y)>.2||Math.abs(ts-s)>.005)?requestAnimationFrame(step):0;};
+    const kick=()=>{if(!raf&&ring)raf=requestAnimationFrame(step);};
+    const frame=()=>{mq=0;const e=ev;if(!e)return;const t=e.target;if(!t||!t.closest)return;
+      if(!ring){ring=document.createElement('div');ring.id='cRing';document.body.appendChild(ring);x=tx=e.clientX;y=ty=e.clientY;}
+      tx=e.clientX;ty=e.clientY;const txt=t.closest(TXT),hv=!txt&&t.closest(HOV);ts=txt?.3:hv?1.45:(ring.classList.contains('dn')?.75:1);ring.classList.toggle('hov',!!hv);ring.classList.toggle('on',!txt);kick();
+      let c=t.closest('#drawSec .panel,#drawSec .kpi');if(c&&c.offsetHeight>1100)c=null;
+      if(c!==lit){if(lit)lit.classList.remove('fxlit');lit=c;if(c)c.classList.add('fxlit');}
+      if(c){const r=c.getBoundingClientRect();c.style.setProperty('--mx',Math.round(e.clientX-r.left)+'px');c.style.setProperty('--my',Math.round(e.clientY-r.top)+'px');}};
+    addEventListener('mousemove',e=>{if(!B.classList.contains('cfx'))return;ev=e;if(!mq)mq=requestAnimationFrame(frame);},{passive:true});
+    addEventListener('mousedown',e=>{if(ring&&B.classList.contains('cfx')){ring.classList.add('dn');ts=.75;kick();}},{passive:true});
+    addEventListener('mouseup',()=>{if(ring){ring.classList.remove('dn');ts=ring.classList.contains('hov')?1.45:1;kick();}},{passive:true});
+    document.documentElement.addEventListener('mouseleave',()=>{if(ring)ring.classList.remove('on');if(lit){lit.classList.remove('fxlit');lit=null;}});
+    addEventListener('blur',()=>{if(ring)ring.classList.remove('on');});
+    addEventListener('pointerdown',e=>{if(!B.classList.contains('cfx')||e.button!==0||e.pointerType!=='mouse')return;const b=e.target.closest&&e.target.closest('button:not(:disabled),.nxs,[data-page]');if(!b||b.closest('#board,#cpOv,#kbOv'))return;
+      const r=b.getBoundingClientRect();if(r.width<8||r.height<8)return;const cs=getComputedStyle(b),w=document.createElement('span');w.className='fxrip';
+      w.style.cssText='left:'+r.left+'px;top:'+r.top+'px;width:'+r.width+'px;height:'+r.height+'px;border-radius:'+cs.borderRadius+';color:'+cs.color;
+      const d=Math.ceil(Math.hypot(Math.max(e.clientX-r.left,r.right-e.clientX),Math.max(e.clientY-r.top,r.bottom-e.clientY))*2),i=document.createElement('i');
+      i.style.cssText='width:'+d+'px;height:'+d+'px;left:'+(e.clientX-r.left-d/2)+'px;top:'+(e.clientY-r.top-d/2)+'px';w.appendChild(i);document.body.appendChild(w);setTimeout(()=>w.remove(),650);},{passive:true});}
+  try{decorate();rail();}catch(e){}
   document.querySelectorAll('#mainMenu [data-page]').forEach(b=>{if(!b.title)b.title=b.textContent.trim();b.addEventListener('click',()=>show(b.dataset.page));});
   $('brandBox').addEventListener('click',()=>show('home'));
   $('bkOpen').addEventListener('click',()=>{if(page!=='set')show('set');later(()=>$('bkPanel').scrollIntoView({behavior:'smooth',block:'start'}));});
@@ -4882,7 +7610,8 @@ if(TV){
   // the scoreboard can switch tabs by itself (e.g. "Load next match"): keep the menu in step
   new MutationObserver(()=>{const t=B.dataset.tab;if(t==='sb'&&page!=='sb')show('sb');else if(t==='draw'&&page==='sb')show('draw');}).observe(B,{attributes:true,attributeFilter:['data-tab']});
   let saved='';try{saved=localStorage.getItem('judoPage')||'';}catch(e){}
-  show(B.dataset.tab==='sb'?'sb':(saved&&saved!=='sb'&&PAGES[saved]?saved:'home'));
+  // a mat laptop always starts on its scoreboard, a call room laptop on check-in (whatever page was open before a restart)
+  show(MM()?(RL()==='call'?'ath':'sb'):(B.dataset.tab==='sb'?'sb':(saved&&saved!=='sb'&&PAGES[saved]?saved:'home')));
   // install as an app (Android / Windows / Mac / Linux Chrome & Edge); iPhone: Share → Add to Home Screen
   let ask=null;window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();ask=e;$('navInstall').style.display='';});
   $('navInstall').addEventListener('click',async()=>{if(!ask)return;ask.prompt();try{await ask.userChoice;}catch(e){}ask=null;$('navInstall').style.display='none';});

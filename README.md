@@ -1,4 +1,4 @@
-# TatamiPro · Judo tournament manager (v19.1)
+# TatamiPro · Judo tournament manager (v20.2)
 
 Draw (seeding, ranking, qualifier, knockout up to 128), weigh-in, live scoreboard + TV, schedule, results, prints, QR pages and WhatsApp sharing, in one web page. The name and logo can be changed in Settings.
 
@@ -21,6 +21,43 @@ Draw (seeding, ranking, qualifier, knockout up to 128), weigh-in, live scoreboar
 - Chrome / Edge (Windows, Mac, Linux, Android): the **⬇ Install** button in the top bar (or browser menu → Install).
 - iPhone / iPad: Safari → Share → Add to Home Screen.
 - Laptop and desktop get the desktop layout; phones get the phone layout (menu scrolls sideways, tables scroll).
+
+## v20.2 · mat links checked end to end (16 Nov 2026)
+- A mat laptop opened from its link now always starts on **its scoreboard** after a restart, even if Mat setup was the last page open. A call room laptop starts on check-in.
+- Checked with 1 main desk + 3 mat laptops + 1 call room laptop in one room (45 checks):
+  - one link per mat of the schedule;
+  - each laptop locked to its mat, sees only its own categories, and cannot become another mat, the main desk or the call room (not with another link, not after a restart);
+  - only the unlock code from the main desk frees a laptop.
+- Remember: **Settings → Live sync → "Mat laptops show and run only their own scheduled categories"** must be ticked on the main desk for the "only its own categories" part. It is off on a new room.
+
+## v20 · 3D light/dark switch and welcome screen (16 Nov 2026)
+- **Light / dark switch:** the old Light/Dark button in the menu bar is now a small 3D rocker, **Glow Rocker** by Louis Studios, ported from React to plain JavaScript.
+  - **LIGHT pressed:** light theme.
+  - **DARK pressed:** dark theme; the rocker lights up violet.
+  - Click it, or use Space / Enter when it has the keyboard focus. The command palette also has **Light / dark theme**.
+  - The whole app changes at once: menu, pages, cards, tables, forms, buttons, dialogs, text, borders and shadows. The new look grows as a circle from the switch.
+  - The choice is saved on the laptop and comes back when the app opens again. It is now applied before the first paint, so a light-theme laptop no longer shows a moment of dark.
+  - Other tabs on the same laptop follow the change. The TV window stays dark.
+  - Without WebGL the rocker draws itself with its built-in 2D fallback.
+- **Welcome screen on the first launch:** a neon tube writes **"welcome"** (**Neon Hello** by Louis Studios, ported to plain JavaScript, with its built-in handwriting alphabet). Then the app name, the main sections and **Get started** appear.
+  - **Get started**, Enter or Esc opens the app with a short zoom.
+  - It shows once on a laptop where nothing is saved yet. Never again after that, and not on a laptop that already has tournament data.
+  - Never for the TV window, OBS, the public page, a join link or a mat / call room laptop.
+  - Shown again any time from the command palette: **Welcome screen**.
+  - Without WebGL2 it uses the component's SVG fallback. With "reduce motion" on, it shows the still frame.
+  - It is skipped in a browser run by a test script (navigator.webdriver), so automated checks start on the app.
+
+## v19.2 · creative touches: sections, cursor, flow (16 Nov 2026)
+- **Section rail ("Jump to")** on long pages (Settings, Results): one chip per section. It stays under the menu while you scroll, lights up the section you are reading, and has **Fold all / Open all** at the end.
+- **Sections fold:** every section with a heading has a ⌃ at its right end (or click the heading itself). Folded sections stay folded on this laptop, also after a reload.
+- **Smooth sections:** sections that open and close (Tournament details, Backup, Change log, Athletes …) slide open and shut with a chevron instead of jumping.
+- **The page change follows the flow:** going forward in the steps (① → ⑦) the page comes in from the right, going back it comes in from the left.
+- **Light / dark switch:** the new look grows as a circle from the button.
+- **Long pages:** a thin progress line under the menu and a round **↑** button that takes you back to the top.
+- **Press ?** anywhere for the keyboard shortcut list: scoreboard keys for White and Blue, clock, undo, next match, Ctrl + K, Ctrl + P. It is also in the command palette.
+- **Cursor (computer with a mouse):** a soft ring follows the mouse and grows over anything you can click. The section under the mouse gets a gentle light, and a button shows a ripple where you click. You can switch it off in **Settings → Branding → Cursor effects**. It is not used on touch screens, TV or OBS.
+- **TV window, big screen and OBS:** the mouse pointer hides after 2.5 seconds without moving.
+- **Every category finished:** the "Next step" chip turns gold and the Dashboard shows one gold confetti burst (once per tournament on this laptop).
 
 ## v19.1 · animations (16 Nov 2026)
 - **Scoreboard, TV window and OBS overlay:**
