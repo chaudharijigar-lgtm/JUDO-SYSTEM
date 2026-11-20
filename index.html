@@ -1482,6 +1482,11 @@ html body #welcome .wlGo:focus-visible{outline:2px solid #b98cff!important;outli
 #welcome .wlGo span{transition:transform .25s}
 #welcome .wlGo:hover span{transform:translateX(3px)}
 #welcome .wlHint{font-size:12px;color:rgba(255,255,255,.4);opacity:0;animation:wlUp .7s calc(var(--wlT,4s) + .1s) cubic-bezier(.2,.8,.2,1) forwards}
+#welcome .wlSub b{color:#fff;font-weight:700}
+#welcome .wlBar{width:150px;height:3px;margin-top:2px;border-radius:3px;background:rgba(255,255,255,.14);overflow:hidden;opacity:0;animation:wlUp .5s calc(var(--wlT,4s) - .15s) ease-out forwards}
+#welcome .wlBar i{display:block;height:100%;width:100%;transform-origin:left center;transform:scaleX(0);background:linear-gradient(90deg,#a64dff,#4fa3ff);animation:wlBar calc(var(--wlA,5s) - var(--wlT,4s) + .15s) linear calc(var(--wlT,4s) - .15s) forwards}
+@keyframes wlBar{to{transform:scaleX(1)}}
+#welcome:not(.first){cursor:pointer}
 /* leaving: the stage opens up and the app comes in under it */
 #welcome.out{animation:wlOut .7s cubic-bezier(.4,0,.2,1) forwards;pointer-events:none}
 @keyframes wlOut{to{opacity:0;transform:scale(1.07)}}
@@ -1489,6 +1494,67 @@ html.wlEnter nav#topNav,html.wlEnter #drawSec,html.wlEnter #op{animation:wlApp .
 @keyframes wlApp{from{opacity:0;transform:scale(.975)}}
 @media (prefers-reduced-motion:reduce){#welcome,#welcome *{animation:none!important;opacity:1!important}#welcome.out{opacity:0!important}}
 @media print{#welcome{display:none!important}}
+
+/* ===================== v21 · match intro on the TV (like the IJF arena board) =====================
+   A new contest is loaded: the White athlete's card, a flip, the Blue athlete's card, a flip, both athletes with the
+   round and category, a flip, then the scoreboard. Hajime, a score or a new contest ends it at once. */
+#mIntro{position:absolute;inset:0;z-index:7;display:none;background:#04060c;color:#fff;overflow:hidden;perspective:1800px}
+#mIntro.on{display:block}
+#mIntro .miCard{position:absolute;inset:0;display:flex;flex-direction:column;backface-visibility:hidden;transform-origin:50% 50%;animation:miIn .42s cubic-bezier(.2,.8,.2,1) both}
+#mIntro .miCard.out{animation:miOut .3s cubic-bezier(.55,0,.8,.2) forwards}
+@keyframes miIn{from{transform:rotateX(-90deg);filter:brightness(1.8)}to{transform:none;filter:none}}
+@keyframes miOut{from{transform:none}to{transform:rotateX(90deg);filter:brightness(.35)}}
+#mIntro .miLine{position:absolute;left:3%;right:3%;top:50%;height:.4cqw;margin-top:-.2cqw;border-radius:1cqw;z-index:3;pointer-events:none;background:linear-gradient(90deg,transparent,#bcd3ff 14%,#fff 50%,#bcd3ff 86%,transparent);box-shadow:0 0 2.4cqw #7fa8ff,0 0 .6cqw #fff;opacity:0}
+#mIntro .miLine.fx{animation:miLine .62s ease-out}
+@keyframes miLine{0%{opacity:0;transform:scaleX(.15)}38%{opacity:1;transform:scaleX(1)}100%{opacity:0;transform:scaleX(1)}}
+#mIntro .miTop{flex:none;height:10%;display:flex;align-items:center;justify-content:space-between;gap:2cqw;padding:0 3cqw;background:#111;color:#c9d1e0;font-size:2.2cqw;letter-spacing:.08em;text-transform:uppercase;white-space:nowrap;overflow:hidden}
+#mIntro .miTop b{color:#fff}
+#mIntro .miName{font-weight:900;line-height:1.02;white-space:nowrap;overflow:hidden;letter-spacing:-.005em}
+#mIntro .miName b{text-transform:uppercase}
+#mIntro .miName small{font-weight:600;font-size:.6em;margin-left:.32em;letter-spacing:0}
+#mIntro .miClub{display:flex;align-items:center;gap:1.4cqw;font-weight:800;white-space:nowrap;overflow:hidden;text-transform:uppercase;letter-spacing:.02em}
+#mIntro .miCode{flex:none;display:inline-grid;place-items:center;border-radius:.7cqw;font-weight:900;letter-spacing:.06em;background:#0b0b10;color:#fff}
+#mIntro .b .miCode{background:#fff;color:#0a3fd6}
+#mIntro .miRank{flex:none;display:grid;place-items:center;text-align:center;border-radius:1.6cqw;background:linear-gradient(180deg,#ffb526,#f08a00);color:#1c1200;box-shadow:0 .5cqw 1.8cqw rgba(240,138,0,.45),inset 0 .25cqw 0 rgba(255,255,255,.45)}
+#mIntro .miRank small{display:block;font-weight:800;letter-spacing:.14em}
+#mIntro .miRank b{display:block;font-weight:900;line-height:1}
+/* one athlete */
+#mIntro .miSolo{background:#fff;color:#0b0b10}
+#mIntro .miSolo.b{background:linear-gradient(180deg,#1659f2,#0a3fd6 60%,#0834b5);color:#fff}
+#mIntro .miSolo .miBody{flex:1;display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:3cqw;padding:0 5.5cqw;min-height:0}
+#mIntro .miSolo .miSide{font-size:2.1cqw;font-weight:800;letter-spacing:.32em;opacity:.55;margin-bottom:1.2cqw;text-transform:uppercase}
+#mIntro .miSolo .miBody{position:relative}
+#mIntro .miSolo .miMark{position:absolute;right:3cqw;top:50%;transform:translateY(-50%);font-size:15cqw;font-weight:900;letter-spacing:-.02em;line-height:1;opacity:.06;pointer-events:none;text-transform:uppercase}
+#mIntro .miSolo .miBody>*:not(.miMark){position:relative}
+#mIntro .miSolo .miName{font-size:8.2cqw}
+#mIntro .miSolo .miClub{font-size:4.2cqw;margin-top:2.2cqw}
+#mIntro .miSolo .miCode{min-width:9cqw;height:6cqw;padding:0 1.2cqw;font-size:3.3cqw}
+#mIntro .miSolo .miRank{min-width:13cqw;padding:1.4cqw 2cqw}
+#mIntro .miSolo .miRank small{font-size:1.9cqw}
+#mIntro .miSolo .miRank b{font-size:7.2cqw}
+#mIntro .miFoot{flex:none;height:15%;display:flex;align-items:center;gap:2.4cqw;padding:0 5.5cqw;background:rgba(0,0,0,.07);font-size:3cqw;font-weight:700;text-transform:uppercase;letter-spacing:.04em;white-space:nowrap;overflow:hidden}
+#mIntro .miSolo.b .miFoot{background:rgba(0,0,0,.2)}
+#mIntro .miFoot b{font-weight:900}
+/* both athletes */
+#mIntro .miVs{background:radial-gradient(120% 90% at 50% 0%,#101a3a,#04060c 70%);padding:3.4cqw 5cqw 2.6cqw;gap:1.3cqw}
+#mIntro .miVs .miHead{flex:none;display:flex;justify-content:space-between;gap:2cqw;font-size:2.1cqw;letter-spacing:.1em;text-transform:uppercase;color:#9aa6bd;white-space:nowrap;overflow:hidden}
+#mIntro .miVs .miHead b{color:#fff}
+#mIntro .miVs .miRow{flex:1;min-height:0;display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:2.4cqw;padding:0 3cqw;border-radius:1.2cqw;box-shadow:0 .8cqw 2.4cqw rgba(0,0,0,.45)}
+#mIntro .miVs .miRow.w{background:#fff;color:#0b0b10}
+#mIntro .miVs .miRow.b{background:linear-gradient(180deg,#1659f2,#0a3fd6);color:#fff}
+#mIntro .miVs .miName{font-size:5.4cqw}
+#mIntro .miVs .miClub{font-size:2.7cqw;margin-top:.9cqw}
+#mIntro .miVs .miCode{min-width:7cqw;height:4.2cqw;padding:0 .9cqw;font-size:2.3cqw}
+#mIntro .miVs .miRank{min-width:10cqw;padding:.8cqw 1.4cqw}
+#mIntro .miVs .miRank small{font-size:1.4cqw}
+#mIntro .miVs .miRank b{font-size:4.6cqw}
+#mIntro .miVs .miFoot2{flex:none;display:flex;align-items:baseline;gap:2.2cqw;white-space:nowrap;overflow:hidden;margin-top:.3cqw}
+#mIntro .miVs .miFoot2 b{font-size:4.4cqw;font-weight:900;text-transform:uppercase;letter-spacing:.04em}
+#mIntro .miVs .miFoot2 span{font-size:2.7cqw;color:#c9d1e0;text-transform:uppercase;letter-spacing:.04em}
+/* the scoreboard comes in with the same flip */
+#board.miShow{animation:miBoard .45s cubic-bezier(.2,.8,.2,1)}
+@keyframes miBoard{from{transform:perspective(1800px) rotateX(-90deg);filter:brightness(1.8)}to{transform:none;filter:none}}
+@media (prefers-reduced-motion:reduce){#mIntro .miCard,#mIntro .miLine,#board.miShow{animation:none!important}}
 
 /* ===== PRINT: always black text on white paper, in dark or light mode (must stay the LAST rules) ===== */
 @media print{
@@ -3932,7 +3998,11 @@ function create(root, options) {
     const pl = () => { pointer.current.on = 0; kick.current(); };
     root.addEventListener("pointermove", pm);
     root.addEventListener("pointerleave", pl);
-    return { destroy() { if (cleanup) try { cleanup(); } catch (e) { } cleanup = null; root.removeEventListener("pointermove", pm); root.removeEventListener("pointerleave", pl); } };
+    return {
+        destroy() { if (cleanup) try { cleanup(); } catch (e) { } cleanup = null; root.removeEventListener("pointermove", pm); root.removeEventListener("pointerleave", pl); },
+        /** TatamiPro: swap to the still, fully written SVG tube (for a computer that cannot keep up with the WebGL tube) */
+        still() { if (fellBack) return; fellBack = true; if (cleanup) { try { cleanup(); } catch (e) { } cleanup = null; } stage.textContent = ""; Fallback(stage, { path, colors, frame, loop, speed: 0 }); },
+    };
 }
 /** measure(word): the word's box in path units and the second its writing ends, to lay out and time what sits under it */
 function measure(word) { const p = buildPath(wordStrokes(word)); const tl = timeline(p, buildPath([HELLO])); return { box: p.box, writeEnd: LEAD + tl.write }; }
@@ -3943,53 +4013,74 @@ return { create, measure, COLORS: NEON_HELLO_COLORS, FRAME: NEON_HELLO_FRAME };
 GlowRocker.VIEWS.nav = { az: 14, el: 54, dist: 30, zoom: 160, tx: 0.24, ty: 0.12, need: 600, roll: 0, gain: 1, dim: 0.9 };
 window.GlowRocker = GlowRocker; window.NeonHello = NeonHello;
 
-// ---------- v20 · welcome screen on the first launch (Neon Hello, writing "welcome") ----------
-// Shown once on a laptop where nothing has been saved yet. Not for the TV window, OBS, the public page or a
-// join link (they open straight away), not on a laptop already set up as a mat or call room laptop, and not in
-// a browser driven by a test script (navigator.webdriver). "Get started", Enter or Esc closes it for good.
+// ---------- v21 · welcome screen (Neon Hello writing "welcome") every time the software opens ----------
+// First launch on a laptop: the full introduction, it waits for "Get started".
+// Every later opening (once per browser session, so a refresh does not replay it): the neon writes faster, the
+// name, a greeting and where the tournament stands appear, and the app opens by itself after about 4 seconds.
+// A click or any key opens it at once. Never for the TV window, OBS, the public page, a join link or a mat /
+// call room laptop (they must be back at work at once), nor in a browser run by a test script.
+// Settings → Branding → "Welcome screen when the software opens" switches it off on a laptop.
 (function(){
-  const K='judoWelcome';
+  const K='judoWelcome',SK='tpWelcomed';
   const get=k=>{try{return localStorage.getItem(k);}catch(e){return null;}};
-  const mark=()=>{try{localStorage.setItem(K,'1');}catch(e){}};
+  const seen=()=>{try{localStorage.setItem(K,'1');}catch(e){}};
+  const mark=()=>{seen();try{sessionStorage.setItem(SK,'1');}catch(e){}};
   const hasData=()=>{try{const d=JSON.parse(get('judoDraw')||'null');return !!(d&&((d.ath&&d.ath.length)||(d.draws&&Object.keys(d.draws).length)||(d.meta&&d.meta.name)));}catch(e){return false;}};
   const special=()=>{const h=window.TP_LAUNCH_HASH||'';return h.length>1;};
+  const shownThisSession=()=>{try{return sessionStorage.getItem(SK)==='1';}catch(e){return false;}};
   const q=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
-  let ov=null,neon=null,closing=false,focusT=0;
-  function build(){
-    ov=document.createElement('div');ov.id='welcome';ov.setAttribute('role','dialog');ov.setAttribute('aria-modal','true');ov.setAttribute('aria-label','Welcome');
-    ov.innerHTML='<div class="wlStage"></div>';document.body.appendChild(ov);document.documentElement.classList.add('wlOpen');}
+  let ov=null,neon=null,closing=false,focusT=0,autoT=0,mode='first';
+  function build(m){
+    mode=m;ov=document.createElement('div');ov.id='welcome';ov.className=m;ov.setAttribute('role','dialog');ov.setAttribute('aria-modal','true');ov.setAttribute('aria-label','Welcome');
+    ov.innerHTML='<div class="wlStage"></div>';document.body.appendChild(ov);document.documentElement.classList.add('wlOpen');
+    if(m!=='first')ov.addEventListener('click',close);}
+  function greet(){const hr=new Date().getHours();return hr<12?'Good morning':hr<17?'Good afternoon':'Good evening';}
+  function status(){try{const st=window.TP_STATS&&TP_STATS();if(!st||!st.n)return 'Ready for a new tournament';
+    return st.n+' athletes · '+st.cats+' categories'+(st.fin?' · '+st.fin+' finished':st.drawn?' · '+st.drawn+' draws made':'');}catch(e){return '';}}
   function start(){
     if(!ov)return;
     const name=typeof APPNAME==='function'?APPNAME():'TatamiPro';
     const lg=document.getElementById('brandLogo');
+    let tn='';try{tn=(JSON.parse(get('judoDraw')||'{}').meta||{}).name||'';}catch(e){}
+    const day=new Date().toLocaleDateString('en-IN',{weekday:'long',day:'numeric',month:'long'});
     const kids=document.createElement('div');kids.className='wlc';
     kids.innerHTML='<div class="wlBrand"><span class="blogo wlLogo">'+(lg?lg.innerHTML:'TP')+'</span><b>'+q(name)+'</b></div>'
-      +'<div class="wlSub">Judo tournament manager</div>'
-      +'<div class="wlLine">Athletes · Draw · Schedule · Scoreboard · Results · Print</div>'
-      +'<button type="button" class="wlGo">Get started <span aria-hidden="true">→</span></button>'
-      +'<div class="wlHint">or press Enter</div>';
+      +(mode==='first'
+        ?'<div class="wlSub">Judo tournament manager</div><div class="wlLine">Athletes · Draw · Schedule · Scoreboard · Results · Print</div>'
+         +'<button type="button" class="wlGo">Get started <span aria-hidden="true">→</span></button><div class="wlHint">or press Enter</div>'
+        :'<div class="wlSub">'+q(greet())+(tn?' · <b>'+q(tn)+'</b>':' · '+q(day))+'</div><div class="wlLine">'+q(status())+'</div>'
+         +'<button type="button" class="wlGo">Continue <span aria-hidden="true">→</span></button><div class="wlBar"><i></i></div><div class="wlHint">opens by itself · click or press any key</div>');
     ov.setAttribute('aria-label','Welcome to '+name);
-    // the word is sized to the screen so it stays clear of the name and the button under it (smaller on short screens),
-    // and the name and button come in as the writing ends
-    const WORD='welcome',m=NeonHello.measure(WORD),bw=m.box[2]-m.box[0],bh=m.box[3]-m.box[1];
+    // the word is sized to the screen so it stays clear of the name and the button under it (smaller on short
+    // screens); the name and the button come in as the writing ends; later openings write faster
+    const WORD='welcome',SPD=mode==='first'?1:1.8,m=NeonHello.measure(WORD),bw=m.box[2]-m.box[0],bh=m.box[3]-m.box[1];
     const kMax=(0.402*innerHeight-191)/(bh/2),sc=Math.max(0.35,Math.min(0.8,kMax*bw/Math.max(320,innerWidth)));
-    ov.style.setProperty('--wlT',m.writeEnd.toFixed(2)+'s');
-    neon=NeonHello.create(ov.querySelector('.wlStage'),{word:WORD,loop:false,scale:sc,children:kids,label:'welcome to '+name,style:{position:'absolute',inset:'0'}});
-    const go=kids.querySelector('.wlGo');go.addEventListener('click',close);
-    clearTimeout(focusT);focusT=setTimeout(()=>{try{go.focus({preventScroll:true});}catch(e){}},Math.round(m.writeEnd*1000)+200);}
+    const tEnd=m.writeEnd/SPD,tAuto=tEnd+1.1;
+    ov.style.setProperty('--wlT',tEnd.toFixed(2)+'s');ov.style.setProperty('--wlA',tAuto.toFixed(2)+'s');
+    neon=NeonHello.create(ov.querySelector('.wlStage'),{word:WORD,loop:false,speed:SPD,scale:sc,children:kids,label:'welcome to '+name,style:{position:'absolute',inset:'0'}});
+    const go=kids.querySelector('.wlGo');go.addEventListener('click',e=>{e.stopPropagation();close();});
+    clearTimeout(focusT);focusT=setTimeout(()=>{try{go.focus({preventScroll:true});}catch(e){}},Math.round(tEnd*1000)+200);
+    clearTimeout(autoT);if(mode!=='first')autoT=setTimeout(close,Math.round(tAuto*1000));
+    // a computer without graphics acceleration: the tube stays still (fully written) instead of slowing the app down
+    {let n=0,last=0,slow=0;const chk=t=>{if(!ov||!neon)return;if(last&&t-last>80)slow++;last=t;if(slow>=4){try{neon.still();}catch(e){}return;}if(++n<45)requestAnimationFrame(chk);};requestAnimationFrame(chk);}}
   function close(){
-    if(closing||!ov)return;closing=true;mark();clearTimeout(focusT);
+    if(closing||!ov)return;closing=true;mark();clearTimeout(focusT);clearTimeout(autoT);
     const el=ov,H=document.documentElement;el.classList.add('out');H.classList.remove('wlOpen');H.classList.add('wlEnter');
     setTimeout(()=>{try{if(neon)neon.destroy();}catch(e){}el.remove();if(ov===el){ov=null;neon=null;}closing=false;H.classList.remove('wlEnter');},720);}
-  // while it is open the keys belong to it: Enter / Esc start the app, nothing reaches the scoreboard or the palette
+  // while it is open the keys belong to it, nothing reaches the scoreboard or the palette.
+  // First launch: Enter / Esc start the app. Later openings: any key does.
   addEventListener('keydown',e=>{if(!ov||closing)return;e.stopPropagation();const go=ov.querySelector('.wlGo');
+    if(mode!=='first'&&!['Shift','Control','Alt','Meta','Tab'].includes(e.key)){e.preventDefault();close();return;}
     if(e.key==='Enter'||e.key==='Escape'){e.preventDefault();close();return;}
     if(e.key==='Tab'){e.preventDefault();if(go)go.focus();return;}
     if(!(e.key===' '&&e.target===go))e.preventDefault();},true);
-  window.TP_WELCOME={show(){if(ov)return;build();start();},close,get open(){return !!ov;}};
-  if(get(K)==='1'||special()||navigator.webdriver)return;
-  if(hasData()||get('judoRole')){mark();return;}      // a laptop already in use: not a first launch
-  build();                                             // black stage from the very first paint
+  window.TP_WELCOME={show(){if(ov)return;build('again');start();},close,get open(){return !!ov;},get mode(){return mode;}};
+  if(special()||navigator.webdriver||get('judoRole'))return;   // TV, OBS, public page, join link, mat / call room laptop
+  let m='';
+  if(get(K)!=='1'&&!hasData())m='first';                      // a brand-new laptop: the introduction
+  else{if(get(K)!=='1')seen();if(get('judoWelcomeOn')!=='off'&&!shownThisSession())m='daily';}
+  if(!m)return;
+  build(m);                                                    // black stage from the very first paint
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',()=>setTimeout(start,40));else setTimeout(start,40);
 })();
 </script>
@@ -4126,6 +4217,7 @@ window.GlowRocker = GlowRocker; window.NeonHello = NeonHello;
         <div class="sc ycell"><span id="yb">0</span><small>YUKO</small></div>
         
       </div>
+      <div id="mIntro" aria-hidden="true"></div>
       <div id="podOv"><canvas id="podFx"></canvas><div class="pdcat" id="pdCat"></div><div class="pdtitle">MEDAL WINNERS</div><div class="pdstage"><div class="pdcol s"><div class="pdmed">🥈</div><div class="pdblk"><div class="pdrk">2<small>SILVER</small></div><div class="pdnm" id="pdS"></div><div class="pdcl" id="pdSc"></div></div></div><div class="pdcol g"><div class="pdmed">🥇</div><div class="pdblk"><div class="pdrk">1<small>GOLD</small></div><div class="pdnm" id="pdG"></div><div class="pdcl" id="pdGc"></div></div></div><div class="pdcol b"><div class="pdmed">🥉</div><div class="pdblk"><div class="pdrk">3<small>BRONZE</small></div><div class="pdnm" id="pdB1"></div><div class="pdcl" id="pdB1c"></div><div class="pdsep" id="pdBsep"></div><div class="pdnm" id="pdB2"></div><div class="pdcl" id="pdB2c"></div></div></div></div></div>
       <div id="winOv"><canvas id="winFx"></canvas><div class="wcat" id="winCat"></div><div class="wlab" id="winLab">WINNER</div><div id="winNm"></div><div id="winClub"></div><div id="winWhy"></div><div id="winSc"></div></div>
       <div id="tvQr"><div id="tvQrB"></div><small id="tvQrL">Scan · live results</small></div>
@@ -5289,6 +5381,7 @@ window.TP_NEXT=p=>{if(MATMODE()||!window.TP_STATS)return null;const s=TP_STATS()
     P('Keyboard shortcuts','keys keyboard shortcuts help hotkeys ?',()=>{if(window.TP_KEYS)TP_KEYS();},{g:'Help',ic:'⌨',m:1,call:1}),
     P('Light / dark theme','theme dark light mode night day switch',()=>{if(window.TP_ROCK)TP_ROCK.toggle();else if(window.TP_THEME)TP_THEME(document.body.classList.contains('light')?'dark':'light');},{g:'Help',ic:'◐',m:1,call:1}),
     P('Welcome screen','welcome hello intro start screen',()=>{if(window.TP_WELCOME)TP_WELCOME.show();},{g:'Help',ic:'✨'}),
+    P('Match intro on the TV','intro names flip tv players white blue vs walk-on',()=>{if(window.TP_INTRO)TP_INTRO();},{g:'Scoreboard',ic:'🎬',m:1}),
     P('Auto-arrange the schedule over the mats','auto arrange schedule mats',()=>{goPage('sched');setTimeout(()=>$('scAuto').click(),60);},{g:'Schedule',ic:'⚡'}),
     P('Add a competition day','day add second day',()=>{goPage('sched');setTimeout(()=>$('scAddD').click(),60);},{g:'Schedule',ic:'📅'}),
     P('Add officials','officials add referee coach',()=>tpFlash('#pfN','off'),{g:'Officials',ic:'➕'}),
@@ -5309,9 +5402,9 @@ window.TP_NEXT=p=>{if(MATMODE()||!window.TP_STATS)return null;const s=TP_STATS()
     P('Sound','sound gong buzzer voice',()=>tpFlash('#sn_mode','set'),{g:'Settings',ic:'🔊',m:1})];
   const allowed=c=>{const r=ROLE();if(r==='mat')return !!c.m;if(r==='call')return !!c.call||/^(Athletes & weigh-in|Settings)$/.test(c.t)||c.g==='Settings'&&c.m;return true;};
   const score=(c,q)=>{if(!q)return 1;const h=(c.t+' '+c.k+' '+(c.g||'')).toLowerCase();let s=0;for(const w of q.split(/\s+/).filter(Boolean)){const i=h.indexOf(w);if(i<0)return 0;s+=i===0?3:h.indexOf(' '+w)>=0?2:1;}return s;};
-  function dyn(q){if(q.length<2)return [];const out=[],nq=nrm(q);
-    if(!MATMODE()||ROLE()==='call')D.ath.filter(a=>nrm(a.name).includes(nq)).slice(0,6).forEach(a=>out.push(P(a.name+(a.wd?' · '+(a.wd.k==='hsk'?'DSQ':'WD'):''),'',()=>{goPage('ath');setTimeout(()=>{try{const f=$('athF');f.value='all';f.dispatchEvent(new Event('change'));const s=$('athQ');s.value=a.name;s.dispatchEvent(new Event('input'));tpFlash(s);}catch(e){}},80);},{g:'Athlete',ic:'👤',sub:(a.club||'')+' · '+catKey(a)})));
-    if(!MATMODE())cats().filter(c=>nrm(c.k).includes(nq)).slice(0,5).forEach(c=>{out.push(P(c.k,'',()=>{goPage('draw');setTimeout(()=>{const e=[...document.querySelectorAll('#cats .cat')].find(x=>x.dataset.k===c.k);if(e)e.click();},80);},{g:'Category · draw',ic:'🗂',sub:c.list.length+' athletes'}));
+  function dyn(q){if(q.length<2)return [];const out=[],nq=nrm(q),ws=q.split(/\s+/).map(nrm).filter(Boolean),hit=t=>{const n=nrm(t);return n.includes(nq)||ws.every(w=>n.includes(w));};   // "tanma mis" finds Tanmay Mistry
+    if(!MATMODE()||ROLE()==='call')D.ath.filter(a=>hit(a.name)).slice(0,6).forEach(a=>out.push(P(a.name+(a.wd?' · '+(a.wd.k==='hsk'?'DSQ':'WD'):''),'',()=>{goPage('ath');setTimeout(()=>{try{const f=$('athF');f.value='all';f.dispatchEvent(new Event('change'));const s=$('athQ');s.value=a.name;s.dispatchEvent(new Event('input'));tpFlash(s);}catch(e){}},80);},{g:'Athlete',ic:'👤',sub:(a.club||'')+' · '+catKey(a)})));
+    if(!MATMODE())cats().filter(c=>hit(c.k)).slice(0,5).forEach(c=>{out.push(P(c.k,'',()=>{goPage('draw');setTimeout(()=>{const e=[...document.querySelectorAll('#cats .cat')].find(x=>x.dataset.k===c.k);if(e)e.click();},80);},{g:'Category · draw',ic:'🗂',sub:c.list.length+' athletes'}));
       out.push(P('Print '+c.k,'',()=>{goPage('print');setTimeout(()=>{try{$('prStage').value='full';fillScope('k:'+c.k);syncPr();tpFlash('#prPanel');}catch(e){}},60);},{g:'Category · print',ic:'🖨',sub:'fixture'}));});
     return out;}
   let ov=null,list=[],sel=0;
@@ -5987,7 +6080,7 @@ function renderBrand(){const el=$('pgBrand');if(!el)return;if(!window.OBSL)retur
   el.innerHTML=`<h3 style="margin-bottom:10px">🎨 Branding &amp; logos</h3>
   <div class="brow"><label>Software name<input id="brName" value="${esc(b.name||'')}" placeholder="TatamiPro" maxlength="40"></label><div class="sugg"><span class="hint">Suggestions:</span>${APPNAMES.map(n=>`<button class="sm" data-nm="${esc(n)}">${esc(n)}</button>`).join('')}</div></div>
   <div class="lgrid">${LOGOS.map(([k,t,d])=>`<div class="lslot"><div class="lprev">${L[k]?`<img src="${esc(L[k])}" alt="">`:'<span class="hint">No logo</span>'}</div><b>${t}</b><small class="hint">${d}</small><div class="lbtn"><label class="filebtn sm">Upload<input type="file" accept="image/*" data-lg="${k}"></label>${L[k]?`<button class="sm warn" data-rm="${k}">Remove</button>`:''}</div></div>`).join('')}</div>
-  <div class="brow"><label class="chk"><input type="checkbox" id="brGlass"${b.look!=='classic'?' checked':''}> Liquid glass look (untick for the classic flat look on a slow laptop)</label><label class="chk"><input type="checkbox" id="brFx"${(()=>{try{return localStorage.getItem('judoMotion')!=='off';}catch(e){return true;}})()?' checked':''}> Animations (this laptop and its TV window · untick on a slow laptop)</label><label class="chk"><input type="checkbox" id="brCur"${(()=>{try{return localStorage.getItem('judoCursor')!=='off';}catch(e){return true;}})()?' checked':''}> Cursor effects: soft ring, light on the card under the mouse, ripple on click (this laptop)</label><label class="chk"><input type="checkbox" id="brTv"${b.tvLogos!==false?' checked':''}> Show logos on the TV scoreboard (organiser top-left, associations top-right)</label><label class="chk"><input type="checkbox" id="brPr"${b.printLogos!==false?' checked':''}> Show logos on printed sheets and score sheets (printed in grey)</label></div>
+  <div class="brow"><label class="chk"><input type="checkbox" id="brGlass"${b.look!=='classic'?' checked':''}> Liquid glass look (untick for the classic flat look on a slow laptop)</label><label class="chk"><input type="checkbox" id="brFx"${(()=>{try{return localStorage.getItem('judoMotion')!=='off';}catch(e){return true;}})()?' checked':''}> Animations (this laptop and its TV window · untick on a slow laptop)</label><label class="chk"><input type="checkbox" id="brCur"${(()=>{try{return localStorage.getItem('judoCursor')!=='off';}catch(e){return true;}})()?' checked':''}> Cursor effects: soft ring, light on the card under the mouse, ripple on click (this laptop)</label><label class="chk"><input type="checkbox" id="brIntro"${(()=>{try{return localStorage.getItem('judoIntro')!=='off';}catch(e){return true;}})()?' checked':''}> Match intro on the TV: White and Blue names flip in before each contest (this laptop's TV)</label><label class="chk"><input type="checkbox" id="brWel"${(()=>{try{return localStorage.getItem('judoWelcomeOn')!=='off';}catch(e){return true;}})()?' checked':''}> Welcome screen when the software opens (this laptop)</label><label class="chk"><input type="checkbox" id="brTv"${b.tvLogos!==false?' checked':''}> Show logos on the TV scoreboard (organiser top-left, associations top-right)</label><label class="chk"><input type="checkbox" id="brPr"${b.printLogos!==false?' checked':''}> Show logos on printed sheets and score sheets (printed in grey)</label></div>
   <div class="hint">Logos stay on this laptop (not inside the athlete data) and travel with the downloaded backup file. PNG or JPG; they are resized automatically.</div>
   <div class="brow"><label>🌐 Second language on the TV and printed sheets<select id="brLang"><option value="">English only</option><option value="gu"${b.lang==='gu'?' selected':''}>English + ગુજરાતી (Gujarati)</option><option value="hi"${b.lang==='hi'?' selected':''}>English + हिन्दी (Hindi)</option></select></label></div>
   <div class="hint">The English text stays; the translation is added under headings, table titles, round names, roles and signatures, and on the TV the category line switches language every 6 seconds. Names of athletes and districts are printed as typed. Windows shows Gujarati and Hindi with its built-in Nirmala UI font.</div>
@@ -6008,6 +6101,8 @@ function renderBrand(){const el=$('pgBrand');if(!el)return;if(!window.OBSL)retur
   el.querySelectorAll('[data-rm]').forEach(t=>t.onclick=()=>put(x=>{x.logos=Object.assign({},x.logos||{});delete x.logos[t.dataset.rm];}));
   $('brGlass').onchange=()=>put(x=>{x.look=$('brGlass').checked?'glass':'classic';});
   $('brFx').onchange=()=>{try{localStorage.setItem('judoMotion',$('brFx').checked?'on':'off');}catch(e){}if(window.FXR)FXR.apply();if(window.TP_INK)TP_INK(true);if(window.TP_CURSOR)TP_CURSOR();msg($('brFx').checked?'Animations on for this laptop.':'Animations off for this laptop.');};
+  $('brIntro').onchange=()=>{try{localStorage.setItem('judoIntro',$('brIntro').checked?'on':'off');}catch(e){}msg($('brIntro').checked?'Match intro on: the TV shows both athletes before each contest.':'Match intro off: the TV goes straight to the scoreboard.');};
+  $('brWel').onchange=()=>{try{localStorage.setItem('judoWelcomeOn',$('brWel').checked?'on':'off');}catch(e){}msg($('brWel').checked?'The welcome screen shows when the software opens.':'The software opens straight to work.');};
   $('brCur').onchange=()=>{try{localStorage.setItem('judoCursor',$('brCur').checked?'on':'off');}catch(e){}if(window.TP_CURSOR)TP_CURSOR();msg($('brCur').checked?'Cursor effects on for this laptop.':'Cursor effects off for this laptop.');};
   $('brLang').onchange=()=>put(x=>{x.lang=$('brLang').value;});
   const ov=()=>put(x=>{x.ovl={st:$('ovSt').value,pos:$('ovPos').value,sz:$('ovSz').value,bg:$('ovBg').value};});['ovSt','ovPos','ovSz','ovBg'].forEach(id=>$(id).onchange=ov);
@@ -7074,6 +7169,48 @@ function scards(p,P){const el=$('s'+p),k=P.h?'h':String(P.s||0);if(el.dataset.k=
   if(fxQuiet||!window.FXR||was===undefined)return;if(!(k==='h'||(was!=='h'&&+k>+was)))return;const last=el.lastElementChild;if(last)FXR.re(last,'fx-card',800);if(k==='h')FXR.re($('r'+p),'fx-shake',700);}
 function odig(e,v,ipp){const s=String(v);if(e.textContent===s)return;const up=+v>(+e.textContent||0);e.textContent=s;if(!fxQuiet&&up&&window.FXR)FXR.re(e,ipp?'fx-ipp':'fx-bump',1000);}
 function nameOf(p){return S.p[p].n||(p==='w'?'White':'Blue');}
+// ---------- v21 · match intro on the TV window and the big screen (like the IJF arena board) ----------
+// White card → flip → Blue card → flip → both athletes with round and category → flip → scoreboard.
+// Plays when a contest is loaded from the draw (or again with "Match intro on the TV"); Hajime, a score,
+// a decision or another contest ends it at once. Off on this laptop with Settings → Branding → Match intro.
+window.TP_INTRO=()=>{const say=t=>{const e=document.getElementById('msg');if(e){e.textContent=t;clearTimeout(say.t);say.t=setTimeout(()=>{e.textContent='';},4000);}};
+  if(!S.link){say('Load a contest from the draw first: the intro shows its two athletes.');return false;}S.introT=Date.now();render();say('Match intro is playing on the TV window.');return true;};
+const MI=(()=>{
+  let tm=[],on=false;
+  const enabled=()=>{try{return localStorage.getItem('judoIntro')!=='off';}catch(e){return true;}};
+  const big=()=>TV||document.body.classList.contains('display');
+  const h=v=>String(v??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+  const clear=()=>{tm.forEach(clearTimeout);tm=[];};
+  const at=(ms,f)=>tm.push(setTimeout(f,ms));
+  // rank or seed of the athlete, from the draw kept on this laptop
+  const athOf=id=>{try{return (JSON.parse(localStorage.getItem('judoDraw')||'{}').ath||[]).find(a=>a.id===id)||null;}catch(e){return null;}};
+  const badge=id=>{const a=id&&athOf(id);if(!a)return '';const rk=+a.rk||0,sd=+a.seed||0;
+    return rk?`<div class="miRank"><small>RANK</small><b>${rk}</b></div>`:sd?`<div class="miRank"><small>SEED</small><b>${sd}</b></div>`:'';};
+  const parts=()=>{const p=String(S.cat||'').split(' · ');const round=S.link&&p.length>1?p.pop():'';return {round,cat:p.join(' · ')};};
+  const name=p=>`<b>${h(S.p[p].n||(p==='w'?'White':'Blue'))}</b>${S.p[p].f?`<small>${h(S.p[p].f)}</small>`:''}`;
+  const club=p=>{const q=S.p[p];return q.club||q.c?`<span class="miCode">${h(q.c||'')}</span><span>${h(q.club||'')}</span>`:'';};
+  const top=()=>`<div class="miTop"><span>${h(S.ev||'')}</span><span><b>${h(S.mat||'')}</b>${S.match?' · Match '+h(S.match):''}</span></div>`;
+  function solo(p){const x=parts(),id=S.link&&S.link[p];
+    return `<div class="miCard miSolo ${p}">${top()}<div class="miBody"><span class="miMark" aria-hidden="true">${p==='w'?'White':'Blue'}</span><div style="min-width:0"><div class="miSide">${p==='w'?'White':'Blue'}</div><div class="miName">${name(p)}</div><div class="miClub">${club(p)}</div></div>${badge(id)}</div>`
+      +`<div class="miFoot"><b>${h(x.round)}</b><span>${h(x.cat)}</span></div></div>`;}
+  function both(){const x=parts(),row=p=>`<div class="miRow ${p}"><div style="min-width:0"><div class="miName">${name(p)}</div><div class="miClub">${club(p)}</div></div>${badge(S.link&&S.link[p])}</div>`;
+    return `<div class="miCard miVs"><div class="miHead"><span>${h(S.ev||'')}</span><span><b>${h(S.mat||'')}</b>${S.match?' · Match '+h(S.match):''}</span></div>${row('w')}${row('b')}<div class="miFoot2"><b>${h(x.round)}</b><span>${h(x.cat)}</span></div></div>`;}
+  // long names shrink to fit their line
+  const fit=root=>root.querySelectorAll('.miName,.miClub').forEach(e=>{let fs=parseFloat(getComputedStyle(e).fontSize),n=0;while(e.scrollWidth>e.clientWidth+1&&fs>8&&n++<40){fs*=0.93;e.style.fontSize=fs+'px';}});
+  function line(box){const l=box.querySelector('.miLine');if(l&&window.FXR)FXR.re(l,'fx',700);}
+  function show(html){const box=$('mIntro');const old=box.querySelector('.miCard:not(.out)');
+    const w=document.createElement('div');w.innerHTML=html;const c=w.firstElementChild;
+    if(old){old.classList.add('out');c.style.animationDelay='.27s';setTimeout(()=>old.remove(),330);line(box);}
+    box.appendChild(c);fit(c);}
+  function play(){
+    if(!big()||!enabled()||!S.link||!S.p.w.n||!S.p.b.n)return false;
+    clear();on=true;const box=$('mIntro');box.innerHTML='<div class="miLine"></div>';box.classList.add('on');
+    show(solo('w'));at(2400,()=>show(solo('b')));at(4800,()=>show(both()));at(8300,finish);return true;}
+  function finish(){clear();const box=$('mIntro');if(!on)return;const old=box.querySelector('.miCard:not(.out)');if(old){old.classList.add('out');line(box);}
+    tm.push(setTimeout(()=>{box.classList.remove('on');box.innerHTML='';on=false;if(window.FXR)FXR.re($('board'),'miShow',600);},old?290:0));}
+  return {play,stop:finish,get on(){return on;},enabled};
+})();
+
 function fmt(ms,up){const s=up?Math.floor(ms/1000):Math.ceil(ms/1000);return Math.floor(s/60)+':'+String(s%60).padStart(2,'0');}
 function renderClock(){
   $('time').textContent=fmt(S.ms,S.gs);
@@ -7095,6 +7232,10 @@ function render(){
     $('r'+p).classList.toggle('winner',S.win===p);$('r'+p).classList.toggle('hasipp',!!P.i);}
   $('board').classList.toggle('noyuko',!S.yuko);
   if(fxNewM&&window.FXR){FXR.re($('rw'),'fx-new',900);FXR.re($('rb'),'fx-new',1000);}
+  // match intro on the TV: a new contest from the draw, or asked for again from the operator laptop
+  {const it=S.introT||0,ask=render._it!==undefined&&it&&it!==render._it;render._it=it;
+   const live=S.run||S.osa||S.win||S.pod||['w','b'].some(p=>{const q=S.p[p];return q.i||q.wa||q.y||q.s||q.h;});
+   if((fxNewM||ask)&&!live){if(!MI.play()&&MI.on)MI.stop();}else if(MI.on&&live)MI.stop();}
   $('tEvent').textContent=S.ev;$('tCat').textContent=(L2ON&&tr2(S.cat))||S.cat;$('tMat').textContent=S.mat+(S.match?' · Match '+S.match:'');
   const po=$('podOv');
   if(S.pod){po.className='on';const P=S.pod,t=(id,v)=>{$(id).textContent=v||'';};

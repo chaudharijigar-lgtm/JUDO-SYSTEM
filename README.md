@@ -1,4 +1,4 @@
-# TatamiPro · Judo tournament manager (v20.2)
+# TatamiPro · Judo tournament manager (v21)
 
 Draw (seeding, ranking, qualifier, knockout up to 128), weigh-in, live scoreboard + TV, schedule, results, prints, QR pages and WhatsApp sharing, in one web page. The name and logo can be changed in Settings.
 
@@ -21,6 +21,25 @@ Draw (seeding, ranking, qualifier, knockout up to 128), weigh-in, live scoreboar
 - Chrome / Edge (Windows, Mac, Linux, Android): the **⬇ Install** button in the top bar (or browser menu → Install).
 - iPhone / iPad: Safari → Share → Add to Home Screen.
 - Laptop and desktop get the desktop layout; phones get the phone layout (menu scrolls sideways, tables scroll).
+
+## v21 · match intro on the TV + welcome every time (20 Nov 2026)
+- **Match intro on the TV**, like the IJF arena board. When the next contest is loaded from the draw, the TV window (and the laptop's own big screen, D) shows, in order:
+  1. The **White** athlete's card: name (SURNAME First), district code and name, an orange RANK or SEED badge when there is one, and the round and category.
+  2. A flip: the card folds into a thin line of light. Then the **Blue** athlete's card.
+  3. A flip, then **both athletes** together with the round and category.
+  4. A flip into the **scoreboard**. It takes about 9 seconds in all.
+- **When it stops or does not play:**
+  - Hajime, a score, a decision or another contest ends it at once.
+  - It never plays on the operator's own screen, for a Blank match (manual), or when the TV window is opened in the middle of a contest.
+  - The command palette has **Match intro on the TV** to play it again.
+  - Switch it off per laptop in **Settings → Branding → Match intro on the TV**.
+- **Welcome every time the software opens:**
+  - First launch on a laptop: the full introduction, which waits for "Get started".
+  - Every later opening: the neon writes "welcome" faster. Then the name, a greeting with the tournament name and where it stands (athletes, categories, finished) appear, and the app opens by itself after about 4 seconds. A click or any key opens it at once.
+  - A refresh in the same window does not replay it.
+  - Never on the TV window, OBS, the public page, a join link or a mat / call room laptop: they go straight back to work.
+  - Off per laptop in **Settings → Branding → Welcome screen when the software opens**.
+  - On a computer without graphics acceleration the neon stays still, so it never slows the app down.
 
 ## v20.2 · mat links checked end to end (16 Nov 2026)
 - A mat laptop opened from its link now always starts on **its scoreboard** after a restart, even if Mat setup was the last page open. A call room laptop starts on check-in.
